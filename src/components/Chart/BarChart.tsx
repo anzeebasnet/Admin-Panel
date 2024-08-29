@@ -4,6 +4,7 @@ import { Bar, BarChart } from "recharts";
 
 import { ChartConfig, ChartContainer } from "@/components/ui/chart";
 import { MdKeyboardArrowDown } from "react-icons/md";
+import { BiDotsVerticalRounded } from "react-icons/bi";
 
 const chartData = [
   { month: "January", desktop: 186, mobile: 80 },
@@ -25,24 +26,18 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-export function Chart() {
+export function Barchart() {
   return (
     <div className="bg-[#131731] p-8 md:w-[50%] sm:w-[70%] w-full rounded-3xl">
       <div className="flex justify-between">
-        <h2 className="text-white font-medium text-lg">TimeSheet</h2>
-        {/* <div className="flex gap-2 py-2 px-4 border-2 border-gray-400 rounded-3xl">
-          <p className="text-xs text-white font-normal">October</p>
-          <MdKeyboardArrowDown color="white" />
-        </div> */}
+        <h2 className="text-white font-medium text-lg">Weekly Report</h2>
+        <BiDotsVerticalRounded size={25} color="white"/>
       </div>
       <ChartContainer
         config={chartConfig}
         className="max-h-[500px] max-w-[500px]"
       >
-        <BarChart
-          accessibilityLayer
-          data={chartData}
-        >
+        <BarChart accessibilityLayer data={chartData}>
           <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
           <Bar dataKey="mobile" fill="var(--color-mobile)" radius={4} />
         </BarChart>

@@ -21,9 +21,9 @@ export default function RootLayout({
       <body className={`bg-[#090c2a] ${inter.className}`}>
         <div className="flex h-screen custom-container">
           <SideBar />
-          <div className="flex flex-col flex-1">
+          <div className="flex flex-col flex-1 h-screen">
             <Header />
-            <main className="flex-1 p-6 overflow-auto">{children}</main>
+            <main className="flex-1 p-6 h-0 min-h-0 overflow-y-auto">{children}</main>
           </div>
         </div>
       </body>

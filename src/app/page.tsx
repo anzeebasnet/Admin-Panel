@@ -1,8 +1,9 @@
-import { Chart } from "@/components/Chart/Chart";
-import EmployeeCard from "@/components/EmployeeCard/EmployeeCard";
-import { Piechart } from "@/components/PieChart/PieChart";
+import { Barchart } from "@/components/Chart/BarChart";
+import { Piechart } from "@/components/Chart/PieChart";
+import EmployeeCard from "@/components/Cards/EmployeeCard";
 import { Roboto } from "next/font/google";
 import React from "react";
+import TimeSheet from "@/components/TimeSheet/TimeSheet";
 
 const roboto = Roboto({
   weight: ["100", "300", "400", "500", "700"],
@@ -10,7 +11,7 @@ const roboto = Roboto({
 });
 const Page = () => {
   return (
-    <div className="p-4 flex flex-col gap-6">
+    <div className="p-4 flex flex-col gap-6 min-h-screen">
       <h1 className={`text-white text-2xl font-normal ${roboto.className}`}>
         Dashboard
       </h1>
@@ -21,8 +22,11 @@ const Page = () => {
         <EmployeeCard colorgradtop="#0f87ba" colorgradbottom="#51b7ce" />
       </div>
       <div className="flex flex-wrap gap-4">
-          <Chart />
-          <Piechart />
+        <TimeSheet />
+        <Piechart />
+      </div>
+      <div>
+        <Barchart />
       </div>
     </div>
   );

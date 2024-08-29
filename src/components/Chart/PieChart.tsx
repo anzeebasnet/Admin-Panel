@@ -18,6 +18,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
+import { BiDotsVerticalRounded } from "react-icons/bi";
 const chartData = [
   { project: "rental", employees: 275, fill: "var(--color-rental)" },
   {
@@ -61,11 +62,14 @@ export function Piechart() {
   }, []);
 
   return (
-    <Card className="flex flex-col bg-[#131731] border-none">
+    <Card className="flex flex-col bg-[#131731] border-none sm:w-[40%] w-full">
       <CardHeader className="items-center pb-0">
-        <CardTitle className="text-lg text-white font-medium place-self-start">
-          Top Assigned Project
-        </CardTitle>
+        <div className="flex justify-center w-full">
+          <CardTitle className="text-lg text-white font-medium place-self-start">
+            Top Assigned Project
+          </CardTitle>
+          <BiDotsVerticalRounded size={25} color="white" />
+        </div>
         <CardDescription></CardDescription>
       </CardHeader>
       <CardContent className="flex-1 pb-0">
@@ -73,7 +77,7 @@ export function Piechart() {
           config={chartConfig}
           className="mx-auto aspect-square max-h-[250px]"
         >
-          <PieChart width={250} height={250}>
+          <PieChart>
             <ChartTooltip
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
@@ -98,14 +102,14 @@ export function Piechart() {
                         <tspan
                           x={viewBox.cx}
                           y={viewBox.cy}
-                          className="fill-foreground text-3xl font-bold"
+                          className="text-3xl font-bold text-white"
                         >
                           {totalEmployees.toLocaleString()}
                         </tspan>
                         <tspan
                           x={viewBox.cx}
                           y={(viewBox.cy || 0) + 24}
-                          className="fill-muted-foreground"
+                          className="fill-muted-foreground text-white"
                         >
                           Total
                         </tspan>

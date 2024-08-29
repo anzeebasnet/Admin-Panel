@@ -49,15 +49,15 @@ const Header = () => {
   const pathname = usePathname();
 
   return (
-    <header className="w-full xl:h-24 h-20 text-white flex items-center justify-between sm:px-8 px-2 py-4 shadow-sm shadow-gray-400 ">
+    <header className="w-full xl:h-24 h-20 text-white flex items-center justify-between sm:px-8 px-2 py-4 pr-4 shadow-sm shadow-gray-400 ">
       <div className="flex sm:gap-6 gap-2 items-center">
         {/*Sheet*/}
-        <div className="lg:hidden block place-self-end p-4">
+        <div className="lg:hidden block place-self-end p-4 overflow-y-auto">
           <Sheet>
             <SheetTrigger>
               <RiMenuLine color="#eb5025" size={30} />
             </SheetTrigger>
-            <SheetContent className="bg-[#090c2a] overflow-y-auto">
+            <SheetContent className="bg-[#090c2a] h-full overflow-y-auto">
               <SheetHeader className=" flex flex-col relative">
                 <SheetClose>
                   <div className=" absolute top-1 right-1">
@@ -65,7 +65,6 @@ const Header = () => {
                   </div>
                 </SheetClose>
                 <SheetTitle>
-                    {/*Logo*/}
                    <SheetClose asChild>
                    <Link 
                     href={"/"}
@@ -80,7 +79,6 @@ const Header = () => {
                    </SheetClose>
                 </SheetTitle>
                 <SheetDescription>
-                  {/*dashboard items*/}
                   <div className="flex flex-col gap-4 p-4 pt-8">
                     <h3 className="text-base font-medium text-white ">
                       Analyze
