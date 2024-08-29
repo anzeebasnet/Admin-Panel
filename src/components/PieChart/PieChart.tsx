@@ -19,42 +19,37 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 const chartData = [
-  { project: "rental", visitors: 275, fill: "#5b55f6" },
-  { project: "office management", visitors: 200, fill: "#6963f2" },
-  { project: "firefox", visitors: 287, fill: "#817cec" },
-  { project: "edge", visitors: 173, fill: "#8b86ea" },
-  { project: "other", visitors: 190, fill: "#a6a2ec" },
+  { project: "Rental", employees: 275, fill: "#5b55f6" },
+  { project: "Office Management", employees: 200, fill: "#6963f2" },
+  { project: "Photo Editing", employees: 287, fill: "#817cec" },
+  { project: "Library Management", employees: 173, fill: "#8b86ea" },
 ];
 
 const chartConfig = {
-  visitors: {
-    label: "Visitors",
+  employees: {
+    label: "Employees",
   },
-  chrome: {
-    label: "Chrome",
+  rental: {
+    label: "Rental",
     color: "hsl(var(--color-chrome))",
   },
-  safari: {
-    label: "Safari",
+  office_management: {
+    label: "Office Management",
     color: "hsl(var(--color-safari))",
   },
-  firefox: {
-    label: "Firefox",
+  editing: {
+    label: "Photo Editing",
     color: "hsl(var(--color-firefox))",
   },
-  edge: {
-    label: "Edge",
+  library_management: {
+    label: "Library Management",
     color: "hsl(var(--chart-4))",
-  },
-  other: {
-    label: "Other",
-    color: "hsl(var(--chart-5))",
-  },
+  }
 } satisfies ChartConfig;
 
 export function Piechart() {
-  const totalVisitors = React.useMemo(() => {
-    return chartData.reduce((acc, curr) => acc + curr.visitors, 0);
+  const totalEmployees = React.useMemo(() => {
+    return chartData.reduce((acc, curr) => acc + curr.employees, 0);
   }, []);
 
   return (
@@ -97,7 +92,7 @@ export function Piechart() {
                           y={viewBox.cy}
                           className="fill-foreground text-3xl font-bold"
                         >
-                          {totalVisitors.toLocaleString()}
+                          {totalEmployees.toLocaleString()}
                         </tspan>
                         <tspan
                           x={viewBox.cx}

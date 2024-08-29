@@ -1,4 +1,5 @@
 import { Chart } from "@/components/Chart/Chart";
+import { MyDoughnutChart } from "@/components/DoughnutChart/DoughnutChart";
 import EmployeeCard from "@/components/EmployeeCard/EmployeeCard";
 import { Piechart } from "@/components/PieChart/PieChart";
 import { Roboto } from "next/font/google";
@@ -22,8 +23,10 @@ const Page = () => {
       </div>
       <div className="flex flex-wrap gap-4">
           <Chart />
-          <Piechart />
-
+          {/* <Piechart /> */}
+          <div className="w-80 h-60">
+          <MyDoughnutChart/>
+          </div>
       </div>
     </div>
   );
