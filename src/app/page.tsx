@@ -23,10 +23,10 @@ const Page = () => {
       </div>
       <div className="flex flex-wrap gap-4">
           <Chart />
-          {/* <Piechart /> */}
-          <div className="w-80 h-60">
+          <Piechart />
+          {/* <div className="w-80 h-60">
           <MyDoughnutChart/>
-          </div>
+          </div> */}
       </div>
     </div>
   );

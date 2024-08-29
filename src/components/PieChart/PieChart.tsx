@@ -19,11 +19,53 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 const chartData = [
-  { project: "Rental", employees: 275, fill: "#5b55f6" },
-  { project: "Office Management", employees: 200, fill: "#6963f2" },
-  { project: "Photo Editing", employees: 287, fill: "#817cec" },
-  { project: "Library Management", employees: 173, fill: "#8b86ea" },
+  { project: "rental", employees: 275, fill: "var(--color-rental)" },
+  {
+    project: "office_management",
+    employees: 200,
+    fill: "var(--color-office_management)",
+  },
+  { project: "editing", employees: 287, fill: "var(--color-editing)" },
+  {
+    project: "library_management",
+    employees: 173,
+    fill: "var(--color-library_management)",
+  },
 ];
+
+// const chartData = [
+//   { browser: "chrome", visitors: 275, fill: "var(--color-chrome)" },
+//   { browser: "safari", visitors: 200, fill: "var(--color-safari)" },
+//   { browser: "firefox", visitors: 287, fill: "var(--color-firefox)" },
+//   { browser: "edge", visitors: 173, fill: "var(--color-edge)" },
+//   { browser: "other", visitors: 190, fill: "var(--color-other)" },
+// ]
+
+// const chartConfig = {
+//   visitors: {
+//     label: "Visitors",
+//   },
+//   chrome: {
+//     label: "Chrome",
+//     color: "hsl(var(--chart-1))",
+//   },
+//   safari: {
+//     label: "Safari",
+//     color: "hsl(var(--chart-2))",
+//   },
+//   firefox: {
+//     label: "Firefox",
+//     color: "hsl(var(--chart-3))",
+//   },
+//   edge: {
+//     label: "Edge",
+//     color: "hsl(var(--chart-4))",
+//   },
+//   other: {
+//     label: "Other",
+//     color: "hsl(var(--chart-5))",
+//   },
+// } satisfies ChartConfig
 
 const chartConfig = {
   employees: {
@@ -31,20 +73,20 @@ const chartConfig = {
   },
   rental: {
     label: "Rental",
-    color: "hsl(var(--color-chrome))",
+    color: "hsl(var(--chart-1))",
   },
   office_management: {
     label: "Office Management",
-    color: "hsl(var(--color-safari))",
+    color: "hsl(var(--chart-2))",
   },
   editing: {
     label: "Photo Editing",
-    color: "hsl(var(--color-firefox))",
+    color: "hsl(var(--chart-3))",
   },
   library_management: {
     label: "Library Management",
     color: "hsl(var(--chart-4))",
-  }
+  },
 } satisfies ChartConfig;
 
 export function Piechart() {
@@ -64,6 +106,7 @@ export function Piechart() {
         <ChartContainer
           config={chartConfig}
           className="mx-auto aspect-square max-h-[250px]"
+          style={{ transform: "translateZ(0)", backfaceVisibility: "hidden" }}
         >
           <PieChart>
             <ChartTooltip
@@ -72,8 +115,8 @@ export function Piechart() {
             />
             <Pie
               data={chartData}
-              dataKey="visitors"
-              nameKey="browser"
+              dataKey="employees"
+              nameKey="project"
               innerRadius={60}
               strokeWidth={5}
             >

@@ -38,6 +38,7 @@ export function Chart() {
       <ChartContainer
         config={chartConfig}
         className="max-h-[300px] max-w-[500px]"
+        style={{ transform: 'translateZ(0)', backfaceVisibility: 'hidden' }}
       >
         <BarChart accessibilityLayer data={chartData}>
           <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
