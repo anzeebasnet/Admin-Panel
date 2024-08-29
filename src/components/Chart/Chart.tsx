@@ -27,7 +27,7 @@ const chartConfig = {
 
 export function Chart() {
   return (
-    <div className="bg-[#131731] p-8 w-[50%] rounded-3xl">
+    <div className="bg-[#131731] p-8 md:w-[50%] sm:w-[70%] w-full rounded-3xl">
       <div className="flex justify-between">
         <h2 className="text-white font-medium text-lg">TimeSheet</h2>
         {/* <div className="flex gap-2 py-2 px-4 border-2 border-gray-400 rounded-3xl">
@@ -37,7 +37,7 @@ export function Chart() {
       </div>
       <ChartContainer
         config={chartConfig}
-        className="max-h-[300px] max-w-[500px]"
+        className="max-h-[500px] max-w-[500px]"
       >
         <BarChart
           accessibilityLayer
