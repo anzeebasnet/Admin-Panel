@@ -12,13 +12,21 @@ const config = {
   theme: {
     container: {
       center: true,
-      padding: "2rem",
+      padding: "0rem",
       screens: {
-        "2xl": "1400px",
+        "2xl": "1792px",
+        "3xl": "2048px",
+        // "4xl": "2048px",
       },
     },
     extend: {
       colors: {
+        bg_blue:"hsl(var(--primary-background))",
+        bg_orange: "hsl(var(--orange))",
+        bg_gray: "hsl(var(--light-gray))",
+        gray: "hsl(var(--l-gray))",
+        blue: "hsl(var(--blue))",
+        dark_gray: "hsl(var(--dark-gray))",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

@@ -4,6 +4,7 @@ import EmployeeCard from "@/components/Cards/EmployeeCard";
 import { Roboto } from "next/font/google";
 import React from "react";
 import TimeSheet from "@/components/TimeSheet/TimeSheet";
+import ThemeToggle from "@/components/ThemeToggle/ThemeToggle";
 
 const roboto = Roboto({
   weight: ["100", "300", "400", "500", "700"],
@@ -12,7 +13,7 @@ const roboto = Roboto({
 const Page = () => {
   return (
     <div className="p-4 flex flex-col gap-6 min-h-screen">
-      <h1 className={`text-white text-2xl font-normal ${roboto.className}`}>
+      <h1 className={`text-bg_orange dark:text-white text-2xl font-normal ${roboto.className}`}>
         Dashboard
       </h1>
       <div className="flex flex-wrap gap-4">
@@ -28,6 +29,7 @@ const Page = () => {
       <div>
         <Barchart />
       </div>
+      {/* <ThemeToggle /> */}
     </div>
   );
 };

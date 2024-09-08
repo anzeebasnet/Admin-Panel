@@ -35,7 +35,7 @@ const SideBar = () => {
   const pathname = usePathname();
 
   return (
-    <div className="bg-[#090c2a] lg:flex flex-col hidden gap-2 h-screen w-[22%] p-4 shadow-md shadow-gray-500 overflow-y-auto">
+    <div className="bg-gray dark:bg-bg_blue lg:flex flex-col hidden gap-2 h-screen w-[18%] p-4 shadow-md dark:shadow-bg_gray overflow-y-auto">
       {/*Logo*/}
       <Link
         href={"/"}
@@ -43,7 +43,7 @@ const SideBar = () => {
       >
         <PiSphereLight size={35} color="orange" />
         <h2
-          className={`${anton.className} font-medium xl:text-3xl text-2xl text-white`}
+          className={`${anton.className} font-medium xl:text-3xl text-2xl dark:text-white text-bg_orange`}
         >
           WorkSphere
         </h2>
@@ -55,7 +55,7 @@ const SideBar = () => {
           <Link href="/">
             <span
               className={`flex gap-4 items-center p-2 px-4 rounded-3xl ${
-                pathname === "/" ? "bg-[#ff693c]" : ""
+                pathname === "/" ? "bg-bg_orange" : ""
               }`}
             >
               <RxDashboard

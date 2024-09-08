@@ -29,6 +29,7 @@ import { HiOutlineDocumentReport, HiOutlineUsers } from "react-icons/hi";
 import { MdOutlineEditNote } from "react-icons/md";
 import { CiClock2 } from "react-icons/ci";
 import { LiaTasksSolid } from "react-icons/lia";
+import ThemeToggle from "../ThemeToggle/ThemeToggle";
 
 const archivo = Archivo({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800"],
@@ -49,7 +50,7 @@ const Header = () => {
   const pathname = usePathname();
 
   return (
-    <header className="w-full xl:h-24 h-20 text-white flex items-center justify-between sm:px-8 px-2 py-4 pr-4 shadow-sm shadow-gray-400 ">
+    <header className="w-full xl:h-24 h-20 text-white flex items-center justify-between sm:px-8 px-2 py-4 pr-4 shadow-sm dark:shadow-gray ">
       <div className="flex sm:gap-6 gap-2 items-center">
         {/*Sheet*/}
         <div className="lg:hidden block place-self-end p-4 overflow-y-auto">
@@ -65,10 +66,11 @@ const Header = () => {
                   </div>
                 </SheetClose>
                 <SheetTitle>
-                   <SheetClose asChild>
-                   <Link 
-                    href={"/"}
-                    className="w-full flex justify-center gap-1 xl:px-8 px-4 xl:py-7 py-4 xl:pb-4 pb-3 border-b border-b-[#8f8f8f]">
+                  <SheetClose asChild>
+                    <Link
+                      href={"/"}
+                      className="w-full flex justify-center gap-1 xl:px-8 px-4 xl:py-7 py-4 xl:pb-4 pb-3 border-b border-b-[#8f8f8f]"
+                    >
                       <PiSphereLight size={35} color="orange" />
                       <h2
                         className={`${anton.className} font-medium xl:text-3xl text-2xl text-white`}
@@ -76,7 +78,7 @@ const Header = () => {
                         WorkSphere
                       </h2>
                     </Link>
-                   </SheetClose>
+                  </SheetClose>
                 </SheetTitle>
                 <SheetDescription>
                   <div className="flex flex-col gap-4 p-4 pt-8">
@@ -299,36 +301,39 @@ const Header = () => {
         </div>
 
         <div className="relative md:w-80 sm:w-40 w-24">
-          <TbSearch className="absolute top-1/2 sm:left-3 left-1 transform -translate-y-1/2" />
+          <TbSearch className="absolute top-1/2 sm:left-3 left-1 transform -translate-y-1/2 dark:text-white text-black" />
           <Input
-            className="w-full sm:pl-10 pl-6 bg-[#090c2a] border border-gray-400 rounded-3xl focus:ring-0 text-gray-400"
+            className="w-full sm:pl-10 pl-6 bg-white dark:bg-bg_blue border dark:border-gray-400 rounded-3xl focus:ring-0 dark:text-gray-400 text-black"
             placeholder="Search"
           />
         </div>
       </div>
-      <div className="flex items-center justify-center sm:gap-3 gap-1">
-        <div className="bg-[#2c326e] w-10 h-10 flex items-center justify-center rounded-full">
-          <IoNotificationsOutline size={25} />
-        </div>
-        <div className="bg-[#2c326e] w-10 h-10 flex items-center justify-center rounded-full">
-          <TbMessageDots size={25} />
-        </div>
-        <div className="flex sm:gap-3 items-center">
-          <div className="flex gap-1 items-center">
-            <Image
-              src={"/images/girl.jpeg"}
-              alt="profile"
-              width={100}
-              height={100}
-              className="rounded-full w-12 h-12 border-2 border-white"
-            />
-            <p className="text-white font-medium text-base sm:block hidden">
-              Jane Smith
-            </p>
+        <div className="flex items-center justify-center gap-4">
+        <ThemeToggle />
+        <div className="flex items-center justify-center sm:gap-3 gap-1">
+            <div className="dark:bg-blue bg-bg_gray w-10 h-10 flex items-center justify-center rounded-full">
+              <IoNotificationsOutline size={25} className="dark:text-white text-black"/>
+            </div>
+            <div className="dark:bg-blue bg-bg_gray w-10 h-10 flex items-center justify-center rounded-full">
+              <TbMessageDots size={25}  className="dark:text-white text-black"/>
+            </div>
+            <div className="flex sm:gap-3 items-center">
+              <div className="flex gap-1 items-center">
+                <Image
+                  src={"/images/girl.jpeg"}
+                  alt="profile"
+                  width={100}
+                  height={100}
+                  className="rounded-full w-12 h-12 border-2 border-white"
+                />
+                <p className="dark:text-white text-black font-medium text-base sm:block hidden">
+                  Jane Smith
+                </p>
+              </div>
+              <IoIosArrowDown className="dark:text-white text-black" />
+            </div>
           </div>
-          <IoIosArrowDown color="white" />
         </div>
-      </div>
     </header>
   );
 };
