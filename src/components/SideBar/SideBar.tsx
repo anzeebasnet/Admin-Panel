@@ -15,6 +15,7 @@ import { LiaTasksSolid } from "react-icons/lia";
 import { GiWatch } from "react-icons/gi";
 import { CiClock2 } from "react-icons/ci";
 import { MdOutlineEditNote } from "react-icons/md";
+import Image from "next/image";
 
 const archivo = Archivo({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800"],
@@ -39,7 +40,7 @@ const SideBar = () => {
       {/*Logo*/}
       <Link
         href={"/"}
-        className="w-full flex justify-center gap-1 xl:px-8 px-4 xl:py-7 py-4 xl:pb-4 pb-3"
+        className="w-full flex justify-center gap-1 xl:px-8 px-2 xl:py-7 py-4 xl:pb-4 pb-3 border-b border-b-gray-500"
       >
         <PiSphereLight size={35} color="orange" />
         <h2
@@ -49,8 +50,10 @@ const SideBar = () => {
         </h2>
       </Link>
 
-      <div className="flex flex-col gap-4 p-4 pt-8">
-        <h3 className="text-base font-medium text-white ">Analyze</h3>
+      <div className="flex flex-col gap-4 xl:px-4 py-4 pt-8 border-b border-gray-500">
+        <h3 className="text-base font-medium dark:text-white text-black">
+          Analyze
+        </h3>
         <div className={`flex flex-col gap-4 ${archivo.className}`}>
           <Link href="/">
             <span
@@ -59,12 +62,18 @@ const SideBar = () => {
               }`}
             >
               <RxDashboard
-                size={26}
-                color={`${pathname === "/" ? "white" : "gray"}`}
+                size={25}
+                className={`${
+                  pathname === "/"
+                    ? "text-white"
+                    : "dark:text-white text-text_gray"
+                }`}
               />
               <p
-                className={` font-normal text-lg ${
-                  pathname === "/" ? "text-white" : "text-[#767c8e]"
+                className={` font-normal xl:text-lg text-base ${
+                  pathname === "/"
+                    ? "text-white"
+                    : "dark:text-white text-text_gray"
                 }`}
               >
                 Dashboard
@@ -74,16 +83,22 @@ const SideBar = () => {
           <Link href="/live-feed">
             <span
               className={`flex gap-4 items-center p-2 px-4 rounded-3xl ${
-                pathname === "/live-feed" ? "bg-[#ff693c]" : ""
+                pathname === "/live-feed" ? "bg-bg_orange" : ""
               }`}
             >
               <BsCameraVideo
                 size={25}
-                color={`${pathname === "/live-feed" ? "white" : "gray"}`}
+                className={`${
+                  pathname === "/live-feed"
+                    ? "text-white"
+                    : "dark:text-white text-text_gray"
+                }`}
               />
               <p
-                className={`" font-medium text-lg ${
-                  pathname === "/live-feed" ? "text-white" : "text-[#767c8e]"
+                className={`" font-normal xl:text-lg text-base ${
+                  pathname === "/live-feed"
+                    ? "text-white"
+                    : "dark:text-white text-text_gray"
                 }`}
               >
                 Live Feed
@@ -93,16 +108,22 @@ const SideBar = () => {
           <Link href="/timesheet">
             <span
               className={`flex gap-4 items-center p-2 px-4 rounded-3xl ${
-                pathname === "/timesheet" ? "bg-[#ff693c]" : ""
+                pathname === "/timesheet" ? "bg-bg_orange" : ""
               }`}
             >
               <BsFileEarmarkSpreadsheet
-                size={26}
-                color={`${pathname === "/timesheet" ? "white" : "gray"}`}
+                size={25}
+                className={`${
+                  pathname === "/timesheet"
+                    ? "text-white"
+                    : "dark:text-white text-text_gray"
+                }`}
               />
               <p
-                className={` font-normal text-lg ${
-                  pathname === "/timesheet" ? "text-white" : "text-[#767c8e]"
+                className={` font-normal xl:text-lg text-base ${
+                  pathname === "/timesheet"
+                    ? "text-white"
+                    : "dark:text-white text-text_gray"
                 }`}
               >
                 Timesheets
@@ -112,16 +133,22 @@ const SideBar = () => {
           <Link href="/report">
             <span
               className={`flex gap-4 items-center p-2 px-4 rounded-3xl ${
-                pathname === "/report" ? "bg-[#ff693c]" : ""
+                pathname === "/report" ? "bg-bg_orange" : ""
               }`}
             >
               <HiOutlineDocumentReport
                 size={28}
-                color={`${pathname === "/report" ? "white" : "gray"}`}
+                className={`${
+                  pathname === "/report"
+                    ? "text-white"
+                    : "dark:text-white text-text_gray"
+                }`}
               />
               <p
-                className={` font-normal text-lg ${
-                  pathname === "/report" ? "text-white" : "text-[#767c8e]"
+                className={` font-normal xl:text-lg text-base ${
+                  pathname === "/report"
+                    ? "text-white"
+                    : "dark:text-white text-text_gray"
                 }`}
               >
                 Reports
@@ -130,23 +157,30 @@ const SideBar = () => {
           </Link>
         </div>
       </div>
-      <div className="w-full border-b border-gray-500"></div>
-      <div className="flex flex-col gap-4 p-4 pt-8">
-        <h3 className="text-base font-medium text-white ">Manage</h3>
+      <div className="flex flex-col gap-4 xl:px-4 py-4 pt-8">
+        <h3 className="text-base font-medium dark:text-white text-black">
+          Manage
+        </h3>
         <div className={`flex flex-col gap-4 ${archivo.className}`}>
           <Link href="/tasks">
             <span
               className={`flex gap-4 items-center p-2 px-4 rounded-3xl ${
-                pathname === "/tasks" ? "bg-[#ff693c]" : ""
+                pathname === "/tasks" ? "bg-bg_orange" : ""
               }`}
             >
               <LiaTasksSolid
                 size={26}
-                color={`${pathname === "/tasks" ? "white" : "gray"}`}
+                className={`${
+                  pathname === "/tasks"
+                    ? "text-white"
+                    : "dark:text-white text-text_gray"
+                }`}
               />
               <p
-                className={` font-normal text-lg ${
-                  pathname === "/tasks" ? "text-white" : "text-[#767c8e]"
+                className={` font-normal xl:text-lg text-base ${
+                  pathname === "/tasks"
+                    ? "text-white"
+                    : "dark:text-white text-text_gray"
                 }`}
               >
                 Tasks
@@ -156,16 +190,22 @@ const SideBar = () => {
           <Link href="/clock">
             <span
               className={`flex gap-4 items-center p-2 px-4 rounded-3xl ${
-                pathname === "/clock" ? "bg-[#ff693c]" : ""
+                pathname === "/clock" ? "bg-bg_orange" : ""
               }`}
             >
               <CiClock2
                 size={25}
-                color={`${pathname === "/clock" ? "white" : "gray"}`}
+                className={`${
+                  pathname === "/clock"
+                    ? "text-white"
+                    : "dark:text-white text-text_gray"
+                }`}
               />
               <p
-                className={`" font-medium text-lg ${
-                  pathname === "/clock" ? "text-white" : "text-[#767c8e]"
+                className={`" font-medium xl:text-lg text-base ${
+                  pathname === "/clock"
+                    ? "text-white"
+                    : "dark:text-white text-text_gray"
                 }`}
               >
                 Clock In/Out
@@ -175,16 +215,22 @@ const SideBar = () => {
           <Link href="/projects">
             <span
               className={`flex gap-4 items-center p-2 px-4 rounded-3xl ${
-                pathname === "/projects" ? "bg-[#ff693c]" : ""
+                pathname === "/projects" ? "bg-bg_orange" : ""
               }`}
             >
               <MdOutlineEditNote
                 size={26}
-                color={`${pathname === "/projects" ? "white" : "gray"}`}
+                className={`${
+                  pathname === "/projects"
+                    ? "text-white"
+                    : "dark:text-white text-text_gray"
+                }`}
               />
               <p
-                className={` font-normal text-lg ${
-                  pathname === "/projects" ? "text-white" : "text-[#767c8e]"
+                className={` font-normal xl:text-lg text-base ${
+                  pathname === "/projects"
+                    ? "text-white"
+                    : "dark:text-white text-text_gray"
                 }`}
               >
                 Projects
@@ -194,16 +240,22 @@ const SideBar = () => {
           <Link href="/clients">
             <span
               className={`flex gap-4 items-center p-2 px-4 rounded-3xl ${
-                pathname === "/clients" ? "bg-[#ff693c]" : ""
+                pathname === "/clients" ? "bg-bg_orange" : ""
               }`}
             >
               <HiOutlineUsers
                 size={26}
-                color={`${pathname === "/clients" ? "white" : "gray"}`}
+                className={`${
+                  pathname === "/clients"
+                    ? "text-white"
+                    : "dark:text-white text-text_gray"
+                }`}
               />
               <p
-                className={` font-normal text-lg ${
-                  pathname === "/clients" ? "text-white" : "text-[#767c8e]"
+                className={` font-normal xl:text-lg text-base ${
+                  pathname === "/clients"
+                    ? "text-white"
+                    : "dark:text-white text-text_gray"
                 }`}
               >
                 Clients

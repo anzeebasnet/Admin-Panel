@@ -1,20 +1,28 @@
-import { useTheme } from "../../../utils/hooks/useTheme";
-import { Switch } from "@/components/ui/switch"
-
+// import { useTheme } from "../../../utils/hooks/useTheme";
+import { Switch } from "@/components/ui/switch";
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 
 const ThemeToggle = () => {
-  const [theme, setTheme] = useTheme();
+  const { theme, setTheme } = useTheme();
+  const [isDarkMode, setIsDarkMode] = useState(false);
+
+   // Set the initial state based on the current theme
+   useEffect(() => {
+    setIsDarkMode(theme === "dark");
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme(isDarkMode ? "light" : "dark");
+    setIsDarkMode(!isDarkMode);
+  };
 
   return (
     <div className="flex items-center justify-center">
-      {/* <button
-        onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-        className="p-2 rounded-full bg-gray-200 dark:bg-white">
-        {theme === 'dark' ? '🌙 Dark Mode' : '☀️ Light Mode'}
-      </button> */}
-      <Switch color="white" onCheckedChange={()=> {
-        setTheme(theme === 'dark' ? 'light' : 'dark')
-      }}/>
+      <Switch
+        checked={isDarkMode} 
+        onCheckedChange={toggleTheme} 
+      />
     </div>
   );
 };

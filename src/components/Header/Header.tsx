@@ -50,30 +50,33 @@ const Header = () => {
   const pathname = usePathname();
 
   return (
-    <header className="w-full xl:h-24 h-20 text-white flex items-center justify-between sm:px-8 px-2 py-4 pr-4 shadow-sm dark:shadow-gray ">
-      <div className="flex sm:gap-6 gap-2 items-center">
+    <header className="w-full xl:h-24 h-20 text-white flex items-center justify-between sm:px-8 px-2 py-4 pr-4 shadow-sm dark:shadow-gray gap-4">
+      <div className="flex sm:gap-4 gap-2 items-center">
         {/*Sheet*/}
-        <div className="lg:hidden block place-self-end p-4 overflow-y-auto">
+        <div className="lg:hidden block place-self-end sm:p-4 overflow-y-auto">
           <Sheet>
-            <SheetTrigger>
-              <RiMenuLine color="#eb5025" size={30} />
+            <SheetTrigger className="pt-2">
+                <RiMenuLine color="#eb5025" size={25}/>
             </SheetTrigger>
-            <SheetContent className="bg-[#090c2a] h-full overflow-y-auto">
+            <SheetContent className="dark:bg-bg_blue bg-white h-full overflow-y-auto">
               <SheetHeader className=" flex flex-col relative">
                 <SheetClose>
                   <div className=" absolute top-1 right-1">
-                    <RxCrossCircled size={25} color="white" />
+                    <RxCrossCircled
+                      size={25}
+                      className="dark:text-white text-black"
+                    />
                   </div>
                 </SheetClose>
                 <SheetTitle>
                   <SheetClose asChild>
                     <Link
                       href={"/"}
-                      className="w-full flex justify-center gap-1 xl:px-8 px-4 xl:py-7 py-4 xl:pb-4 pb-3 border-b border-b-[#8f8f8f]"
+                      className="w-full flex justify-center gap-1 xl:px-8 px-4 xl:py-7 py-4 xl:pb-4 pb-3 border-b border-b-vl_gray"
                     >
                       <PiSphereLight size={35} color="orange" />
                       <h2
-                        className={`${anton.className} font-medium xl:text-3xl text-2xl text-white`}
+                        className={`${anton.className} font-medium xl:text-3xl text-2xl dark:text-white text-bg_orange`}
                       >
                         WorkSphere
                       </h2>
@@ -81,16 +84,16 @@ const Header = () => {
                   </SheetClose>
                 </SheetTitle>
                 <SheetDescription>
-                  <div className="flex flex-col gap-4 p-4 pt-8">
-                    <h3 className="text-base font-medium text-white ">
+                  <div className="flex flex-col gap-4 p-4 pt-8 border-b border-b-vl_gray">
+                    <h3 className="text-base font-medium dark:text-white text-black">
                       Analyze
                     </h3>
-                    <div className={`flex flex-col gap-4 ${archivo.className}`}>
+                    <div className={`flex flex-col sm:gap-4 gap-2 ${archivo.className}`}>
                       <SheetClose asChild>
                         <Link href="/">
                           <span
                             className={`flex gap-4 items-center p-2 px-4 rounded-3xl ${
-                              pathname === "/" ? "bg-[#ff693c]" : ""
+                              pathname === "/" ? "bg-bg_orange" : ""
                             }`}
                           >
                             <RxDashboard
@@ -98,10 +101,10 @@ const Header = () => {
                               color={`${pathname === "/" ? "white" : "gray"}`}
                             />
                             <p
-                              className={` font-normal text-lg ${
+                              className={` font-normal sm:text-lg text-sm ${
                                 pathname === "/"
                                   ? "text-white"
-                                  : "text-[#767c8e]"
+                                  : "text-text_gray"
                               }`}
                             >
                               Dashboard
@@ -113,7 +116,7 @@ const Header = () => {
                         <Link href="/live-feed">
                           <span
                             className={`flex gap-4 items-center p-2 px-4 rounded-3xl ${
-                              pathname === "/live-feed" ? "bg-[#ff693c]" : ""
+                              pathname === "/live-feed" ? "bg-bg_orange" : ""
                             }`}
                           >
                             <BsCameraVideo
@@ -123,10 +126,10 @@ const Header = () => {
                               }`}
                             />
                             <p
-                              className={`" font-medium text-lg ${
+                              className={`" font-medium sm:text-lg text-sm ${
                                 pathname === "/live-feed"
                                   ? "text-white"
-                                  : "text-[#767c8e]"
+                                  : "text-text_gray"
                               }`}
                             >
                               Live Feed
@@ -138,7 +141,7 @@ const Header = () => {
                         <Link href="/timesheet">
                           <span
                             className={`flex gap-4 items-center p-2 px-4 rounded-3xl ${
-                              pathname === "/timesheet" ? "bg-[#ff693c]" : ""
+                              pathname === "/timesheet" ? "bg-bg_orange" : ""
                             }`}
                           >
                             <BsFileEarmarkSpreadsheet
@@ -148,10 +151,10 @@ const Header = () => {
                               }`}
                             />
                             <p
-                              className={` font-normal text-lg ${
+                              className={` font-normal sm:text-lg text-sm ${
                                 pathname === "/timesheet"
                                   ? "text-white"
-                                  : "text-[#767c8e]"
+                                  : "text-text_gray"
                               }`}
                             >
                               Timesheets
@@ -163,7 +166,7 @@ const Header = () => {
                         <Link href="/report">
                           <span
                             className={`flex gap-4 items-center p-2 px-4 rounded-3xl ${
-                              pathname === "/report" ? "bg-[#ff693c]" : ""
+                              pathname === "/report" ? "bg-bg_orange" : ""
                             }`}
                           >
                             <HiOutlineDocumentReport
@@ -173,10 +176,10 @@ const Header = () => {
                               }`}
                             />
                             <p
-                              className={` font-normal text-lg ${
+                              className={` font-normal sm:text-lg text-sm ${
                                 pathname === "/report"
                                   ? "text-white"
-                                  : "text-[#767c8e]"
+                                  : "text-text_gray"
                               }`}
                             >
                               Reports
@@ -188,15 +191,15 @@ const Header = () => {
                   </div>
 
                   <div className="flex flex-col gap-4 p-4 pt-8">
-                    <h3 className="text-base font-medium text-white ">
+                    <h3 className="text-base font-medium dark:text-white text-black">
                       Manage
                     </h3>
-                    <div className={`flex flex-col gap-4 ${archivo.className}`}>
+                    <div className={`flex flex-col sm:gap-4 gap-2  ${archivo.className}`}>
                       <SheetClose asChild>
                         <Link href="/tasks">
                           <span
                             className={`flex gap-4 items-center p-2 px-4 rounded-3xl ${
-                              pathname === "/tasks" ? "bg-[#ff693c]" : ""
+                              pathname === "/tasks" ? "bg-bg_orange" : ""
                             }`}
                           >
                             <LiaTasksSolid
@@ -206,10 +209,10 @@ const Header = () => {
                               }`}
                             />
                             <p
-                              className={` font-normal text-lg ${
+                              className={` font-normal sm:text-lg text-sm ${
                                 pathname === "/tasks"
                                   ? "text-white"
-                                  : "text-[#767c8e]"
+                                  : "text-text_gray"
                               }`}
                             >
                               Tasks
@@ -221,7 +224,7 @@ const Header = () => {
                         <Link href="/clock">
                           <span
                             className={`flex gap-4 items-center p-2 px-4 rounded-3xl ${
-                              pathname === "/clock" ? "bg-[#ff693c]" : ""
+                              pathname === "/clock" ? "bg-bg_orange" : ""
                             }`}
                           >
                             <CiClock2
@@ -231,10 +234,10 @@ const Header = () => {
                               }`}
                             />
                             <p
-                              className={`" font-medium text-lg ${
+                              className={`" font-medium sm:text-lg text-sm ${
                                 pathname === "/clock"
                                   ? "text-white"
-                                  : "text-[#767c8e]"
+                                  : "text-text_gray"
                               }`}
                             >
                               Clock In/Out
@@ -246,7 +249,7 @@ const Header = () => {
                         <Link href="/projects">
                           <span
                             className={`flex gap-4 items-center p-2 px-4 rounded-3xl ${
-                              pathname === "/projects" ? "bg-[#ff693c]" : ""
+                              pathname === "/projects" ? "bg-bg_orange" : ""
                             }`}
                           >
                             <MdOutlineEditNote
@@ -256,10 +259,10 @@ const Header = () => {
                               }`}
                             />
                             <p
-                              className={` font-normal text-lg ${
+                              className={` font-normal sm:text-lg text-sm ${
                                 pathname === "/projects"
                                   ? "text-white"
-                                  : "text-[#767c8e]"
+                                  : "text-text_gray"
                               }`}
                             >
                               Projects
@@ -271,7 +274,7 @@ const Header = () => {
                         <Link href="/clients">
                           <span
                             className={`flex gap-4 items-center p-2 px-4 rounded-3xl ${
-                              pathname === "/clients" ? "bg-[#ff693c]" : ""
+                              pathname === "/clients" ? "bg-bg_orange" : ""
                             }`}
                           >
                             <HiOutlineUsers
@@ -281,10 +284,10 @@ const Header = () => {
                               }`}
                             />
                             <p
-                              className={` font-normal text-lg ${
+                              className={` font-normal sm:text-lg text-sm ${
                                 pathname === "/clients"
                                   ? "text-white"
-                                  : "text-[#767c8e]"
+                                  : "text-text_gray"
                               }`}
                             >
                               Clients
@@ -300,40 +303,46 @@ const Header = () => {
           </Sheet>
         </div>
 
-        <div className="relative md:w-80 sm:w-40 w-24">
+        <div className="sm:block hidden relative md:w-80 sm:w-40 w-24">
           <TbSearch className="absolute top-1/2 sm:left-3 left-1 transform -translate-y-1/2 dark:text-white text-black" />
           <Input
-            className="w-full sm:pl-10 pl-6 bg-white dark:bg-bg_blue border dark:border-gray-400 rounded-3xl focus:ring-0 dark:text-gray-400 text-black"
+            className="w-full sm:pl-10 pl-6 bg-white dark:bg-bg_blue border dark:border-gray rounded-3xl focus:ring-0 dark:text-white text-black"
             placeholder="Search"
           />
         </div>
+        <div className="sm:hidden block">
+          <TbSearch className=" dark:text-white text-black" size={25} />
+        </div>
       </div>
-        <div className="flex items-center justify-center gap-4">
+      <div className="flex items-center justify-center gap-3">
         <ThemeToggle />
         <div className="flex items-center justify-center sm:gap-3 gap-1">
-            <div className="dark:bg-blue bg-bg_gray w-10 h-10 flex items-center justify-center rounded-full">
-              <IoNotificationsOutline size={25} className="dark:text-white text-black"/>
+          <div className="dark:bg-blue bg-white sm:w-10 w-8 h-8 sm:h-10 flex items-center justify-center rounded-full">
+            <IoNotificationsOutline
+              size={25}
+              className="dark:text-white text-black"
+            />
+          </div>
+          <div className="dark:bg-blue bg-white sm:w-10 w-8 h-8 sm:h-10 flex items-center justify-center rounded-full">
+            <TbMessageDots size={25} className="dark:text-white text-black" />
+          </div>
+          <div className="flex sm:gap-3 items-center">
+            <div className="flex gap-1 items-center">
+              <Image
+                src={"/images/girl.jpeg"}
+                alt="profile"
+                width={100}
+                height={100}
+                className="rounded-full sm:w-12 w-8 h-8 sm:h-12 border-2 border-white"
+              />
+              <p className="dark:text-white text-black font-medium sm:text-base text-sm sm:block hidden">
+                Jane Smith
+              </p>
             </div>
-            <div className="dark:bg-blue bg-bg_gray w-10 h-10 flex items-center justify-center rounded-full">
-              <TbMessageDots size={25}  className="dark:text-white text-black"/>
-            </div>
-            <div className="flex sm:gap-3 items-center">
-              <div className="flex gap-1 items-center">
-                <Image
-                  src={"/images/girl.jpeg"}
-                  alt="profile"
-                  width={100}
-                  height={100}
-                  className="rounded-full w-12 h-12 border-2 border-white"
-                />
-                <p className="dark:text-white text-black font-medium text-base sm:block hidden">
-                  Jane Smith
-                </p>
-              </div>
-              <IoIosArrowDown className="dark:text-white text-black" />
-            </div>
+            <IoIosArrowDown className="dark:text-white text-black" />
           </div>
         </div>
+      </div>
     </header>
   );
 };

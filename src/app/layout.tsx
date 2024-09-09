@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import SideBar from "@/components/SideBar/SideBar";
 import Header from "@/components/Header/Header";
+import { ThemeProvider } from "@/components/ThemeProvider/ThemeProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,6 +20,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`bg-gray dark:bg-bg_blue ${inter.className}`}>
+      <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
         <div className="flex h-screen container">
           <SideBar />
           <div className="flex flex-col flex-1 h-screen">
@@ -28,6 +35,7 @@ export default function RootLayout({
             </main>
           </div>
         </div>
+        </ThemeProvider>
       </body>
     </html>
   );

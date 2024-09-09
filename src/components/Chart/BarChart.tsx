@@ -28,7 +28,7 @@ const chartConfig = {
 
 export function Barchart() {
   return (
-    <div className="dark:bg-dark_gray bg-white  p-8 md:w-[50%] sm:w-[70%] w-full rounded-3xl">
+    <div className="dark:bg-dark_gray bg-white  p-8 md:w-[50%] sm:w-[70%] w-full rounded-xl">
       <div className="flex justify-between">
         <h2 className="dark:text-white text-black font-medium text-lg">Weekly Report</h2>
         <BiDotsVerticalRounded size={25} className="dark:text-white text-black"/>
