@@ -4,7 +4,6 @@ import EmployeeCard from "@/components/Cards/EmployeeCard";
 import { Roboto } from "next/font/google";
 import React from "react";
 import TimeSheet from "@/components/TimeSheet/TimeSheet";
-import LineChart from "@/components/Chart/LineChart";
 
 const roboto = Roboto({
   weight: ["100", "300", "400", "500", "700"],

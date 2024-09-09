@@ -54,7 +54,7 @@ const SideBar = () => {
         <h3 className="text-base font-medium dark:text-white text-black">
           Analyze
         </h3>
-        <div className={`flex flex-col gap-4 ${archivo.className}`}>
+        <div className={`flex flex-col gap-1 ${archivo.className}`}>
           <Link href="/">
             <span
               className={`flex gap-4 items-center p-2 px-4 rounded-3xl ${
@@ -161,7 +161,7 @@ const SideBar = () => {
         <h3 className="text-base font-medium dark:text-white text-black">
           Manage
         </h3>
-        <div className={`flex flex-col gap-4 ${archivo.className}`}>
+        <div className={`flex flex-col gap-1 ${archivo.className}`}>
           <Link href="/tasks">
             <span
               className={`flex gap-4 items-center p-2 px-4 rounded-3xl ${
