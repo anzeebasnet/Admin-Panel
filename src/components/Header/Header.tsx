@@ -51,7 +51,7 @@ const Header = () => {
 
   return (
     <header className="w-full xl:h-24 h-20 text-white flex items-center justify-between sm:px-8 px-2 py-4 pr-4 shadow-sm dark:shadow-gray gap-4">
-      <div className="flex sm:gap-4 gap-2 items-center">
+      <div className="flex gap-4 items-center">
         {/*Sheet*/}
         <div className="lg:hidden block place-self-end sm:p-4 overflow-y-auto">
           <Sheet>

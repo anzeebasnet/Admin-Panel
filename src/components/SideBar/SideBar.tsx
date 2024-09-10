@@ -202,7 +202,7 @@ const SideBar = () => {
                 }`}
               />
               <p
-                className={`" font-medium xl:text-lg text-base ${
+                className={`" font-normal xl:text-lg text-base ${
                   pathname === "/clock"
                     ? "text-white"
                     : "dark:text-white text-text_gray"

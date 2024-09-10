@@ -49,7 +49,7 @@ const TableComponent = () => {
           </tr>
         </thead>
         <tbody className="text-center">
-          {data.map((row) => (
+          {data?.map((row) => (
             <tr key={row.id}>
               <td className="px-4 py-2 border-b">{row.id}</td>
               <td className="px-4 py-2 border-b">{row.name}</td>

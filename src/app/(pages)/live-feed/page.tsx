@@ -1,7 +1,6 @@
-import ModalTrigger from '@/components/ModalTrigger/ModalTrigger';
-import TableComponent from '@/components/Table/Table'
-import { Roboto } from 'next/font/google';
-import React from 'react'
+import ModalTrigger from "@/components/ModalTrigger/ModalTrigger";
+import { Roboto } from "next/font/google";
+import React from "react";
 
 const roboto = Roboto({
   weight: ["100", "300", "400", "500", "700"],
@@ -16,7 +15,7 @@ const Page = () => {
       >Live Feed</h1>
       <div className='w-20'><ModalTrigger/></div>
     </div>
-  )
-}
+  );
+};
 
-export default Page
+export default Page;
