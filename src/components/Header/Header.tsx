@@ -30,6 +30,7 @@ import { MdOutlineEditNote } from "react-icons/md";
 import { CiClock2 } from "react-icons/ci";
 import { LiaTasksSolid } from "react-icons/lia";
 import ThemeToggle from "../ThemeToggle/ThemeToggle";
+import { useSession } from "next-auth/react";
 
 const archivo = Archivo({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800"],
@@ -48,6 +49,8 @@ const anton = Anton({
 
 const Header = () => {
   const pathname = usePathname();
+  const { data: session, status } = useSession();
+  console.log(status);
 
   return (
     <header className="w-full xl:h-24 h-20 text-white flex items-center justify-between sm:px-8 px-2 py-4 pr-4 shadow-sm dark:shadow-gray gap-4">
@@ -56,7 +59,7 @@ const Header = () => {
         <div className="lg:hidden block place-self-end sm:p-4 overflow-y-auto">
           <Sheet>
             <SheetTrigger className="pt-2">
-                <RiMenuLine color="#eb5025" size={25}/>
+              <RiMenuLine color="#eb5025" size={25} />
             </SheetTrigger>
             <SheetContent className="dark:bg-bg_blue bg-white h-full overflow-y-auto">
               <SheetHeader className=" flex flex-col relative">
@@ -88,7 +91,9 @@ const Header = () => {
                     <h3 className="text-base font-medium dark:text-white text-black">
                       Analyze
                     </h3>
-                    <div className={`flex flex-col sm:gap-4 gap-2 ${archivo.className}`}>
+                    <div
+                      className={`flex flex-col sm:gap-4 gap-2 ${archivo.className}`}
+                    >
                       <SheetClose asChild>
                         <Link href="/">
                           <span
@@ -194,7 +199,9 @@ const Header = () => {
                     <h3 className="text-base font-medium dark:text-white text-black">
                       Manage
                     </h3>
-                    <div className={`flex flex-col sm:gap-4 gap-2  ${archivo.className}`}>
+                    <div
+                      className={`flex flex-col sm:gap-4 gap-2  ${archivo.className}`}
+                    >
                       <SheetClose asChild>
                         <Link href="/tasks">
                           <span

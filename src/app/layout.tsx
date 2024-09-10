@@ -4,6 +4,7 @@ import "./globals.css";
 import SideBar from "@/components/SideBar/SideBar";
 import Header from "@/components/Header/Header";
 import { ThemeProvider } from "@/components/ThemeProvider/ThemeProvider";
+import { AuthProvider } from "./Provider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,22 +21,24 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`bg-gray dark:bg-bg_blue ${inter.className}`}>
-      <ThemeProvider
+        <AuthProvider>
+          <ThemeProvider
             attribute="class"
             defaultTheme="system"
             enableSystem
             disableTransitionOnChange
           >
-        <div className="flex h-screen container">
-          <SideBar />
-          <div className="flex flex-col flex-1 h-screen">
-            <Header />
-            <main className="flex-1 p-6 h-0 min-h-0 overflow-y-auto">
-              {children}
-            </main>
-          </div>
-        </div>
-        </ThemeProvider>
+            <div className="flex h-screen container">
+              <SideBar />
+              <div className="flex flex-col flex-1 h-screen">
+                <Header />
+                <main className="flex-1 p-6 h-0 min-h-0 overflow-y-auto">
+                  {children}
+                </main>
+              </div>
+            </div>
+          </ThemeProvider>
+        </AuthProvider>
       </body>
     </html>
   );

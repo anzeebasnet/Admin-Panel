@@ -46,9 +46,9 @@ const SideBar = () => {
       {/*Logo*/}
       <Link
         href={"/"}
-        className="w-full flex justify-center gap-1 xl:px-8 px-2 xl:py-7 py-4 xl:pb-4 pb-3 border-b border-b-gray-500"
+        className="w-full flex justify-center gap-1 px-auto xl:py-7 py-4 xl:pb-4 pb-3 border-b border-b-gray-500"
       >
-        <PiSphereLight size={35} color="orange" />
+        <PiSphereLight size={35} className="dark:text-white text-bg_orange" />
         <h2
           className={`${anton.className} font-medium xl:text-3xl text-2xl dark:text-white text-bg_orange`}
         >
@@ -128,7 +128,9 @@ const SideBar = () => {
                 <Link
                   href={"/timesheet/daily"}
                   className={`${
-                    pathname === "/timesheet/daily" ? "bg-bg_orange text-white" : "dark:text-white text-text_gray"
+                    pathname === "/timesheet/daily"
+                      ? "bg-bg_orange text-white"
+                      : "dark:text-white text-text_gray"
                   } p-2 px-4 rounded-3xl font-normal xl:text-lg text-base`}
                 >
                   Daily
@@ -136,14 +138,19 @@ const SideBar = () => {
                 <Link
                   href={"/timesheet/weekly"}
                   className={`${
-                    pathname === "/timesheet/weekly" ? "bg-bg_orange text-white" : "dark:text-white text-text_gray"
+                    pathname === "/timesheet/weekly"
+                      ? "bg-bg_orange text-white"
+                      : "dark:text-white text-text_gray"
                   } p-2 px-4 rounded-3xl font-normal xl:text-lg text-base`}
                 >
                   Weekly
-                </Link><Link
+                </Link>
+                <Link
                   href={"/timesheet/monthly"}
                   className={`${
-                    pathname === "/timesheet/monthly" ? "bg-bg_orange text-white" : "dark:text-white text-text_gray"
+                    pathname === "/timesheet/monthly"
+                      ? "bg-bg_orange text-white"
+                      : "dark:text-white text-text_gray"
                   } p-2 px-4 rounded-3xl font-normal xl:text-lg text-base`}
                 >
                   Monthly
@@ -280,6 +287,32 @@ const SideBar = () => {
                 }`}
               >
                 Clients
+              </p>
+            </span>
+          </Link>
+
+          <Link href="/users">
+            <span
+              className={`flex gap-4 items-center p-2 px-4 rounded-3xl ${
+                pathname === "/users" ? "bg-bg_orange" : ""
+              }`}
+            >
+              <HiOutlineUsers
+                size={26}
+                className={`${
+                  pathname === "/users"
+                    ? "text-white"
+                    : "dark:text-white text-text_gray"
+                }`}
+              />
+              <p
+                className={` font-normal xl:text-lg text-base ${
+                  pathname === "/users"
+                    ? "text-white"
+                    : "dark:text-white text-text_gray"
+                }`}
+              >
+                Users
               </p>
             </span>
           </Link>
