@@ -16,6 +16,12 @@ import { GiWatch } from "react-icons/gi";
 import { CiClock2 } from "react-icons/ci";
 import { MdOutlineEditNote } from "react-icons/md";
 import Image from "next/image";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 const archivo = Archivo({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800"],
@@ -105,31 +111,46 @@ const SideBar = () => {
               </p>
             </span>
           </Link>
-          <Link href="/timesheet">
-            <span
-              className={`flex gap-4 items-center p-2 px-4 rounded-3xl ${
-                pathname === "/timesheet" ? "bg-bg_orange" : ""
-              }`}
-            >
-              <BsFileEarmarkSpreadsheet
-                size={25}
-                className={`${
-                  pathname === "/timesheet"
-                    ? "text-white"
-                    : "dark:text-white text-text_gray"
-                }`}
-              />
-              <p
-                className={` font-normal xl:text-lg text-base ${
-                  pathname === "/timesheet"
-                    ? "text-white"
-                    : "dark:text-white text-text_gray"
-                }`}
-              >
-                Timesheets
-              </p>
-            </span>
-          </Link>
+          <Accordion type="single" collapsible>
+            <AccordionItem value="item-1">
+              <AccordionTrigger>
+                <span className="flex gap-4 items-center p-2 px-4 rounded-3xl">
+                  <BsFileEarmarkSpreadsheet
+                    size={25}
+                    className="dark:text-white text-text_gray"
+                  />
+                  <p className="font-normal xl:text-lg text-base dark:text-white text-text_gray">
+                    Timesheets
+                  </p>
+                </span>
+              </AccordionTrigger>
+              <AccordionContent className="flex flex-col">
+                <Link
+                  href={"/timesheet/daily"}
+                  className={`${
+                    pathname === "/timesheet/daily" ? "bg-bg_orange text-white" : "dark:text-white text-text_gray"
+                  } p-2 px-4 rounded-3xl font-normal xl:text-lg text-base`}
+                >
+                  Daily
+                </Link>
+                <Link
+                  href={"/timesheet/weekly"}
+                  className={`${
+                    pathname === "/timesheet/weekly" ? "bg-bg_orange text-white" : "dark:text-white text-text_gray"
+                  } p-2 px-4 rounded-3xl font-normal xl:text-lg text-base`}
+                >
+                  Weekly
+                </Link><Link
+                  href={"/timesheet/monthly"}
+                  className={`${
+                    pathname === "/timesheet/monthly" ? "bg-bg_orange text-white" : "dark:text-white text-text_gray"
+                  } p-2 px-4 rounded-3xl font-normal xl:text-lg text-base`}
+                >
+                  Monthly
+                </Link>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
           <Link href="/report">
             <span
               className={`flex gap-4 items-center p-2 px-4 rounded-3xl ${
