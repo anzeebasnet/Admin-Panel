@@ -80,23 +80,24 @@ export const {
   providers: [
     CredentialsProvider({
       credentials: {
-        email: {},
+        username: {},
         password: {},
       },
       async authorize(credentials) {
-        console.log("Crendentials:",credentials)
+        console.log("Credentials:",credentials)
           try {
             const res: any = await fetch(
-              `${process.env.NEXT_PUBLIC_BASEAPI}/admin/auth/login/`,
+              `https://moretrek.com/api/auth/login/`,
+              // `${process.env.NEXT_PUBLIC_BASEAPI}/admin/auth/login/`,
               {
                 method: "POST",
                 body: JSON.stringify({
-                  username: credentials.email,
+                  username: credentials.username,
                   password: credentials.password,
                 }),
                 headers: { "Content-Type": "application/json" },
               }
-            ).then((res) => res.json());
+            ).then((res) => { console.log("login res", res); return res.json() });            
             const loginData = res;
             console.log("login res",res)
             if (!res.success) {
@@ -120,12 +121,12 @@ export const {
             const refreshToken = loginData.data.refresh;
             // const user = fetchUserDetail.data;
 
-            console.log("user credential login", {
-              accessToken,
-              refreshToken,
-              // user,
-              // email: user?.email,
-            });
+            // console.log("user credential login", {
+            //   accessToken,
+            //   refreshToken,
+            //   // user,
+            //   // email: user?.email,
+            // });
 
             // return user credentials together with accessToken
             return {
@@ -153,17 +154,17 @@ export const {
       user: any;
       }) => {
 
-        console.log("Token:",token)
-        console.log("account:", account)
-        console.log("user:", user)
+        // console.log("Token:",token)
+        // console.log("account:", account)
+        // console.log("user:", user)
      
       if (account && user) {
-        console.log("return from account && user ", {
-          ...token,
-          accessToken: token?.user?.accessToken,
-          refreshToken: token?.user?.refreshToken,
-          user,
-        });
+        // console.log("return from account && user ", {
+        //   ...token,
+        //   accessToken: token?.user?.accessToken,
+        //   refreshToken: token?.user?.refreshToken,
+        //   user,
+        // });
         return {
           ...token,
           accessToken: token?.accessToken,

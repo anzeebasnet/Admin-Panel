@@ -17,6 +17,12 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import Link from "next/link";
 import { Archivo } from "next/font/google";
 import { usePathname } from "next/navigation";
@@ -30,7 +36,6 @@ import { MdOutlineEditNote } from "react-icons/md";
 import { CiClock2 } from "react-icons/ci";
 import { LiaTasksSolid } from "react-icons/lia";
 import ThemeToggle from "../ThemeToggle/ThemeToggle";
-import { useSession } from "next-auth/react";
 
 const archivo = Archivo({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800"],
@@ -49,8 +54,8 @@ const anton = Anton({
 
 const Header = () => {
   const pathname = usePathname();
-  const { data: session, status } = useSession();
-  console.log(status);
+  // const { data: session, status } = useSession();
+  // console.log(status);
 
   return (
     <header className="w-full xl:h-24 h-20 text-white flex items-center justify-between sm:px-8 px-2 py-4 pr-4 shadow-sm dark:shadow-gray gap-4">
@@ -89,11 +94,80 @@ const Header = () => {
                 <SheetDescription>
                   <div className="flex flex-col gap-4 p-4 pt-8 border-b border-b-vl_gray">
                     <h3 className="text-base font-medium dark:text-white text-black">
-                      Analyze
+                      More Club
                     </h3>
                     <div
                       className={`flex flex-col sm:gap-4 gap-2 ${archivo.className}`}
                     >
+                      <Accordion type="single" collapsible>
+                        <AccordionItem value="item-1">
+                          <AccordionTrigger>
+                            <SheetClose asChild>
+                              <Link href="/users">
+                                <span
+                                  className={`flex gap-4 items-center p-2 px-4 rounded-3xl ${
+                                    pathname === "/users" ? "bg-bg_orange" : ""
+                                  }`}
+                                >
+                                  <HiOutlineUsers
+                                    size={26}
+                                    color={`${
+                                      pathname === "/users" ? "white" : "gray"
+                                    }`}
+                                  />
+                                  <p
+                                    className={` font-normal sm:text-lg text-sm ${
+                                      pathname === "/users"
+                                        ? "text-white"
+                                        : "text-text_gray"
+                                    }`}
+                                  >
+                                    Users
+                                  </p>
+                                </span>
+                              </Link>
+                            </SheetClose>
+                          </AccordionTrigger>
+                          <AccordionContent className="flex flex-col">
+                            <SheetClose asChild>
+                              <Link
+                                href={"/timesheet/daily"}
+                                className={`${
+                                  pathname === "/timesheet/daily"
+                                    ? "bg-bg_orange text-white"
+                                    : "dark:text-white text-text_gray"
+                                } p-2 px-4 rounded-3xl font-normal  text-base`}
+                              >
+                                Daily
+                              </Link>
+                            </SheetClose>
+                            <SheetClose asChild>
+                              <Link
+                                href={"/timesheet/weekly"}
+                                className={`${
+                                  pathname === "/timesheet/weekly"
+                                    ? "bg-bg_orange text-white"
+                                    : "dark:text-white text-text_gray"
+                                } p-2 px-4 rounded-3xl font-normal  text-base`}
+                              >
+                                Weekly
+                              </Link>
+                            </SheetClose>
+                            <SheetClose asChild>
+                              <Link
+                                href={"/timesheet/monthly"}
+                                className={`${
+                                  pathname === "/timesheet/monthly"
+                                    ? "bg-bg_orange text-white"
+                                    : "dark:text-white text-text_gray"
+                                } p-2 px-4 rounded-3xl font-normal  text-base`}
+                              >
+                                Monthly
+                              </Link>
+                            </SheetClose>
+                          </AccordionContent>
+                        </AccordionItem>
+                      </Accordion>
                       <SheetClose asChild>
                         <Link href="/">
                           <span

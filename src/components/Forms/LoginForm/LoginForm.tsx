@@ -2,7 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-// import { zodResolver } from "@hookform/resolvers/zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -16,17 +16,11 @@ import { Input } from "@/components/ui/input";
 import styled from "styled-components";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-// import { useLogin, useReferrals } from "@/lib/react-query/queriesAndMutations";
 import { FaRegEye } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa6";
-// import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { signIn, SignInResponse, useSession } from "next-auth/react";
-// import { LoginResponse } from "@/types/types";
-import axios from "axios";
-import { Loader } from "lucide-react";
-import { LoginResponse } from "../../../../types/types";
 
 type PasswordVisibility = {
   password: boolean;
@@ -46,16 +40,19 @@ const StyledFormMessage = styled(FormMessage)`
 export function LogInForm() {
   const router = useRouter();
 
-  const { data: session, status } = useSession();
+  // const { data: session, status } = useSession();
 
   //   const { mutateAsync: signIn, isPending: isSigning } = useLogin();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
   const [isPasswordVisible, setIsPasswordVisible] =
     useState<PasswordVisibility>({
       password: false,
     });
 
   const form = useForm<z.infer<typeof formSchema>>({
-    // resolver: zodResolver(formSchema),
+    resolver: zodResolver(formSchema),
     defaultValues: {
       username: "",
       password: "",
@@ -63,6 +60,8 @@ export function LogInForm() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsSubmitting(true);
+    console.log("Submitted the login form...")
     try {
       const response = await signIn("credentials", {
         username: values.username,
@@ -70,15 +69,23 @@ export function LogInForm() {
         redirect: false,
       });
 
-      if (!response) {
-        console.log("error in sign in", response);
-        throw new Error("Invalid credentials");
+      if (!response || response.error) {
+        setIsSubmitting(false);
+        console.error("Sign in error:", response?.error || "No response");
+        return;
+      }
+
+      if (response.status === 200) {
+        console.log("Successfully logged in !")
+        router.push("/");
       }
 
       return { success: true, response: response };
     } catch (error: any) {
       const errorMessage = error?.cause?.err?.message;
       return { success: false, error: errorMessage };
+    } finally {
+      setIsSubmitting(false);
     }
 
     // try {
@@ -125,6 +132,15 @@ export function LogInForm() {
     }));
   };
 
+  useEffect(() => {
+    setMounted(true); // Set mounted to true after the component mounts
+  }, []);
+
+  // Only render the form after the component has mounted
+  if (!mounted) {
+    return null;
+  }
+
   return (
     <div
       className={
@@ -136,7 +152,14 @@ export function LogInForm() {
       <Form {...form}>
         <form
           className="flex flex-col gap-3"
-          onSubmit={form.handleSubmit(onSubmit)}
+          // onSubmit={form.handleSubmit(onSubmit)}
+          method="POST"
+          action="/auth/login"
+          onSubmit={(e) => {
+            e.preventDefault(); // Prevent the page reload
+            form.handleSubmit(onSubmit)(e);
+          }}
+          noValidate
         >
           <FormField
             control={form.control}
@@ -211,7 +234,7 @@ export function LogInForm() {
             className="bg-bg_orange hover:bg-btnBlue/80 w-full sm:h-12 h-8 self-center rounded-lg"
           >
             {/* {isSigning ? <Loader /> : "Sign in"} */}
-            Sign In
+            {isSubmitting ? "Signing in" : "Sign in"}
           </Button>
         </form>
       </Form>

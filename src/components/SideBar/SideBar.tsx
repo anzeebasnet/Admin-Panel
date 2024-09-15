@@ -12,16 +12,16 @@ import { BsCameraVideo } from "react-icons/bs";
 import { BsFileEarmarkSpreadsheet } from "react-icons/bs";
 import { HiOutlineDocumentReport, HiOutlineUsers } from "react-icons/hi";
 import { LiaTasksSolid } from "react-icons/lia";
-import { GiWatch } from "react-icons/gi";
 import { CiClock2 } from "react-icons/ci";
 import { MdOutlineEditNote } from "react-icons/md";
-import Image from "next/image";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Button } from "../ui/button";
+import { signOut, useSession } from "next-auth/react";
 
 const archivo = Archivo({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800"],
@@ -40,9 +40,14 @@ const anton = Anton({
 
 const SideBar = () => {
   const pathname = usePathname();
+  const { data: session, status } = useSession();
+
+  const handleLogout = () => {
+    signOut(); // Redirects to the login page after sign out
+  };
 
   return (
-    <div className="bg-gray dark:bg-bg_blue lg:flex flex-col hidden gap-2 h-screen w-[18%] p-4 shadow-md dark:shadow-bg_gray overflow-y-auto">
+    <div className="bg-gray dark:bg-bg_blue lg:flex flex-col hidden gap-2 h-screen w-[15%] p-4 shadow-md dark:shadow-bg_gray overflow-y-auto">
       {/*Logo*/}
       <Link
         href={"/"}
@@ -58,9 +63,72 @@ const SideBar = () => {
 
       <div className="flex flex-col gap-4 xl:px-4 py-4 pt-8 border-b border-gray-500">
         <h3 className="text-base font-medium dark:text-white text-black">
-          Analyze
+          More Club
         </h3>
         <div className={`flex flex-col gap-1 ${archivo.className}`}>
+          <Accordion type="single" collapsible>
+            <AccordionItem value="item-1">
+              <AccordionTrigger>
+                <Link href="/users">
+                  <span
+                    className={`flex gap-4 items-center p-2 px-4 rounded-3xl ${
+                      pathname === "/users" ? "bg-bg_orange" : ""
+                    }`}
+                  >
+                    <HiOutlineUsers
+                      size={26}
+                      className={`${
+                        pathname === "/users"
+                          ? "text-white"
+                          : "dark:text-white text-text_gray"
+                      }`}
+                    />
+                    <p
+                      className={` font-normal  text-base ${
+                        pathname === "/users"
+                          ? "text-white"
+                          : "dark:text-white text-text_gray"
+                      }`}
+                    >
+                      Users
+                    </p>
+                  </span>
+                </Link>
+              </AccordionTrigger>
+              <AccordionContent className="flex flex-col">
+                <Link
+                  href={"/timesheet/daily"}
+                  className={`${
+                    pathname === "/timesheet/daily"
+                      ? "bg-bg_orange text-white"
+                      : "dark:text-white text-text_gray"
+                  } p-2 px-4 rounded-3xl font-normal  text-base`}
+                >
+                  Daily
+                </Link>
+                <Link
+                  href={"/timesheet/weekly"}
+                  className={`${
+                    pathname === "/timesheet/weekly"
+                      ? "bg-bg_orange text-white"
+                      : "dark:text-white text-text_gray"
+                  } p-2 px-4 rounded-3xl font-normal  text-base`}
+                >
+                  Weekly
+                </Link>
+                <Link
+                  href={"/timesheet/monthly"}
+                  className={`${
+                    pathname === "/timesheet/monthly"
+                      ? "bg-bg_orange text-white"
+                      : "dark:text-white text-text_gray"
+                  } p-2 px-4 rounded-3xl font-normal  text-base`}
+                >
+                  Monthly
+                </Link>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
           <Link href="/">
             <span
               className={`flex gap-4 items-center p-2 px-4 rounded-3xl ${
@@ -76,7 +144,7 @@ const SideBar = () => {
                 }`}
               />
               <p
-                className={` font-normal xl:text-lg text-base ${
+                className={` font-normal  text-base ${
                   pathname === "/"
                     ? "text-white"
                     : "dark:text-white text-text_gray"
@@ -101,7 +169,7 @@ const SideBar = () => {
                 }`}
               />
               <p
-                className={`" font-normal xl:text-lg text-base ${
+                className={`" font-normal  text-base ${
                   pathname === "/live-feed"
                     ? "text-white"
                     : "dark:text-white text-text_gray"
@@ -119,7 +187,7 @@ const SideBar = () => {
                     size={25}
                     className="dark:text-white text-text_gray"
                   />
-                  <p className="font-normal xl:text-lg text-base dark:text-white text-text_gray">
+                  <p className="font-normal  text-base dark:text-white text-text_gray">
                     Timesheets
                   </p>
                 </span>
@@ -131,7 +199,7 @@ const SideBar = () => {
                     pathname === "/timesheet/daily"
                       ? "bg-bg_orange text-white"
                       : "dark:text-white text-text_gray"
-                  } p-2 px-4 rounded-3xl font-normal xl:text-lg text-base`}
+                  } p-2 px-4 rounded-3xl font-normal  text-base`}
                 >
                   Daily
                 </Link>
@@ -141,7 +209,7 @@ const SideBar = () => {
                     pathname === "/timesheet/weekly"
                       ? "bg-bg_orange text-white"
                       : "dark:text-white text-text_gray"
-                  } p-2 px-4 rounded-3xl font-normal xl:text-lg text-base`}
+                  } p-2 px-4 rounded-3xl font-normal  text-base`}
                 >
                   Weekly
                 </Link>
@@ -151,7 +219,7 @@ const SideBar = () => {
                     pathname === "/timesheet/monthly"
                       ? "bg-bg_orange text-white"
                       : "dark:text-white text-text_gray"
-                  } p-2 px-4 rounded-3xl font-normal xl:text-lg text-base`}
+                  } p-2 px-4 rounded-3xl font-normal  text-base`}
                 >
                   Monthly
                 </Link>
@@ -173,7 +241,7 @@ const SideBar = () => {
                 }`}
               />
               <p
-                className={` font-normal xl:text-lg text-base ${
+                className={` font-normal  text-base ${
                   pathname === "/report"
                     ? "text-white"
                     : "dark:text-white text-text_gray"
@@ -205,7 +273,7 @@ const SideBar = () => {
                 }`}
               />
               <p
-                className={` font-normal xl:text-lg text-base ${
+                className={` font-normal  text-base ${
                   pathname === "/tasks"
                     ? "text-white"
                     : "dark:text-white text-text_gray"
@@ -230,7 +298,7 @@ const SideBar = () => {
                 }`}
               />
               <p
-                className={`" font-normal xl:text-lg text-base ${
+                className={`" font-normal  text-base ${
                   pathname === "/clock"
                     ? "text-white"
                     : "dark:text-white text-text_gray"
@@ -255,7 +323,7 @@ const SideBar = () => {
                 }`}
               />
               <p
-                className={` font-normal xl:text-lg text-base ${
+                className={` font-normal  text-base ${
                   pathname === "/projects"
                     ? "text-white"
                     : "dark:text-white text-text_gray"
@@ -280,7 +348,7 @@ const SideBar = () => {
                 }`}
               />
               <p
-                className={` font-normal xl:text-lg text-base ${
+                className={` font-normal  text-base ${
                   pathname === "/clients"
                     ? "text-white"
                     : "dark:text-white text-text_gray"
@@ -290,34 +358,19 @@ const SideBar = () => {
               </p>
             </span>
           </Link>
-
-          <Link href="/users">
-            <span
-              className={`flex gap-4 items-center p-2 px-4 rounded-3xl ${
-                pathname === "/users" ? "bg-bg_orange" : ""
-              }`}
-            >
-              <HiOutlineUsers
-                size={26}
-                className={`${
-                  pathname === "/users"
-                    ? "text-white"
-                    : "dark:text-white text-text_gray"
-                }`}
-              />
-              <p
-                className={` font-normal xl:text-lg text-base ${
-                  pathname === "/users"
-                    ? "text-white"
-                    : "dark:text-white text-text_gray"
-                }`}
-              >
-                Users
-              </p>
-            </span>
-          </Link>
         </div>
       </div>
+
+      {status === "authenticated" ? (
+        <Button
+          onClick={handleLogout}
+          className="bg-bg_orange hover:bg-btnBlue/80 w-full sm:h-12 h-8 self-center rounded-lg"
+        >
+          Sign out
+        </Button>
+      ) : (
+        ""
+      )}
     </div>
   );
 };

@@ -1,15 +1,25 @@
+// "use client";
+
 import { Barchart } from "@/components/Chart/BarChart";
 import { Piechart } from "@/components/Chart/PieChart";
 import EmployeeCard from "@/components/Cards/EmployeeCard";
 import { Roboto } from "next/font/google";
 import React from "react";
 import TimeSheet from "@/components/TimeSheet/TimeSheet";
+import { useSession } from "next-auth/react";
+import { auth } from "@/auth";
 
 const roboto = Roboto({
   weight: ["100", "300", "400", "500", "700"],
   subsets: ["latin"],
 });
+
 const Page = () => {
+  // const session = await auth();
+  // console.log("Session Details from auth::::",session);
+
+  // const { data: session } = useSession();
+  // console.log(session);
   return (
     <div className="sm:p-4 p-2 flex flex-col gap-6 min-h-screen">
       <h1
