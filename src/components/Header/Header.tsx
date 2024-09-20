@@ -36,6 +36,8 @@ import { MdOutlineEditNote } from "react-icons/md";
 import { CiClock2 } from "react-icons/ci";
 import { LiaTasksSolid } from "react-icons/lia";
 import ThemeToggle from "../ThemeToggle/ThemeToggle";
+import { Button } from "../ui/button";
+import { signIn, signOut, useSession } from "next-auth/react";
 
 const archivo = Archivo({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800"],
@@ -54,11 +56,18 @@ const anton = Anton({
 
 const Header = () => {
   const pathname = usePathname();
-  // const { data: session, status } = useSession();
-  // console.log(status);
+  const { data: session, status } = useSession();
+
+  const handleLogout = () => {
+    signOut();
+  };
+
+  const handleLogin = () => {
+    signIn();
+  };
 
   return (
-    <header className="w-full xl:h-24 h-20 text-white flex items-center justify-between sm:px-8 px-2 py-4 pr-4 shadow-sm dark:shadow-gray gap-4">
+    <header className="w-full h-14 text-white flex items-center justify-between sm:px-8 px-2 py-4 pr-4 shadow-sm dark:shadow-gray gap-4">
       <div className="flex gap-4 items-center">
         {/*Sheet*/}
         <div className="lg:hidden block place-self-end sm:p-4 overflow-y-auto">
@@ -80,304 +89,302 @@ const Header = () => {
                   <SheetClose asChild>
                     <Link
                       href={"/"}
-                      className="w-full flex justify-center gap-1 xl:px-8 px-4 xl:py-7 py-4 xl:pb-4 pb-3 border-b border-b-vl_gray"
+                      prefetch={true}
+                      className="w-full flex justify-center gap-1 px-4 pb-3 border-b border-b-vl_gray"
                     >
-                      <PiSphereLight size={35} color="orange" />
+                      <PiSphereLight size={25} className=" text-bg_orange" />
                       <h2
-                        className={`${anton.className} font-medium xl:text-3xl text-2xl dark:text-white text-bg_orange`}
+                        className={`${anton.className} font-medium text-lg text-bg_orange`}
                       >
-                        WorkSphere
+                        MoreClub
                       </h2>
                     </Link>
                   </SheetClose>
                 </SheetTitle>
                 <SheetDescription>
-                  <div className="flex flex-col gap-4 p-4 pt-8 border-b border-b-vl_gray">
-                    <h3 className="text-base font-medium dark:text-white text-black">
-                      More Club
-                    </h3>
-                    <div
-                      className={`flex flex-col sm:gap-4 gap-2 ${archivo.className}`}
-                    >
-                      <Accordion type="single" collapsible>
-                        <AccordionItem value="item-1">
-                          <AccordionTrigger>
-                            <SheetClose asChild>
-                              <Link href="/users">
-                                <span
-                                  className={`flex gap-4 items-center p-2 px-4 rounded-3xl ${
-                                    pathname === "/users" ? "bg-bg_orange" : ""
+                  <div
+                    className={`flex flex-col gap-1 p-4 ${archivo.className}`}
+                  >
+                    <SheetClose asChild>
+                      <Link href="/" prefetch={true}>
+                        <span
+                          className={`flex gap-4 items-center py-1 px-4 rounded-3xl ${
+                            pathname === "/" ? "bg-bg_orange" : ""
+                          }`}
+                        >
+                          <RxDashboard
+                            size={20}
+                            color={`${pathname === "/" ? "white" : "gray"}`}
+                          />
+                          <p
+                            className={` font-normal sm:text-lg text-sm ${
+                              pathname === "/" ? "text-white" : "text-text_gray"
+                            }`}
+                          >
+                            Dashboard
+                          </p>
+                        </span>
+                      </Link>
+                    </SheetClose>
+                    <Accordion type="single" collapsible>
+                      <AccordionItem value="item-1">
+                        <AccordionTrigger
+                          className={`py-1 px-4 rounded-3xl ${
+                            pathname === "/users"
+                              ? "bg-bg_orange text-white"
+                              : ""
+                          }`}
+                        >
+                          <SheetClose asChild>
+                            <Link href="/users" prefetch={true}>
+                              <span className={`flex gap-4 items-center `}>
+                                <HiOutlineUsers
+                                  size={20}
+                                  color={`${
+                                    pathname === "/users" ? "white" : "gray"
                                   }`}
+                                />
+                                <p
+                                  className={` font-normal sm:text-lg text-sm`}
                                 >
-                                  <HiOutlineUsers
-                                    size={26}
-                                    color={`${
-                                      pathname === "/users" ? "white" : "gray"
-                                    }`}
-                                  />
-                                  <p
-                                    className={` font-normal sm:text-lg text-sm ${
-                                      pathname === "/users"
-                                        ? "text-white"
-                                        : "text-text_gray"
-                                    }`}
-                                  >
-                                    Users
-                                  </p>
-                                </span>
-                              </Link>
-                            </SheetClose>
-                          </AccordionTrigger>
-                          <AccordionContent className="flex flex-col">
-                            <SheetClose asChild>
-                              <Link
-                                href={"/timesheet/daily"}
-                                className={`${
-                                  pathname === "/timesheet/daily"
-                                    ? "bg-bg_orange text-white"
-                                    : "dark:text-white text-text_gray"
-                                } p-2 px-4 rounded-3xl font-normal  text-base`}
-                              >
-                                Daily
-                              </Link>
-                            </SheetClose>
-                            <SheetClose asChild>
-                              <Link
-                                href={"/timesheet/weekly"}
-                                className={`${
-                                  pathname === "/timesheet/weekly"
-                                    ? "bg-bg_orange text-white"
-                                    : "dark:text-white text-text_gray"
-                                } p-2 px-4 rounded-3xl font-normal  text-base`}
-                              >
-                                Weekly
-                              </Link>
-                            </SheetClose>
-                            <SheetClose asChild>
-                              <Link
-                                href={"/timesheet/monthly"}
-                                className={`${
-                                  pathname === "/timesheet/monthly"
-                                    ? "bg-bg_orange text-white"
-                                    : "dark:text-white text-text_gray"
-                                } p-2 px-4 rounded-3xl font-normal  text-base`}
-                              >
-                                Monthly
-                              </Link>
-                            </SheetClose>
-                          </AccordionContent>
-                        </AccordionItem>
-                      </Accordion>
-                      <SheetClose asChild>
-                        <Link href="/">
-                          <span
-                            className={`flex gap-4 items-center p-2 px-4 rounded-3xl ${
-                              pathname === "/" ? "bg-bg_orange" : ""
+                                  Users
+                                </p>
+                              </span>
+                            </Link>
+                          </SheetClose>
+                        </AccordionTrigger>
+                        <AccordionContent className="flex flex-col">
+                          <SheetClose asChild>
+                            <Link
+                              href={"/timesheet/daily"}
+                              prefetch={true}
+                              className={`${
+                                pathname === "/timesheet/daily"
+                                  ? "bg-bg_orange text-white"
+                                  : "dark:text-white text-text_gray"
+                              } py-1 px-4 rounded-3xl font-normal  text-sm`}
+                            >
+                              Daily
+                            </Link>
+                          </SheetClose>
+                          <SheetClose asChild>
+                            <Link
+                              href={"/timesheet/weekly"}
+                              prefetch={true}
+                              className={`${
+                                pathname === "/timesheet/weekly"
+                                  ? "bg-bg_orange text-white"
+                                  : "dark:text-white text-text_gray"
+                              } py-1 px-4 rounded-3xl font-normal  text-sm`}
+                            >
+                              Weekly
+                            </Link>
+                          </SheetClose>
+                          <SheetClose asChild>
+                            <Link
+                              href={"/timesheet/monthly"}
+                              prefetch={true}
+                              className={`${
+                                pathname === "/timesheet/monthly"
+                                  ? "bg-bg_orange text-white"
+                                  : "dark:text-white text-text_gray"
+                              } py-1 px-4 rounded-3xl font-normal  text-sm`}
+                            >
+                              Monthly
+                            </Link>
+                          </SheetClose>
+                        </AccordionContent>
+                      </AccordionItem>
+                    </Accordion>
+                    <SheetClose asChild>
+                      <Link href="/live-feed" prefetch={true}>
+                        <span
+                          className={`flex gap-4 items-center py-1 px-4 rounded-3xl ${
+                            pathname === "/live-feed" ? "bg-bg_orange" : ""
+                          }`}
+                        >
+                          <BsCameraVideo
+                            size={20}
+                            color={`${
+                              pathname === "/live-feed" ? "white" : "gray"
+                            }`}
+                          />
+                          <p
+                            className={`" font-medium sm:text-lg text-sm ${
+                              pathname === "/live-feed"
+                                ? "text-white"
+                                : "text-text_gray"
                             }`}
                           >
-                            <RxDashboard
-                              size={26}
-                              color={`${pathname === "/" ? "white" : "gray"}`}
-                            />
-                            <p
-                              className={` font-normal sm:text-lg text-sm ${
-                                pathname === "/"
-                                  ? "text-white"
-                                  : "text-text_gray"
-                              }`}
-                            >
-                              Dashboard
-                            </p>
-                          </span>
-                        </Link>
-                      </SheetClose>
-                      <SheetClose asChild>
-                        <Link href="/live-feed">
-                          <span
-                            className={`flex gap-4 items-center p-2 px-4 rounded-3xl ${
-                              pathname === "/live-feed" ? "bg-bg_orange" : ""
+                            Live Feed
+                          </p>
+                        </span>
+                      </Link>
+                    </SheetClose>
+                    <SheetClose asChild>
+                      <Link href="/timesheet" prefetch={true}>
+                        <span
+                          className={`flex gap-4 items-center py-1 px-4 rounded-3xl ${
+                            pathname === "/timesheet" ? "bg-bg_orange" : ""
+                          }`}
+                        >
+                          <BsFileEarmarkSpreadsheet
+                            size={20}
+                            color={`${
+                              pathname === "/timesheet" ? "white" : "gray"
+                            }`}
+                          />
+                          <p
+                            className={` font-normal sm:text-lg text-sm ${
+                              pathname === "/timesheet"
+                                ? "text-white"
+                                : "text-text_gray"
                             }`}
                           >
-                            <BsCameraVideo
-                              size={25}
-                              color={`${
-                                pathname === "/live-feed" ? "white" : "gray"
-                              }`}
-                            />
-                            <p
-                              className={`" font-medium sm:text-lg text-sm ${
-                                pathname === "/live-feed"
-                                  ? "text-white"
-                                  : "text-text_gray"
-                              }`}
-                            >
-                              Live Feed
-                            </p>
-                          </span>
-                        </Link>
-                      </SheetClose>
-                      <SheetClose asChild>
-                        <Link href="/timesheet">
-                          <span
-                            className={`flex gap-4 items-center p-2 px-4 rounded-3xl ${
-                              pathname === "/timesheet" ? "bg-bg_orange" : ""
+                            Timesheets
+                          </p>
+                        </span>
+                      </Link>
+                    </SheetClose>
+                    <SheetClose asChild>
+                      <Link href="/report" prefetch={true}>
+                        <span
+                          className={`flex gap-4 items-center py-1 px-4 rounded-3xl ${
+                            pathname === "/report" ? "bg-bg_orange" : ""
+                          }`}
+                        >
+                          <HiOutlineDocumentReport
+                            size={20}
+                            color={`${
+                              pathname === "/report" ? "white" : "gray"
+                            }`}
+                          />
+                          <p
+                            className={` font-normal sm:text-lg text-sm ${
+                              pathname === "/report"
+                                ? "text-white"
+                                : "text-text_gray"
                             }`}
                           >
-                            <BsFileEarmarkSpreadsheet
-                              size={26}
-                              color={`${
-                                pathname === "/timesheet" ? "white" : "gray"
-                              }`}
-                            />
-                            <p
-                              className={` font-normal sm:text-lg text-sm ${
-                                pathname === "/timesheet"
-                                  ? "text-white"
-                                  : "text-text_gray"
-                              }`}
-                            >
-                              Timesheets
-                            </p>
-                          </span>
-                        </Link>
-                      </SheetClose>
-                      <SheetClose asChild>
-                        <Link href="/report">
-                          <span
-                            className={`flex gap-4 items-center p-2 px-4 rounded-3xl ${
-                              pathname === "/report" ? "bg-bg_orange" : ""
+                            Reports
+                          </p>
+                        </span>
+                      </Link>
+                    </SheetClose>
+                    <SheetClose asChild>
+                      <Link href="/tasks" prefetch={true}>
+                        <span
+                          className={`flex gap-4 items-center py-1 px-4 rounded-3xl ${
+                            pathname === "/tasks" ? "bg-bg_orange" : ""
+                          }`}
+                        >
+                          <LiaTasksSolid
+                            size={20}
+                            color={`${
+                              pathname === "/tasks" ? "white" : "gray"
+                            }`}
+                          />
+                          <p
+                            className={` font-normal sm:text-lg text-sm ${
+                              pathname === "/tasks"
+                                ? "text-white"
+                                : "text-text_gray"
                             }`}
                           >
-                            <HiOutlineDocumentReport
-                              size={26}
-                              color={`${
-                                pathname === "/report" ? "white" : "gray"
-                              }`}
-                            />
-                            <p
-                              className={` font-normal sm:text-lg text-sm ${
-                                pathname === "/report"
-                                  ? "text-white"
-                                  : "text-text_gray"
-                              }`}
-                            >
-                              Reports
-                            </p>
-                          </span>
-                        </Link>
-                      </SheetClose>
-                    </div>
+                            Tasks
+                          </p>
+                        </span>
+                      </Link>
+                    </SheetClose>
+                    <SheetClose asChild>
+                      <Link href="/clock" prefetch={true}>
+                        <span
+                          className={`flex gap-4 items-center py-1 px-4 rounded-3xl ${
+                            pathname === "/clock" ? "bg-bg_orange" : ""
+                          }`}
+                        >
+                          <CiClock2
+                            size={20}
+                            color={`${
+                              pathname === "/clock" ? "white" : "gray"
+                            }`}
+                          />
+                          <p
+                            className={`" font-medium sm:text-lg text-sm ${
+                              pathname === "/clock"
+                                ? "text-white"
+                                : "text-text_gray"
+                            }`}
+                          >
+                            Clock In/Out
+                          </p>
+                        </span>
+                      </Link>
+                    </SheetClose>
+                    <SheetClose asChild>
+                      <Link href="/projects" prefetch={true}>
+                        <span
+                          className={`flex gap-4 items-center py-1 px-4 rounded-3xl ${
+                            pathname === "/projects" ? "bg-bg_orange" : ""
+                          }`}
+                        >
+                          <MdOutlineEditNote
+                            size={20}
+                            color={`${
+                              pathname === "/projects" ? "white" : "gray"
+                            }`}
+                          />
+                          <p
+                            className={` font-normal sm:text-lg text-sm ${
+                              pathname === "/projects"
+                                ? "text-white"
+                                : "text-text_gray"
+                            }`}
+                          >
+                            Projects
+                          </p>
+                        </span>
+                      </Link>
+                    </SheetClose>
+                    <SheetClose asChild>
+                      <Link href="/clients" prefetch={true}>
+                        <span
+                          className={`flex gap-4 items-center py-1 px-4 rounded-3xl ${
+                            pathname === "/clients" ? "bg-bg_orange" : ""
+                          }`}
+                        >
+                          <HiOutlineUsers
+                            size={20}
+                            color={`${
+                              pathname === "/clients" ? "white" : "gray"
+                            }`}
+                          />
+                          <p
+                            className={` font-normal sm:text-lg text-sm ${
+                              pathname === "/clients"
+                                ? "text-white"
+                                : "text-text_gray"
+                            }`}
+                          >
+                            Clients
+                          </p>
+                        </span>
+                      </Link>
+                    </SheetClose>
                   </div>
 
-                  <div className="flex flex-col gap-4 p-4 pt-8">
-                    <h3 className="text-base font-medium dark:text-white text-black">
-                      Manage
-                    </h3>
-                    <div
-                      className={`flex flex-col sm:gap-4 gap-2  ${archivo.className}`}
-                    >
-                      <SheetClose asChild>
-                        <Link href="/tasks">
-                          <span
-                            className={`flex gap-4 items-center p-2 px-4 rounded-3xl ${
-                              pathname === "/tasks" ? "bg-bg_orange" : ""
-                            }`}
-                          >
-                            <LiaTasksSolid
-                              size={26}
-                              color={`${
-                                pathname === "/tasks" ? "white" : "gray"
-                              }`}
-                            />
-                            <p
-                              className={` font-normal sm:text-lg text-sm ${
-                                pathname === "/tasks"
-                                  ? "text-white"
-                                  : "text-text_gray"
-                              }`}
-                            >
-                              Tasks
-                            </p>
-                          </span>
-                        </Link>
-                      </SheetClose>
-                      <SheetClose asChild>
-                        <Link href="/clock">
-                          <span
-                            className={`flex gap-4 items-center p-2 px-4 rounded-3xl ${
-                              pathname === "/clock" ? "bg-bg_orange" : ""
-                            }`}
-                          >
-                            <CiClock2
-                              size={25}
-                              color={`${
-                                pathname === "/clock" ? "white" : "gray"
-                              }`}
-                            />
-                            <p
-                              className={`" font-medium sm:text-lg text-sm ${
-                                pathname === "/clock"
-                                  ? "text-white"
-                                  : "text-text_gray"
-                              }`}
-                            >
-                              Clock In/Out
-                            </p>
-                          </span>
-                        </Link>
-                      </SheetClose>
-                      <SheetClose asChild>
-                        <Link href="/projects">
-                          <span
-                            className={`flex gap-4 items-center p-2 px-4 rounded-3xl ${
-                              pathname === "/projects" ? "bg-bg_orange" : ""
-                            }`}
-                          >
-                            <MdOutlineEditNote
-                              size={26}
-                              color={`${
-                                pathname === "/projects" ? "white" : "gray"
-                              }`}
-                            />
-                            <p
-                              className={` font-normal sm:text-lg text-sm ${
-                                pathname === "/projects"
-                                  ? "text-white"
-                                  : "text-text_gray"
-                              }`}
-                            >
-                              Projects
-                            </p>
-                          </span>
-                        </Link>
-                      </SheetClose>
-                      <SheetClose asChild>
-                        <Link href="/clients">
-                          <span
-                            className={`flex gap-4 items-center p-2 px-4 rounded-3xl ${
-                              pathname === "/clients" ? "bg-bg_orange" : ""
-                            }`}
-                          >
-                            <HiOutlineUsers
-                              size={26}
-                              color={`${
-                                pathname === "/clients" ? "white" : "gray"
-                              }`}
-                            />
-                            <p
-                              className={` font-normal sm:text-lg text-sm ${
-                                pathname === "/clients"
-                                  ? "text-white"
-                                  : "text-text_gray"
-                              }`}
-                            >
-                              Clients
-                            </p>
-                          </span>
-                        </Link>
-                      </SheetClose>
-                    </div>
-                  </div>
+                  <SheetClose asChild>
+                    {status === "authenticated" ? (
+                      <Button
+                        onClick={handleLogout}
+                        className="bg-bg_orange hover:bg-l_orange text-white w-full sm:h-12 h-8 self-center rounded-lg"
+                      >
+                        Sign out
+                      </Button>
+                    ) : (
+                      ""
+                    )}
+                  </SheetClose>
                 </SheetDescription>
               </SheetHeader>
             </SheetContent>
@@ -407,21 +414,30 @@ const Header = () => {
           <div className="dark:bg-blue bg-white sm:w-10 w-8 h-8 sm:h-10 flex items-center justify-center rounded-full">
             <TbMessageDots size={25} className="dark:text-white text-black" />
           </div>
-          <div className="flex sm:gap-3 items-center">
-            <div className="flex gap-1 items-center">
-              <Image
-                src={"/images/girl.jpeg"}
-                alt="profile"
-                width={100}
-                height={100}
-                className="rounded-full sm:w-12 w-8 h-8 sm:h-12 border-2 border-white"
-              />
-              <p className="dark:text-white text-black font-medium sm:text-base text-sm sm:block hidden">
-                Jane Smith
-              </p>
+          {status === "authenticated" ? (
+            <div className="flex sm:gap-3 items-center">
+              <div className="flex gap-1 items-center">
+                <Image
+                  src={"/images/girl.jpeg"}
+                  alt="profile"
+                  width={100}
+                  height={100}
+                  className="rounded-full sm:w-12 w-8 h-8 sm:h-12 border-2 border-white"
+                />
+                <p className="dark:text-white text-black font-medium sm:text-base text-sm sm:block hidden">
+                  Jane Smith
+                </p>
+              </div>
+              <IoIosArrowDown className="dark:text-white text-black" />
             </div>
-            <IoIosArrowDown className="dark:text-white text-black" />
-          </div>
+          ) : (
+            <Button
+              onClick={handleLogin}
+              className="bg-bg_orange hover:bg-l_orange text-white w-full h-9 self-center rounded-lg"
+            >
+              Sign in
+            </Button>
+          )}
         </div>
       </div>
     </header>

@@ -5,7 +5,6 @@ import SideBar from "@/components/SideBar/SideBar";
 import Header from "@/components/Header/Header";
 import { ThemeProvider } from "@/components/ThemeProvider/ThemeProvider";
 import { AuthProvider } from "@/app/Provider";
-// import AuthGuard from "../../../../AuthGuard";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,17 +28,15 @@ export default function RootLayout({
             enableSystem
             disableTransitionOnChange
           >
-            {/* <AuthGuard> */}
             <div className="flex h-screen container">
               <SideBar />
               <div className="flex flex-col flex-1 h-screen">
                 <Header />
-                <main className="flex-1 sm:p-6 p-3 h-0 min-h-0 overflow-y-auto">
+                <div className="flex-1 sm:p-4 sm:pt-2 p-2 h-0 min-h-0 overflow-y-auto">
                   {children}
-                </main>
+                </div>
               </div>
             </div>
-            {/* </AuthGuard> */}
           </ThemeProvider>
         </AuthProvider>
       </body>

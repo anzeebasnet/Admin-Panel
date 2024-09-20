@@ -21,6 +21,7 @@ import { FaRegEyeSlash } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import { signIn, SignInResponse, useSession } from "next-auth/react";
+import Loader from "@/components/ui/Loader";
 
 type PasswordVisibility = {
   password: boolean;
@@ -40,9 +41,6 @@ const StyledFormMessage = styled(FormMessage)`
 export function LogInForm() {
   const router = useRouter();
 
-  // const { data: session, status } = useSession();
-
-  //   const { mutateAsync: signIn, isPending: isSigning } = useLogin();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [mounted, setMounted] = useState(false);
 
@@ -61,7 +59,7 @@ export function LogInForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
-    console.log("Submitted the login form...")
+    console.log("Submitted the login form...");
     try {
       const response = await signIn("credentials", {
         username: values.username,
@@ -71,13 +69,24 @@ export function LogInForm() {
 
       if (!response || response.error) {
         setIsSubmitting(false);
+        toast.error("Failed to Login. Please try again!", {
+          duration: 5000,
+          position: "top-right",
+        });
         console.error("Sign in error:", response?.error || "No response");
         return;
       }
 
-      if (response.status === 200) {
-        console.log("Successfully logged in !")
-        router.push("/");
+      if (response.ok) {
+        toast.success("Successfully logged in!", {
+          duration: 5000,
+          position: "top-right",
+        });
+        // console.log("Logged in");
+        form.reset();
+        setTimeout(() => {
+          router.push("/");
+        }, 1500);
       }
 
       return { success: true, response: response };
@@ -87,42 +96,6 @@ export function LogInForm() {
     } finally {
       setIsSubmitting(false);
     }
-
-    // try {
-    //   //   console.log("Submitting login form...");
-    //   //   const startTime = performance.now();
-
-    //   console.log(res);
-
-    //   //   const endTime = performance.now();
-    //   //   console.log(`Login response time: ${endTime - startTime} ms`);
-
-    //   if (res?.data.success) {
-    //     toast.success("Logged in successfully!", {
-    //       duration: 5000,
-    //       position: "top-right",
-    //     });
-    //     console.log("Login successful");
-    //   } else {
-    //     toast.error("Failed to login!", {
-    //       duration: 5000,
-    //       position: "top-right",
-    //     });
-    //   }
-    //   console.log(session)
-    //   console.log(status);
-
-    //   form.reset();
-    // } catch (error) {
-    //   toast.error(
-    //     "Something went wrong! Please try again with correct credentials.",
-    //     {
-    //       duration: 5000,
-    //       position: "top-right",
-    //     }
-    //   );
-    //   console.log(error);
-    // }
   }
 
   const togglePasswordVisibility = (field: keyof PasswordVisibility) => {
@@ -233,8 +206,7 @@ export function LogInForm() {
             type="submit"
             className="bg-bg_orange hover:bg-btnBlue/80 w-full sm:h-12 h-8 self-center rounded-lg"
           >
-            {/* {isSigning ? <Loader /> : "Sign in"} */}
-            {isSubmitting ? "Signing in" : "Sign in"}
+            {isSubmitting ? <Loader /> : "Sign in"}
           </Button>
         </form>
       </Form>

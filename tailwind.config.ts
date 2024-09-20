@@ -11,7 +11,7 @@ const config = {
   prefix: "",
   theme: {
   	container: {
-  		center: 'true',
+  		center: true,
   		padding: '0rem',
   		screens: {
   			'2xl': '1792px',
@@ -21,12 +21,15 @@ const config = {
   	extend: {
   		colors: {
   			bg_blue: 'hsl(var(--primary-background))',
+			purple: 'hsl(var(--purple))',
   			bg_orange: 'hsl(var(--orange))',
+			l_orange: 'hsl(var(--l-orange))',
   			bg_gray: 'hsl(var(--light-gray))',
   			vl_gray: 'hsl(var(--v-l-gray))',
   			gray: 'hsl(var(--l-gray))',
   			text_gray: 'hsl(var(--text-gray))',
   			blue: 'hsl(var(--blue))',
+			dark_blue: 'hsl(var(--dark-blue))',
   			dark_gray: 'hsl(var(--dark-gray))',
   			border: 'hsl(var(--border))',
   			input: 'hsl(var(--input))',

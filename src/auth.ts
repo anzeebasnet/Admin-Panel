@@ -101,25 +101,16 @@ export const {
             const loginData = res;
             console.log("login res",res)
             if (!res.success) {
+              console.log("error",res)
               throw new Error(
                 loginData?.non_field_errors[0] || "Check login credentials"
               );
             }
 
-            // const fetchUserDetail = await fetch(
-            //   `${process.env.NEXT_PUBLIC_BASEAPI}auth/user/all/details/`,
-            //   {
-            //     method: "GET",
-            //     headers: {
-            //       Authorization: `Bearer ${loginData.data.token}`,
-            //     },
-            //   }
-            // ).then((res) => res.json());
-
             // accessing the accessToken returned by server
             const accessToken = loginData.data.token;
             const refreshToken = loginData.data.refresh;
-            // const user = fetchUserDetail.data;
+            const user = loginData.data.user;
 
             // console.log("user credential login", {
             //   accessToken,
@@ -132,8 +123,8 @@ export const {
             return {
               accessToken,
               refreshToken,
-              // user,
-              // email: user?.email,
+              user,
+              email: user?.email,
             };
           } catch (e: any) {
             throw new Error(e);

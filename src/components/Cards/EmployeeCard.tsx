@@ -11,7 +11,7 @@ interface EmpCardProps {
 const EmployeeCard = ({colorgradtop, colorgradbottom}: EmpCardProps) => {
   return (
     <div>
-      <div className={`w-64 h-36 p-6 rounded-2xl flex flex-col justify-between`}
+      <div className={`w-64 h-36 p-6 rounded-md flex flex-col justify-between`}
        style={{
         background: `linear-gradient(to bottom, ${colorgradtop} 10%, ${colorgradbottom} 90%)`,
       }}

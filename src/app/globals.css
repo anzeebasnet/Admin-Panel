@@ -5,8 +5,11 @@
 @layer base {
   :root {
     --primary-background: 235, 65%, 10%;
+    --purple: 252, 89%, 66%;
+    --l-orange: 34, 90%, 61%;
     --orange: 14, 100%, 62%;
     --blue: 235, 43%, 30%;
+    --dark-blue: 199, 71%, 40%;
     --dark-gray: 232, 44%, 13%;
     --v-l-gray: 0, 0%, 56%;
     --l-gray: 228, 33%, 97%;
@@ -73,6 +76,22 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+.collapsible-content {
+  transition: max-width 0.3s ease, transform 0.3s ease;
+  overflow: hidden;
+  max-width: 0; /* Initially collapsed */
+  white-space: nowrap; /* Prevent content wrapping */
+}
+
+.collapsible-content.open {
+  max-width: 450px; /* Set the desired width when open */
+  transform: translateX(0);
+}
+
+.collapsible-trigger {
+  cursor: pointer;
 }
 
 /* .custom-container {
