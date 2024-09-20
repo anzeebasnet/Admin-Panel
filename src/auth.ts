@@ -87,7 +87,7 @@ export const {
         console.log("Credentials:",credentials)
           try {
             const res: any = await fetch(
-              `https://moretrek.com/api/auth/login/`,
+              `${process.env.NEXT_PUBLIC_NEXTAUTH_SERVERURL}/auth/login/`,
               // `${process.env.NEXT_PUBLIC_BASEAPI}/admin/auth/login/`,
               {
                 method: "POST",
