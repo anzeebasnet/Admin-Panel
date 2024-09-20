@@ -149,30 +149,6 @@ const Page = ({ params }: { params: { userId: string[] } }) => {
             </TabsContent>
             <TabsContent value="personal">
               <div className="flex flex-col sm:gap-8 gap-4">
-                {/* <div className="dark:bg-dark_gray bg-white sm:p-8 p-4 rounded-md flex flex-col gap-2">
-                  <h2
-                    className={`text-bg_orange sm:text-2xl text-lg font-medium ${inria_sans.className} border-b border-b-vl_gray sm:pb-2`}
-                  >
-                    User
-                  </h2>
-                  <div>
-                    <p
-                      className={`sm:text-lg text-sm  ${roboto_condensed.className} capitalize`}
-                    >
-                      {userBasicInfo?.first_name} {userBasicInfo?.last_name}
-                    </p>
-                    <p
-                      className={`sm:text-lg text-sm  ${roboto_condensed.className}`}
-                    >
-                      {userBasicInfo?.email}
-                    </p>
-                    <p
-                      className={`sm:text-lg text-sm  ${roboto_condensed.className} capitalize`}
-                    >
-                      {userProfile?.id}
-                    </p>
-                  </div>
-                </div> */}
                 <div className="dark:bg-dark_gray bg-white  sm:p-8 p-4 rounded-md flex flex-col gap-4">
                   <h2
                     className={`text-bg_orange sm:text-2xl text-lg font-medium ${inria_sans.className} border-b border-b-vl_gray sm:pb-2`}
