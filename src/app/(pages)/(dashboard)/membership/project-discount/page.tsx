@@ -11,11 +11,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { Roboto } from "next/font/google";
+import { Open_Sans } from "next/font/google";
 import Modal from "@/components/Modal/Modal";
 
-const roboto = Roboto({
-  weight: ["100", "300", "400", "500", "700"],
+const open_sans = Open_Sans({
+  weight: ["300", "400", "500", "600", "700"],
   subsets: ["latin"],
 });
 
@@ -34,7 +34,7 @@ const Page = () => {
     <div className=" p-2 pt-0 flex flex-col gap-6">
       <div className="flex sm:flex-row flex-col justify-between">
         <h1
-          className={`text-primary_text dark:text-white text-2xl font-normal ${roboto.className}`}
+          className={`text-primary_text dark:text-white text-2xl font-normal ${open_sans.className}`}
         >
           Membership Project Discount
         </h1>
