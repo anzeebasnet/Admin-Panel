@@ -27,6 +27,8 @@ import { Country } from "@/types/types";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useSession } from "next-auth/react";
 import { Open_Sans } from "next/font/google";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { RootState } from "@/lib/store/store";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -59,6 +61,11 @@ const Page = ({
   };
 }) => {
   const { data: session } = useSession();
+  const dispatch = useAppDispatch();
+
+  const itemData = useAppSelector(
+    (state: RootState) => state.foodItem.currentFoodItems
+  );
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),

@@ -13,22 +13,20 @@ export interface LoginResponse {
 }
 
 export interface Country {
-  id: number,
-      name: string,
-      code: string,
-      icon: string,
-      kyc_amount: number,
-      sms_fee: number,
-      min_balance_withdraw: number,
-      max_balance_withdraw: number,
-      max_balance_load: number,
-      min_balance_load: number,
-      prefix_number: string,
-      main_currency: number,
-      continent: number,
-      other_currency: [
-        number
-      ]
+  id: number;
+  name: string;
+  code: string;
+  icon: string;
+  kyc_amount: number;
+  sms_fee: number;
+  min_balance_withdraw: number;
+  max_balance_withdraw: number;
+  max_balance_load: number;
+  min_balance_load: number;
+  prefix_number: string;
+  main_currency: number;
+  continent: number;
+  other_currency: [number];
 }
 
 export interface CountryType {
@@ -40,9 +38,8 @@ export interface CountryType {
     name: string;
     currency_code: string;
     symbol: string;
-  }
+  };
 }
-
 
 export interface UserListType {
   id: string;
@@ -200,20 +197,19 @@ export interface MenuItem {
   name: string | null;
   no_of_items: number;
   icon: string | null;
-};
+}
 
 export interface FoodItem {
   actual_price: number;
-currency_symbol: string;
-discount_percentage: number;
-id: string;
-image: string;
-ingredient: string;
-is_active: boolean;
-item_price: number;
-menu: string;
-name: string;
-retailer_price: string;
-short_description: string;
+  currency_symbol: string;
+  discount_percentage: number;
+  id: string;
+  image: string;
+  ingredient: string;
+  is_active: boolean;
+  item_price: number;
+  menu: string;
+  name: string;
+  retailer_price: string;
+  short_description: string;
 }
-

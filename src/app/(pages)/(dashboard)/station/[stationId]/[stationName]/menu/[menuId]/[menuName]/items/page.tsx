@@ -86,7 +86,7 @@ const Page = ({
                 className="p-4 pb-2 flex flex-col gap-2 dark:bg-primary_dark bg-white rounded-md shadow-md shadow-vll_gray dark:shadow-none"
               >
                 <Link
-                  href={`/station/${params.stationId}/${params.stationName}/menu/${food.id}/${food.name}`}
+                  href={`/station/${params.stationId}/${params.stationName}/menu/${params.menuId}/${params.menuName}/items/${food.id}/${food.name}`}
                 >
                   <Image
                     src={food.image || ""}
