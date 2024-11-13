@@ -1,47 +1,15 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-
-import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-import { useState } from "react";
 import { axiosPrivate } from "@/axios/axios";
-import { Country } from "@/types/types";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { setMenuItem } from "@/lib/store/features/menu/menuSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { RootState } from "@/lib/store/store";
+import { MenuItem, StationData } from "@/types/types";
 import { useSession } from "next-auth/react";
 import { Open_Sans } from "next/font/google";
-
-const formSchema = z.object({
-  name: z.string().min(2, {
-    message: "name can't be empty.",
-  }),
-  image: z.instanceof(File).optional(),
-  price: z.string(),
-  retailer_price: z.string(),
-  offerPrice: z.string(),
-  short_description: z.string().min(6, {
-    message: "Short Description must be atleast 6 characters",
-  }),
-  is_active: z.boolean(),
-  ingredient: z.string(),
-});
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 const open_sans = Open_Sans({
   weight: ["300", "400", "500", "600", "700"],
@@ -58,215 +26,154 @@ const Page = ({
     menuName: string;
   };
 }) => {
+  const MenuName = decodeURIComponent(params.menuName);
+  const menuData = useAppSelector((state: RootState) => state.menu.currentMenu);
+  const dispatch = useAppDispatch();
   const { data: session } = useSession();
+  const [menuList, setMenuList] = useState<MenuItem[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [menuDetails, setMenuDetails] = useState<MenuItem | null>(null);
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      image: undefined,
-      price: "",
-      retailer_price: "",
-      offerPrice: "",
-      short_description: "",
-      is_active: false,
-      ingredient: "",
-    },
-  });
+  const fetchMenuList = async () => {
+    if (!session?.accessToken) return;
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    if (!session) {
-      console.error("Session not available. Cannot submit.");
-      return;
-    }
-    console.log(values);
-    // Create a new FormData instance
-    const formData = new FormData();
-
-    Object.entries(values).forEach(([key, value]) => {
-      if (key === "image") {
-        if (value instanceof File) {
-          // Read file as blob before appending
-          const fileBlob = new Blob([value], { type: value.type });
-          formData.append(key, fileBlob, value.name);
-        }
-      } else {
-        // Append other values as strings
-        formData.append(key, value as string);
-      }
-    });
-
-    axiosPrivate
-      .post(
-        `https://api.morefood.se/api/moreclub/station/${params.stationId}/${params.menuId}/food-items/`,
-        formData,
+    try {
+      const res = await axiosPrivate.get(
+        "https://api.morefood.se/api/moreclub/station/a0d2264b-e410-4968-84ba-04010a7c344f/menu/",
         {
           headers: {
-            "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${
               session?.accessToken || session?.user?.token
             }`,
           },
         }
-      )
-      .then((response) => {
-        console.log("Form submitted successfully:", response.data);
-        form.reset(); // Clear form after successful submission
-      })
-      .catch((error) => {
-        console.error("Error submitting form:", error);
-      });
+      );
+      console.log(res.data.data);
+      setMenuList(res.data.data);
+    } catch (error) {
+      console.log("Error fetching Menu List");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (session) {
+      fetchMenuList();
+    }
+  }, [session, params.menuId, dispatch]);
+
+  useEffect(() => {
+    if (menuList.length > 0) {
+      const matchedData = getMenuDetails(params.menuId);
+      if (matchedData) {
+        setMenuDetails(matchedData);
+      }
+    }
+  }, [menuList, params.menuId]);
+
+  useEffect(() => {
+    if (menuDetails) {
+      dispatch(setMenuItem(menuDetails));
+    }
+  }, [menuDetails, dispatch]);
+
+  function getMenuDetails(menuId: string) {
+    return menuList.find((menu) => menu.id === menuId) || null;
   }
 
   return (
-    <ScrollArea className="bg-white dark:bg-secondary_dark p-6 h-[88vh]">
-      <h1
-        className={`text-primary_text dark:text-secondary_text text-lg font-medium mb-4 ${open_sans.className}`}
-      >
-        Add food items for {params.menuName}
-      </h1>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(onSubmit)}
-          className=" grid grid-cols-2 gap-8"
+    <div
+      className={` bg-white dark:bg-secondary_dark rounded-sm p-6 flex flex-col gap-6 shadow-sm shadow-vll_gray dark:shadow-none ${open_sans.className}`}
+    >
+      <div className="flex sm:flex-row flex-col justify-between">
+        <h1
+          className={`text-primary_text dark:text-secondary_text text-lg font-medium ${open_sans.className}`}
         >
-          <div className="flex flex-col gap-4">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="retailer_price"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Retailer Price</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />{" "}
-            <FormField
-              control={form.control}
-              name="short_description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Short Description</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="is_active"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Is Active</FormLabel>
-                  <FormControl>
-                    <Select
-                      onValueChange={(value) =>
-                        field.onChange(value === "true")
-                      }
-                      defaultValue={field.value ? "true" : "false"} // Set initial value
-                    >
-                      <SelectTrigger className="w-[180px]">
-                        <SelectValue placeholder="Select Status" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="true">True</SelectItem>
-                        <SelectItem value="false">False</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button
-              type="submit"
-              className="bg-primary_text dark:bg-secondary_text hover:bg-l_orange dark:hover:bg-blue text-white h-8 mb-6 place-self-start rounded-lg"
+          Menu Details
+        </h1>
+      </div>
+
+      <div className="flex flex-col gap-3">
+        <Image
+          src={menuData?.icon || ""}
+          alt="menu icon"
+          width={200}
+          height={200}
+          className="rounded"
+        />
+        <div>
+          <h3 className="font-medium text-base ">{MenuName}</h3>
+          <h3 className="font-medium text-sm">Menu ID: {params.menuId}</h3>
+          <h3 className="font-medium text-sm">
+            Number of Items: {menuData?.no_of_items}
+          </h3>
+        </div>
+        <div className="flex gap-4">
+          {menuData ? (
+            <div>
+              <Link
+                href={`/station/${params.stationId}/${params.stationName}/menu/create`}
+                className="bg-primary_text dark:bg-btn_blue text-white text-sm hover:bg-l_orange dark:hover:bg-blue py-1 px-4 rounded place-self-end"
+              >
+                Edit Menu
+              </Link>
+            </div>
+          ) : (
+            ""
+          )}
+          <div>
+            <Link
+              href={`/station/${params.stationId}/${params.stationName}/menu/${params.menuId}/${params.menuName}/items`}
+              className="bg-primary_text dark:bg-btn_blue text-white text-sm hover:bg-l_orange dark:hover:bg-blue py-1 px-4 rounded place-self-end"
             >
-              Create
-            </Button>
+              View Items
+            </Link>
           </div>
-          <div className="flex flex-col gap-4">
-            <FormField
-              control={form.control}
-              name="price"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Price</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="offerPrice"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Offer Price</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="ingredient"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Ingredient</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="image"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Image</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        field.onChange(file);
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+        </div>
+        {/* <div>
+          <h2>Store Value</h2>
+          {menuData ? (
+            <div>
+              <p>{menuData?.id}</p>
+              <p>{menuData?.name}</p>
+              <p>{menuData?.no_of_items}</p>
+              <Image
+                src={menuData.icon || ""}
+                alt="banner"
+                width={200}
+                height={200}
+              />
+            </div>
+          ) : (
+            <p>Detail unavailable.</p>
+          )}
+        </div>
+
+        {isLoading ? (
+          <p>Loading....</p>
+        ) : (
+          <div>
+            <h2>Variable Value</h2>
+            {menuDetails ? (
+              <div>
+                <p>{menuDetails?.id}</p>
+                <p>{menuDetails?.name}</p>
+                <p>{menuDetails?.no_of_items}</p>
+                <Image
+                  src={menuDetails.icon || ""}
+                  alt="banner"
+                  width={200}
+                  height={200}
+                />
+              </div>
+            ) : (
+              <p>Detail unavailable.</p>
+            )}
           </div>
-        </form>
-      </Form>
-    </ScrollArea>
+        )} */}
+      </div>
+    </div>
   );
 };
 

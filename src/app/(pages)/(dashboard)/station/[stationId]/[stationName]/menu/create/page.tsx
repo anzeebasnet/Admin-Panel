@@ -14,18 +14,23 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { axiosPrivate } from "@/axios/axios";
 import { Country } from "@/types/types";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useSession } from "next-auth/react";
 import { Open_Sans } from "next/font/google";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { RootState } from "@/lib/store/store";
+import Image from "next/image";
+import { clearMenuItem } from "@/lib/store/features/menu/menuSlice";
+import toast from "react-hot-toast";
 
 const formSchema = z.object({
   name: z.string().min(2, {
     message: "name can't be empty.",
   }),
-  icon: z.instanceof(File).optional(),
+  icon: z.any().optional(),
 });
 
 const open_sans = Open_Sans({
@@ -38,8 +43,12 @@ const CreateMenu = ({
 }: {
   params: { stationId: string; stationName: string };
 }) => {
+  const [logoPreview, setLogoPreview] = useState<string | null>(null);
   const { data: session } = useSession();
   const StationName = decodeURIComponent(params.stationName);
+  const dispatch = useAppDispatch();
+
+  const menuData = useAppSelector((state: RootState) => state.menu.currentMenu);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -48,6 +57,13 @@ const CreateMenu = ({
       icon: undefined,
     },
   });
+
+  useEffect(() => {
+    if (menuData) {
+      form.setValue("name", menuData.name || "");
+      setLogoPreview(menuData.icon);
+    }
+  }, [menuData]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     if (!session) {
@@ -71,26 +87,73 @@ const CreateMenu = ({
       }
     });
 
-    axiosPrivate
-      .post(
-        `https://api.morefood.se/api/moreclub/station/${params.stationId}/menu/`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${
-              session?.accessToken || session?.user?.token
-            }`,
-          },
-        }
-      )
-      .then((response) => {
-        console.log("Form submitted successfully:", response.data);
-        form.reset(); // Clear form after successful submission
-      })
-      .catch((error) => {
-        console.error("Error submitting form:", error);
-      });
+    if (menuData) {
+      axiosPrivate
+        .patch(
+          `https://api.morefood.se/api/moreclub/station/menu/${menuData.id}/update/`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${
+                session?.accessToken || session?.user?.token
+              }`,
+            },
+          }
+        )
+        .then((response) => {
+          console.log("Form submitted successfully:", response.data);
+          form.reset(); // Clear form after successful submission
+          toast.success("Menu Updated Successfully!", {
+            duration: 5000,
+            position: "top-right",
+          });
+        })
+        .catch((error: any) => {
+          console.error("Error submitting form:", error);
+          toast.error("Error updating menu!", {
+            duration: 5000,
+            position: "top-right",
+          });
+        })
+        .finally(() => {
+          dispatch(clearMenuItem());
+          setLogoPreview(null);
+        });
+    } else {
+      axiosPrivate
+        .post(
+          `https://api.morefood.se/api/moreclub/station/${params.stationId}/menu/`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${
+                session?.accessToken || session?.user?.token
+              }`,
+            },
+          }
+        )
+        .then((response) => {
+          console.log("Form submitted successfully:", response.data);
+          form.reset(); // Clear form after successful submission
+          toast.success("Menu Created Successfully!", {
+            duration: 5000,
+            position: "top-right",
+          });
+        })
+        .catch((error) => {
+          console.error("Error submitting form:", error);
+          toast.error("Error creating menu!", {
+            duration: 5000,
+            position: "top-right",
+          });
+        })
+        .finally(() => {
+          dispatch(clearMenuItem());
+          setLogoPreview(null);
+        });
+    }
   }
 
   return (
@@ -126,14 +189,29 @@ const CreateMenu = ({
               <FormItem>
                 <FormLabel>Icon</FormLabel>
                 <FormControl>
-                  <Input
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      field.onChange(file);
-                    }}
-                  />
+                  <div className="flex items-center gap-4">
+                    {logoPreview && (
+                      <Image
+                        src={logoPreview}
+                        alt="Logo Preview"
+                        className="w-16 h-16 object-cover"
+                        width={200}
+                        height={200}
+                      />
+                    )}
+                    <Input
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files?.[0];
+                        if (file) {
+                          field.onChange(file); // Set the new file in the form state
+                          const fileURL = URL.createObjectURL(file); // Update preview URL
+                          setLogoPreview(fileURL); // Update preview
+                        }
+                      }}
+                    />
+                  </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -144,7 +222,7 @@ const CreateMenu = ({
             type="submit"
             className="bg-primary_text dark:bg-secondary_text hover:bg-l_orange dark:hover:bg-blue text-white h-8 mb-6 place-self-start rounded-lg"
           >
-            Create
+            {menuData ? "Edit" : "Create"}
           </Button>
         </form>
       </Form>

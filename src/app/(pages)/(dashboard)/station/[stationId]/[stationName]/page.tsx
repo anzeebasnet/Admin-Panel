@@ -99,14 +99,18 @@ const Page = ({
           <h3>Station ID: {params.stationId}</h3>
         </div>
         <div className="flex gap-4">
-          <div>
-            <Link
-              href={`/station/create`}
-              className="bg-primary_text dark:bg-btn_blue text-white text-sm hover:bg-l_orange dark:hover:bg-blue py-1 px-4 rounded place-self-end"
-            >
-              Edit
-            </Link>
-          </div>
+          {stationData ? (
+            <div>
+              <Link
+                href={`/station/create`}
+                className="bg-primary_text dark:bg-btn_blue text-white text-sm hover:bg-l_orange dark:hover:bg-blue py-1 px-4 rounded place-self-end"
+              >
+                Edit
+              </Link>
+            </div>
+          ) : (
+            ""
+          )}
           <div>
             <Link
               href={`/station/${params.stationId}/${params.stationName}/menu`}
@@ -116,7 +120,7 @@ const Page = ({
             </Link>
           </div>
         </div>
-        <div>
+        {/* <div>
           <h2>Store Value</h2>
           {stationData ? (
             <div>
@@ -136,9 +140,9 @@ const Page = ({
           ) : (
             <p>Detail unavailable.</p>
           )}
-        </div>
+        </div> */}
 
-        {isLoading ? (
+        {/* {isLoading ? (
           <p>Loading....</p>
         ) : (
           <div>
@@ -160,7 +164,7 @@ const Page = ({
               <p>Detail unavailable.</p>
             )}
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

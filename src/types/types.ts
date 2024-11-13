@@ -202,3 +202,18 @@ export interface MenuItem {
   icon: string | null;
 };
 
+export interface FoodItem {
+  actual_price: number;
+currency_symbol: string;
+discount_percentage: number;
+id: string;
+image: string;
+ingredient: string;
+is_active: boolean;
+item_price: number;
+menu: string;
+name: string;
+retailer_price: string;
+short_description: string;
+}
+

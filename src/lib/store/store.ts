@@ -1,12 +1,14 @@
 import { configureStore } from '@reduxjs/toolkit'
 import collapsibleReducer from "./features/Collapsible/CollapsibleSlice"
 import stationReducer from "./features/station/stationSlice"
+import menuReducer from "./features/menu/menuSlice"
 
 export const makeStore = () => {
     return configureStore({
         reducer: {
           collapsible: collapsibleReducer,
           station: stationReducer,
+          menu: menuReducer,
         },
       })
 }
