@@ -1,6 +1,8 @@
 "use client";
 
 import { axiosPrivate } from "@/axios/axios";
+import { clearFoodItem } from "@/lib/store/features/foodItem/foodItemSlice";
+import { useAppDispatch } from "@/lib/store/hooks";
 import { FoodItem } from "@/types/types";
 import { useSession } from "next-auth/react";
 import { Open_Sans } from "next/font/google";
@@ -26,6 +28,7 @@ const Page = ({
   };
 }) => {
   const { data: session } = useSession();
+  const dispatch = useAppDispatch();
   const [foodList, setFoodList] = useState<FoodItem[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -49,6 +52,11 @@ const Page = ({
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    // Clear the Redux station data when this page loads
+    dispatch(clearFoodItem());
+  }, [dispatch]);
 
   useEffect(() => {
     fetchMenuList();

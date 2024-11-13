@@ -137,7 +137,7 @@ const Page = ({
               Description: {foodDetails?.short_description}
             </h3>
           </div>
-          {/* <div className="flex gap-4">
+          <div className="flex gap-4">
             {itemData ? (
               <div>
                 <Link
@@ -150,7 +150,7 @@ const Page = ({
             ) : (
               ""
             )}
-          </div> */}
+          </div>
           {/* <div>
         <h2>Store Value</h2>
         {itemData ? (
