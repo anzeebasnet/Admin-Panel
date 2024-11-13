@@ -1,19 +1,22 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { Archivo } from "next/font/google";
+import { Open_Sans } from "next/font/google";
 import { usePathname } from "next/navigation";
-import { PiSphereLight } from "react-icons/pi";
-import { Kalam } from "next/font/google";
+import { PiHandWithdraw, PiNetworkFill, PiSphereLight } from "react-icons/pi";
 import { Anton } from "next/font/google";
 import { RxDashboard } from "react-icons/rx";
-import { BsCameraVideo, BsDoorClosed } from "react-icons/bs";
-import { BsFileEarmarkSpreadsheet } from "react-icons/bs";
-import { HiOutlineDocumentReport, HiOutlineUsers } from "react-icons/hi";
-import { LiaTasksSolid } from "react-icons/lia";
-import { CiClock2 } from "react-icons/ci";
-import { MdOutlineEditNote } from "react-icons/md";
+import {
+  BsDoorClosed,
+  BsFileEarmarkLock2,
+  BsFillBriefcaseFill,
+  BsFillHouseFill,
+  BsFlagFill,
+} from "react-icons/bs";
+import { HiCurrencyDollar } from "react-icons/hi";
+import { GrDocumentVerified, GrTransaction } from "react-icons/gr";
+import { MdOutlineEditNote, MdOutlineSubscriptions } from "react-icons/md";
 import {
   Accordion,
   AccordionContent,
@@ -28,49 +31,132 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { BsDoorOpenFill } from "react-icons/bs";
-import { BsFillDoorClosedFill } from "react-icons/bs";
-
-const archivo = Archivo({
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800"],
-  subsets: ["latin"],
-});
+import { IoIosNotifications } from "react-icons/io";
+import {
+  IoCalendarSharp,
+  IoWalletOutline,
+  IoWalletSharp,
+} from "react-icons/io5";
+import {
+  FaAddressCard,
+  FaHandshake,
+  FaMoneyBillTransfer,
+  FaUserGroup,
+} from "react-icons/fa6";
+import { AiFillInfoCircle } from "react-icons/ai";
+import { HiOutlineClipboardDocumentCheck } from "react-icons/hi2";
+import {
+  TbCalendarCheck,
+  TbCalendarDollar,
+  TbCalendarPlus,
+} from "react-icons/tb";
+import { FaGlobeAmericas } from "react-icons/fa";
+import { RiQuestionnaireFill } from "react-icons/ri";
+import { ImDatabase } from "react-icons/im";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { toggleSidebar } from "@/lib/store/features/Collapsible/CollapsibleSlice";
 
 const anton = Anton({
   weight: ["400"],
   subsets: ["latin"],
 });
 
+const open_sans = Open_Sans({
+  weight: ["300", "400", "500", "600", "700"],
+  subsets: ["latin"],
+});
+
 const SideBar = () => {
   const pathname = usePathname();
   const { data: session, status } = useSession();
-  const [isOpen, setIsOpen] = React.useState(true);
+  // const [isOpen, setIsOpen] = React.useState(true);
+  const [accordionValue, setAccordionValue] = useState<string | undefined>(
+    undefined
+  );
+
+  const dispatch = useAppDispatch();
+
+  // Access collapse state from Redux
+  const isOpen = useAppSelector((state) => state.collapsible.collapse);
+
+  // Function to handle toggle
+  const handleToggle = () => {
+    dispatch(toggleSidebar(!isOpen)); // Toggles the sidebar open/closed
+  };
+
+  useEffect(() => {
+    // Map pathname to specific accordion items
+    switch (pathname) {
+      case "/overall-transaction/total-billing":
+      case "/overall-transaction/total-business":
+        setAccordionValue("item-1");
+        break;
+      case "/meta/business-type":
+      case "/meta/company-info":
+      case "/meta/continent":
+      case "/meta/country":
+      case "/meta/currency":
+      case "/meta/faqs":
+      case "/meta/privacy-policy":
+      case "/meta/terms-and-conditions":
+        setAccordionValue("item-2");
+        break;
+      case "/event/event-create":
+      case "/event/event-fee":
+      case "/event/event-book":
+        setAccordionValue("item-3");
+        break;
+      case "/membership/membership":
+      case "/membership/membership-type":
+      case "/membership/project-discount":
+      case "/membership/type-discount":
+        setAccordionValue("item-4");
+        break;
+      case "/referral/referral":
+      case "/referral/business-referral":
+        setAccordionValue("item-5");
+        break;
+      case "/wallet/transaction":
+      case "/wallet/user-wallet":
+        setAccordionValue("item-6");
+        break;
+      default:
+        setAccordionValue(undefined);
+    }
+  }, [pathname]);
 
   const handleLogout = () => {
     signOut();
   };
 
   return (
-    <div className="bg-gray dark:bg-bg_blue lg:flex flex-col hidden gap-2 h-screen p-4 shadow-md dark:shadow-bg_gray overflow-y-auto">
-      <Collapsible open={isOpen} onOpenChange={setIsOpen}>
-        <CollapsibleTrigger className="collapsible-trigger flex items-center justify-center mx-auto">
+    <ScrollArea className="bg-white dark:bg-grayy lg:flex flex-col hidden gap-2 h-screen p-2">
+      <Collapsible open={isOpen} onOpenChange={handleToggle}>
+        <CollapsibleTrigger className="collapsible-trigger flex items-center w-full">
           {isOpen ? (
-            <div className="flex gap-2 items-center justify-center">
+            <div className="flex items-center justify-center  w-full xl:px-4">
               <Link
                 href={"/"}
                 prefetch={true}
-                className="w-full flex justify-center gap-1 px-auto py-4 xl:pb-4 pb-3 border-b border-b-gray-500"
+                className="w-full flex gap-2 py-4 px-3 xl:pb-4 pb-3 "
               >
-                <PiSphereLight size={25} className="text-bg_orange" />
+                <PiSphereLight
+                  size={25}
+                  className="text-primary_text dark:text-secondary_text"
+                />
                 <h2
-                  className={`${anton.className} font-medium xl:text-xl text-lg text-bg_orange`}
+                  className={`${anton.className} font-medium xl:text-xl text-lg text-primary_text dark:text-secondary_text`}
                 >
                   MoreClub
                 </h2>
               </Link>
-              <BsDoorClosed size={30} className="pb-1" />
+              <div className="flex items-center justify-center">
+                <BsDoorClosed size={30} className="pb-1" />
+              </div>
             </div>
           ) : (
-            <div className="py-4">
+            <div className="py-4 px-2">
               <BsDoorOpenFill size={25} />
             </div>
           )}
@@ -80,310 +166,489 @@ const SideBar = () => {
           className={`collapsible-content ${isOpen ? "open" : ""}`}
         >
           <div
-            className={`flex flex-col gap-4 xl:px-4 py-2 ${archivo.className}`}
+            className={`flex flex-col gap-4 xl:px-4 py-2 ${open_sans.className}`}
           >
-            <div className="flex flex-col gap-1">
-              <Link href="/" prefetch={true}>
-                <span
-                  className={`flex gap-4 items-center py-1 px-4 rounded-3xl ${
-                    pathname === "/" ? "bg-bg_orange" : ""
-                  }`}
-                >
-                  <RxDashboard
-                    size={20}
-                    className={`${
-                      pathname === "/"
-                        ? "text-white"
-                        : "dark:text-white text-text_gray"
-                    }`}
-                  />
-                  <p
-                    className={` font-normal  text-sm ${
-                      pathname === "/"
-                        ? "text-white"
-                        : "dark:text-white text-text_gray"
-                    }`}
-                  >
-                    Dashboard
-                  </p>
-                </span>
+            <div className="flex flex-col gap-2">
+              <Link
+                href="/"
+                prefetch={true}
+                className={`flex gap-3 items-center py-3 pb-1 px-4 rounded-md ${
+                  pathname === "/"
+                    ? "bg-primary_text dark:bg-secondary_text text-white"
+                    : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                }`}
+              >
+                <RxDashboard size={20} />
+                <p className={` font-normal  text-sm`}>Dashboard</p>
               </Link>
-              <Accordion type="single" collapsible>
+              <Link
+                href="/users"
+                prefetch={true}
+                className={`flex gap-3 items-center py-3 pb-1 px-4 rounded-md ${
+                  pathname === "/users"
+                    ? "bg-primary_text dark:bg-secondary_text text-white"
+                    : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                }`}
+              >
+                <FaUserGroup size={20} />
+                <p className={` font-normal  text-sm `}>User</p>
+              </Link>
+              <Link
+                href="/station"
+                prefetch={true}
+                className={`flex gap-3 items-center py-3 pb-1 px-4 rounded-md ${
+                  pathname === "/station"
+                    ? "bg-primary_text dark:bg-secondary_text text-white"
+                    : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                }`}
+              >
+                <BsFillHouseFill size={20} />
+                <p className={` font-normal  text-sm`}>Station</p>
+              </Link>
+
+              <Accordion
+                type="single"
+                collapsible
+                value={accordionValue}
+                onValueChange={setAccordionValue}
+                className="flex flex-col gap-2"
+              >
                 <AccordionItem value="item-1">
                   <AccordionTrigger
-                    className={`py-1 px-4 rounded-3xl ${
-                      pathname === "/users" ? "bg-bg_orange" : ""
-                    }`}
+                    className={`py-3 pb-1 px-4 rounded-md hover:bg-shadow_gray dark:hover:bg-vl_gray`}
                   >
-                    <Link href="/users" prefetch={true}>
-                      <span className={`flex gap-4 items-center `}>
-                        <HiOutlineUsers
-                          size={20}
-                          className={`${
-                            pathname === "/users"
-                              ? "text-white"
-                              : "dark:text-white text-text_gray"
-                          }`}
-                        />
-                        <p
-                          className={` font-normal  text-sm ${
-                            pathname === "/users"
-                              ? "text-white"
-                              : "dark:text-white text-text_gray"
-                          }`}
-                        >
-                          Users
-                        </p>
-                      </span>
-                    </Link>
-                  </AccordionTrigger>
-                  <AccordionContent className="flex flex-col">
-                    <Link
-                      href={"/timesheet/daily"}
-                      prefetch={true}
-                      className={`${
-                        pathname === "/timesheet/daily"
-                          ? "bg-bg_orange text-white"
-                          : "dark:text-white text-text_gray"
-                      } py-1 px-4 rounded-3xl font-normal  text-sm`}
+                    <span
+                      className={`flex gap-3 items-center dark:text-white text-text_gray`}
                     >
-                      Daily
-                    </Link>
-                    <Link
-                      href={"/timesheet/weekly"}
-                      prefetch={true}
-                      className={`${
-                        pathname === "/timesheet/weekly"
-                          ? "bg-bg_orange text-white"
-                          : "dark:text-white text-text_gray"
-                      } py-1 px-4 rounded-3xl font-normal  text-sm`}
-                    >
-                      Weekly
-                    </Link>
-                    <Link
-                      href={"/timesheet/monthly"}
-                      prefetch={true}
-                      className={`${
-                        pathname === "/timesheet/monthly"
-                          ? "bg-bg_orange text-white"
-                          : "dark:text-white text-text_gray"
-                      } py-1 px-4 rounded-3xl font-normal  text-sm`}
-                    >
-                      Monthly
-                    </Link>
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
-              <Link href="/live-feed" prefetch={true}>
-                <span
-                  className={`flex gap-4 items-center py-1 px-4 rounded-3xl ${
-                    pathname === "/live-feed" ? "bg-bg_orange" : ""
-                  }`}
-                >
-                  <BsCameraVideo
-                    size={20}
-                    className={`${
-                      pathname === "/live-feed"
-                        ? "text-white"
-                        : "dark:text-white text-text_gray"
-                    }`}
-                  />
-                  <p
-                    className={`" font-normal  text-sm ${
-                      pathname === "/live-feed"
-                        ? "text-white"
-                        : "dark:text-white text-text_gray"
-                    }`}
-                  >
-                    Live Feed
-                  </p>
-                </span>
-              </Link>
-              <Accordion type="single" collapsible>
-                <AccordionItem value="item-1">
-                  <AccordionTrigger>
-                    <span className="flex gap-4 items-center py-1 px-4 rounded-3xl">
-                      <BsFileEarmarkSpreadsheet
-                        size={20}
-                        className="dark:text-white text-text_gray"
-                      />
-                      <p className="font-normal  text-sm dark:text-white text-text_gray">
-                        Timesheets
+                      <FaMoneyBillTransfer size={20} />
+                      <p className={` font-normal  text-sm `}>
+                        Overall Transaction
                       </p>
                     </span>
                   </AccordionTrigger>
-                  <AccordionContent className="flex flex-col">
+                  <AccordionContent className="flex flex-col pt-2 sm:pl-6 gap-1">
                     <Link
-                      href={"/timesheet/daily"}
+                      href={"/overall-transaction/total-billing"}
                       prefetch={true}
                       className={`${
-                        pathname === "/timesheet/daily"
-                          ? "bg-bg_orange text-white"
-                          : "dark:text-white text-text_gray"
-                      } py-1 px-4 rounded-3xl font-normal  text-sm`}
+                        pathname === "/overall-transaction/total-billing"
+                          ? "bg-primary_text dark:bg-secondary_text text-white"
+                          : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                      } py-3 pb-1 px-4 rounded-md font-normal  text-sm`}
                     >
-                      Daily
+                      Total Billing
                     </Link>
                     <Link
-                      href={"/timesheet/weekly"}
+                      href={"/overall-transaction/total-business"}
                       prefetch={true}
                       className={`${
-                        pathname === "/timesheet/weekly"
-                          ? "bg-bg_orange text-white"
-                          : "dark:text-white text-text_gray"
-                      } py-1 px-4 rounded-3xl font-normal  text-sm`}
+                        pathname === "/overall-transaction/total-business"
+                          ? "bg-primary_text dark:bg-secondary_text text-white"
+                          : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                      } py-3 pb-1 px-4 rounded-md font-normal  text-sm`}
                     >
-                      Weekly
+                      Total Business
+                    </Link>
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="item-2">
+                  <AccordionTrigger
+                    className={`py-3 pb-1 px-4 rounded-md hover:bg-shadow_gray dark:hover:bg-vl_gray`}
+                  >
+                    <span
+                      className={`flex gap-3 items-center dark:text-white text-text_gray`}
+                    >
+                      <ImDatabase size={20} />
+                      <p className={` font-normal  text-sm `}>Meta</p>
+                    </span>
+                  </AccordionTrigger>
+                  <AccordionContent className="flex flex-col pt-2 sm:pl-6 gap-1">
+                    <Link
+                      href={"/meta/business-type"}
+                      prefetch={true}
+                      className={`flex gap-2 items-center py-3 pb-1 px-2 rounded-md ${
+                        pathname === "/meta/business-type"
+                          ? "bg-primary_text dark:bg-secondary_text text-white"
+                          : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                      }`}
+                    >
+                      <BsFillBriefcaseFill size={19} />
+                      <p className={` font-normal  text-sm`}>Business Type</p>
+                    </Link>
+
+                    <Link
+                      href={"/meta/company-info"}
+                      prefetch={true}
+                      className={`flex gap-2 items-center py-3 pb-1 px-2 rounded-md ${
+                        pathname === "/meta/company-info"
+                          ? "bg-primary_text dark:bg-secondary_text text-white"
+                          : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                      }`}
+                    >
+                      <AiFillInfoCircle size={20} />
+                      <p className={` font-normal  text-sm`}>
+                        Company Information
+                      </p>
+                    </Link>
+
+                    <Link
+                      href={"/meta/continent"}
+                      prefetch={true}
+                      className={`flex gap-2 items-center py-3 pb-1 px-2 rounded-md ${
+                        pathname === "/meta/continent"
+                          ? "bg-primary_text dark:bg-secondary_text text-white"
+                          : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                      }`}
+                    >
+                      <FaGlobeAmericas size={20} />
+                      <p className={` font-normal  text-sm`}>Continent</p>
+                    </Link>
+
+                    <Link
+                      href={"/meta/country"}
+                      prefetch={true}
+                      className={`flex gap-2 items-center py-3 pb-1 px-2 rounded-md ${
+                        pathname === "/meta/country"
+                          ? "bg-primary_text dark:bg-secondary_text text-white"
+                          : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                      }`}
+                    >
+                      <BsFlagFill size={20} />
+                      <p className={` font-normal  text-sm`}>Country</p>
                     </Link>
                     <Link
-                      href={"/timesheet/monthly"}
+                      href={"/meta/currency"}
+                      prefetch={true}
+                      className={`flex gap-2 items-center py-3 pb-1 px-2 rounded-md ${
+                        pathname === "/meta/currency"
+                          ? "bg-primary_text dark:bg-secondary_text text-white"
+                          : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                      }`}
+                    >
+                      <HiCurrencyDollar size={20} />
+                      <p className={` font-normal  text-sm`}>Currency</p>
+                    </Link>
+
+                    <Link
+                      href={"/meta/faqs"}
+                      prefetch={true}
+                      className={`flex gap-2 items-center py-3 pb-1 px-2 rounded-md ${
+                        pathname === "/meta/faqs"
+                          ? "bg-primary_text dark:bg-secondary_text text-white"
+                          : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                      }`}
+                    >
+                      <RiQuestionnaireFill size={20} />
+                      <p className={` font-normal  text-sm`}>FAQs</p>
+                    </Link>
+
+                    <Link
+                      href={"/meta/privacy-policy"}
+                      prefetch={true}
+                      className={`flex gap-2 items-center py-3 pb-1 px-2 rounded-md ${
+                        pathname === "/meta/privacy-policy"
+                          ? "bg-primary_text dark:bg-secondary_text text-white"
+                          : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                      }`}
+                    >
+                      <BsFileEarmarkLock2 size={20} />
+                      <p className={` font-normal  text-sm`}>Privacy Policy</p>
+                    </Link>
+
+                    <Link
+                      href={"/meta/terms-and-conditions"}
+                      prefetch={true}
+                      className={`flex gap-2 items-center py-3 pb-1 px-2 rounded-md ${
+                        pathname === "/meta/terms-and-conditions"
+                          ? "bg-primary_text dark:bg-secondary_text text-white"
+                          : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                      }`}
+                    >
+                      <HiOutlineClipboardDocumentCheck size={20} />
+                      <p className={` font-normal  text-sm`}>
+                        Terms and Conditions
+                      </p>
+                    </Link>
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="item-3">
+                  <AccordionTrigger
+                    className={`py-3 pb-1 px-4 rounded-md hover:bg-shadow_gray dark:hover:bg-vl_gray`}
+                  >
+                    <span
+                      className={`flex gap-3 items-center dark:text-white text-text_gray`}
+                    >
+                      <IoCalendarSharp size={20} />
+                      <p className={` font-normal  text-sm `}>Event</p>
+                    </span>
+                  </AccordionTrigger>
+                  <AccordionContent className="flex flex-col pt-2 sm:pl-6 gap-1">
+                    <Link
+                      href={"/event/event-create"}
+                      prefetch={true}
+                      className={`flex gap-3 items-center py-3 pb-1 px-4 rounded-md ${
+                        pathname === "/event/event-create"
+                          ? "bg-primary_text dark:bg-secondary_text text-white"
+                          : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                      }`}
+                    >
+                      <TbCalendarPlus size={20} />
+                      <p className="font-normal text-sm"> Event Create</p>
+                    </Link>
+
+                    <Link
+                      href={"/event/event-fee"}
+                      prefetch={true}
+                      className={`flex gap-3 items-center py-3 pb-1 px-4 rounded-md ${
+                        pathname === "/event/event-fee"
+                          ? "bg-primary_text dark:bg-secondary_text text-white"
+                          : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                      }`}
+                    >
+                      <TbCalendarDollar size={20} />
+                      <p className={` font-normal  text-sm `}>Event Fee</p>
+                    </Link>
+
+                    <Link
+                      href={"/event/event-book"}
+                      prefetch={true}
+                      className={`flex gap-3 items-center py-3 pb-1 px-4 rounded-md ${
+                        pathname === "/event/event-book"
+                          ? "bg-primary_text dark:bg-secondary_text text-white"
+                          : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                      }`}
+                    >
+                      <TbCalendarCheck size={20} />
+                      <p className={` font-normal  text-sm `}>Event Book</p>
+                    </Link>
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="item-4">
+                  <AccordionTrigger
+                    className={`py-3 pb-1 px-4 rounded-md hover:bg-shadow_gray dark:hover:bg-vl_gray`}
+                  >
+                    <span
+                      className={`flex gap-3 items-center dark:text-white text-text_gray`}
+                    >
+                      <FaAddressCard size={20} />
+                      <p className={` font-normal  text-sm`}>Membership</p>
+                    </span>
+                  </AccordionTrigger>
+                  <AccordionContent className="flex flex-col pt-2 sm:pl-6 gap-1">
+                    <Link
+                      href={"/membership/membership"}
                       prefetch={true}
                       className={`${
-                        pathname === "/timesheet/monthly"
-                          ? "bg-bg_orange text-white"
-                          : "dark:text-white text-text_gray"
-                      } py-1 px-4 rounded-3xl font-normal  text-sm`}
+                        pathname === "/membership/membership"
+                          ? "bg-primary_text dark:bg-secondary_text text-white"
+                          : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                      } py-3 pb-1 px-4 rounded-md font-normal  text-sm`}
                     >
-                      Monthly
+                      Membership
+                    </Link>
+                    <Link
+                      href={"/membership/membership-type"}
+                      prefetch={true}
+                      className={`${
+                        pathname === "/membership/membership-type"
+                          ? "bg-primary_text dark:bg-secondary_text text-white"
+                          : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                      } py-3 pb-1 px-4 rounded-md font-normal  text-sm`}
+                    >
+                      Membership Type
+                    </Link>
+                    <Link
+                      href={"/membership/project-discount"}
+                      prefetch={true}
+                      className={`${
+                        pathname === "/membership/project-discount"
+                          ? "bg-primary_text dark:bg-secondary_text text-white"
+                          : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                      } py-3 pb-1 px-4 rounded-md font-normal  text-sm`}
+                    >
+                      Project Discount
+                    </Link>
+                    <Link
+                      href={"/membership/type-discount"}
+                      prefetch={true}
+                      className={`${
+                        pathname === "/membership/type-discount"
+                          ? "bg-primary_text dark:bg-secondary_text text-white"
+                          : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                      } py-3 pb-1 px-4 rounded-md font-normal  text-sm`}
+                    >
+                      Type Discount
+                    </Link>
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="item-5">
+                  <AccordionTrigger
+                    className={`py-3 pb-1 px-4 rounded-md hover:bg-shadow_gray dark:hover:bg-vl_gray`}
+                  >
+                    <span
+                      className={`flex gap-3 items-center dark:text-white text-text_gray`}
+                    >
+                      <PiNetworkFill size={20} />
+                      <p className={` font-normal  text-sm`}>Referral</p>
+                    </span>
+                  </AccordionTrigger>
+                  <AccordionContent className="flex flex-col pt-2 sm:pl-6 gap-1">
+                    <Link
+                      href={"/referral/referral"}
+                      prefetch={true}
+                      className={`${
+                        pathname === "/referral/referral"
+                          ? "bg-primary_text dark:bg-secondary_text text-white"
+                          : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                      } py-3 pb-1 px-4 rounded-md font-normal  text-sm`}
+                    >
+                      Referral
+                    </Link>
+                    <Link
+                      href={"/referral/business-referral"}
+                      prefetch={true}
+                      className={`${
+                        pathname === "/referral/business-referral"
+                          ? "bg-primary_text dark:bg-secondary_text text-white"
+                          : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                      } py-3 pb-1 px-4 rounded-md font-normal  text-sm`}
+                    >
+                      Business Referral
+                    </Link>
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="item-6">
+                  <AccordionTrigger
+                    className={`py-3 pb-1 px-4 rounded-md hover:bg-shadow_gray dark:hover:bg-vl_gray`}
+                  >
+                    <span
+                      className={`flex gap-3 items-center dark:text-white text-text_gray`}
+                    >
+                      <IoWalletSharp size={20} />
+                      <p className={` font-normal  text-sm`}>Wallet</p>
+                    </span>
+                  </AccordionTrigger>
+                  <AccordionContent className="flex flex-col pt-2 sm:pl-6 gap-1">
+                    <Link
+                      href="/wallet/transaction"
+                      prefetch={true}
+                      className={`flex gap-3 items-center py-3 pb-1 px-4 rounded-md ${
+                        pathname === "/wallet/transaction"
+                          ? "bg-primary_text dark:bg-secondary_text text-white"
+                          : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                      }`}
+                    >
+                      <GrTransaction size={20} />
+                      <p className={` font-normal  text-sm`}>Transaction</p>
+                    </Link>
+                    <Link
+                      href="/wallet/user-wallet"
+                      prefetch={true}
+                      className={`flex gap-3 items-center py-3 pb-1 px-4 rounded-md ${
+                        pathname === "/wallet/user-wallet"
+                          ? "bg-primary_text dark:bg-secondary_text text-white"
+                          : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                      }`}
+                    >
+                      <IoWalletOutline size={20} />
+                      <p className={` font-normal  text-sm`}>User Wallet</p>
                     </Link>
                   </AccordionContent>
                 </AccordionItem>
               </Accordion>
-              <Link href="/report" prefetch={true}>
-                <span
-                  className={`flex gap-4 items-center py-1 px-4 rounded-3xl ${
-                    pathname === "/report" ? "bg-bg_orange" : ""
-                  }`}
-                >
-                  <HiOutlineDocumentReport
-                    size={20}
-                    className={`${
-                      pathname === "/report"
-                        ? "text-white"
-                        : "dark:text-white text-text_gray"
-                    }`}
-                  />
-                  <p
-                    className={` font-normal  text-sm ${
-                      pathname === "/report"
-                        ? "text-white"
-                        : "dark:text-white text-text_gray"
-                    }`}
-                  >
-                    Reports
-                  </p>
-                </span>
+
+              <Link
+                href="/kyc"
+                prefetch={true}
+                className={`flex gap-3 items-center py-3 pb-1 px-4 rounded-md ${
+                  pathname === "/kyc"
+                    ? "bg-primary_text dark:bg-secondary_text text-white"
+                    : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                }`}
+              >
+                <GrDocumentVerified size={20} />
+                <p className={` font-normal  text-sm`}>KYC</p>
               </Link>
-              <Link href="/tasks" prefetch={true}>
-                <span
-                  className={`flex gap-4 items-center py-1 px-4 rounded-3xl ${
-                    pathname === "/tasks" ? "bg-bg_orange" : ""
-                  }`}
-                >
-                  <LiaTasksSolid
-                    size={20}
-                    className={`${
-                      pathname === "/tasks"
-                        ? "text-white"
-                        : "dark:text-white text-text_gray"
-                    }`}
-                  />
-                  <p
-                    className={` font-normal  text-sm ${
-                      pathname === "/tasks"
-                        ? "text-white"
-                        : "dark:text-white text-text_gray"
-                    }`}
-                  >
-                    Tasks
-                  </p>
-                </span>
+
+              <Link
+                href="/notification"
+                prefetch={true}
+                className={`flex gap-3 items-center py-3 pb-1 px-4 rounded-md ${
+                  pathname === "/notification"
+                    ? "bg-primary_text dark:bg-secondary_text text-white"
+                    : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                }`}
+              >
+                <IoIosNotifications size={20} />
+                <p className={` font-normal  text-sm`}>Notification</p>
               </Link>
-              <Link href="/clock" prefetch={true}>
-                <span
-                  className={`flex gap-4 items-center py-1 px-4 rounded-3xl ${
-                    pathname === "/clock" ? "bg-bg_orange" : ""
-                  }`}
-                >
-                  <CiClock2
-                    size={20}
-                    className={`${
-                      pathname === "/clock"
-                        ? "text-white"
-                        : "dark:text-white text-text_gray"
-                    }`}
-                  />
-                  <p
-                    className={`" font-normal  text-sm ${
-                      pathname === "/clock"
-                        ? "text-white"
-                        : "dark:text-white text-text_gray"
-                    }`}
-                  >
-                    Clock In/Out
-                  </p>
-                </span>
+
+              <Link
+                href="/partners"
+                prefetch={true}
+                className={`flex gap-3 items-center py-3 pb-1 px-4 rounded-md ${
+                  pathname === "/partners"
+                    ? "bg-primary_text dark:bg-secondary_text text-white"
+                    : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                }`}
+              >
+                <FaHandshake size={20} />
+                <p className={` font-normal  text-sm`}>Partners</p>
               </Link>
-              <Link href="/projects" prefetch={true}>
-                <span
-                  className={`flex gap-4 items-center py-1 px-4 rounded-3xl ${
-                    pathname === "/projects" ? "bg-bg_orange" : ""
-                  }`}
-                >
-                  <MdOutlineEditNote
-                    size={20}
-                    className={`${
-                      pathname === "/projects"
-                        ? "text-white"
-                        : "dark:text-white text-text_gray"
-                    }`}
-                  />
-                  <p
-                    className={` font-normal  text-sm ${
-                      pathname === "/projects"
-                        ? "text-white"
-                        : "dark:text-white text-text_gray"
-                    }`}
-                  >
-                    Projects
-                  </p>
-                </span>
+
+              <Link
+                href="/project"
+                prefetch={true}
+                className={`flex gap-3 items-center py-3 pb-1 px-4 rounded-md ${
+                  pathname === "/project"
+                    ? "bg-primary_text dark:bg-secondary_text text-white"
+                    : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                }`}
+              >
+                <MdOutlineEditNote size={20} />
+                <p className={` font-normal  text-sm `}>Project</p>
               </Link>
-              <Link href="/clients" prefetch={true}>
-                <span
-                  className={`flex gap-4 items-center py-1 px-4 rounded-3xl ${
-                    pathname === "/clients" ? "bg-bg_orange" : ""
-                  }`}
-                >
-                  <HiOutlineUsers
-                    size={20}
-                    className={`${
-                      pathname === "/clients"
-                        ? "text-white"
-                        : "dark:text-white text-text_gray"
-                    }`}
-                  />
-                  <p
-                    className={` font-normal  text-sm ${
-                      pathname === "/clients"
-                        ? "text-white"
-                        : "dark:text-white text-text_gray"
-                    }`}
-                  >
-                    Clients
-                  </p>
-                </span>
+
+              <Link
+                href="/subscription"
+                prefetch={true}
+                className={`flex gap-3 items-center py-3 pb-1 px-4 rounded-md ${
+                  pathname === "/subscription"
+                    ? "bg-primary_text dark:bg-secondary_text text-white"
+                    : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                }`}
+              >
+                <MdOutlineSubscriptions size={20} />
+                <p className={` font-normal  text-sm `}>Subscription</p>
+              </Link>
+
+              <Link
+                href="/withdraw"
+                prefetch={true}
+                className={`flex gap-3 items-center py-3 pb-1 px-4 rounded-md ${
+                  pathname === "/withdraw"
+                    ? "bg-primary_text dark:bg-secondary_text text-white"
+                    : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                }`}
+              >
+                <PiHandWithdraw size={20} />
+                <p className={` font-normal  text-sm`}>Withdraw</p>
               </Link>
             </div>
             {status === "authenticated" ? (
               <Button
                 onClick={handleLogout}
-                className="bg-bg_orange hover:bg-l_orange text-white w-full  h-8 self-center rounded-lg"
+                className="bg-primary_text dark:bg-secondary_text hover:bg-l_orange dark:hover:bg-blue text-white w-full  h-8 mb-6 self-center rounded-lg"
               >
                 Sign out
               </Button>
             ) : (
-              ""
+              " "
             )}
           </div>
         </CollapsibleContent>
@@ -391,51 +656,415 @@ const SideBar = () => {
 
       {/* Render only icons when the collapsible sidebar is closed */}
       {!isOpen && (
-        <div className="flex flex-col items-center gap-4">
-          <Link href="/" prefetch={true}>
+        <div className="flex flex-col items-start gap-4">
+          <Link href="/" prefetch={true} className="pl-2">
             <RxDashboard
               size={20}
               className={`${
                 pathname === "/"
-                  ? "text-bg_orange"
+                  ? "text-primary_text dark:text-secondary_text"
                   : "dark:text-white text-text_gray"
               }`}
             />
           </Link>
-          <Link href="/live-feed" prefetch={true}>
-            <BsCameraVideo
-              size={20}
-              className={`${
-                pathname === "/live-feed"
-                  ? "text-bg_orange"
-                  : "dark:text-white text-text_gray"
-              }`}
-            />
-          </Link>
-          <Link href="/users" prefetch={true}>
-            <HiOutlineUsers
+          <Link href="/users" prefetch={true} className="pl-2">
+            <FaUserGroup
               size={20}
               className={`${
                 pathname === "/users"
-                  ? "text-bg_orange"
+                  ? "text-primary_text dark:text-secondary_text"
                   : "dark:text-white text-text_gray"
               }`}
             />
           </Link>
-          <Link href="/report" prefetch={true}>
-            <HiOutlineDocumentReport
+          <Link href="/station" prefetch={true} className="pl-2">
+            <BsFillHouseFill
               size={20}
               className={`${
-                pathname === "/report"
-                  ? "text-bg_orange"
+                pathname === "/station"
+                  ? "text-primary_text dark:text-secondary_text"
                   : "dark:text-white text-text_gray"
               }`}
             />
           </Link>
-          {/* Add other icons similarly for Timesheets, Clock, etc. */}
+          <Accordion
+            type="single"
+            collapsible
+            value={accordionValue}
+            onValueChange={setAccordionValue}
+            className="flex flex-col gap-2"
+          >
+            <AccordionItem value="item-1">
+              <AccordionTrigger className={`py-3 pb-1 px-2 rounded-md `}>
+                <span
+                  className={`flex gap-3 items-center dark:text-white text-text_gray`}
+                >
+                  <FaMoneyBillTransfer size={20} />
+                </span>
+              </AccordionTrigger>
+              <AccordionContent className="flex flex-col pt-2 pl-2 gap-1">
+                <Link
+                  href={"/overall-transaction/total-billing"}
+                  prefetch={true}
+                  className={`${
+                    pathname === "/overall-transaction/total-billing"
+                      ? "bg-primary_text dark:bg-secondary_text text-white"
+                      : "dark:text-white text-text_gray"
+                  } py-3 pb-1 px-2 rounded-md font-normal  text-sm flex items-center justify-center`}
+                >
+                  TB
+                </Link>
+                <Link
+                  href={"/overall-transaction/total-business"}
+                  prefetch={true}
+                  className={`${
+                    pathname === "/overall-transaction/total-business"
+                      ? "bg-primary_text dark:bg-secondary_text text-white"
+                      : "dark:text-white text-text_gray"
+                  } py-3 pb-1 px-2 rounded-md font-normal  text-sm flex items-center justify-center`}
+                >
+                  TB
+                </Link>
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="item-2">
+              <AccordionTrigger className={`py-3 pb-1 px-2 rounded-md `}>
+                <span
+                  className={`flex gap-3 items-center dark:text-white text-text_gray`}
+                >
+                  <ImDatabase size={18} />
+                </span>
+              </AccordionTrigger>
+              <AccordionContent className="flex flex-col pt-2 pl-2 gap-1">
+                <Link
+                  href={"/meta/business-type"}
+                  prefetch={true}
+                  className={`flex items-center justify-center py-3 pb-1 px-2 rounded-md ${
+                    pathname === "/meta/business-type"
+                      ? "bg-primary_text dark:bg-secondary_text text-white"
+                      : "dark:text-white text-text_gray "
+                  }`}
+                >
+                  <BsFillBriefcaseFill size={20} />
+                </Link>
+
+                <Link
+                  href={"/meta/company-info"}
+                  prefetch={true}
+                  className={`flex justify-center items-center py-3 pb-1 px-2 rounded-md ${
+                    pathname === "/meta/company-info"
+                      ? "bg-primary_text dark:bg-secondary_text text-white"
+                      : "dark:text-white text-text_gray "
+                  }`}
+                >
+                  <AiFillInfoCircle size={20} />
+                </Link>
+
+                <Link
+                  href={"/meta/continent"}
+                  prefetch={true}
+                  className={`flex justify-center items-center py-3 pb-1 px-2 rounded-md ${
+                    pathname === "/meta/continent"
+                      ? "bg-primary_text dark:bg-secondary_text text-white"
+                      : "dark:text-white text-text_gray "
+                  }`}
+                >
+                  <FaGlobeAmericas size={20} />
+                </Link>
+
+                <Link
+                  href={"/meta/country"}
+                  prefetch={true}
+                  className={`flex justify-center items-center py-3 pb-1 px-2 rounded-md ${
+                    pathname === "/meta/country"
+                      ? "bg-primary_text dark:bg-secondary_text text-white"
+                      : "dark:text-white text-text_gray "
+                  }`}
+                >
+                  <BsFlagFill size={20} />
+                </Link>
+                <Link
+                  href={"/meta/currency"}
+                  prefetch={true}
+                  className={`flex justify-center items-center py-3 pb-1 px-2 rounded-md ${
+                    pathname === "/meta/currency"
+                      ? "bg-primary_text dark:bg-secondary_text text-white"
+                      : "dark:text-white text-text_gray "
+                  }`}
+                >
+                  <HiCurrencyDollar size={20} />
+                </Link>
+
+                <Link
+                  href={"/meta/faqs"}
+                  prefetch={true}
+                  className={`flex justify-center items-center py-3 pb-1 px-2 rounded-md ${
+                    pathname === "/meta/faqs"
+                      ? "bg-primary_text dark:bg-secondary_text text-white"
+                      : "dark:text-white text-text_gray "
+                  }`}
+                >
+                  <RiQuestionnaireFill size={20} />
+                </Link>
+
+                <Link
+                  href={"/meta/privacy-policy"}
+                  prefetch={true}
+                  className={`flex justify-center items-center py-3 pb-1 px-2 rounded-md ${
+                    pathname === "/meta/privacy-policy"
+                      ? "bg-primary_text dark:bg-secondary_text text-white"
+                      : "dark:text-white text-text_gray "
+                  }`}
+                >
+                  <BsFileEarmarkLock2 size={20} />
+                </Link>
+
+                <Link
+                  href={"/meta/terms-and-conditions"}
+                  prefetch={true}
+                  className={`flex justify-center items-center py-3 pb-1 px-2 rounded-md ${
+                    pathname === "/meta/terms-and-conditions"
+                      ? "bg-primary_text dark:bg-secondary_text text-white"
+                      : "dark:text-white text-text_gray "
+                  }`}
+                >
+                  <HiOutlineClipboardDocumentCheck size={20} />
+                </Link>
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="item-3">
+              <AccordionTrigger className={`py-3 pb-1 px-2 rounded-md `}>
+                <span className={` dark:text-white text-text_gray`}>
+                  <IoCalendarSharp size={20} />
+                </span>
+              </AccordionTrigger>
+              <AccordionContent className="flex flex-col pt-2 pl-2 gap-1">
+                <Link
+                  href={"/event/event-create"}
+                  prefetch={true}
+                  className={`flex justify-center items-center py-3 pb-1 px-2 rounded-md ${
+                    pathname === "/event/event-create"
+                      ? "bg-primary_text dark:bg-secondary_text text-white"
+                      : "dark:text-white text-text_gray "
+                  }`}
+                >
+                  <TbCalendarPlus size={20} />
+                </Link>
+
+                <Link
+                  href={"/event/event-fee"}
+                  prefetch={true}
+                  className={`flex justify-center items-center py-3 pb-1 px-2 rounded-md ${
+                    pathname === "/event/event-fee"
+                      ? "bg-primary_text dark:bg-secondary_text text-white"
+                      : "dark:text-white text-text_gray "
+                  }`}
+                >
+                  <TbCalendarDollar size={20} />
+                </Link>
+
+                <Link
+                  href={"/event/event-book"}
+                  prefetch={true}
+                  className={`flex justify-center items-center py-3 pb-1 px-2 rounded-md ${
+                    pathname === "/event/event-book"
+                      ? "bg-primary_text dark:bg-secondary_text text-white"
+                      : "dark:text-white text-text_gray "
+                  }`}
+                >
+                  <TbCalendarCheck size={20} />
+                </Link>
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="item-4">
+              <AccordionTrigger className={`py-3 pb-1 px-2 rounded-md `}>
+                <span className={` dark:text-white text-text_gray`}>
+                  <FaAddressCard size={20} />
+                </span>
+              </AccordionTrigger>
+              <AccordionContent className="flex flex-col pt-2 pl-2 gap-1">
+                <Link
+                  href={"/membership/membership"}
+                  prefetch={true}
+                  className={`${
+                    pathname === "/membership/membership"
+                      ? "bg-primary_text dark:bg-secondary_text text-white"
+                      : "dark:text-white text-text_gray"
+                  } py-3 pb-1 px-2 rounded-md font-normal  text-sm`}
+                >
+                  Membership
+                </Link>
+                <Link
+                  href={"/membership/membership-type"}
+                  prefetch={true}
+                  className={`${
+                    pathname === "/membership/membership-type"
+                      ? "bg-primary_text dark:bg-secondary_text text-white"
+                      : "dark:text-white text-text_gray"
+                  } py-3 pb-1 px-2 rounded-md font-normal  text-sm`}
+                >
+                  Membership Type
+                </Link>
+                <Link
+                  href={"/membership/project-discount"}
+                  prefetch={true}
+                  className={`${
+                    pathname === "/membership/project-discount"
+                      ? "bg-primary_text dark:bg-secondary_text text-white"
+                      : "dark:text-white text-text_gray"
+                  } py-3 pb-1 px-2 rounded-md font-normal  text-sm`}
+                >
+                  Project Discount
+                </Link>
+                <Link
+                  href={"/membership/type-discount"}
+                  prefetch={true}
+                  className={`${
+                    pathname === "/membership/type-discount"
+                      ? "bg-primary_text dark:bg-secondary_text text-white"
+                      : "dark:text-white text-text_gray"
+                  } py-3 pb-1 px-2 rounded-md font-normal  text-sm`}
+                >
+                  Type Discount
+                </Link>
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="item-5">
+              <AccordionTrigger className={`py-3 pb-1 px-2 rounded-md `}>
+                <span
+                  className={`flex justify-center items-center dark:text-white text-text_gray`}
+                >
+                  <PiNetworkFill size={20} />
+                </span>
+              </AccordionTrigger>
+              <AccordionContent className="flex flex-col pt-2 pl-2 gap-1">
+                <Link
+                  href={"/referral/referral"}
+                  prefetch={true}
+                  className={`${
+                    pathname === "/referral/referral"
+                      ? "bg-primary_text dark:bg-secondary_text text-white"
+                      : "dark:text-white text-text_gray"
+                  } py-3 pb-1 px-2 rounded-md font-normal  text-sm`}
+                >
+                  Referral
+                </Link>
+                <Link
+                  href={"/referral/business-referral"}
+                  prefetch={true}
+                  className={`${
+                    pathname === "/referral/business-referral"
+                      ? "bg-primary_text dark:bg-secondary_text text-white"
+                      : "dark:text-white text-text_gray"
+                  } py-3 pb-1 px-2 rounded-md font-normal  text-sm`}
+                >
+                  Business Referral
+                </Link>
+              </AccordionContent>
+            </AccordionItem>
+
+            <AccordionItem value="item-6">
+              <AccordionTrigger className={`py-3 pb-1 px-2 rounded-md `}>
+                <span
+                  className={`flex gap-3 items-center dark:text-white text-text_gray`}
+                >
+                  <IoWalletSharp size={20} />
+                </span>
+              </AccordionTrigger>
+              <AccordionContent className="flex flex-col pt-2 pl-2 gap-1">
+                <Link
+                  href="/wallet/transaction"
+                  prefetch={true}
+                  className={`flex justify-center items-center py-3 pb-1 px-2 rounded-md ${
+                    pathname === "/wallet/transaction"
+                      ? "bg-primary_text dark:bg-secondary_text text-white"
+                      : "dark:text-white text-text_gray"
+                  }`}
+                >
+                  <GrTransaction size={20} />
+                </Link>
+                <Link
+                  href="/wallet/user-wallet"
+                  prefetch={true}
+                  className={`flex justify-center items-center py-3 pb-1 px-2 rounded-md ${
+                    pathname === "/wallet/user-wallet"
+                      ? "bg-primary_text dark:bg-secondary_text text-white"
+                      : "dark:text-white text-text_gray"
+                  }`}
+                >
+                  <IoWalletOutline size={20} />
+                </Link>
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+
+          <Link href="/kyc" prefetch={true} className="pl-2">
+            <GrDocumentVerified
+              size={20}
+              className={`${
+                pathname === "/kyc"
+                  ? "text-primary_text dark:text-secondary_text"
+                  : "dark:text-white text-text_gray"
+              }`}
+            />
+          </Link>
+          <Link href="/notification" prefetch={true} className="pl-2">
+            <IoIosNotifications
+              size={20}
+              className={`${
+                pathname === "/notification"
+                  ? "text-primary_text dark:text-secondary_text"
+                  : "dark:text-white text-text_gray"
+              }`}
+            />
+          </Link>
+          <Link href="/partners" prefetch={true} className="pl-2">
+            <FaHandshake
+              size={20}
+              className={`${
+                pathname === "/partners"
+                  ? "text-primary_text dark:text-secondary_text"
+                  : "dark:text-white text-text_gray"
+              }`}
+            />
+          </Link>
+          <Link href="/project" prefetch={true} className="pl-2">
+            <MdOutlineEditNote
+              size={20}
+              className={`${
+                pathname === "/project"
+                  ? "text-primary_text dark:text-secondary_text"
+                  : "dark:text-white text-text_gray"
+              }`}
+            />
+          </Link>
+          <Link href="/subscription" prefetch={true} className="pl-2">
+            <MdOutlineSubscriptions
+              size={20}
+              className={`${
+                pathname === "/subscription"
+                  ? "text-primary_text dark:text-secondary_text"
+                  : "dark:text-white text-text_gray"
+              }`}
+            />
+          </Link>
+          <Link href="/withdraw" prefetch={true} className="pl-2">
+            <PiHandWithdraw
+              size={20}
+              className={`${
+                pathname === "/withdraw"
+                  ? "text-primary_text dark:text-secondary_text"
+                  : "dark:text-white text-text_gray"
+              }`}
+            />
+          </Link>
         </div>
       )}
-    </div>
+    </ScrollArea>
   );
 };
 

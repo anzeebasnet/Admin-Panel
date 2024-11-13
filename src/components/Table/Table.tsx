@@ -39,7 +39,7 @@ const TableComponent = () => {
 
   return (
     <div className=" py-6">
-      <table className="min-w-full bg-white dark:bg-dark_gray border border-gray-200">
+      <table className="min-w-full bg-white dark:bg-card_dark border border-gray-200">
         <thead>
           <tr>
             <th className="px-4 py-2 border-b">ID</th>
@@ -62,7 +62,7 @@ const TableComponent = () => {
 
       <button
         onClick={handleExport}
-        className="mt-4 bg-bg_orange bg-blue-500 text-white px-4 py-2 rounded "
+        className="mt-4 bg-primary_text bg-blue-500 text-white px-4 py-2 rounded "
       >
         Export to Excel
       </button>

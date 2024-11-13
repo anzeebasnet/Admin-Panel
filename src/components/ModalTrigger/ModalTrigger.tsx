@@ -19,13 +19,13 @@ const ModalTrigger = () => {
       <div className="lg:col-span-2 sm:col-span-2 ">
         <button
           onClick={openModal}
-          className="sm:w-full w-32 sm:h-10 h-8 rounded-md bg-bg_orange sm:font-semibold font-medium sm:font-xl font-base text-white"
+          className="sm:w-full w-32 sm:h-10 h-8 rounded-md bg-primary_text sm:font-semibold font-medium sm:font-xl font-base text-white"
         >
           Open
         </button>
       </div>
       <div className="z-50">
-        <Modal isOpen={isModalOpen} onClose={closeModal} />
+        <Modal isOpen={isModalOpen} onClose={closeModal} heading="heading" />
       </div>
     </div>
   );

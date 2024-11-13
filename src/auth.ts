@@ -25,7 +25,7 @@ async function refreshAccessToken(token: any) {
   }
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASEAPI}auth/token/refresh/`,
+      `${process.env.NEXT_PUBLIC_SERVERURL}auth/token/refresh/`,
       {
         method: "POST",
         headers: {
@@ -72,7 +72,7 @@ export const {
 } = NextAuth({
   session: {
     strategy: "jwt",
-    maxAge: 24 * 60 * 60, // 1 Day
+    maxAge: 2 * 60 * 60, 
   },
   pages: {
     signIn: "/auth/login",
@@ -87,7 +87,7 @@ export const {
         console.log("Credentials:",credentials)
           try {
             const res: any = await fetch(
-              `${process.env.NEXT_PUBLIC_NEXTAUTH_SERVERURL}/auth/login/`,
+              `${process.env.NEXT_PUBLIC_SERVERURL}/auth/login/`,
               // `${process.env.NEXT_PUBLIC_BASEAPI}/admin/auth/login/`,
               {
                 method: "POST",

@@ -117,7 +117,7 @@ export function LogInForm() {
   return (
     <div
       className={
-        " sm:w-[45vw] md:w-[45vw] lg:w-[35vw] 2xl:w-[20vw]  px-8 py-4 flex flex-col gap-4 dark:bg-dark_gray bg-white rounded-md"
+        " sm:w-[45vw] md:w-[45vw] lg:w-[35vw] 2xl:w-[20vw]  px-8 py-4 flex flex-col gap-4 dark:bg-card_dark bg-white rounded-md"
       }
     >
       <h1 className="sm:text-3xl text-2xl font-bold">Login</h1>
@@ -204,7 +204,7 @@ export function LogInForm() {
 
           <Button
             type="submit"
-            className="bg-bg_orange hover:bg-btnBlue/80 w-full sm:h-12 h-8 self-center rounded-lg"
+            className="bg-primary_text hover:bg-btnBlue/80 w-full sm:h-12 h-8 self-center rounded-lg"
           >
             {isSubmitting ? <Loader /> : "Sign in"}
           </Button>

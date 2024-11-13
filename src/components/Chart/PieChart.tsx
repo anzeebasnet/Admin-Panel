@@ -62,13 +62,16 @@ export function Piechart() {
   }, []);
 
   return (
-    <Card className="flex flex-col dark:bg-dark_gray bg-white  border-none sm:w-[40%] w-full">
+    <Card className="flex flex-col dark:bg-card_dark bg-white  border-none sm:w-[40%] w-full">
       <CardHeader className="items-center pb-0">
         <div className="flex justify-evenly w-full">
           <CardTitle className="text-lg dark:text-white text-black font-medium ">
             Top Assigned Project
           </CardTitle>
-          <BiDotsVerticalRounded size={25} className="place-self-end self-end dark:text-white text-black"/>
+          <BiDotsVerticalRounded
+            size={25}
+            className="place-self-end self-end dark:text-white text-black"
+          />
         </div>
         <CardDescription></CardDescription>
       </CardHeader>

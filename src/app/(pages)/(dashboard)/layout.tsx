@@ -5,6 +5,10 @@ import SideBar from "@/components/SideBar/SideBar";
 import Header from "@/components/Header/Header";
 import { ThemeProvider } from "@/components/ThemeProvider/ThemeProvider";
 import { AuthProvider } from "@/app/Provider";
+import QueryProvider from "@/lib/react-query/QueryProvider";
+import NextTopLoader from "nextjs-toploader";
+import StoreProvider from "./StoreProvider";
+import { Toaster } from "react-hot-toast";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,25 +24,31 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`bg-gray dark:bg-bg_blue ${inter.className}`}>
-        <AuthProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <div className="flex h-screen container">
-              <SideBar />
-              <div className="flex flex-col flex-1 h-screen">
-                <Header />
-                <div className="flex-1 sm:p-4 sm:pt-2 p-2 h-0 min-h-0 overflow-y-auto">
-                  {children}
+      <body className={`${inter.className}`}>
+        <QueryProvider>
+          <AuthProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="system"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <StoreProvider>
+                <div className="flex h-screen">
+                  <SideBar />
+                  <div className="flex flex-col flex-1 h-screen">
+                    <Header />
+                    <div className="flex-1 bg-primary_light dark:bg-primary_dark sm:p-4  p-2 h-0 min-h-0 overflow-y-auto">
+                      <NextTopLoader color="#fe9443" showSpinner={false} />
+                      <Toaster />
+                      {children}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          </ThemeProvider>
-        </AuthProvider>
+              </StoreProvider>
+            </ThemeProvider>
+          </AuthProvider>
+        </QueryProvider>
       </body>
     </html>
   );

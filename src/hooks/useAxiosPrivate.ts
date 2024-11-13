@@ -9,9 +9,14 @@ const useAxiosPrivate = () => {
   useEffect(() => {
     const requestInterceptor = axiosPrivate.interceptors.request.use(
       (config) => {
-        if (session?.user.token) {
-          config.headers["Authorization"] = `Bearer ${session.accessToken}`;
+        // Ensure correct token reference
+        const token = session?.accessToken || session?.user.token;
+        if (token) {
+          config.headers["Authorization"] = `Bearer ${token}`;
+        } else {
+          console.warn("No token found in session");
         }
+        console.log("Request headers:", config.headers); // Debugging line
         return config;
       },
       (error) => Promise.reject(error)
@@ -19,10 +24,7 @@ const useAxiosPrivate = () => {
 
     const responseInterceptor = axiosPrivate.interceptors.response.use(
       (response) => response,
-      (error) => {
-        // Handle specific response errors if necessary
-        return Promise.reject(error);
-      }
+      (error) => Promise.reject(error)
     );
 
     return () => {

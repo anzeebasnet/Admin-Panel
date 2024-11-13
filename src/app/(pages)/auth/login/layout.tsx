@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "../../../globals.css";
 import { ThemeProvider } from "@/components/ThemeProvider/ThemeProvider";
 import { Toaster } from "react-hot-toast";
+import QueryProvider from "@/lib/react-query/QueryProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,9 +19,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`bg-gray dark:bg-bg_blue ${inter.className}`}>
-        <Toaster position="top-center" />
-        {children}
+      <body
+        className={`bg-primary_light dark:bg-primary_dark ${inter.className}`}
+      >
+        <QueryProvider>
+          <div>
+            <Toaster position="top-center" />
+            {children}
+          </div>
+        </QueryProvider>
       </body>
     </html>
   );

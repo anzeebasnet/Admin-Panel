@@ -7,8 +7,8 @@ const ThemeToggle = () => {
   const { theme, setTheme } = useTheme();
   const [isDarkMode, setIsDarkMode] = useState(false);
 
-   // Set the initial state based on the current theme
-   useEffect(() => {
+  // Set the initial state based on the current theme
+  useEffect(() => {
     setIsDarkMode(theme === "dark");
   }, [theme]);
 
@@ -19,10 +19,7 @@ const ThemeToggle = () => {
 
   return (
     <div className="flex items-center justify-center">
-      <Switch
-        checked={isDarkMode} 
-        onCheckedChange={toggleTheme} 
-      />
+      <Switch checked={isDarkMode} onCheckedChange={toggleTheme} />
     </div>
   );
 };
