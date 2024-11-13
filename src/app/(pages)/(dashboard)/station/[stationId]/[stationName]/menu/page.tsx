@@ -109,14 +109,14 @@ const Page = ({
                   <h2 className="text-primary_text dark:text-secondary_text font-normal text-sm capitalize">
                     {menu.name}
                   </h2>
-                  <Link
+                  {/* <Link
                     href={`/station/${params.stationId}/${params.stationName}/menu/update`}
                   >
                     <CiEdit
                       size={23}
                       className="text-primary_text dark:text-white"
                     />
-                  </Link>
+                  </Link> */}
                 </div>
               </div>
             ))}

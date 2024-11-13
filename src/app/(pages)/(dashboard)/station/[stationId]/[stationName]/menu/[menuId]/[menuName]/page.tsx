@@ -106,7 +106,7 @@ const Page = ({
             className="rounded"
           />
           <div>
-            <h3 className="font-medium text-base ">{MenuName}</h3>
+            <h3 className="font-medium text-base capitalize">{MenuName}</h3>
             <h3 className="font-medium text-sm">Menu ID: {params.menuId}</h3>
             <h3 className="font-medium text-sm">
               Number of Items: {menuData?.no_of_items}
