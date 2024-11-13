@@ -94,52 +94,77 @@ const Page = ({
         </h1>
       </div>
 
-      <div className="flex flex-col gap-3">
-        <Image
-          src={menuData?.icon || ""}
-          alt="menu icon"
-          width={200}
-          height={200}
-          className="rounded"
-        />
-        <div>
-          <h3 className="font-medium text-base ">{MenuName}</h3>
-          <h3 className="font-medium text-sm">Menu ID: {params.menuId}</h3>
-          <h3 className="font-medium text-sm">
-            Number of Items: {menuData?.no_of_items}
-          </h3>
-        </div>
-        <div className="flex gap-4">
-          {menuData ? (
+      {isLoading ? (
+        <p>Loading Menu Details...</p>
+      ) : menuData ? (
+        <div className="flex flex-col gap-3">
+          <Image
+            src={menuData?.icon || ""}
+            alt="menu icon"
+            width={200}
+            height={200}
+            className="rounded"
+          />
+          <div>
+            <h3 className="font-medium text-base ">{MenuName}</h3>
+            <h3 className="font-medium text-sm">Menu ID: {params.menuId}</h3>
+            <h3 className="font-medium text-sm">
+              Number of Items: {menuData?.no_of_items}
+            </h3>
+          </div>
+          <div className="flex gap-4">
+            {menuData ? (
+              <div>
+                <Link
+                  href={`/station/${params.stationId}/${params.stationName}/menu/create`}
+                  className="bg-primary_text dark:bg-btn_blue text-white text-sm hover:bg-l_orange dark:hover:bg-blue py-1 px-4 rounded place-self-end"
+                >
+                  Edit Menu
+                </Link>
+              </div>
+            ) : (
+              ""
+            )}
             <div>
               <Link
-                href={`/station/${params.stationId}/${params.stationName}/menu/create`}
+                href={`/station/${params.stationId}/${params.stationName}/menu/${params.menuId}/${params.menuName}/items`}
                 className="bg-primary_text dark:bg-btn_blue text-white text-sm hover:bg-l_orange dark:hover:bg-blue py-1 px-4 rounded place-self-end"
               >
-                Edit Menu
+                View Items
               </Link>
             </div>
-          ) : (
-            ""
-          )}
-          <div>
-            <Link
-              href={`/station/${params.stationId}/${params.stationName}/menu/${params.menuId}/${params.menuName}/items`}
-              className="bg-primary_text dark:bg-btn_blue text-white text-sm hover:bg-l_orange dark:hover:bg-blue py-1 px-4 rounded place-self-end"
-            >
-              View Items
-            </Link>
           </div>
-        </div>
-        {/* <div>
-          <h2>Store Value</h2>
-          {menuData ? (
+          {/* <div>
+        <h2>Store Value</h2>
+        {menuData ? (
+          <div>
+            <p>{menuData?.id}</p>
+            <p>{menuData?.name}</p>
+            <p>{menuData?.no_of_items}</p>
+            <Image
+              src={menuData.icon || ""}
+              alt="banner"
+              width={200}
+              height={200}
+            />
+          </div>
+        ) : (
+          <p>Detail unavailable.</p>
+        )}
+      </div>
+
+      {isLoading ? (
+        <p>Loading....</p>
+      ) : (
+        <div>
+          <h2>Variable Value</h2>
+          {menuDetails ? (
             <div>
-              <p>{menuData?.id}</p>
-              <p>{menuData?.name}</p>
-              <p>{menuData?.no_of_items}</p>
+              <p>{menuDetails?.id}</p>
+              <p>{menuDetails?.name}</p>
+              <p>{menuDetails?.no_of_items}</p>
               <Image
-                src={menuData.icon || ""}
+                src={menuDetails.icon || ""}
                 alt="banner"
                 width={200}
                 height={200}
@@ -149,30 +174,11 @@ const Page = ({
             <p>Detail unavailable.</p>
           )}
         </div>
-
-        {isLoading ? (
-          <p>Loading....</p>
-        ) : (
-          <div>
-            <h2>Variable Value</h2>
-            {menuDetails ? (
-              <div>
-                <p>{menuDetails?.id}</p>
-                <p>{menuDetails?.name}</p>
-                <p>{menuDetails?.no_of_items}</p>
-                <Image
-                  src={menuDetails.icon || ""}
-                  alt="banner"
-                  width={200}
-                  height={200}
-                />
-              </div>
-            ) : (
-              <p>Detail unavailable.</p>
-            )}
-          </div>
-        )} */}
-      </div>
+      )} */}
+        </div>
+      ) : (
+        <p>Couldn&apos;t find menu detail.</p>
+      )}
     </div>
   );
 };

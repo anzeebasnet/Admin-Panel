@@ -4,7 +4,12 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Open_Sans } from "next/font/google";
 import { usePathname } from "next/navigation";
-import { PiHandWithdraw, PiNetworkFill, PiSphereLight } from "react-icons/pi";
+import {
+  PiHandWithdraw,
+  PiNetwork,
+  PiNetworkFill,
+  PiSphereLight,
+} from "react-icons/pi";
 import { Anton } from "next/font/google";
 import { RxDashboard } from "react-icons/rx";
 import {
@@ -16,7 +21,12 @@ import {
 } from "react-icons/bs";
 import { HiCurrencyDollar } from "react-icons/hi";
 import { GrDocumentVerified, GrTransaction } from "react-icons/gr";
-import { MdOutlineEditNote, MdOutlineSubscriptions } from "react-icons/md";
+import {
+  MdDiscount,
+  MdOutlineDiscount,
+  MdOutlineEditNote,
+  MdOutlineSubscriptions,
+} from "react-icons/md";
 import {
   Accordion,
   AccordionContent,
@@ -39,7 +49,9 @@ import {
 } from "react-icons/io5";
 import {
   FaAddressCard,
+  FaBusinessTime,
   FaHandshake,
+  FaIdCard,
   FaMoneyBillTransfer,
   FaUserGroup,
 } from "react-icons/fa6";
@@ -51,7 +63,7 @@ import {
   TbCalendarPlus,
 } from "react-icons/tb";
 import { FaGlobeAmericas } from "react-icons/fa";
-import { RiQuestionnaireFill } from "react-icons/ri";
+import { RiBillFill, RiQuestionnaireFill } from "react-icons/ri";
 import { ImDatabase } from "react-icons/im";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
@@ -712,7 +724,7 @@ const SideBar = () => {
                       : "dark:text-white text-text_gray"
                   } py-3 pb-1 px-2 rounded-md font-normal  text-sm flex items-center justify-center`}
                 >
-                  TB
+                  <RiBillFill size={20} />
                 </Link>
                 <Link
                   href={"/overall-transaction/total-business"}
@@ -723,7 +735,7 @@ const SideBar = () => {
                       : "dark:text-white text-text_gray"
                   } py-3 pb-1 px-2 rounded-md font-normal  text-sm flex items-center justify-center`}
                 >
-                  TB
+                  <FaBusinessTime size={20} />
                 </Link>
               </AccordionContent>
             </AccordionItem>
@@ -895,7 +907,7 @@ const SideBar = () => {
                       : "dark:text-white text-text_gray"
                   } py-3 pb-1 px-2 rounded-md font-normal  text-sm`}
                 >
-                  Membership
+                  <FaAddressCard size={20} />
                 </Link>
                 <Link
                   href={"/membership/membership-type"}
@@ -906,7 +918,7 @@ const SideBar = () => {
                       : "dark:text-white text-text_gray"
                   } py-3 pb-1 px-2 rounded-md font-normal  text-sm`}
                 >
-                  Membership Type
+                  <FaIdCard size={20} />
                 </Link>
                 <Link
                   href={"/membership/project-discount"}
@@ -917,7 +929,7 @@ const SideBar = () => {
                       : "dark:text-white text-text_gray"
                   } py-3 pb-1 px-2 rounded-md font-normal  text-sm`}
                 >
-                  Project Discount
+                  <MdDiscount size={20} />
                 </Link>
                 <Link
                   href={"/membership/type-discount"}
@@ -928,7 +940,7 @@ const SideBar = () => {
                       : "dark:text-white text-text_gray"
                   } py-3 pb-1 px-2 rounded-md font-normal  text-sm`}
                 >
-                  Type Discount
+                  <MdOutlineDiscount size={20} />
                 </Link>
               </AccordionContent>
             </AccordionItem>
@@ -951,7 +963,7 @@ const SideBar = () => {
                       : "dark:text-white text-text_gray"
                   } py-3 pb-1 px-2 rounded-md font-normal  text-sm`}
                 >
-                  Referral
+                  <PiNetworkFill size={20} />
                 </Link>
                 <Link
                   href={"/referral/business-referral"}
@@ -962,7 +974,7 @@ const SideBar = () => {
                       : "dark:text-white text-text_gray"
                   } py-3 pb-1 px-2 rounded-md font-normal  text-sm`}
                 >
-                  Business Referral
+                  <PiNetwork size={20} />
                 </Link>
               </AccordionContent>
             </AccordionItem>
