@@ -49,9 +49,6 @@ const Page = ({
       );
       console.log(res.data.data);
       setStationList(res.data.data);
-      // const matchedData = getStationDetails(params.stationId);
-      // setStationDetails(matchedData);
-      // if (stationDetails) dispatch(setStationData(stationDetails));
     } catch (error) {
       console.log(error);
     } finally {
