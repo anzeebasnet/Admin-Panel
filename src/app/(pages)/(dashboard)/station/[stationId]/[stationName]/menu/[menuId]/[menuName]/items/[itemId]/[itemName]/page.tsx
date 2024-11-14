@@ -116,6 +116,9 @@ const Page = ({
             </h3>
             <h3 className="font-medium text-sm">Id: {foodDetails.id}</h3>
             <h3 className="font-medium text-sm">
+              Status: {foodDetails.is_active ? "Active" : "Inactive"}
+            </h3>
+            <h3 className="font-medium text-sm">
               Actual Price: {foodDetails?.currency_symbol}.{" "}
               {foodDetails?.actual_price}
             </h3>
