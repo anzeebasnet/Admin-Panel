@@ -14,7 +14,6 @@ import {
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -22,7 +21,7 @@ import {
 } from "@/components/ui/pagination";
 
 import { Button } from "@/components/ui/button";
-import { axiosPrivate } from "@/axios/axios";
+import axios, { axiosPrivate } from "@/axios/axios";
 import { UserListType } from "@/types/types";
 import Link from "next/link";
 import SearchForm from "@/components/Forms/SearchForm";
@@ -40,19 +39,11 @@ const Page = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [filteredData, setFilteredData] = useState<UserListType[]>([]);
   const [resetTrigger, setResetTrigger] = useState<boolean>(false);
-  // const usersPerPage = 20;
-
-  const { data: users, isLoading: isLoadingUsersList } = useUsersList(
-    currentPage,
-    setTotalPages,
-    setFilteredData,
-    setUserList
-  );
 
   const fetchUsers = async (page: number) => {
     setLoading(true);
     try {
-      const res = await axiosPrivate.get(`/admin/user/list/?page=${page}`);
+      const res = await axios.get(`/admin/user/list/?page=${page}`);
       setUserList(res.data.data);
       setFilteredData(res.data.data);
       setTotalPages(res.data.meta.total_pages);

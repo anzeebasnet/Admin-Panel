@@ -1,6 +1,5 @@
 "use client";
 
-import { axiosPrivate } from "@/axios/axios";
 import {
   Table,
   TableBody,
@@ -19,6 +18,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { clearStationData } from "@/lib/store/features/station/stationSlice";
 import { RootState } from "@/lib/store/store";
+import { useStationList } from "@/lib/react-query/queriesAndMutations";
 
 const open_sans = Open_Sans({
   weight: ["300", "400", "500", "600", "700"],
@@ -28,41 +28,17 @@ const open_sans = Open_Sans({
 const Page = () => {
   const { data: session } = useSession();
   const [stationList, setStationList] = useState<StationData[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
   const dispatch = useAppDispatch();
   const sidebar = useAppSelector(
     (state: RootState) => state.collapsible.collapse
   );
 
-  const fetchStationList = async () => {
-    try {
-      const res = await axiosPrivate.get(
-        "https://api.morefood.se/api/moreclub/stations/list/",
-        {
-          headers: {
-            Authorization: `Bearer ${
-              session?.accessToken || session?.user?.token
-            }`,
-          },
-        }
-      );
-      console.log(res.data.data);
-      setStationList(res.data.data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const { data: Stations, isLoading: isloading } =
+    useStationList(setStationList);
 
   useEffect(() => {
-    // Clear the Redux station data when this page loads
     dispatch(clearStationData());
   }, [dispatch]);
-
-  useEffect(() => {
-    fetchStationList();
-  }, []);
 
   return (
     <div
@@ -81,7 +57,7 @@ const Page = () => {
           Add Station
         </Link>
       </div>
-      {isLoading ? (
+      {isloading ? (
         <p>Loading Station List...</p>
       ) : stationList && stationList.length > 0 ? (
         <div className="overflow-x-auto">

@@ -1,6 +1,6 @@
 "use client";
 
-import { axiosPrivate } from "@/axios/axios";
+import { useFoodItemList } from "@/lib/react-query/queriesAndMutations";
 import { clearFoodItem } from "@/lib/store/features/foodItem/foodItemSlice";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { FoodItem } from "@/types/types";
@@ -9,7 +9,6 @@ import { Open_Sans } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { CiEdit } from "react-icons/ci";
 import { HiPlusSmall } from "react-icons/hi2";
 
 const open_sans = Open_Sans({
@@ -30,37 +29,16 @@ const Page = ({
   const { data: session } = useSession();
   const dispatch = useAppDispatch();
   const [foodList, setFoodList] = useState<FoodItem[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const fetchMenuList = async () => {
-    try {
-      const res = await axiosPrivate.get(
-        `https://api.morefood.se/api/moreclub/station/${params.stationId}/${params.menuId}/food-items/`,
-        {
-          headers: {
-            Authorization: `Bearer ${
-              session?.accessToken || session?.user?.token
-            }`,
-          },
-        }
-      );
-      console.log(res.data.data);
-      setFoodList(res.data.data);
-    } catch (error) {
-      console.log("Error fetching Menu List");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const { data: foodItems, isLoading: isLoading } = useFoodItemList(
+    setFoodList,
+    params.stationId,
+    params.menuId
+  );
 
   useEffect(() => {
-    // Clear the Redux station data when this page loads
     dispatch(clearFoodItem());
   }, [dispatch]);
-
-  useEffect(() => {
-    fetchMenuList();
-  }, []);
 
   return (
     <div
@@ -108,14 +86,6 @@ const Page = ({
                   <h2 className="text-primary_text dark:text-secondary_text font-normal text-sm capitalize">
                     {food.name}
                   </h2>
-                  {/* <Link
-                    href={`/station/${params.stationId}/${params.stationName}/menu/update`}
-                  >
-                    <CiEdit
-                      size={23}
-                      className="text-primary_text dark:text-white"
-                    />
-                  </Link> */}
                 </div>
               </div>
             ))}

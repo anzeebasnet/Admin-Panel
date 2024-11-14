@@ -1,6 +1,6 @@
 "use client";
 
-import { axiosPrivate } from "@/axios/axios";
+import { useMenuList } from "@/lib/react-query/queriesAndMutations";
 import { clearMenuItem } from "@/lib/store/features/menu/menuSlice";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { MenuItem } from "@/types/types";
@@ -9,7 +9,6 @@ import { Open_Sans } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import { CiEdit } from "react-icons/ci";
 import { HiPlusSmall } from "react-icons/hi2";
 
 const open_sans = Open_Sans({
@@ -25,37 +24,15 @@ const Page = ({
   const { data: session } = useSession();
   const dispatch = useAppDispatch();
   const [menuList, setMenuList] = useState<MenuItem[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  const fetchMenuList = async () => {
-    try {
-      const res = await axiosPrivate.get(
-        "https://api.morefood.se/api/moreclub/station/a0d2264b-e410-4968-84ba-04010a7c344f/menu/",
-        {
-          headers: {
-            Authorization: `Bearer ${
-              session?.accessToken || session?.user?.token
-            }`,
-          },
-        }
-      );
-      console.log(res.data.data);
-      setMenuList(res.data.data);
-    } catch (error) {
-      console.log("Error fetching Menu List");
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const { data: menus, isLoading: isLoading } = useMenuList(
+    setMenuList,
+    params.stationId
+  );
 
   useEffect(() => {
-    // Clear the Redux station data when this page loads
     dispatch(clearMenuItem());
   }, [dispatch]);
-
-  useEffect(() => {
-    fetchMenuList();
-  }, []);
 
   return (
     <div
@@ -76,12 +53,6 @@ const Page = ({
               Create New Menu <HiPlusSmall size={23} />
             </div>
           </Link>
-          {/* <Link
-            href={"/station/menu/update"}
-            className="bg-primary_text dark:bg-btn_blue text-white text-sm hover:bg-l_orange dark:hover:bg-blue py-1 px-4 rounded place-self-end"
-          >
-            Update Menu
-          </Link> */}
         </div>
       </div>
       <div>
@@ -109,14 +80,6 @@ const Page = ({
                   <h2 className="text-primary_text dark:text-secondary_text font-normal text-sm capitalize">
                     {menu.name}
                   </h2>
-                  {/* <Link
-                    href={`/station/${params.stationId}/${params.stationName}/menu/update`}
-                  >
-                    <CiEdit
-                      size={23}
-                      className="text-primary_text dark:text-white"
-                    />
-                  </Link> */}
                 </div>
               </div>
             ))}
