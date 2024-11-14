@@ -138,7 +138,6 @@ const CreateMenu = ({
           });
         })
         .finally(() => {
-          dispatch(clearMenuItem());
           setLogoPreview(null);
         });
     }

@@ -25,10 +25,12 @@ import { useEffect, useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useSession } from "next-auth/react";
 import { Open_Sans } from "next/font/google";
-import { useAppSelector } from "@/lib/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { RootState } from "@/lib/store/store";
 import Image from "next/image";
 import useAxiosPrivateFood from "@/hooks/useAxiosPrivateFood";
+import toast from "react-hot-toast";
+import { clearFoodItem } from "@/lib/store/features/foodItem/foodItemSlice";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -63,7 +65,7 @@ const Page = ({
   const { data: session } = useSession();
   const axiosInstance = useAxiosPrivateFood();
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-
+  const dispatch = useAppDispatch();
   const itemData = useAppSelector(
     (state: RootState) => state.foodItem.currentFoodItems
   );
@@ -132,9 +134,20 @@ const Page = ({
         .then((response) => {
           console.log("Form submitted successfully:", response.data);
           form.reset(); // Clear form after successful submission
+          toast.success("Food item Updated Successfully!", {
+            duration: 5000,
+            position: "top-right",
+          });
         })
         .catch((error) => {
           console.error("Error submitting form:", error);
+          toast.error("Error updating food item!", {
+            duration: 5000,
+            position: "top-right",
+          });
+        })
+        .finally(() => {
+          dispatch(clearFoodItem());
         });
     } else {
       axiosInstance
@@ -150,9 +163,17 @@ const Page = ({
         .then((response) => {
           console.log("Form submitted successfully:", response.data);
           form.reset();
+          toast.success("Food Item Added Successfully!", {
+            duration: 5000,
+            position: "top-right",
+          });
         })
         .catch((error) => {
           console.error("Error submitting form:", error);
+          toast.error("Error adding food item!", {
+            duration: 5000,
+            position: "top-right",
+          });
         });
     }
   }
@@ -162,7 +183,8 @@ const Page = ({
       <h1
         className={`text-primary_text dark:text-secondary_text text-lg font-medium mb-4 ${open_sans.className}`}
       >
-        Add food items for {params.menuName}
+        {itemData ? "Update Food Item for" : "Add Food Item for"}{" "}
+        {params.menuName}
       </h1>
       <Form {...form}>
         <form
