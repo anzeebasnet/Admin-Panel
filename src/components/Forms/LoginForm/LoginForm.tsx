@@ -41,8 +41,8 @@ const StyledFormMessage = styled(FormMessage)`
 export function LogInForm() {
   const router = useRouter();
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [mounted, setMounted] = useState<boolean>(false);
 
   const [isPasswordVisible, setIsPasswordVisible] =
     useState<PasswordVisibility>({

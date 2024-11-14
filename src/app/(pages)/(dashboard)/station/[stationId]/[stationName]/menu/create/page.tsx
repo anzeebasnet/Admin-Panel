@@ -26,6 +26,7 @@ import Image from "next/image";
 import { clearMenuItem } from "@/lib/store/features/menu/menuSlice";
 import toast from "react-hot-toast";
 import useAxiosPrivateFood from "@/hooks/useAxiosPrivateFood";
+import Loader from "@/components/ui/Loader";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -45,6 +46,7 @@ const CreateMenu = ({
   params: { stationId: string; stationName: string };
 }) => {
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const { data: session } = useSession();
   const StationName = decodeURIComponent(params.stationName);
   const dispatch = useAppDispatch();
@@ -75,6 +77,7 @@ const CreateMenu = ({
     console.log(values);
     // Create a new FormData instance
     const formData = new FormData();
+    setIsSubmitting(true);
 
     Object.entries(values).forEach(([key, value]) => {
       if (key === "icon") {
@@ -114,6 +117,7 @@ const CreateMenu = ({
         .finally(() => {
           dispatch(clearMenuItem());
           setLogoPreview(null);
+          setIsSubmitting(false);
         });
     } else {
       axiosInstance
@@ -139,6 +143,7 @@ const CreateMenu = ({
         })
         .finally(() => {
           setLogoPreview(null);
+          setIsSubmitting(false);
         });
     }
   }
@@ -209,7 +214,7 @@ const CreateMenu = ({
             type="submit"
             className="bg-primary_text dark:bg-secondary_text hover:bg-l_orange dark:hover:bg-blue text-white h-8 mb-6 place-self-start rounded-lg"
           >
-            {menuData ? "Edit" : "Create"}
+            {isSubmitting ? <Loader /> : menuData ? "Edit" : "Create"}
           </Button>
         </form>
       </Form>

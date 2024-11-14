@@ -31,6 +31,7 @@ import Image from "next/image";
 import useAxiosPrivateFood from "@/hooks/useAxiosPrivateFood";
 import toast from "react-hot-toast";
 import { clearFoodItem } from "@/lib/store/features/foodItem/foodItemSlice";
+import Loader from "@/components/ui/Loader";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -65,6 +66,8 @@ const Page = ({
   const { data: session } = useSession();
   const axiosInstance = useAxiosPrivateFood();
   const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+
   const dispatch = useAppDispatch();
   const itemData = useAppSelector(
     (state: RootState) => state.foodItem.currentFoodItems
@@ -106,6 +109,7 @@ const Page = ({
     console.log(values);
     // Create a new FormData instance
     const formData = new FormData();
+    setIsSubmitting(true);
 
     Object.entries(values).forEach(([key, value]) => {
       if (key === "image") {
@@ -148,6 +152,7 @@ const Page = ({
         })
         .finally(() => {
           dispatch(clearFoodItem());
+          setIsSubmitting(false);
         });
     } else {
       axiosInstance
@@ -174,6 +179,9 @@ const Page = ({
             duration: 5000,
             position: "top-right",
           });
+        })
+        .finally(() => {
+          setIsSubmitting(false);
         });
     }
   }
@@ -366,7 +374,7 @@ const Page = ({
             type="submit"
             className="bg-primary_text dark:bg-secondary_text hover:bg-l_orange dark:hover:bg-blue text-white h-8 mb-6 place-self-start rounded-lg"
           >
-            {itemData ? "Edit" : "Add"}
+            {isSubmitting ? <Loader /> : itemData ? "Edit" : "Add"}
           </Button>
         </form>
       </Form>

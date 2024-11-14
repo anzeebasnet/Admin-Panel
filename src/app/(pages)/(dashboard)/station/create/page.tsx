@@ -140,6 +140,7 @@ const Station = () => {
   );
   const [bannerPreview, setBannerPreview] = useState<string | null>(null);
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [isPasswordVisible, setIsPasswordVisible] =
     useState<PasswordVisibility>({
       password: false,
@@ -260,6 +261,7 @@ const Station = () => {
     console.log(values);
     // Create a new FormData instance
     const formData = new FormData();
+    setIsSubmitting(true);
 
     if (selectedCountryId) {
       formData.append("country_id", selectedCountryId.toString());
@@ -318,6 +320,7 @@ const Station = () => {
           dispatch(clearStationData());
           setLogoPreview(null);
           setBannerPreview(null);
+          setIsSubmitting(false);
         });
     } else {
       axiosInstance
@@ -347,6 +350,7 @@ const Station = () => {
         .finally(() => {
           setLogoPreview(null);
           setBannerPreview(null);
+          setIsSubmitting(false);
         });
     }
   }
