@@ -10,14 +10,12 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { StationData } from "@/types/types";
-import { useSession } from "next-auth/react";
 import { Open_Sans } from "next/font/google";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { clearStationData } from "@/lib/store/features/station/stationSlice";
-import { RootState } from "@/lib/store/store";
 import { useStationList } from "@/lib/react-query/queriesAndMutations";
 
 const open_sans = Open_Sans({
@@ -26,12 +24,9 @@ const open_sans = Open_Sans({
 });
 
 const Page = () => {
-  const { data: session } = useSession();
   const [stationList, setStationList] = useState<StationData[]>([]);
   const dispatch = useAppDispatch();
-  const sidebar = useAppSelector(
-    (state: RootState) => state.collapsible.collapse
-  );
+  const sidebar = useAppSelector((state) => state.collapsible.collapse);
 
   const { data: Stations, isLoading: isloading } =
     useStationList(setStationList);
@@ -153,8 +148,10 @@ const Page = () => {
             </ScrollArea>
           )}
         </div>
+      ) : stationList.length <= 0 ? (
+        <p>No stations found!</p>
       ) : (
-        <p>Couldn&apos;t load station list</p>
+        <p>Couldn&apos;t load station list!</p>
       )}
     </div>
   );

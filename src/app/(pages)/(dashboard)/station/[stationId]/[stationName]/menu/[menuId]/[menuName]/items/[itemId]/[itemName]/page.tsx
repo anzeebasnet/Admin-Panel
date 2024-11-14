@@ -1,12 +1,10 @@
 "use client";
 
-import { axiosPrivate } from "@/axios/axios";
+import { useFoodItemList } from "@/lib/react-query/queriesAndMutations";
 import { setFoodItem } from "@/lib/store/features/foodItem/foodItemSlice";
-import { setMenuItem } from "@/lib/store/features/menu/menuSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { RootState } from "@/lib/store/store";
-import { FoodItem, MenuItem, StationData } from "@/types/types";
-import { useSession } from "next-auth/react";
+import { FoodItem } from "@/types/types";
 import { Open_Sans } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
@@ -29,45 +27,20 @@ const Page = ({
     itemName: string;
   };
 }) => {
-  const MenuName = decodeURIComponent(params.menuName);
   const itemData = useAppSelector(
     (state: RootState) => state.foodItem.currentFoodItems
   );
   const dispatch = useAppDispatch();
-  const { data: session } = useSession();
   const [foodList, setFoodList] = useState<FoodItem[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [foodDetails, setFoodDetails] = useState<FoodItem | null>(null);
 
-  const fetchItemList = async () => {
-    if (!session?.accessToken) return;
+  const { data: foodItems, isLoading: isLoading } = useFoodItemList(
+    setFoodList,
+    params.stationId,
+    params.menuId
+  );
 
-    try {
-      const res = await axiosPrivate.get(
-        `https://api.morefood.se/api/moreclub/station/${params.stationId}/${params.menuId}/food-items/`,
-        {
-          headers: {
-            Authorization: `Bearer ${
-              session?.accessToken || session?.user?.token
-            }`,
-          },
-        }
-      );
-      console.log(res.data.data);
-      setFoodList(res.data.data);
-    } catch (error) {
-      console.log("Error fetching Food List");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    if (session) {
-      fetchItemList();
-    }
-  }, [session, params.itemId, dispatch]);
-
+  //set Food detail
   useEffect(() => {
     if (foodList.length > 0) {
       const matchedData = getFoodDetails(params.itemId);
@@ -77,6 +50,7 @@ const Page = ({
     }
   }, [foodList, params.itemId]);
 
+  //set food detail in redux for update
   useEffect(() => {
     if (foodDetails) {
       dispatch(setFoodItem(foodDetails));
@@ -101,6 +75,8 @@ const Page = ({
 
       {isLoading ? (
         <p>Loading Item Details...</p>
+      ) : !foodDetails ? (
+        <p>Item Detail not found!</p>
       ) : foodDetails ? (
         <div className="flex flex-col gap-3">
           <Image
@@ -156,7 +132,7 @@ const Page = ({
           </div>
         </div>
       ) : (
-        <p>Couldn&apos;t find menu detail.</p>
+        <p>Couldn&apos;t find item detail.</p>
       )}
     </div>
   );

@@ -1,11 +1,10 @@
 "use client";
 
-import { axiosPrivate } from "@/axios/axios";
+import { useMenuList } from "@/lib/react-query/queriesAndMutations";
 import { setMenuItem } from "@/lib/store/features/menu/menuSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { RootState } from "@/lib/store/store";
-import { MenuItem, StationData } from "@/types/types";
-import { useSession } from "next-auth/react";
+import { MenuItem } from "@/types/types";
 import { Open_Sans } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
@@ -29,39 +28,13 @@ const Page = ({
   const MenuName = decodeURIComponent(params.menuName);
   const menuData = useAppSelector((state: RootState) => state.menu.currentMenu);
   const dispatch = useAppDispatch();
-  const { data: session } = useSession();
   const [menuList, setMenuList] = useState<MenuItem[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [menuDetails, setMenuDetails] = useState<MenuItem | null>(null);
 
-  const fetchMenuList = async () => {
-    if (!session?.accessToken) return;
-
-    try {
-      const res = await axiosPrivate.get(
-        "https://api.morefood.se/api/moreclub/station/a0d2264b-e410-4968-84ba-04010a7c344f/menu/",
-        {
-          headers: {
-            Authorization: `Bearer ${
-              session?.accessToken || session?.user?.token
-            }`,
-          },
-        }
-      );
-      console.log(res.data.data);
-      setMenuList(res.data.data);
-    } catch (error) {
-      console.log("Error fetching Menu List");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    if (session) {
-      fetchMenuList();
-    }
-  }, [session, params.menuId, dispatch]);
+  const { data: menus, isLoading: isLoading } = useMenuList(
+    setMenuList,
+    params.stationId
+  );
 
   useEffect(() => {
     if (menuList.length > 0) {
@@ -96,6 +69,8 @@ const Page = ({
 
       {isLoading ? (
         <p>Loading Menu Details...</p>
+      ) : !menuData ? (
+        <p>Menu Detail not found!</p>
       ) : menuData ? (
         <div className="flex flex-col gap-3">
           <Image
@@ -134,47 +109,6 @@ const Page = ({
               </Link>
             </div>
           </div>
-          {/* <div>
-        <h2>Store Value</h2>
-        {menuData ? (
-          <div>
-            <p>{menuData?.id}</p>
-            <p>{menuData?.name}</p>
-            <p>{menuData?.no_of_items}</p>
-            <Image
-              src={menuData.icon || ""}
-              alt="banner"
-              width={200}
-              height={200}
-            />
-          </div>
-        ) : (
-          <p>Detail unavailable.</p>
-        )}
-      </div>
-
-      {isLoading ? (
-        <p>Loading....</p>
-      ) : (
-        <div>
-          <h2>Variable Value</h2>
-          {menuDetails ? (
-            <div>
-              <p>{menuDetails?.id}</p>
-              <p>{menuDetails?.name}</p>
-              <p>{menuDetails?.no_of_items}</p>
-              <Image
-                src={menuDetails.icon || ""}
-                alt="banner"
-                width={200}
-                height={200}
-              />
-            </div>
-          ) : (
-            <p>Detail unavailable.</p>
-          )}
-        </div>
-      )} */}
         </div>
       ) : (
         <p>Couldn&apos;t find menu detail.</p>

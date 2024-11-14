@@ -4,7 +4,6 @@ import { useFoodItemList } from "@/lib/react-query/queriesAndMutations";
 import { clearFoodItem } from "@/lib/store/features/foodItem/foodItemSlice";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { FoodItem } from "@/types/types";
-import { useSession } from "next-auth/react";
 import { Open_Sans } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
@@ -26,7 +25,6 @@ const Page = ({
     menuName: string;
   };
 }) => {
-  const { data: session } = useSession();
   const dispatch = useAppDispatch();
   const [foodList, setFoodList] = useState<FoodItem[]>([]);
 
@@ -82,11 +80,9 @@ const Page = ({
                     className="w-32 h-32"
                   />
                 </Link>
-                <div className="flex justify-between">
-                  <h2 className="text-primary_text dark:text-secondary_text font-normal text-sm capitalize">
-                    {food.name}
-                  </h2>
-                </div>
+                <h2 className="text-primary_text dark:text-secondary_text font-medium place-self-center text-sm capitalize">
+                  {food.name}
+                </h2>
               </div>
             ))}
           </div>

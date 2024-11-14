@@ -1,11 +1,10 @@
 "use client";
 
-import { axiosPrivate } from "@/axios/axios";
+import { useStationList } from "@/lib/react-query/queriesAndMutations";
 import { setStationData } from "@/lib/store/features/station/stationSlice";
 import { useAppSelector } from "@/lib/store/hooks";
 import { RootState } from "@/lib/store/store";
 import { StationData } from "@/types/types";
-import { useSession } from "next-auth/react";
 import { Open_Sans } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
@@ -27,34 +26,35 @@ const Page = ({
     (state: RootState) => state.station.currentStation
   );
   const dispatch = useDispatch();
-  const { data: session } = useSession();
   const [stationList, setStationList] = useState<StationData[]>([]);
   const [stationDetails, setStationDetails] = useState<StationData | null>(
     null
   );
-  const [isLoading, setIsLoading] = useState(true);
 
-  const fetchStationList = async () => {
-    if (!session?.accessToken) return; // Ensure session is available
-    try {
-      const res = await axiosPrivate.get(
-        "https://api.morefood.se/api/moreclub/stations/list/",
-        {
-          headers: {
-            Authorization: `Bearer ${
-              session?.accessToken || session?.user?.token
-            }`,
-          },
-        }
-      );
-      console.log(res.data.data);
-      setStationList(res.data.data);
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const { data: stations, isLoading: isloading } =
+    useStationList(setStationList);
+
+  // const fetchStationList = async () => {
+  //   if (!session?.accessToken) return; // Ensure session is available
+  //   try {
+  //     const res = await axiosPrivate.get(
+  //       "https://api.morefood.se/api/moreclub/stations/list/",
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${
+  //             session?.accessToken || session?.user?.token
+  //           }`,
+  //         },
+  //       }
+  //     );
+  //     console.log(res.data.data);
+  //     setStationList(res.data.data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
   useEffect(() => {
     if (stationList.length > 0) {
@@ -71,11 +71,11 @@ const Page = ({
     }
   }, [stationDetails, dispatch]);
 
-  useEffect(() => {
-    if (session) {
-      fetchStationList();
-    }
-  }, [session, params.stationId, dispatch]);
+  // useEffect(() => {
+  //   if (session) {
+  //     fetchStationList();
+  //   }
+  // }, [session, params.stationId, dispatch]);
 
   function getStationDetails(stationID: string) {
     return stationList.find((station) => station.id === stationID) || null;
@@ -94,10 +94,54 @@ const Page = ({
       </div>
 
       <div className="flex flex-col gap-5">
-        <div>
-          <h3>Station: {StationName}</h3>
-          <h3>Station ID: {params.stationId}</h3>
-        </div>
+        {isloading ? (
+          <p>Loading Station Detail...</p>
+        ) : !stationDetails ? (
+          <p>Station Detail not found!</p>
+        ) : stationDetails ? (
+          <div className="flex flex-col gap-3">
+            <Image
+              src={stationDetails?.banner || ""}
+              alt="station banner"
+              width={300}
+              height={200}
+              className="rounded"
+            />
+            <div className="flex flex-col gap-1">
+              <h3 className="font-medium text-base capitalize">
+                {stationDetails.name}
+              </h3>
+              <h3 className="font-normal text-sm">
+                Station ID: {stationDetails.id}
+              </h3>
+              <h3 className="font-normal text-sm">
+                Email: {stationDetails.email}
+              </h3>
+              <h3 className="font-normal text-sm">
+                Address: {stationDetails.address}
+              </h3>
+              <h3 className="font-normal text-sm">
+                Contact: {stationDetails.contact_no}
+              </h3>
+              {stationDetails.restaurant ? (
+                <h3 className="font-normal text-sm">
+                  Restaurant: {stationDetails.restaurant}
+                </h3>
+              ) : (
+                ""
+              )}
+              <h3 className="font-normal text-sm">
+                Short Description: {stationDetails.short_description}
+              </h3>
+              <h3 className="font-normal text-sm">
+                Long Description: {stationDetails.long_description}
+              </h3>
+            </div>
+          </div>
+        ) : (
+          <p>Couldn&apos;t find station detail!</p>
+        )}
+
         <div className="flex gap-4">
           {stationData ? (
             <div>
@@ -105,7 +149,7 @@ const Page = ({
                 href={`/station/create`}
                 className="bg-primary_text dark:bg-btn_blue text-white text-sm hover:bg-l_orange dark:hover:bg-blue py-1 px-4 rounded place-self-end"
               >
-                Edit
+                Edit Station
               </Link>
             </div>
           ) : (
@@ -116,55 +160,10 @@ const Page = ({
               href={`/station/${params.stationId}/${params.stationName}/menu`}
               className="bg-primary_text dark:bg-btn_blue text-white text-sm hover:bg-l_orange dark:hover:bg-blue py-1 px-4 rounded place-self-end"
             >
-              Menus
+              View Menu
             </Link>
           </div>
         </div>
-        {/* <div>
-          <h2>Store Value</h2>
-          {stationData ? (
-            <div>
-              <p>{stationData?.id}</p>
-              <p>{stationData?.name}</p>
-              <p>{stationData?.address}</p>
-              <p>{stationData?.email}</p>
-              <p>{stationData?.banner}</p>
-              <p>{stationData?.logo}</p>
-              <Image
-                src={stationData.banner || ""}
-                alt="banner"
-                width={200}
-                height={200}
-              />
-            </div>
-          ) : (
-            <p>Detail unavailable.</p>
-          )}
-        </div> */}
-
-        {/* {isLoading ? (
-          <p>Loading....</p>
-        ) : (
-          <div>
-            <h2>Variable Value</h2>
-            {stationDetails ? (
-              <div>
-                <p>{stationDetails?.id}</p>
-                <p>{stationDetails?.name}</p>
-                <p>{stationDetails?.address}</p>
-                <p>{stationDetails?.email}</p>
-                <Image
-                  src={stationDetails.banner || ""}
-                  alt="banner"
-                  width={200}
-                  height={200}
-                />
-              </div>
-            ) : (
-              <p>Detail unavailable.</p>
-            )}
-          </div>
-        )} */}
       </div>
     </div>
   );

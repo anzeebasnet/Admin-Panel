@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -22,14 +22,13 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
-import { axiosPrivate } from "@/axios/axios";
-import { Country } from "@/types/types";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useSession } from "next-auth/react";
 import { Open_Sans } from "next/font/google";
-import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { useAppSelector } from "@/lib/store/hooks";
 import { RootState } from "@/lib/store/store";
 import Image from "next/image";
+import useAxiosPrivateFood from "@/hooks/useAxiosPrivateFood";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -62,9 +61,8 @@ const Page = ({
   };
 }) => {
   const { data: session } = useSession();
-  const dispatch = useAppDispatch();
+  const axiosInstance = useAxiosPrivateFood();
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-  const [activeStatus, setActiveStatus] = useState<boolean>(false);
 
   const itemData = useAppSelector(
     (state: RootState) => state.foodItem.currentFoodItems
@@ -95,10 +93,6 @@ const Page = ({
       form.setValue("is_active", itemData.is_active);
 
       setImagePreview(itemData.image);
-
-      // if (itemData.is_active === true) {
-      //   setActiveStatus(true);
-      // }
     }
   }, [itemData]);
 
@@ -125,16 +119,13 @@ const Page = ({
     });
 
     if (itemData) {
-      axiosPrivate
+      axiosInstance
         .patch(
-          `https://api.morefood.se/api/moreclub/station/${params.stationId}/${params.menuId}/${itemData.id}/food-items/`,
+          `/moreclub/station/${params.stationId}/${params.menuId}/${itemData.id}/food-items/`,
           formData,
           {
             headers: {
               "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${
-                session?.accessToken || session?.user?.token
-              }`,
             },
           }
         )
@@ -146,22 +137,19 @@ const Page = ({
           console.error("Error submitting form:", error);
         });
     } else {
-      axiosPrivate
+      axiosInstance
         .post(
-          `https://api.morefood.se/api/moreclub/station/${params.stationId}/${params.menuId}/food-items/`,
+          `/moreclub/station/${params.stationId}/${params.menuId}/food-items/`,
           formData,
           {
             headers: {
               "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${
-                session?.accessToken || session?.user?.token
-              }`,
             },
           }
         )
         .then((response) => {
           console.log("Form submitted successfully:", response.data);
-          form.reset(); // Clear form after successful submission
+          form.reset();
         })
         .catch((error) => {
           console.error("Error submitting form:", error);

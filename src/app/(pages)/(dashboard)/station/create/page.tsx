@@ -22,8 +22,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useEffect, useState } from "react";
-import axios, { axiosPrivate } from "@/axios/axios";
-import { Country, CountryType } from "@/types/types";
+import axios from "@/axios/axios";
+import { CountryType } from "@/types/types";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useSession } from "next-auth/react";
 import { Open_Sans } from "next/font/google";
@@ -36,6 +36,7 @@ import { RootState } from "@/lib/store/store";
 import Image from "next/image";
 import { clearStationData } from "@/lib/store/features/station/stationSlice";
 import toast from "react-hot-toast";
+import useAxiosPrivateFood from "@/hooks/useAxiosPrivateFood";
 
 type PasswordVisibility = {
   password: boolean;
@@ -145,6 +146,7 @@ const Station = () => {
     });
 
   const dispatch = useAppDispatch();
+  const axiosInstance = useAxiosPrivateFood();
 
   const stationData = useAppSelector(
     (state: RootState) => state.station.currentStation
@@ -233,12 +235,12 @@ const Station = () => {
 
       // Set banner and logo previews if they exist in the Redux store
       if (stationData.banner) {
-        setBannerPreview(stationData.banner); // If it's a URL, you can use it directly
+        setBannerPreview(stationData.banner);
         // form.setValue("banner", stationData.banner); // Set form value
       }
 
       if (stationData.logo) {
-        setLogoPreview(stationData.logo); // If it's a URL, you can use it directly
+        setLogoPreview(stationData.logo);
         // form.setValue("logo", stationData.logo); // Set form value
       }
     }
@@ -280,22 +282,18 @@ const Station = () => {
     });
 
     if (stationData) {
-      axiosPrivate
-        .patch(
-          `https://api.morefood.se/api/moreclub/station/${stationData.id}/`,
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${
-                session?.accessToken || session?.user?.token
-              }`,
-            },
-          }
-        )
+      axiosInstance
+        .patch(`/moreclub/station/${stationData.id}/`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${
+              session?.accessToken || session?.user?.token
+            }`,
+          },
+        })
         .then((response) => {
           console.log("Form submitted successfully:", response.data);
-          form.reset(); // Clear form after successful submission
+          form.reset();
           toast.success("Station Updated Successfully!", {
             duration: 5000,
             position: "top-right",
@@ -322,8 +320,8 @@ const Station = () => {
           setBannerPreview(null);
         });
     } else {
-      axiosPrivate
-        .post("https://api.morefood.se/api/moreclub/setup/station/", formData, {
+      axiosInstance
+        .post("/moreclub/setup/station/", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
             Authorization: `Bearer ${
@@ -333,7 +331,7 @@ const Station = () => {
         })
         .then((response) => {
           console.log("Form submitted successfully:", response.data);
-          form.reset(); // Clear form after successful submission
+          form.reset();
           toast.success("Station Created Successfully!", {
             duration: 5000,
             position: "top-right",

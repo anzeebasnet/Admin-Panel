@@ -25,6 +25,7 @@ import { RootState } from "@/lib/store/store";
 import Image from "next/image";
 import { clearMenuItem } from "@/lib/store/features/menu/menuSlice";
 import toast from "react-hot-toast";
+import useAxiosPrivateFood from "@/hooks/useAxiosPrivateFood";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -47,6 +48,7 @@ const CreateMenu = ({
   const { data: session } = useSession();
   const StationName = decodeURIComponent(params.stationName);
   const dispatch = useAppDispatch();
+  const axiosInstance = useAxiosPrivateFood();
 
   const menuData = useAppSelector((state: RootState) => state.menu.currentMenu);
 
@@ -88,22 +90,15 @@ const CreateMenu = ({
     });
 
     if (menuData) {
-      axiosPrivate
-        .patch(
-          `https://api.morefood.se/api/moreclub/station/menu/${menuData.id}/update/`,
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${
-                session?.accessToken || session?.user?.token
-              }`,
-            },
-          }
-        )
+      axiosInstance
+        .patch(`/moreclub/station/menu/${menuData.id}/update/`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
         .then((response) => {
           console.log("Form submitted successfully:", response.data);
-          form.reset(); // Clear form after successful submission
+          form.reset();
           toast.success("Menu Updated Successfully!", {
             duration: 5000,
             position: "top-right",
@@ -121,22 +116,15 @@ const CreateMenu = ({
           setLogoPreview(null);
         });
     } else {
-      axiosPrivate
-        .post(
-          `https://api.morefood.se/api/moreclub/station/${params.stationId}/menu/`,
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${
-                session?.accessToken || session?.user?.token
-              }`,
-            },
-          }
-        )
+      axiosInstance
+        .post(`/moreclub/station/${params.stationId}/menu/`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
         .then((response) => {
           console.log("Form submitted successfully:", response.data);
-          form.reset(); // Clear form after successful submission
+          form.reset();
           toast.success("Menu Created Successfully!", {
             duration: 5000,
             position: "top-right",
