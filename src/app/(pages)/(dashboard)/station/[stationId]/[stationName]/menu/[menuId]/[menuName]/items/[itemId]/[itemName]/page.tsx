@@ -116,19 +116,19 @@ const Page = ({
             </h3>
             <h3 className="font-medium text-sm">Id: {foodDetails.id}</h3>
             <h3 className="font-medium text-sm">
-              Actual Price: {foodDetails?.actual_price}
+              Actual Price: {foodDetails?.currency_symbol}.{" "}
+              {foodDetails?.actual_price}
             </h3>
             <h3 className="font-medium text-sm">
-              Item Price: {foodDetails?.item_price}
+              Item Price: {foodDetails?.currency_symbol}.{" "}
+              {foodDetails?.item_price}
             </h3>
             <h3 className="font-medium text-sm">
-              Retailer Price: {foodDetails?.retailer_price}
+              Retailer Price: {foodDetails?.currency_symbol}.{" "}
+              {foodDetails?.retailer_price}
             </h3>
             <h3 className="font-medium text-sm">
-              Currency Symbol: {foodDetails?.currency_symbol}
-            </h3>
-            <h3 className="font-medium text-sm">
-              Discount Percentage: {foodDetails?.discount_percentage}
+              Discount Percentage: {foodDetails?.discount_percentage || "0"}
             </h3>
             <h3 className="font-medium text-sm">
               Ingredient: {foodDetails?.ingredient}
@@ -151,47 +151,6 @@ const Page = ({
               ""
             )}
           </div>
-          {/* <div>
-        <h2>Store Value</h2>
-        {itemData ? (
-          <div>
-            <p>{menuData?.id}</p>
-            <p>{menuData?.name}</p>
-            <p>{menuData?.no_of_items}</p>
-            <Image
-              src={menuData.icon || ""}
-              alt="banner"
-              width={200}
-              height={200}
-            />
-          </div>
-        ) : (
-          <p>Detail unavailable.</p>
-        )}
-      </div>
-
-      {isLoading ? (
-        <p>Loading....</p>
-      ) : (
-        <div>
-          <h2>Variable Value</h2>
-          {menuDetails ? (
-            <div>
-              <p>{menuDetails?.id}</p>
-              <p>{menuDetails?.name}</p>
-              <p>{menuDetails?.no_of_items}</p>
-              <Image
-                src={menuDetails.icon || ""}
-                alt="banner"
-                width={200}
-                height={200}
-              />
-            </div>
-          ) : (
-            <p>Detail unavailable.</p>
-          )}
-        </div>
-      )} */}
         </div>
       ) : (
         <p>Couldn&apos;t find menu detail.</p>
