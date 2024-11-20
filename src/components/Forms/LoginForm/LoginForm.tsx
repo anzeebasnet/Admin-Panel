@@ -14,13 +14,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import styled from "styled-components";
-import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { FaRegEye } from "react-icons/fa";
 import { FaRegEyeSlash } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import { signIn, SignInResponse, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import Loader from "@/components/ui/Loader";
 
 type PasswordVisibility = {
@@ -82,7 +81,6 @@ export function LogInForm() {
           duration: 5000,
           position: "top-right",
         });
-        // console.log("Logged in");
         form.reset();
         setTimeout(() => {
           router.push("/");
@@ -106,10 +104,9 @@ export function LogInForm() {
   };
 
   useEffect(() => {
-    setMounted(true); // Set mounted to true after the component mounts
+    setMounted(true);
   }, []);
 
-  // Only render the form after the component has mounted
   if (!mounted) {
     return null;
   }
@@ -120,16 +117,15 @@ export function LogInForm() {
         " sm:w-[45vw] md:w-[45vw] lg:w-[35vw] 2xl:w-[20vw]  px-8 py-4 flex flex-col gap-4 dark:bg-card_dark bg-white rounded-md"
       }
     >
-      <h1 className="sm:text-3xl text-2xl font-bold">Login</h1>
+      <h1 className="sm:text-2xl text-xl font-bold text-center">Login</h1>
 
       <Form {...form}>
         <form
           className="flex flex-col gap-3"
-          // onSubmit={form.handleSubmit(onSubmit)}
           method="POST"
           action="/auth/login"
           onSubmit={(e) => {
-            e.preventDefault(); // Prevent the page reload
+            e.preventDefault();
             form.handleSubmit(onSubmit)(e);
           }}
           noValidate
@@ -142,7 +138,7 @@ export function LogInForm() {
                 <FormLabel className="text-textBlue font-medium sm:text-sm text-xs">
                   <div className="flex gap-x-1">
                     <h1 className=" sm:text-sm text-xs text-textBlue font-semibold">
-                      Email
+                      Username
                     </h1>
                     <h1 className=" sm:text-sm text-xs text-red-600 font-semibold">
                       *
@@ -204,7 +200,7 @@ export function LogInForm() {
 
           <Button
             type="submit"
-            className="bg-primary_text hover:bg-btnBlue/80 w-full sm:h-12 h-8 self-center rounded-lg"
+            className="bg-primary_text hover:bg-btnBlue/80 w-full mt-2 h-8 self-center rounded-lg"
           >
             {isSubmitting ? <Loader /> : "Sign in"}
           </Button>

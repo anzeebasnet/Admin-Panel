@@ -14,13 +14,13 @@ const useAxiosPrivateFood = () => {
       (config) => {
         // Ensure correct token reference
         const token = session?.accessToken || session?.user.token;
-        console.log("Session Access Token:", token); 
+        // console.log("Session Access Token:", token); 
         if (token) {
           config.headers["Authorization"] = `Bearer ${token}`;
         } else {
           console.warn("No token found in session");
         }
-        console.log("Request headers:", config.headers); 
+        // console.log("Request headers:", config.headers); 
         return config;
       },
       (error) => Promise.reject(error)

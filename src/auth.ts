@@ -1,10 +1,6 @@
 import NextAuth from "next-auth";
-import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { jwtDecode } from "jwt-decode";
-// import { User } from "@/lib/Type";
-import { AdapterUser } from "@auth/core/adapters";
-import { redirect } from "next/dist/server/api-utils";
 
 async function refreshAccessToken(token: any) {
   if (!token.user.refreshToken) {

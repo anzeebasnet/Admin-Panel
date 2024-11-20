@@ -37,6 +37,7 @@ import Image from "next/image";
 import { clearStationData } from "@/lib/store/features/station/stationSlice";
 import toast from "react-hot-toast";
 import useAxiosPrivateFood from "@/hooks/useAxiosPrivateFood";
+import { Textarea } from "@/components/ui/textarea";
 
 type PasswordVisibility = {
   password: boolean;
@@ -288,9 +289,6 @@ const Station = () => {
         .patch(`/moreclub/station/${stationData.id}/`, formData, {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${
-              session?.accessToken || session?.user?.token
-            }`,
           },
         })
         .then((response) => {
@@ -327,9 +325,6 @@ const Station = () => {
         .post("/moreclub/setup/station/", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${
-              session?.accessToken || session?.user?.token
-            }`,
           },
         })
         .then((response) => {
@@ -372,11 +367,16 @@ const Station = () => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col gap-4"
+          className="flex flex-col gap-6"
         >
           {!stationData ? (
-            <div className="sm:grid sm:grid-cols-2 sm:gap-8 flex flex-col gap-4">
-              <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
+              <h3
+                className={`text-primary_text dark:text-secondary_text text-base font-medium  ${open_sans.className}`}
+              >
+                User Information
+              </h3>
+              <div className="sm:grid sm:grid-cols-2 sm:gap-x-8 flex flex-col gap-y-4">
                 <FormField
                   control={form.control}
                   name="first_name"
@@ -416,8 +416,7 @@ const Station = () => {
                     </FormItem>
                   )}
                 />
-              </div>
-              <div className="flex flex-col gap-4">
+
                 <FormField
                   control={form.control}
                   name="password"
@@ -496,7 +495,7 @@ const Station = () => {
                           onValueChange={field.onChange}
                           value={field.value || ""}
                         >
-                          <SelectTrigger className="w-[180px] h-8">
+                          <SelectTrigger className=" h-8">
                             <SelectValue placeholder="Select Gender" />
                           </SelectTrigger>
                           <SelectContent>
@@ -516,101 +515,104 @@ const Station = () => {
             ""
           )}
 
-          <div className="sm:grid sm:grid-cols-2 sm:gap-8 flex flex-col gap-4">
+          <div className="flex flex-col gap-2">
+            <h3
+              className={`text-primary_text dark:text-secondary_text text-base font-medium ${open_sans.className}`}
+            >
+              Station Information
+            </h3>
             <div className="flex flex-col gap-4">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Name</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="contact_no"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Contact No.</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <div className="flex flex-wrap justify-between">
-                {/* <FormField
+              <div className="grid sm:grid-cols-2 grid-cols-1 gap-x-8 gap-y-4">
+                <FormField
                   control={form.control}
-                  name="country"
+                  name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Country</FormLabel>
+                      <FormLabel>Station Name</FormLabel>
                       <FormControl>
-                        <Select
-                          onValueChange={(value) => {
-                            const selectedCountry = countries.find(
-                              (country) => country.name === value
-                            );
-                            if (selectedCountry) {
-                              field.onChange(selectedCountry.id);
-
-                              //set currency
-                              form.setValue(
-                                "currency",
-                                selectedCountry.currency.id
-                              );
-                              setCurrency(
-                                selectedCountry.currency.id.toString()
-                              );
-                              setSelectedCountryId(selectedCountry.id);
-                            } else {
-                              field.onChange(null);
-                            }
-                          }}
-                          value={
-                            selectedCountryId
-                              ? countries.find(
-                                  (country) => country.id === selectedCountryId
-                                )?.name
-                              : ""
-                          }
-                        >
-                          <SelectTrigger className="w-[180px] h-8">
-                            <SelectValue placeholder="Select a country" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {countries.map((country) => (
-                              <SelectItem key={country.id} value={country.name}>
-                                {country.name}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
+                        <Input {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
-                /> */}
-
+                />
+                <FormField
+                  control={form.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="contact_no"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Contact No.</FormLabel>
+                      <FormControl>
+                        <Input {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                {/* <FormField
+                      control={form.control}
+                      name="country"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Country</FormLabel>
+                          <FormControl>
+                            <Select
+                              onValueChange={(value) => {
+                                const selectedCountry = countries.find(
+                                  (country) => country.name === value
+                                );
+                                if (selectedCountry) {
+                                  field.onChange(selectedCountry.id);
+                                  //set currency
+                                  form.setValue(
+                                    "currency",
+                                    selectedCountry.currency.id
+                                  );
+                                  setCurrency(
+                                    selectedCountry.currency.id.toString()
+                                  );
+                                  setSelectedCountryId(selectedCountry.id);
+                                } else {
+                                  field.onChange(null);
+                                }
+                              }}
+                              value={
+                                selectedCountryId
+                                  ? countries.find(
+                                      (country) => country.id === selectedCountryId
+                                    )?.name
+                                  : ""
+                              }
+                            >
+                              <SelectTrigger className="w-[180px] h-8">
+                                <SelectValue placeholder="Select a country" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {countries.map((country) => (
+                                  <SelectItem key={country.id} value={country.name}>
+                                    {country.name}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    /> */}
                 <FormField
                   control={form.control}
                   name="country"
@@ -646,7 +648,7 @@ const Station = () => {
                               : ""
                           }
                         >
-                          <SelectTrigger className="w-[180px] h-8">
+                          <SelectTrigger className=" h-8">
                             <SelectValue placeholder="Select a country" />
                           </SelectTrigger>
                           <SelectContent>
@@ -662,227 +664,227 @@ const Station = () => {
                     </FormItem>
                   )}
                 />
-
                 {/* <FormField
+                      control={form.control}
+                      name="currency"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Currency</FormLabel>
+                          <FormControl>
+                            <Select
+                              onValueChange={(value) => {
+                                const currencyId = countries.find(
+                                  (country) => country.id === selectedCountryId
+                                )?.currency.id;
+                                if (currencyId) {
+                                  field.onChange(currencyId);
+                                  setSelectedCurrencyId(currencyId);
+                                } else {
+                                  field.onChange(null);
+                                }
+                              }}
+                              value={
+                                selectedCurrencyId
+                                  ? selectedCurrencyId.toString()
+                                  : ""
+                              }
+                            >
+                              <SelectTrigger className="w-[180px] h-8">
+                                <SelectValue placeholder="Select currency" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {selectedCountryId && (
+                                  <SelectItem
+                                    value={
+                                      countries
+                                        .find(
+                                          (country) =>
+                                            country.id === selectedCountryId
+                                        )
+                                        ?.currency.id?.toString() || ""
+                                    }
+                                  >
+                                    {currency || "Select currency"}
+                                  </SelectItem>
+                                )}
+                              </SelectContent>
+                            </Select>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="currency"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Currency</FormLabel>
+                          <FormControl>
+                            <Select
+                              onValueChange={(value) => {
+                                const currencyId = countries.find(
+                                  (country) => country.id === selectedCountryId
+                                )?.currency.id;
+                                if (currencyId) {
+                                  field.onChange(currencyId);
+                                  setSelectedCurrencyId(currencyId);
+                                } else {
+                                  field.onChange(null);
+                                }
+                              }}
+                              value={
+                                selectedCurrencyId
+                                  ? selectedCurrencyId.toString()
+                                  : ""
+                              }
+                            >
+                              <SelectTrigger className="w-[180px] h-8">
+                                <SelectValue placeholder="Select currency" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                {selectedCountryId && (
+                                  <SelectItem
+                                    value={
+                                      countries
+                                        .find(
+                                          (country) =>
+                                            country.id === selectedCountryId
+                                        )
+                                        ?.currency.id?.toString() || ""
+                                    }
+                                  >
+                                    {currency || "Select currency"}
+                                  </SelectItem>
+                                )}
+                              </SelectContent>
+                            </Select>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    /> */}
+              </div>
+              <div className="grid md:grid-cols-2 grid-cols-1 gap-x-6 gap-y-4">
+                <div>
+                  <h2 className="font-medium text-sm">Location</h2>
+                  <MapboxComponent setNewAddress={handleAddressUpdate} />
+                </div>
+                <div className="flex flex-col gap-4 md:mt-4">
+                  <FormField
+                    control={form.control}
+                    name="short_description"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Short Description</FormLabel>
+                        <FormControl>
+                          <Textarea {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="long_description"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Long Description</FormLabel>
+                        <FormControl>
+                          <Textarea {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
+              <div className="grid sm:grid-cols-2 grid-cols-1 gap-x-6 gap-y-4">
+                <FormField
                   control={form.control}
-                  name="currency"
+                  name="logo"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Currency</FormLabel>
+                      <FormLabel>Station Logo</FormLabel>
                       <FormControl>
-                        <Select
-                          onValueChange={(value) => {
-                            const currencyId = countries.find(
-                              (country) => country.id === selectedCountryId
-                            )?.currency.id;
-                            if (currencyId) {
-                              field.onChange(currencyId);
-                              setSelectedCurrencyId(currencyId);
-                            } else {
-                              field.onChange(null);
-                            }
-                          }}
-                          value={
-                            selectedCurrencyId
-                              ? selectedCurrencyId.toString()
-                              : ""
-                          }
-                        >
-                          <SelectTrigger className="w-[180px] h-8">
-                            <SelectValue placeholder="Select currency" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {selectedCountryId && (
-                              <SelectItem
-                                value={
-                                  countries
-                                    .find(
-                                      (country) =>
-                                        country.id === selectedCountryId
-                                    )
-                                    ?.currency.id?.toString() || ""
-                                }
-                              >
-                                {currency || "Select currency"}
-                              </SelectItem>
-                            )}
-                          </SelectContent>
-                        </Select>
+                        <div className="flex items-center gap-4">
+                          {logoPreview && (
+                            <Image
+                              src={logoPreview}
+                              alt="Logo Preview"
+                              className="w-16 h-16 object-cover"
+                              width={200}
+                              height={200}
+                            />
+                          )}
+                          <Input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => {
+                              const file = e.target.files?.[0];
+                              if (file) {
+                                field.onChange(file); // Set the new file in the form state
+                                const fileURL = URL.createObjectURL(file); // Update preview URL
+                                setLogoPreview(fileURL); // Update preview
+                              }
+                            }}
+                          />
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-
                 <FormField
                   control={form.control}
-                  name="currency"
+                  name="banner"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Currency</FormLabel>
+                      <FormLabel>Station Banner</FormLabel>
                       <FormControl>
-                        <Select
-                          onValueChange={(value) => {
-                            const currencyId = countries.find(
-                              (country) => country.id === selectedCountryId
-                            )?.currency.id;
-                            if (currencyId) {
-                              field.onChange(currencyId);
-                              setSelectedCurrencyId(currencyId);
-                            } else {
-                              field.onChange(null);
-                            }
-                          }}
-                          value={
-                            selectedCurrencyId
-                              ? selectedCurrencyId.toString()
-                              : ""
-                          }
-                        >
-                          <SelectTrigger className="w-[180px] h-8">
-                            <SelectValue placeholder="Select currency" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {selectedCountryId && (
-                              <SelectItem
-                                value={
-                                  countries
-                                    .find(
-                                      (country) =>
-                                        country.id === selectedCountryId
-                                    )
-                                    ?.currency.id?.toString() || ""
-                                }
-                              >
-                                {currency || "Select currency"}
-                              </SelectItem>
-                            )}
-                          </SelectContent>
-                        </Select>
+                        <div className="flex items-center gap-4">
+                          {/* Display current banner if available */}
+                          {bannerPreview && (
+                            <Image
+                              src={bannerPreview}
+                              alt="Banner Preview"
+                              className="w-32 h-16 object-cover"
+                              width={200}
+                              height={200}
+                            />
+                          )}
+                          <Input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => {
+                              const file = e.target.files?.[0];
+                              if (file) {
+                                field.onChange(file); // Set the new file in the form state
+                                const fileURL = URL.createObjectURL(file); // Update preview URL
+                                setBannerPreview(fileURL); // Update preview
+                              }
+                            }}
+                          />
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
-                /> */}
+                />
               </div>
             </div>
-            <div className="flex flex-col gap-4">
-              <FormField
-                control={form.control}
-                name="logo"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Logo</FormLabel>
-                    <FormControl>
-                      <div className="flex items-center gap-4">
-                        {logoPreview && (
-                          <Image
-                            src={logoPreview}
-                            alt="Logo Preview"
-                            className="w-16 h-16 object-cover"
-                            width={200}
-                            height={200}
-                          />
-                        )}
-                        <Input
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => {
-                            const file = e.target.files?.[0];
-                            if (file) {
-                              field.onChange(file); // Set the new file in the form state
-                              const fileURL = URL.createObjectURL(file); // Update preview URL
-                              setLogoPreview(fileURL); // Update preview
-                            }
-                          }}
-                        />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="banner"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Banner</FormLabel>
-                    <FormControl>
-                      <div className="flex items-center gap-4">
-                        {/* Display current banner if available */}
-                        {bannerPreview && (
-                          <Image
-                            src={bannerPreview}
-                            alt="Banner Preview"
-                            className="w-32 h-16 object-cover"
-                            width={200}
-                            height={200}
-                          />
-                        )}
-                        <Input
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => {
-                            const file = e.target.files?.[0];
-                            if (file) {
-                              field.onChange(file); // Set the new file in the form state
-                              const fileURL = URL.createObjectURL(file); // Update preview URL
-                              setBannerPreview(fileURL); // Update preview
-                            }
-                          }}
-                        />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="short_description"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Short Description</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="long_description"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Long Description</FormLabel>
-                    <FormControl>
-                      <Input {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
           </div>
-          <div className="flex flex-col gap-4">
-            <div>
-              <h2 className="font-medium text-sm">Location</h2>
-              <MapboxComponent setNewAddress={handleAddressUpdate} />
-            </div>
-            <Button
-              type="submit"
-              onClick={() => {
-                console.log("Button Clicked!");
-                const formValues = form.getValues();
-                console.log(formValues);
-              }}
-              className="bg-primary_text dark:bg-secondary_text hover:bg-l_orange dark:hover:bg-blue text-white h-8 mb-6 place-self-start rounded-lg"
-            >
-              {stationData ? "Update" : "Create"}
-            </Button>
-          </div>
+          <Button
+            type="submit"
+            onClick={() => {
+              console.log("Button Clicked!");
+              const formValues = form.getValues();
+              console.log(formValues);
+            }}
+            className="bg-primary_text dark:bg-secondary_text hover:bg-l_orange dark:hover:bg-blue text-white h-8 mb-6 place-self-start rounded-lg"
+          >
+            {stationData ? "Update" : "Create"}
+          </Button>
         </form>
       </Form>
     </ScrollArea>

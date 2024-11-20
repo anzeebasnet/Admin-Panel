@@ -1,14 +1,13 @@
 "use client";
 
-import { useStationList } from "@/lib/react-query/queriesAndMutations";
+import { useStationDetail } from "@/lib/react-query/queriesAndMutations";
 import { setStationData } from "@/lib/store/features/station/stationSlice";
 import { useAppSelector } from "@/lib/store/hooks";
 import { RootState } from "@/lib/store/store";
-import { StationData } from "@/types/types";
 import { Open_Sans } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 const open_sans = Open_Sans({
@@ -21,65 +20,19 @@ const Page = ({
 }: {
   params: { stationId: string; stationName: string };
 }) => {
-  const StationName = decodeURIComponent(params.stationName);
+  const dispatch = useDispatch();
   const stationData = useAppSelector(
     (state: RootState) => state.station.currentStation
   );
-  const dispatch = useDispatch();
-  const [stationList, setStationList] = useState<StationData[]>([]);
-  const [stationDetails, setStationDetails] = useState<StationData | null>(
-    null
+  const { data: stationDetail, isLoading: isLoading } = useStationDetail(
+    params.stationId
   );
 
-  const { data: stations, isLoading: isloading } =
-    useStationList(setStationList);
-
-  // const fetchStationList = async () => {
-  //   if (!session?.accessToken) return; // Ensure session is available
-  //   try {
-  //     const res = await axiosPrivate.get(
-  //       "https://api.morefood.se/api/moreclub/stations/list/",
-  //       {
-  //         headers: {
-  //           Authorization: `Bearer ${
-  //             session?.accessToken || session?.user?.token
-  //           }`,
-  //         },
-  //       }
-  //     );
-  //     console.log(res.data.data);
-  //     setStationList(res.data.data);
-  //   } catch (error) {
-  //     console.log(error);
-  //   } finally {
-  //     setIsLoading(false);
-  //   }
-  // };
-
   useEffect(() => {
-    if (stationList.length > 0) {
-      const matchedData = getStationDetails(params.stationId);
-      if (matchedData) {
-        setStationDetails(matchedData);
-      }
+    if (stationDetail) {
+      dispatch(setStationData(stationDetail));
     }
-  }, [stationList, params.stationId]);
-
-  useEffect(() => {
-    if (stationDetails) {
-      dispatch(setStationData(stationDetails));
-    }
-  }, [stationDetails, dispatch]);
-
-  // useEffect(() => {
-  //   if (session) {
-  //     fetchStationList();
-  //   }
-  // }, [session, params.stationId, dispatch]);
-
-  function getStationDetails(stationID: string) {
-    return stationList.find((station) => station.id === stationID) || null;
-  }
+  }, [stationDetail, dispatch]);
 
   return (
     <div
@@ -94,48 +47,53 @@ const Page = ({
       </div>
 
       <div className="flex flex-col gap-5">
-        {isloading ? (
+        {isLoading ? (
           <p>Loading Station Detail...</p>
-        ) : !stationDetails ? (
+        ) : !stationDetail ? (
           <p>Station Detail not found!</p>
-        ) : stationDetails ? (
+        ) : stationDetail ? (
           <div className="flex flex-col gap-3">
             <Image
-              src={stationDetails?.banner || ""}
+              src={stationDetail?.banner || ""}
               alt="station banner"
               width={300}
               height={200}
               className="rounded"
             />
             <div className="flex flex-col gap-1">
-              <h3 className="font-medium text-base capitalize">
-                {stationDetails.name}
-              </h3>
-              <h3 className="font-normal text-sm">
-                Station ID: {stationDetails.id}
-              </h3>
-              <h3 className="font-normal text-sm">
-                Email: {stationDetails.email}
-              </h3>
-              <h3 className="font-normal text-sm">
-                Address: {stationDetails.address}
-              </h3>
-              <h3 className="font-normal text-sm">
-                Contact: {stationDetails.contact_no}
-              </h3>
-              {stationDetails.restaurant ? (
-                <h3 className="font-normal text-sm">
-                  Restaurant: {stationDetails.restaurant}
-                </h3>
+              <div className="font-medium text-base capitalize flex gap-1">
+                <h3 className="font-medium">{stationDetail.name}</h3>
+              </div>
+              <div className="font-normal text-sm flex gap-1">
+                <h3 className="font-medium">Station ID :</h3> {stationDetail.id}
+              </div>
+              <div className="font-normal text-sm flex gap-1">
+                <h3 className="font-medium">Email :</h3> {stationDetail.email}
+              </div>
+              <div className="font-normal text-sm flex gap-1">
+                <h3 className="font-medium">Address :</h3>{" "}
+                {stationDetail.address}
+              </div>
+              <div className="font-normal text-sm flex gap-1">
+                <h3 className="font-medium">Contact :</h3>{" "}
+                {stationDetail.contact_no}
+              </div>
+              {stationDetail.restaurant ? (
+                <div className="font-normal text-sm flex gap-1">
+                  <h3 className="font-medium">Restaurant :</h3>{" "}
+                  {stationDetail.restaurant}
+                </div>
               ) : (
                 ""
               )}
-              <h3 className="font-normal text-sm">
-                Short Description: {stationDetails.short_description}
-              </h3>
-              <h3 className="font-normal text-sm">
-                Long Description: {stationDetails.long_description}
-              </h3>
+              <div className="font-normal text-sm flex gap-1">
+                <h3 className="font-medium">Short Description :</h3>{" "}
+                {stationDetail.short_description}
+              </div>
+              <div className="font-normal text-sm flex gap-1">
+                <h3 className="font-medium">Long Description :</h3>{" "}
+                {stationDetail.long_description}
+              </div>
             </div>
           </div>
         ) : (

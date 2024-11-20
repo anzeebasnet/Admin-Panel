@@ -7,7 +7,7 @@ import { FoodItem } from "@/types/types";
 import { Open_Sans } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { HiPlusSmall } from "react-icons/hi2";
 
 const open_sans = Open_Sans({
@@ -26,10 +26,7 @@ const Page = ({
   };
 }) => {
   const dispatch = useAppDispatch();
-  const [foodList, setFoodList] = useState<FoodItem[]>([]);
-
-  const { data: foodItems, isLoading: isLoading } = useFoodItemList(
-    setFoodList,
+  const { data: foodList, isLoading: isLoading } = useFoodItemList(
     params.stationId,
     params.menuId
   );
@@ -61,13 +58,13 @@ const Page = ({
       </div>
       <div>
         {isLoading ? (
-          <p>Loading Item List...</p>
+          <p>Loading Food Item List...</p>
         ) : foodList && foodList.length > 0 ? (
           <div className="flex flex-wrap gap-4">
-            {foodList.map((food, index) => (
+            {foodList.map((food: FoodItem, index: any) => (
               <div
                 key={index}
-                className="p-4 pb-2 flex flex-col gap-2 dark:bg-primary_dark bg-white rounded-md shadow-md shadow-vll_gray dark:shadow-none"
+                className="flex flex-col gap-2 dark:bg-primary_dark bg-white rounded-md shadow-md shadow-vll_gray dark:shadow-none"
               >
                 <Link
                   href={`/station/${params.stationId}/${params.stationName}/menu/${params.menuId}/${params.menuName}/items/${food.id}/${food.name}`}
@@ -77,10 +74,10 @@ const Page = ({
                     alt="menu icon"
                     width={100}
                     height={100}
-                    className="w-32 h-32"
+                    className="w-40 h-32 rounded-t-md"
                   />
                 </Link>
-                <h2 className="text-primary_text dark:text-secondary_text font-medium place-self-center text-sm capitalize">
+                <h2 className="text-primary_text dark:text-secondary_text font-medium place-self-center text-sm capitalize px-2 pb-4">
                   {food.name}
                 </h2>
               </div>

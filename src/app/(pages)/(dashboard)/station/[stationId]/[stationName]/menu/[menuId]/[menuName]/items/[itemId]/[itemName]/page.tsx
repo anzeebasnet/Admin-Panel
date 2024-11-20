@@ -31,24 +31,22 @@ const Page = ({
     (state: RootState) => state.foodItem.currentFoodItems
   );
   const dispatch = useAppDispatch();
-  const [foodList, setFoodList] = useState<FoodItem[]>([]);
   const [foodDetails, setFoodDetails] = useState<FoodItem | null>(null);
 
   const { data: foodItems, isLoading: isLoading } = useFoodItemList(
-    setFoodList,
     params.stationId,
     params.menuId
   );
 
   //set Food detail
   useEffect(() => {
-    if (foodList.length > 0) {
+    if (foodItems.length > 0) {
       const matchedData = getFoodDetails(params.itemId);
       if (matchedData) {
         setFoodDetails(matchedData);
       }
     }
-  }, [foodList, params.itemId]);
+  }, [foodItems, params.itemId]);
 
   //set food detail in redux for update
   useEffect(() => {
@@ -58,7 +56,7 @@ const Page = ({
   }, [foodDetails, dispatch]);
 
   function getFoodDetails(itemID: string) {
-    return foodList.find((food) => food.id === itemID) || null;
+    return foodItems.find((food: FoodItem) => food.id === itemID) || null;
   }
 
   return (

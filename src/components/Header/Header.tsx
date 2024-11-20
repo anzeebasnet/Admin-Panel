@@ -53,10 +53,11 @@ import {
   HiOutlineDocumentReport,
   HiOutlineUsers,
 } from "react-icons/hi";
-import { MdOutlineEditNote, MdOutlineSubscriptions } from "react-icons/md";
-import { CiClock2 } from "react-icons/ci";
-import { LiaTasksSolid } from "react-icons/lia";
-import ThemeToggle from "../ThemeToggle/ThemeToggle";
+import {
+  MdFoodBank,
+  MdOutlineEditNote,
+  MdOutlineSubscriptions,
+} from "react-icons/md";
 import { Button } from "../ui/button";
 import { signIn, signOut, useSession } from "next-auth/react";
 import {
@@ -70,6 +71,7 @@ import { AiFillInfoCircle } from "react-icons/ai";
 import { FaGlobeAmericas } from "react-icons/fa";
 import { HiOutlineClipboardDocumentCheck } from "react-icons/hi2";
 import { ImDatabase } from "react-icons/im";
+import { ModeToggle } from "../ThemeToggle/ThemeToggle";
 
 const archivo = Archivo({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800"],
@@ -238,6 +240,26 @@ const Header = () => {
                       </Link>
                     </SheetClose>
 
+                    {/* <SheetClose asChild>
+                      <Link href="/restaurant" prefetch={true}>
+                        <span
+                          className={`flex gap-2 items-center py-2 pb-1 px-2 pl-1 rounded-md ${
+                            pathname === "/restaurant"
+                              ? "bg-primary_text text-white"
+                              : "dark:text-white text-text_gray"
+                          }`}
+                        >
+                          <MdFoodBank size={25} />
+                          <p
+                            className={` font-normal sm:text-base text-sm
+                              `}
+                          >
+                            Restaurant
+                          </p>
+                        </span>
+                      </Link>
+                    </SheetClose> */}
+
                     <Accordion
                       type="single"
                       collapsible
@@ -298,7 +320,7 @@ const Header = () => {
                           <span
                             className={`flex gap-2 items-center dark:text-white text-text_gray`}
                           >
-                            <ImDatabase size={18} />
+                            <ImDatabase size={17} />
                             <p className={` font-normal sm:text-base text-sm`}>
                               Meta
                             </p>
@@ -846,54 +868,55 @@ const Header = () => {
           <TbSearch className=" dark:text-white text-black" size={25} />
         </div>
       </div>
-      <div className="flex items-center justify-center gap-3">
-        <ThemeToggle />
-        <div className="flex items-center justify-center sm:gap-3 gap-1">
-          <div className="dark:bg-blue bg-vl_blue sm:w-10 w-8 h-8 sm:h-10 flex items-center justify-center rounded-full">
+      <div className="flex items-center justify-center sm:gap-3 gap-2">
+        <div className="flex sam:gap-3 gap-2">
+          <ModeToggle />
+          <Button
+            variant="outline"
+            size="icon"
+            className="rounded-full dark:bg-blue bg-vl_blue sm:w-10 sm:h-10 w-8 h-8"
+          >
             <IoNotificationsOutline
-              size={25}
+              size={23}
               className="dark:text-white text-black"
             />
-          </div>
-          <div className="dark:bg-blue bg-vl_blue sm:w-10 w-8 h-8 sm:h-10 flex items-center justify-center rounded-full">
-            <TbMessageDots size={25} className="dark:text-white text-black" />
-          </div>
-          {status === "authenticated" ? (
-            <div className="flex sm:gap-1 items-center">
-              <Image
-                src={"/images/girl.jpeg"}
-                alt="profile"
-                width={100}
-                height={100}
-                className="rounded-full sm:w-12 w-8 h-8 sm:h-12 border-2 border-white"
-              />
-              <Accordion type="single" collapsible>
-                <AccordionItem value="item-1" className="relative">
-                  <AccordionTrigger className="text-black dark:text-white">
-                    <p className="dark:text-white text-black font-medium sm:text-base text-sm sm:block hidden">
-                      Jane Smith
-                    </p>
-                  </AccordionTrigger>
-                  <AccordionContent className="flex flex-col justify-start bg-white dark:bg-secondary_dark h-16 p-3 absolute top-10 right-2 rounded-sm shadow-md z-40">
-                    <Button
-                      onClick={handleLogout}
-                      className="bg-primary_text dark:bg-secondary_text hover:bg-l_orange dark:hover:bg-blue text-white w-full  h-8 mb-6 self-center rounded-lg"
-                    >
-                      Sign out
-                    </Button>
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
-            </div>
-          ) : (
-            <Button
-              onClick={handleLogin}
-              className="bg-primary_text dark:bg-secondary_text hover:bg-l_orange text-white w-full h-9 self-center rounded-lg"
-            >
-              Sign in
-            </Button>
-          )}
+          </Button>
         </div>
+        {status === "authenticated" ? (
+          <div className="flex sm:gap-1 items-center">
+            <Image
+              src={"/images/girl.jpeg"}
+              alt="profile"
+              width={100}
+              height={100}
+              className="rounded-full sm:w-12 w-8 h-8 sm:h-12 border-2 border-white"
+            />
+            <Accordion type="single" collapsible>
+              <AccordionItem value="item-1" className="relative">
+                <AccordionTrigger className="text-black dark:text-white">
+                  <p className="dark:text-white text-black font-medium sm:text-base text-sm sm:block hidden">
+                    Angela
+                  </p>
+                </AccordionTrigger>
+                <AccordionContent className="flex flex-col justify-start bg-white dark:bg-secondary_dark h-16 p-3 absolute top-10 right-2 rounded-sm shadow-md z-40">
+                  <Button
+                    onClick={handleLogout}
+                    className="bg-primary_text dark:bg-secondary_text hover:bg-l_orange dark:hover:bg-blue text-white w-full  h-8 mb-6 self-center rounded-lg"
+                  >
+                    Sign out
+                  </Button>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
+        ) : (
+          <Button
+            onClick={handleLogin}
+            className="bg-primary_text dark:bg-secondary_text hover:bg-l_orange text-white w-full h-9 self-center rounded-lg"
+          >
+            Sign in
+          </Button>
+        )}
       </div>
     </header>
   );

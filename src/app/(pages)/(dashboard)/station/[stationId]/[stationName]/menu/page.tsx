@@ -1,14 +1,19 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import { useMenuList } from "@/lib/react-query/queriesAndMutations";
-import { clearMenuItem } from "@/lib/store/features/menu/menuSlice";
+import {
+  clearMenuItem,
+  setMenuItem,
+} from "@/lib/store/features/menu/menuSlice";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { MenuItem } from "@/types/types";
 import { Open_Sans } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { HiPlusSmall } from "react-icons/hi2";
+import { CiEdit } from "react-icons/ci";
 
 const open_sans = Open_Sans({
   weight: ["300", "400", "500", "600", "700"],
@@ -21,10 +26,8 @@ const Page = ({
   params: { stationId: string; stationName: string };
 }) => {
   const dispatch = useAppDispatch();
-  const [menuList, setMenuList] = useState<MenuItem[]>([]);
 
-  const { data: menus, isLoading: isLoading } = useMenuList(
-    setMenuList,
+  const { data: menuList, isLoading: isLoading } = useMenuList(
     params.stationId
   );
 
@@ -55,28 +58,44 @@ const Page = ({
       </div>
       <div>
         {isLoading ? (
-          <p>Loading Menu List</p>
+          <p>Loading Menu List...</p>
         ) : menuList && menuList.length > 0 ? (
           <div className="flex flex-wrap gap-4">
-            {menuList.map((menu, index) => (
+            {menuList.map((menu: MenuItem, index: any) => (
               <div
                 key={index}
-                className="p-4 pb-2 flex flex-col gap-2 dark:bg-primary_dark bg-white rounded-md shadow-md shadow-vll_gray dark:shadow-none"
+                className="flex flex-col gap-2 dark:bg-primary_dark rounded-md bg-white shadow-md shadow-vll_gray dark:shadow-none w-40"
               >
                 <Link
-                  href={`/station/${params.stationId}/${params.stationName}/menu/${menu.id}/${menu.name}`}
+                  href={`/station/${params.stationId}/${params.stationName}/menu/${menu.id}/${menu.name}/items`}
                 >
                   <Image
                     src={menu.icon || ""}
                     alt="menu icon"
                     width={100}
                     height={100}
-                    className="w-32 h-32"
+                    className="w-40 h-32 rounded-t-md"
                   />
                 </Link>
-                <h2 className="text-primary_text dark:text-secondary_text font-medium place-self-center text-sm capitalize">
-                  {menu.name}
-                </h2>
+                <div className="flex gap-1 justify-between px-2 pb-4">
+                  <Link
+                    href={`/station/${params.stationId}/${params.stationName}/menu/${menu.id}/${menu.name}/items`}
+                    className="text-primary_text dark:text-secondary_text font-medium place-self-center text-sm capitalize line-clamp-1"
+                  >
+                    {menu.name}
+                  </Link>
+                  <Link
+                    href={`/station/${params.stationId}/${params.stationName}/menu/create`}
+                    onClick={() => {
+                      dispatch(setMenuItem(menu));
+                    }}
+                  >
+                    <CiEdit
+                      size={23}
+                      className="text-primary_text dark:text-secondary_text"
+                    />
+                  </Link>
+                </div>
               </div>
             ))}
           </div>

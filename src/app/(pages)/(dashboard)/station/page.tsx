@@ -17,6 +17,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { clearStationData } from "@/lib/store/features/station/stationSlice";
 import { useStationList } from "@/lib/react-query/queriesAndMutations";
+import { RootState } from "@/lib/store/store";
 
 const open_sans = Open_Sans({
   weight: ["300", "400", "500", "600", "700"],
@@ -24,12 +25,12 @@ const open_sans = Open_Sans({
 });
 
 const Page = () => {
-  const [stationList, setStationList] = useState<StationData[]>([]);
   const dispatch = useAppDispatch();
-  const sidebar = useAppSelector((state) => state.collapsible.collapse);
+  const sidebar = useAppSelector(
+    (state: RootState) => state.collapsible.collapse
+  );
 
-  const { data: Stations, isLoading: isloading } =
-    useStationList(setStationList);
+  const { data: stations, isLoading: isLoading } = useStationList();
 
   useEffect(() => {
     dispatch(clearStationData());
@@ -37,7 +38,7 @@ const Page = () => {
 
   return (
     <div
-      className={` bg-white dark:bg-secondary_dark rounded-sm p-6 flex flex-col gap-6 shadow-sm shadow-vll_gray dark:shadow-none ${open_sans.className}`}
+      className={` bg-white dark:bg-secondary_dark rounded-sm sm:p-6 p-4 flex flex-col gap-6 shadow-sm shadow-vll_gray dark:shadow-none ${open_sans.className}`}
     >
       <div className="flex sm:flex-row flex-col justify-between">
         <h1
@@ -52,12 +53,12 @@ const Page = () => {
           Add Station
         </Link>
       </div>
-      {isloading ? (
+      {isLoading ? (
         <p>Loading Station List...</p>
-      ) : stationList && stationList.length > 0 ? (
+      ) : stations && stations.length > 0 ? (
         <div className="overflow-x-auto">
           {sidebar ? (
-            <ScrollArea className="h-[75vh] w-[75vw]">
+            <ScrollArea className="h-[75vh] xl:w-[76vw] lg:w-[70vw] w-[90vw]">
               <Table className="">
                 <TableCaption></TableCaption>
                 <TableHeader>
@@ -71,9 +72,9 @@ const Page = () => {
                     <TableHead>Restaurant</TableHead>
                   </TableRow>
                 </TableHeader>
-                {stationList && stationList.length > 0 ? (
+                {stations && stations.length > 0 ? (
                   <TableBody>
-                    {stationList.map((station) => {
+                    {stations.map((station: StationData) => {
                       return (
                         <TableRow key={station.id} className="">
                           <TableCell>
@@ -102,7 +103,7 @@ const Page = () => {
               </Table>
             </ScrollArea>
           ) : (
-            <ScrollArea className="h-[75vh] w-[90vw]">
+            <ScrollArea className="h-[75vh] w-[88vw]">
               <Table className="">
                 <TableCaption></TableCaption>
                 <TableHeader>
@@ -116,9 +117,9 @@ const Page = () => {
                     <TableHead>Restaurant</TableHead>
                   </TableRow>
                 </TableHeader>
-                {stationList && stationList.length > 0 ? (
+                {stations && stations.length > 0 ? (
                   <TableBody>
-                    {stationList.map((station) => {
+                    {stations.map((station: StationData) => {
                       return (
                         <TableRow key={station.id} className="">
                           <TableCell>
@@ -148,7 +149,7 @@ const Page = () => {
             </ScrollArea>
           )}
         </div>
-      ) : stationList.length <= 0 ? (
+      ) : stations.length <= 0 ? (
         <p>No stations found!</p>
       ) : (
         <p>Couldn&apos;t load station list!</p>
