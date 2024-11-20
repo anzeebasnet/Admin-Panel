@@ -756,7 +756,7 @@ const SideBar = () => {
             </Tooltip>
           </TooltipProvider>
 
-          <TooltipProvider>
+          {/* <TooltipProvider>
             <Tooltip>
               <TooltipTrigger className="pl-[5px]">
                 <Link href="/restaurant" prefetch={true}>
@@ -774,7 +774,7 @@ const SideBar = () => {
                 <p>Restaurant</p>
               </TooltipContent>
             </Tooltip>
-          </TooltipProvider>
+          </TooltipProvider> */}
 
           <TooltipProvider>
             <Tooltip>
