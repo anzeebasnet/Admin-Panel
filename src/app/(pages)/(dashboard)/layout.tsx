@@ -9,6 +9,7 @@ import QueryProvider from "@/lib/react-query/QueryProvider";
 import NextTopLoader from "nextjs-toploader";
 import StoreProvider from "./StoreProvider";
 import { Toaster } from "react-hot-toast";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -34,6 +35,7 @@ export default function RootLayout({
               disableTransitionOnChange
             >
               <StoreProvider>
+                <ReactQueryDevtools initialIsOpen={false} />{" "}
                 <div className="flex h-screen">
                   <SideBar />
                   <div className="flex flex-col flex-1 h-screen">

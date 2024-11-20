@@ -3,6 +3,7 @@ import collapsibleReducer from "./features/Collapsible/CollapsibleSlice"
 import stationReducer from "./features/station/stationSlice"
 import menuReducer from "./features/menu/menuSlice"
 import foodItemReducer from "./features/foodItem/foodItemSlice"
+import restaurantReducer from "./features/restaurant/restaurantSlice"
 
 export const makeStore = () => {
     return configureStore({
@@ -11,6 +12,7 @@ export const makeStore = () => {
           station: stationReducer,
           menu: menuReducer,
           foodItem: foodItemReducer,
+          restaurant: restaurantReducer,
         },
       })
 }

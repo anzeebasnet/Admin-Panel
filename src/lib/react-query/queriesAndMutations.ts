@@ -2,8 +2,8 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import axios, { axiosPrivate } from "@/axios/axios";
 import {
   FoodItem,
-  LoginResponse,
   MenuItem,
+  RestroListData,
   StationData,
   UserListType,
 } from "@/types/types";
@@ -52,7 +52,7 @@ export const useUsersList = (
 };
 
 export const useStationList = (
-  setStationList: (data: StationData[]) => void
+  // setStationList: (data: StationData[]) => void
 ) => {
   const axiosInstance = useAxiosPrivateFood();
   return useQuery({
@@ -60,14 +60,27 @@ export const useStationList = (
     queryFn: async () => {
       const res = await axiosInstance.get("/moreclub/stations/list/");
       const data = res.data.data;
-      setStationList(data);
+      // setStationList(data);
+      return data;
+    },
+  });
+};
+
+export const useStationDetail = (
+  stationId: string
+) => {
+  const axiosInstance = useAxiosPrivateFood();
+  return useQuery({
+    queryKey: ["GET_STATIONDETAIL"],
+    queryFn: async () => {
+      const res = await axiosInstance.get(`/moreclub/station/${stationId}/`);
+      const data = res.data.data;
       return data;
     },
   });
 };
 
 export const useMenuList = (
-  setMenuList: (data: MenuItem[]) => void,
   stationId: string
 ) => {
   const axiosInstance = useAxiosPrivateFood();
@@ -78,14 +91,12 @@ export const useMenuList = (
         `/moreclub/station/${stationId}/menu/`
       );
       const data = res.data.data;
-      setMenuList(res.data.data);
       return data;
     },
   });
 };
 
 export const useFoodItemList = (
-  setFoodList: (data: FoodItem[]) => void,
   stationId: string,
   menuId: string
 ) => {
@@ -98,7 +109,68 @@ export const useFoodItemList = (
       );
       console.log(res.data.data);
       const data = res.data.data;
-      setFoodList(res.data.data);
+      return data;
+    },
+  });
+};
+
+export const useRestroList = (
+) => {
+  const axiosInstance = useAxiosPrivateFood();
+  return useQuery({
+    queryKey: ["GET_RESTROLIST"],
+    queryFn: async () => {
+      const res = await axiosInstance.get("/restaurants/list/",
+        {
+          headers: {
+            "x-country-code": "NP",
+          },
+        }
+      );
+      const data = res.data.data;
+      return data;
+    },
+  });
+};
+
+export const useRestroMenuList = (
+  restroId: string
+) => {
+  const axiosInstance = useAxiosPrivateFood();
+  return useQuery({
+    queryKey: ["GET_RESTROMENULIST"],
+    queryFn: async () => {
+      const res = await axios.get(
+        `https://api.morefood.se/api/moreclub/user/menus/${restroId}/`, {
+          headers: {
+            Authorization: `Bearer ${"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyMDk4NDk3LCJpYXQiOjE3MzIwMTIwOTcsImp0aSI6IjYwNjQ3YzVhYTIwNDQ1OGRiZmU0YmNmMjRkYzFjNjU0IiwidXNlcl9pZCI6IjZmYTk5NDYyLTJkMjgtNDZmZS04MzE2LTg1MGIzYzhjM2Y4YSJ9.EGqNkisEUmmaGOXXnI_dUAYPYA6jhhn6XJvW5rIKxEM"}`,
+          },
+        }
+      );
+      const data = res.data.data;
+      return data;
+    },
+  });
+};
+
+
+export const useRestroItemList = (
+  restroId: string,
+  menuId: string
+) => {
+  const axiosInstance = useAxiosPrivateFood();
+  return useQuery({
+    queryKey: ["GET_RESTROITEMLIST"],
+    queryFn: async () => {
+      const res = await axios.get(
+        `https://api.morefood.se/api/moreclub/user/food/items/${menuId}/${restroId}/`,{
+          headers: {
+            Authorization: `Bearer ${"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyMDg4NjMyLCJpYXQiOjE3MzIwMDIyMzIsImp0aSI6IjBlZTEzYWUyN2JjYzRmYTE4NTFmYjJjM2YyNWU5M2I2IiwidXNlcl9pZCI6IjZmYTk5NDYyLTJkMjgtNDZmZS04MzE2LTg1MGIzYzhjM2Y4YSJ9.TnP-81BFMUd7invifSzF5PUYl5GW3430V9957NsWW2s"}`,
+          },
+        }
+      );
+      console.log(res.data.data);
+      const data = res.data.data;
       return data;
     },
   });

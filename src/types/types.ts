@@ -192,11 +192,54 @@ export interface StationData {
   long_description: string | null;
 }
 
+export interface RestroListData {
+  id: string;
+  name: string;
+  open_hrs: string;
+  banner: string;
+  address: string;
+}
+
+export interface RestroDetail {
+  id: string;
+  country_code: string;
+  currency_code: string;
+  country: number;
+  currency: number;
+  name: string;
+  address: string;
+  short_description: string;
+  long_description: string;
+  lat: number;
+  lng: number;
+  logo: string;
+  banner: string;
+  email: string;
+  contact_no: string;
+  is_delivery: boolean;
+  is_pickup: boolean;
+  is_dine: boolean;
+  min_order: number;
+  station_no_of_packed_item: number;
+  delivery_per_km: number;
+  delivery_time: string;
+  website_link: string;
+  facebook_link: string;
+  instagram_link: string;
+}
+
 export interface MenuItem {
   id: string;
   name: string | null;
   no_of_items: number;
   icon: string | null;
+}
+
+export interface RestroMenuItem {
+  id: string;
+  no_of_items: number;
+  name: string;
+  icon: string;
 }
 
 export interface FoodItem {
@@ -212,4 +255,23 @@ export interface FoodItem {
   name: string;
   retailer_price: string;
   short_description: string;
+}
+
+export interface RestroFoodItem {
+  id: string;
+  name: string;
+  image: string;
+  short_description: string;
+  actual_price: number;
+  discount_percentage: number;
+  currency_symbol: string;
+  item_price: string;
+  cuisine: [
+    {
+      id: number;
+      name: string;
+      image: string;
+    }
+  ];
+  ingredient: string;
 }

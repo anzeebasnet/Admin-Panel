@@ -47,6 +47,10 @@ const MapboxComponent = ({ setNewAddress }: MapboxComponentProps) => {
     (state) => state.station.currentStation?.address
   );
 
+  const restroAddress = useAppSelector(
+    (state) => state.restaurant.currentRestro?.address
+  );
+
   useEffect(() => {
     if (reduxAddress) {
       // Fetch coordinates for the address from Mapbox API
@@ -72,6 +76,32 @@ const MapboxComponent = ({ setNewAddress }: MapboxComponentProps) => {
       fetchCoordinatesForAddress();
     }
   }, [reduxAddress]);
+
+  useEffect(() => {
+    if (restroAddress) {
+      // Fetch coordinates for the address from Mapbox API
+      const fetchCoordinatesForAddress = async () => {
+        const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(
+          restroAddress
+        )}.json?access_token=${mapboxgl.accessToken}`;
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (data.features && data.features.length > 0) {
+          const [lon, lat] = data.features[0].center;
+          setCoordinates({ lat, lon });
+          setSearchText(data.features[0].place_name);
+
+          // Update marker position and map center
+          if (mapRef.current) {
+            mapRef.current.flyTo({ center: [lon, lat], zoom: 15 });
+            markerRef.current?.setLngLat([lon, lat]);
+          }
+        }
+      };
+      fetchCoordinatesForAddress();
+    }
+  }, [restroAddress]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -227,7 +257,7 @@ const MapboxComponent = ({ setNewAddress }: MapboxComponentProps) => {
           value={searchText}
           onChange={(e) => handleChange(e.target.value)}
           placeholder="Search for places"
-          className="my-2 p-1 w-[calc(100%)] "
+          className="my-2 p-1 w-[calc(100%)] flex h-8 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none  disabled:cursor-not-allowed disabled:opacity-50"
         />
         <div className="relative ">
           {suggestions.length > 0 && (
