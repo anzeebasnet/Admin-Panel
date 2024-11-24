@@ -4,30 +4,10 @@ import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { Open_Sans } from "next/font/google";
 import { usePathname } from "next/navigation";
-import {
-  PiHandWithdraw,
-  PiNetwork,
-  PiNetworkFill,
-  PiSphereLight,
-} from "react-icons/pi";
+import { PiHandWithdraw, PiSphereLight } from "react-icons/pi";
 import { Anton } from "next/font/google";
-import { RxDashboard } from "react-icons/rx";
-import {
-  BsDoorClosed,
-  BsFileEarmarkLock2,
-  BsFillBriefcaseFill,
-  BsFillHouseFill,
-  BsFlagFill,
-} from "react-icons/bs";
-import { HiCurrencyDollar } from "react-icons/hi";
-import { GrDocumentVerified, GrTransaction } from "react-icons/gr";
-import {
-  MdDiscount,
-  MdOutlineDiscount,
-  MdOutlineEditNote,
-  MdFoodBank,
-  MdOutlineSubscriptions,
-} from "react-icons/md";
+import { BsDoorClosed, BsFillHouseFill } from "react-icons/bs";
+import { MdOutlineSubscriptions } from "react-icons/md";
 import {
   Accordion,
   AccordionContent,
@@ -42,30 +22,6 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { BsDoorOpenFill } from "react-icons/bs";
-import { IoIosNotifications } from "react-icons/io";
-import {
-  IoCalendarSharp,
-  IoWalletOutline,
-  IoWalletSharp,
-} from "react-icons/io5";
-import {
-  FaAddressCard,
-  FaBusinessTime,
-  FaHandshake,
-  FaIdCard,
-  FaMoneyBillTransfer,
-  FaUserGroup,
-} from "react-icons/fa6";
-import { AiFillInfoCircle } from "react-icons/ai";
-import { HiOutlineClipboardDocumentCheck } from "react-icons/hi2";
-import {
-  TbCalendarCheck,
-  TbCalendarDollar,
-  TbCalendarPlus,
-} from "react-icons/tb";
-import { FaGlobeAmericas } from "react-icons/fa";
-import { RiBillFill, RiQuestionnaireFill } from "react-icons/ri";
-import { ImDatabase } from "react-icons/im";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { toggleSidebar } from "@/lib/store/features/Collapsible/CollapsibleSlice";
@@ -76,11 +32,19 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
+  ArrowLeftRight,
+  Bell,
+  CalendarRange,
+  Database,
+  FileCheck,
+  Handshake,
+  IdCard,
+  LayoutDashboard,
+  Network,
+  NotebookPen,
+  Users,
+  Wallet,
+} from "lucide-react";
 
 const anton = Anton({
   weight: ["400"],
@@ -203,7 +167,7 @@ const SideBar = () => {
                     : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
                 }`}
               >
-                <RxDashboard size={20} />
+                <LayoutDashboard size={20} />
                 <p className={` font-normal  text-sm`}>Dashboard</p>
               </Link>
               <Link
@@ -215,7 +179,7 @@ const SideBar = () => {
                     : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
                 }`}
               >
-                <FaUserGroup size={20} />
+                <Users size={20} />
                 <p className={` font-normal  text-sm `}>User</p>
               </Link>
               <Link
@@ -258,7 +222,7 @@ const SideBar = () => {
                     <span
                       className={`flex gap-3 items-center dark:text-white text-text_gray`}
                     >
-                      <FaMoneyBillTransfer size={20} />
+                      <ArrowLeftRight size={20} />
                       <p className={` font-normal  text-sm `}>
                         Overall Transaction
                       </p>
@@ -295,9 +259,9 @@ const SideBar = () => {
                     className={`py-3 pb-1 px-4 rounded-md hover:bg-shadow_gray dark:hover:bg-vl_gray`}
                   >
                     <span
-                      className={`flex gap-[14px] items-center dark:text-white text-text_gray`}
+                      className={`flex gap-[12px] items-center dark:text-white text-text_gray`}
                     >
-                      <ImDatabase size={18} />
+                      <Database size={20} />
                       <p className={` font-normal  text-sm `}>Meta</p>
                     </span>
                   </AccordionTrigger>
@@ -311,7 +275,7 @@ const SideBar = () => {
                           : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
                       }`}
                     >
-                      <BsFillBriefcaseFill size={19} />
+                      {/* <BsFillBriefcaseFill size={19} /> */}
                       <p className={` font-normal  text-sm`}>Business Type</p>
                     </Link>
 
@@ -324,7 +288,7 @@ const SideBar = () => {
                           : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
                       }`}
                     >
-                      <AiFillInfoCircle size={20} />
+                      {/* <AiFillInfoCircle size={20} /> */}
                       <p className={` font-normal  text-sm`}>
                         Company Information
                       </p>
@@ -339,7 +303,7 @@ const SideBar = () => {
                           : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
                       }`}
                     >
-                      <FaGlobeAmericas size={20} />
+                      {/* <FaGlobeAmericas size={20} /> */}
                       <p className={` font-normal  text-sm`}>Continent</p>
                     </Link>
 
@@ -352,7 +316,7 @@ const SideBar = () => {
                           : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
                       }`}
                     >
-                      <BsFlagFill size={20} />
+                      {/* <BsFlagFill size={20} /> */}
                       <p className={` font-normal  text-sm`}>Country</p>
                     </Link>
                     <Link
@@ -364,7 +328,7 @@ const SideBar = () => {
                           : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
                       }`}
                     >
-                      <HiCurrencyDollar size={20} />
+                      {/* <HiCurrencyDollar size={20} /> */}
                       <p className={` font-normal  text-sm`}>Currency</p>
                     </Link>
 
@@ -377,7 +341,7 @@ const SideBar = () => {
                           : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
                       }`}
                     >
-                      <RiQuestionnaireFill size={20} />
+                      {/* <RiQuestionnaireFill size={20} /> */}
                       <p className={` font-normal  text-sm`}>FAQs</p>
                     </Link>
 
@@ -390,7 +354,7 @@ const SideBar = () => {
                           : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
                       }`}
                     >
-                      <BsFileEarmarkLock2 size={20} />
+                      {/* <BsFileEarmarkLock2 size={20} /> */}
                       <p className={` font-normal  text-sm`}>Privacy Policy</p>
                     </Link>
 
@@ -403,7 +367,7 @@ const SideBar = () => {
                           : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
                       }`}
                     >
-                      <HiOutlineClipboardDocumentCheck size={20} />
+                      {/* <HiOutlineClipboardDocumentCheck size={20} /> */}
                       <p className={` font-normal  text-sm`}>
                         Terms and Conditions
                       </p>
@@ -418,7 +382,7 @@ const SideBar = () => {
                     <span
                       className={`flex gap-3 items-center dark:text-white text-text_gray`}
                     >
-                      <IoCalendarSharp size={20} />
+                      <CalendarRange size={20} />
                       <p className={` font-normal  text-sm `}>Event</p>
                     </span>
                   </AccordionTrigger>
@@ -432,7 +396,7 @@ const SideBar = () => {
                           : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
                       }`}
                     >
-                      <TbCalendarPlus size={20} />
+                      {/* <TbCalendarPlus size={20} /> */}
                       <p className="font-normal text-sm"> Event Create</p>
                     </Link>
 
@@ -445,7 +409,7 @@ const SideBar = () => {
                           : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
                       }`}
                     >
-                      <TbCalendarDollar size={20} />
+                      {/* <TbCalendarDollar size={20} /> */}
                       <p className={` font-normal  text-sm `}>Event Fee</p>
                     </Link>
 
@@ -458,7 +422,7 @@ const SideBar = () => {
                           : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
                       }`}
                     >
-                      <TbCalendarCheck size={20} />
+                      {/* <TbCalendarCheck size={20} /> */}
                       <p className={` font-normal  text-sm `}>Event Book</p>
                     </Link>
                   </AccordionContent>
@@ -471,7 +435,7 @@ const SideBar = () => {
                     <span
                       className={`flex gap-3 items-center dark:text-white text-text_gray`}
                     >
-                      <FaAddressCard size={20} />
+                      <IdCard size={20} />
                       <p className={` font-normal  text-sm`}>Membership</p>
                     </span>
                   </AccordionTrigger>
@@ -530,7 +494,7 @@ const SideBar = () => {
                     <span
                       className={`flex gap-3 items-center dark:text-white text-text_gray`}
                     >
-                      <PiNetworkFill size={20} />
+                      <Network size={20} />
                       <p className={` font-normal  text-sm`}>Referral</p>
                     </span>
                   </AccordionTrigger>
@@ -567,7 +531,7 @@ const SideBar = () => {
                     <span
                       className={`flex gap-3 items-center dark:text-white text-text_gray`}
                     >
-                      <IoWalletSharp size={20} />
+                      <Wallet size={20} />
                       <p className={` font-normal  text-sm`}>Wallet</p>
                     </span>
                   </AccordionTrigger>
@@ -581,7 +545,7 @@ const SideBar = () => {
                           : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
                       }`}
                     >
-                      <GrTransaction size={20} />
+                      {/* <GrTransaction size={20} /> */}
                       <p className={` font-normal  text-sm`}>Transaction</p>
                     </Link>
                     <Link
@@ -593,7 +557,7 @@ const SideBar = () => {
                           : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
                       }`}
                     >
-                      <IoWalletOutline size={20} />
+                      {/* <IoWalletOutline size={20} /> */}
                       <p className={` font-normal  text-sm`}>User Wallet</p>
                     </Link>
                   </AccordionContent>
@@ -609,20 +573,20 @@ const SideBar = () => {
                     : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
                 }`}
               >
-                <GrDocumentVerified size={20} />
+                <FileCheck size={20} />
                 <p className={` font-normal  text-sm`}>KYC</p>
               </Link>
 
               <Link
                 href="/notification"
                 prefetch={true}
-                className={`flex gap-[10px] items-center pt-2 pb-[2px] pl-3 px-4 rounded-md ${
+                className={`flex gap-[10px] items-center pt-2 pb-[2px] pl-4 px-4 rounded-md ${
                   pathname === "/notification"
                     ? "bg-primary_text dark:bg-secondary_text text-white"
                     : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
                 }`}
               >
-                <IoIosNotifications size={26} />
+                <Bell size={22} />
                 <p className={` font-normal  text-sm`}>Notification</p>
               </Link>
 
@@ -635,20 +599,20 @@ const SideBar = () => {
                     : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
                 }`}
               >
-                <FaHandshake size={20} />
+                <Handshake size={20} />
                 <p className={` font-normal  text-sm`}>Partners</p>
               </Link>
 
               <Link
                 href="/project"
                 prefetch={true}
-                className={`flex gap-2 items-center pt-2 pb-[2px] pl-4 px-4 rounded-md ${
+                className={`flex gap-3 items-center pt-2 pb-[2px] pl-4 px-4 rounded-md ${
                   pathname === "/project"
                     ? "bg-primary_text dark:bg-secondary_text text-white"
                     : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
                 }`}
               >
-                <MdOutlineEditNote size={25} />
+                <NotebookPen size={20} />
                 <p className={` font-normal  text-sm `}>Project</p>
               </Link>
 
@@ -699,7 +663,7 @@ const SideBar = () => {
             <Tooltip>
               <TooltipTrigger className="pl-2">
                 <Link href="/" prefetch={true}>
-                  <RxDashboard
+                  <LayoutDashboard
                     size={20}
                     className={`${
                       pathname === "/"
@@ -720,7 +684,7 @@ const SideBar = () => {
               <TooltipTrigger className="pl-2">
                 {" "}
                 <Link href="/users" prefetch={true}>
-                  <FaUserGroup
+                  <Users
                     size={20}
                     className={`${
                       pathname === "/users"
@@ -782,7 +746,7 @@ const SideBar = () => {
                 <span
                   className={`flex gap-3 items-center dark:text-white text-text_gray`}
                 >
-                  <FaMoneyBillTransfer size={20} />
+                  <ArrowLeftRight size={20} />
                 </span>
               </TooltipTrigger>
               <TooltipContent className="flex flex-col pt-2 pl-2 gap-1">
@@ -818,7 +782,7 @@ const SideBar = () => {
                 <span
                   className={`flex gap-3 items-center dark:text-white text-text_gray`}
                 >
-                  <ImDatabase size={18} />
+                  <Database size={20} />
                 </span>
               </TooltipTrigger>
               <TooltipContent className="flex flex-col pt-2 pl-2 gap-1">
@@ -831,7 +795,7 @@ const SideBar = () => {
                       : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
                   }`}
                 >
-                  <BsFillBriefcaseFill size={19} />
+                  {/* <BsFillBriefcaseFill size={19} /> */}
                   <p className={` font-normal  text-sm`}>Business Type</p>
                 </Link>
 
@@ -844,7 +808,7 @@ const SideBar = () => {
                       : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
                   }`}
                 >
-                  <AiFillInfoCircle size={20} />
+                  {/* <AiFillInfoCircle size={20} /> */}
                   <p className={` font-normal  text-sm`}>Company Information</p>
                 </Link>
 
@@ -857,7 +821,7 @@ const SideBar = () => {
                       : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
                   }`}
                 >
-                  <FaGlobeAmericas size={20} />
+                  {/* <FaGlobeAmericas size={20} /> */}
                   <p className={` font-normal  text-sm`}>Continent</p>
                 </Link>
 
@@ -870,7 +834,7 @@ const SideBar = () => {
                       : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
                   }`}
                 >
-                  <BsFlagFill size={20} />
+                  {/* <BsFlagFill size={20} /> */}
                   <p className={` font-normal  text-sm`}>Country</p>
                 </Link>
                 <Link
@@ -882,7 +846,7 @@ const SideBar = () => {
                       : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
                   }`}
                 >
-                  <HiCurrencyDollar size={20} />
+                  {/* <HiCurrencyDollar size={20} /> */}
                   <p className={` font-normal  text-sm`}>Currency</p>
                 </Link>
 
@@ -895,7 +859,7 @@ const SideBar = () => {
                       : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
                   }`}
                 >
-                  <RiQuestionnaireFill size={20} />
+                  {/* <RiQuestionnaireFill size={20} /> */}
                   <p className={` font-normal  text-sm`}>FAQs</p>
                 </Link>
 
@@ -908,7 +872,7 @@ const SideBar = () => {
                       : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
                   }`}
                 >
-                  <BsFileEarmarkLock2 size={20} />
+                  {/* <BsFileEarmarkLock2 size={20} /> */}
                   <p className={` font-normal  text-sm`}>Privacy Policy</p>
                 </Link>
 
@@ -921,7 +885,7 @@ const SideBar = () => {
                       : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
                   }`}
                 >
-                  <HiOutlineClipboardDocumentCheck size={20} />
+                  {/* <HiOutlineClipboardDocumentCheck size={20} /> */}
                   <p className={` font-normal  text-sm`}>
                     Terms and Conditions
                   </p>
@@ -934,7 +898,7 @@ const SideBar = () => {
             <Tooltip>
               <TooltipTrigger className="pl-2">
                 <span className={` dark:text-white text-text_gray`}>
-                  <IoCalendarSharp size={20} />
+                  <CalendarRange size={20} />
                 </span>
               </TooltipTrigger>
               <TooltipContent className="flex flex-col pt-2 pl-2 gap-1">
@@ -947,7 +911,7 @@ const SideBar = () => {
                       : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
                   }`}
                 >
-                  <TbCalendarPlus size={20} />
+                  {/* <TbCalendarPlus size={20} /> */}
                   <p className="font-normal text-sm"> Event Create</p>
                 </Link>
 
@@ -960,7 +924,7 @@ const SideBar = () => {
                       : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
                   }`}
                 >
-                  <TbCalendarDollar size={20} />
+                  {/* <TbCalendarDollar size={20} /> */}
                   <p className={` font-normal  text-sm `}>Event Fee</p>
                 </Link>
 
@@ -973,7 +937,7 @@ const SideBar = () => {
                       : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
                   }`}
                 >
-                  <TbCalendarCheck size={20} />
+                  {/* <TbCalendarCheck size={20} /> */}
                   <p className={` font-normal  text-sm `}>Event Book</p>
                 </Link>
               </TooltipContent>
@@ -984,7 +948,7 @@ const SideBar = () => {
             <Tooltip>
               <TooltipTrigger className="pl-2">
                 <span className={` dark:text-white text-text_gray`}>
-                  <FaAddressCard size={20} />
+                  <IdCard size={20} />
                 </span>
               </TooltipTrigger>
               <TooltipContent className="flex flex-col pt-2 pl-2 gap-1">
@@ -1042,7 +1006,7 @@ const SideBar = () => {
                 <span
                   className={`flex justify-center items-center dark:text-white text-text_gray`}
                 >
-                  <PiNetworkFill size={20} />
+                  <Network size={20} />
                 </span>
               </TooltipTrigger>
               <TooltipContent className="flex flex-col pt-2 pl-2 gap-1">
@@ -1078,7 +1042,7 @@ const SideBar = () => {
                 <span
                   className={`flex gap-3 items-center dark:text-white text-text_gray`}
                 >
-                  <IoWalletSharp size={20} />
+                  <Wallet size={20} />
                 </span>
               </TooltipTrigger>
               <TooltipContent className="flex flex-col pt-2 pl-2 gap-1">
@@ -1091,7 +1055,7 @@ const SideBar = () => {
                       : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
                   }`}
                 >
-                  <GrTransaction size={20} />
+                  {/* <GrTransaction size={20} /> */}
                   <p className={` font-normal  text-sm`}>Transaction</p>
                 </Link>
                 <Link
@@ -1103,7 +1067,7 @@ const SideBar = () => {
                       : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
                   }`}
                 >
-                  <IoWalletOutline size={20} />
+                  {/* <IoWalletOutline size={20} /> */}
                   <p className={` font-normal  text-sm`}>User Wallet</p>
                 </Link>
               </TooltipContent>
@@ -1114,7 +1078,7 @@ const SideBar = () => {
             <Tooltip>
               <TooltipTrigger className="pl-2">
                 <Link href="/kyc" prefetch={true}>
-                  <GrDocumentVerified
+                  <FileCheck
                     size={20}
                     className={`${
                       pathname === "/kyc"
@@ -1132,10 +1096,10 @@ const SideBar = () => {
 
           <TooltipProvider>
             <Tooltip>
-              <TooltipTrigger className="pl-1">
+              <TooltipTrigger className="pl-2">
                 <Link href="/notification" prefetch={true}>
-                  <IoIosNotifications
-                    size={26}
+                  <Bell
+                    size={22}
                     className={`${
                       pathname === "/notification"
                         ? "text-primary_text dark:text-secondary_text"
@@ -1154,7 +1118,7 @@ const SideBar = () => {
             <Tooltip>
               <TooltipTrigger className="pl-2">
                 <Link href="/partners" prefetch={true}>
-                  <FaHandshake
+                  <Handshake
                     size={20}
                     className={`${
                       pathname === "/partners"
@@ -1174,8 +1138,8 @@ const SideBar = () => {
             <Tooltip>
               <TooltipTrigger className="pl-2">
                 <Link href="/project" prefetch={true}>
-                  <MdOutlineEditNote
-                    size={25}
+                  <NotebookPen
+                    size={20}
                     className={`${
                       pathname === "/project"
                         ? "text-primary_text dark:text-secondary_text"

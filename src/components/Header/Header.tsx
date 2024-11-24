@@ -2,22 +2,11 @@
 
 import React, { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
-import {
-  TbCalendarCheck,
-  TbCalendarDollar,
-  TbCalendarPlus,
-  TbMessageDots,
-} from "react-icons/tb";
-import {
-  IoCalendarSharp,
-  IoNotificationsOutline,
-  IoWalletOutline,
-  IoWalletSharp,
-} from "react-icons/io5";
+
+import { IoNotificationsOutline } from "react-icons/io5";
 import Image from "next/image";
-import { IoIosArrowDown, IoIosNotifications } from "react-icons/io";
 import { TbSearch } from "react-icons/tb";
-import { RiMenuLine, RiQuestionnaireFill } from "react-icons/ri";
+import { RiMenuLine } from "react-icons/ri";
 import {
   Sheet,
   SheetClose,
@@ -36,42 +25,29 @@ import {
 import Link from "next/link";
 import { Archivo } from "next/font/google";
 import { usePathname } from "next/navigation";
-import { PiHandWithdraw, PiNetworkFill, PiSphereLight } from "react-icons/pi";
+import { PiHandWithdraw, PiSphereLight } from "react-icons/pi";
 import { Kalam } from "next/font/google";
 import { Anton } from "next/font/google";
-import { RxCrossCircled, RxDashboard } from "react-icons/rx";
-import {
-  BsCameraVideo,
-  BsFileEarmarkLock2,
-  BsFileEarmarkSpreadsheet,
-  BsFillBriefcaseFill,
-  BsFillHouseFill,
-  BsFlagFill,
-} from "react-icons/bs";
-import {
-  HiCurrencyDollar,
-  HiOutlineDocumentReport,
-  HiOutlineUsers,
-} from "react-icons/hi";
-import {
-  MdFoodBank,
-  MdOutlineEditNote,
-  MdOutlineSubscriptions,
-} from "react-icons/md";
+import { RxCrossCircled } from "react-icons/rx";
+import { BsFillHouseFill } from "react-icons/bs";
+import { MdOutlineSubscriptions } from "react-icons/md";
 import { Button } from "../ui/button";
 import { signIn, signOut, useSession } from "next-auth/react";
-import {
-  FaAddressCard,
-  FaHandshake,
-  FaMoneyBillTransfer,
-  FaUserGroup,
-} from "react-icons/fa6";
-import { GrDocumentVerified, GrTransaction } from "react-icons/gr";
-import { AiFillInfoCircle } from "react-icons/ai";
-import { FaGlobeAmericas } from "react-icons/fa";
-import { HiOutlineClipboardDocumentCheck } from "react-icons/hi2";
-import { ImDatabase } from "react-icons/im";
 import { ModeToggle } from "../ThemeToggle/ThemeToggle";
+import {
+  ArrowLeftRight,
+  Bell,
+  CalendarRange,
+  Database,
+  FileCheck,
+  Handshake,
+  IdCard,
+  LayoutDashboard,
+  Network,
+  NotebookPen,
+  Users,
+  Wallet,
+} from "lucide-react";
 
 const archivo = Archivo({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800"],
@@ -192,7 +168,7 @@ const Header = () => {
                               : "dark:text-white text-text_gray"
                           }`}
                         >
-                          <RxDashboard size={18} />
+                          <LayoutDashboard size={18} />
                           <p className={` font-normal sm:text-base text-sm`}>
                             Dashboard
                           </p>
@@ -209,7 +185,7 @@ const Header = () => {
                               : "dark:text-white text-text_gray"
                           }`}
                         >
-                          <FaUserGroup size={18} />
+                          <Users size={18} />
                           <p
                             className={` font-normal sm:text-base text-sm
                               `}
@@ -274,7 +250,7 @@ const Header = () => {
                           <span
                             className={`flex gap-2 items-center dark:text-white text-text_gray`}
                           >
-                            <FaMoneyBillTransfer size={18} />
+                            <ArrowLeftRight size={18} />
                             <p className={` font-normal sm:text-base text-sm`}>
                               Overall Transaction
                             </p>
@@ -318,9 +294,9 @@ const Header = () => {
                            `}
                         >
                           <span
-                            className={`flex gap-2 items-center dark:text-white text-text_gray`}
+                            className={`flex gap-[6px] items-center dark:text-white text-text_gray`}
                           >
-                            <ImDatabase size={17} />
+                            <Database size={20} />
                             <p className={` font-normal sm:text-base text-sm`}>
                               Meta
                             </p>
@@ -336,7 +312,7 @@ const Header = () => {
                                     : "dark:text-white text-text_gray"
                                 }`}
                               >
-                                <BsFillBriefcaseFill size={18} />
+                                {/* <BsFillBriefcaseFill size={18} /> */}
                                 <p
                                   className={` font-normal sm:text-base text-sm
                               `}
@@ -355,7 +331,7 @@ const Header = () => {
                                     : "dark:text-white text-text_gray"
                                 }`}
                               >
-                                <AiFillInfoCircle size={18} />
+                                {/* <AiFillInfoCircle size={18} /> */}
                                 <p
                                   className={` font-normal sm:text-base text-sm
                               `}
@@ -375,7 +351,7 @@ const Header = () => {
                                     : "dark:text-white text-text_gray"
                                 }`}
                               >
-                                <FaGlobeAmericas size={18} />
+                                {/* <FaGlobeAmericas size={18} /> */}
                                 <p
                                   className={` font-normal sm:text-base text-sm
                               `}
@@ -395,7 +371,7 @@ const Header = () => {
                                     : "dark:text-white text-text_gray"
                                 }`}
                               >
-                                <BsFlagFill size={18} />
+                                {/* <BsFlagFill size={18} /> */}
                                 <p
                                   className={` font-normal sm:text-base text-sm
                               `}
@@ -415,7 +391,7 @@ const Header = () => {
                                     : "dark:text-white text-text_gray"
                                 }`}
                               >
-                                <HiCurrencyDollar size={18} />
+                                {/* <HiCurrencyDollar size={18} /> */}
                                 <p
                                   className={` font-normal sm:text-base text-sm
                               `}
@@ -435,7 +411,7 @@ const Header = () => {
                                     : "dark:text-white text-text_gray"
                                 }`}
                               >
-                                <RiQuestionnaireFill size={18} />
+                                {/* <RiQuestionnaireFill size={18} /> */}
                                 <p
                                   className={` font-normal sm:text-base text-sm
                               `}
@@ -455,7 +431,7 @@ const Header = () => {
                                     : "dark:text-white text-text_gray"
                                 }`}
                               >
-                                <BsFileEarmarkLock2 size={18} />
+                                {/* <BsFileEarmarkLock2 size={18} /> */}
                                 <p
                                   className={` font-normal sm:text-base text-sm
                               `}
@@ -478,7 +454,7 @@ const Header = () => {
                                     : "dark:text-white text-text_gray"
                                 }`}
                               >
-                                <HiOutlineClipboardDocumentCheck size={18} />
+                                {/* <HiOutlineClipboardDocumentCheck size={18} /> */}
                                 <p
                                   className={` font-normal sm:text-base text-sm
                               `}
@@ -496,9 +472,9 @@ const Header = () => {
                           className={`py-2 pb-1 px-2 rounded-md `}
                         >
                           <span
-                            className={`flex gap-2 items-center dark:text-white text-text_gray`}
+                            className={`flex gap-[6px] items-center dark:text-white text-text_gray`}
                           >
-                            <IoCalendarSharp size={18} />
+                            <CalendarRange size={20} />
                             <p className={` font-normal sm:text-base text-sm`}>
                               Event
                             </p>
@@ -514,7 +490,7 @@ const Header = () => {
                                     : "dark:text-white text-text_gray"
                                 }`}
                               >
-                                <TbCalendarPlus size={18} />
+                                {/* <TbCalendarPlus size={18} /> */}
                                 <p
                                   className={` font-normal sm:text-base text-sm
                               `}
@@ -534,7 +510,7 @@ const Header = () => {
                                     : "dark:text-white text-text_gray"
                                 }`}
                               >
-                                <TbCalendarDollar size={18} />
+                                {/* <TbCalendarDollar size={18} /> */}
                                 <p
                                   className={` font-normal sm:text-base text-sm
                               `}
@@ -554,7 +530,7 @@ const Header = () => {
                                     : "dark:text-white text-text_gray"
                                 }`}
                               >
-                                <TbCalendarCheck size={18} />
+                                {/* <TbCalendarCheck size={18} /> */}
                                 <p
                                   className={` font-normal sm:text-base text-sm
                               `}
@@ -574,7 +550,7 @@ const Header = () => {
                           <span
                             className={`flex gap-2 items-center dark:text-white text-text_gray `}
                           >
-                            <FaAddressCard size={18} />
+                            <IdCard size={18} />
                             <p className={` font-normal sm:text-base text-sm`}>
                               Membership
                             </p>
@@ -643,7 +619,7 @@ const Header = () => {
                           <span
                             className={`flex gap-2 items-center dark:text-white text-text_gray `}
                           >
-                            <PiNetworkFill size={18} />
+                            <Network size={18} />
                             <p className={` font-normal sm:text-base text-sm`}>
                               Referral
                             </p>
@@ -686,7 +662,7 @@ const Header = () => {
                           <span
                             className={`flex gap-2 items-center dark:text-white text-text_gray `}
                           >
-                            <IoWalletSharp size={18} />
+                            <Wallet size={18} />
                             <p className={` font-normal sm:text-base text-sm`}>
                               Wallet
                             </p>
@@ -702,7 +678,7 @@ const Header = () => {
                                     : "dark:text-white text-text_gray"
                                 }`}
                               >
-                                <GrTransaction size={18} />
+                                {/* <GrTransaction size={18} /> */}
                                 <p
                                   className={` font-normal sm:text-base text-sm`}
                                 >
@@ -720,7 +696,7 @@ const Header = () => {
                                     : "dark:text-white text-text_gray"
                                 }`}
                               >
-                                <IoWalletOutline size={18} />
+                                {/* <IoWalletOutline size={18} /> */}
                                 <p
                                   className={` font-normal sm:text-base text-sm`}
                                 >
@@ -742,7 +718,7 @@ const Header = () => {
                               : "dark:text-white text-text_gray"
                           }`}
                         >
-                          <GrDocumentVerified size={18} />
+                          <FileCheck size={18} />
                           <p
                             className={` font-normal sm:text-base text-sm
                               `}
@@ -756,13 +732,13 @@ const Header = () => {
                     <SheetClose asChild>
                       <Link href="/notification" prefetch={true}>
                         <span
-                          className={`flex gap-2 items-center py-2 pb-1 px-2 rounded-md ${
+                          className={`flex gap-2 items-center py-2 pb-1 px-2 pl-[6px] rounded-md ${
                             pathname === "/notification"
                               ? "bg-primary_text text-white"
                               : "dark:text-white text-text_gray"
                           }`}
                         >
-                          <IoIosNotifications size={18} />
+                          <Bell size={21} />
                           <p className={` font-normal sm:text-base text-sm`}>
                             Notification
                           </p>
@@ -779,7 +755,7 @@ const Header = () => {
                               : "dark:text-white text-text_gray"
                           }`}
                         >
-                          <FaHandshake size={18} />
+                          <Handshake size={18} />
                           <p className={` font-normal sm:text-base text-sm`}>
                             Partners
                           </p>
@@ -796,7 +772,7 @@ const Header = () => {
                               : "dark:text-white text-text_gray"
                           }`}
                         >
-                          <MdOutlineEditNote size={18} />
+                          <NotebookPen size={18} />
                           <p className={` font-normal sm:text-base text-sm`}>
                             Project
                           </p>

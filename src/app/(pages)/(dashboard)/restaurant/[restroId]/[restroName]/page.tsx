@@ -106,7 +106,7 @@ const Page = ({
           <p>Couldn&apos;t find restaurant detail!</p>
         )}
 
-        <div className="flex gap-4">
+        <div className="flex flex-wrap gap-4">
           {restroData ? (
             <div>
               <Link

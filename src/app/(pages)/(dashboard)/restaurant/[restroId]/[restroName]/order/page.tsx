@@ -99,12 +99,6 @@ const Page = ({
         >
           Orders
         </h1>
-        {/* <Link
-          href={"/restaurant/create"}
-          className="bg-primary_text dark:bg-btn_blue text-white text-sm hover:bg-l_orange dark:hover:bg-blue py-1 px-4 rounded place-self-end"
-        >
-          Add Restaurant
-        </Link> */}
       </div>
       <div>
         <OrderForm onSubmit={applyFilters} />
