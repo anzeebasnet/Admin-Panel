@@ -4,6 +4,7 @@ import stationReducer from "./features/station/stationSlice"
 import menuReducer from "./features/menu/menuSlice"
 import foodItemReducer from "./features/foodItem/foodItemSlice"
 import restaurantReducer from "./features/restaurant/restaurantSlice"
+import cuisineReducer from "./features/cuisine/CuisineSlice"
 
 export const makeStore = () => {
     return configureStore({
@@ -13,6 +14,7 @@ export const makeStore = () => {
           menu: menuReducer,
           foodItem: foodItemReducer,
           restaurant: restaurantReducer,
+          cuisine: cuisineReducer,
         },
       })
 }
