@@ -1,16 +1,13 @@
 "use client";
 
-import axiosFood from "@/axios/axiosFood";
-import useAxiosPrivateFood from "@/hooks/useAxiosPrivateFood";
-import { useRestroList } from "@/lib/react-query/queriesAndMutations";
+import { useRestroDetail } from "@/lib/react-query/queriesAndMutations";
 import { setRestroData } from "@/lib/store/features/restaurant/restaurantSlice";
 import { useAppSelector } from "@/lib/store/hooks";
 import { RootState } from "@/lib/store/store";
-import { RestroDetail } from "@/types/types";
 import { Open_Sans } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 
 const open_sans = Open_Sans({
@@ -27,33 +24,9 @@ const Page = ({
     (state: RootState) => state.restaurant.currentRestro
   );
   const dispatch = useDispatch();
-  const axiosInstance = useAxiosPrivateFood();
-  const [restroDetails, setRestroDetail] = useState<RestroDetail | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
-
-  const fetchRestroDetail = async () => {
-    try {
-      setIsLoading(true);
-      const res = await axiosFood.get(
-        `/moreclub/user/restaurants/${params.restroId}/`,
-        {
-          headers: {
-            Authorization: `Bearer ${"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyMDk4NDk3LCJpYXQiOjE3MzIwMTIwOTcsImp0aSI6IjYwNjQ3YzVhYTIwNDQ1OGRiZmU0YmNmMjRkYzFjNjU0IiwidXNlcl9pZCI6IjZmYTk5NDYyLTJkMjgtNDZmZS04MzE2LTg1MGIzYzhjM2Y4YSJ9.EGqNkisEUmmaGOXXnI_dUAYPYA6jhhn6XJvW5rIKxEM"}`,
-          },
-        }
-      );
-      console.log(res.data.data);
-      setRestroDetail(res.data.data);
-    } catch (error) {
-      console.log("Error retrieving restaurant detail!");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchRestroDetail();
-  }, []);
+  const { data: restroDetails, isLoading: isLoading } = useRestroDetail(
+    params.restroId
+  );
 
   useEffect(() => {
     if (restroDetails) {
@@ -151,7 +124,31 @@ const Page = ({
               href={`/restaurant/${params.restroId}/${params.restroName}/menu`}
               className="bg-primary_text dark:bg-btn_blue text-white text-sm hover:bg-l_orange dark:hover:bg-blue py-1 px-4 rounded place-self-end"
             >
-              View Menu
+              Menu
+            </Link>
+          </div>
+          <div>
+            <Link
+              href={`/restaurant/${params.restroId}/${params.restroName}/cuisines`}
+              className="bg-primary_text dark:bg-btn_blue text-white text-sm hover:bg-l_orange dark:hover:bg-blue py-1 px-4 rounded place-self-end"
+            >
+              Cuisines
+            </Link>
+          </div>
+          <div>
+            <Link
+              href={`/restaurant/${params.restroId}/${params.restroName}/order`}
+              className="bg-primary_text dark:bg-btn_blue text-white text-sm hover:bg-l_orange dark:hover:bg-blue py-1 px-4 rounded place-self-end"
+            >
+              Orders
+            </Link>
+          </div>
+          <div>
+            <Link
+              href={`/restaurant/${params.restroId}/${params.restroName}/hours`}
+              className="bg-primary_text dark:bg-btn_blue text-white text-sm hover:bg-l_orange dark:hover:bg-blue py-1 px-4 rounded place-self-end"
+            >
+              Working Hours
             </Link>
           </div>
         </div>
