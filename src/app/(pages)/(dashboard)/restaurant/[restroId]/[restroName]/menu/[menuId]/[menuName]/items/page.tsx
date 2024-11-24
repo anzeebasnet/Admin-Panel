@@ -1,9 +1,6 @@
 "use client";
 
-import {
-  useFoodItemList,
-  useRestroItemList,
-} from "@/lib/react-query/queriesAndMutations";
+import { useRestroItemList } from "@/lib/react-query/queriesAndMutations";
 import { clearFoodItem } from "@/lib/store/features/foodItem/foodItemSlice";
 import { useAppDispatch } from "@/lib/store/hooks";
 import { FoodItem, RestroFoodItem } from "@/types/types";
@@ -50,7 +47,7 @@ const Page = ({
         </h1>
         <div className="flex gap-4">
           <Link
-            href={`/station/${params.restroId}/${params.restroName}/menu/${params.menuId}/${params.menuName}/items/create`}
+            href={`/restaurant/${params.restroId}/${params.restroName}/menu/${params.menuId}/${params.menuName}/items/create`}
             className="bg-primary_text dark:bg-btn_blue text-white text-sm hover:bg-l_orange dark:hover:bg-blue py-1 px-4 rounded place-self-end"
           >
             <div className="flex gap-1 items-center">

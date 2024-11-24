@@ -49,7 +49,7 @@ const CreateRestroMenu = ({
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const { data: session } = useSession();
-  const StationName = decodeURIComponent(params.restroName);
+  const RestroName = decodeURIComponent(params.restroName);
   const dispatch = useAppDispatch();
   const axiosInstance = useAxiosPrivateFood();
 
@@ -154,7 +154,7 @@ const CreateRestroMenu = ({
       {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyMDk4NDk3LCJpYXQiOjE3MzIwMTIwOTcsImp0aSI6IjYwNjQ3YzVhYTIwNDQ1OGRiZmU0YmNmMjRkYzFjNjU0IiwidXNlcl9pZCI6IjZmYTk5NDYyLTJkMjgtNDZmZS04MzE2LTg1MGIzYzhjM2Y4YSJ9.EGqNkisEUmmaGOXXnI_dUAYPYA6jhhn6XJvW5rIKxEM"}`,
+          Authorization: `Bearer ${"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyMTc3MzUwLCJpYXQiOjE3MzIwOTA5NTAsImp0aSI6ImQxOWQzM2RhNmZmYjQ3N2Y5NWY5NGIwMDk1NWY4YzY0IiwidXNlcl9pZCI6IjZmYTk5NDYyLTJkMjgtNDZmZS04MzE2LTg1MGIzYzhjM2Y4YSJ9.8Aaluj7PuQ2QTIlaDQ1BQSeOFUpXO_yP3nevFpsR71o"}`,
         },
       }
     );
@@ -165,7 +165,7 @@ const CreateRestroMenu = ({
       <h1
         className={`text-primary_text dark:text-secondary_text text-lg font-medium mb-4 ${open_sans.className}`}
       >
-        Create Menu for {StationName}
+        Create Menu for {RestroName}
       </h1>
       <Form {...form}>
         <form

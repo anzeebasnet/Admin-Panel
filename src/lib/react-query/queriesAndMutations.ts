@@ -51,24 +51,22 @@ export const useUsersList = (
   });
 };
 
-export const useStationList = (
+export const useStationList = () =>
   // setStationList: (data: StationData[]) => void
-) => {
-  const axiosInstance = useAxiosPrivateFood();
-  return useQuery({
-    queryKey: ["GET_STATIONLIST"],
-    queryFn: async () => {
-      const res = await axiosInstance.get("/moreclub/stations/list/");
-      const data = res.data.data;
-      // setStationList(data);
-      return data;
-    },
-  });
-};
+  {
+    const axiosInstance = useAxiosPrivateFood();
+    return useQuery({
+      queryKey: ["GET_STATIONLIST"],
+      queryFn: async () => {
+        const res = await axiosInstance.get("/moreclub/stations/list/");
+        const data = res.data.data;
+        // setStationList(data);
+        return data;
+      },
+    });
+  };
 
-export const useStationDetail = (
-  stationId: string
-) => {
+export const useStationDetail = (stationId: string) => {
   const axiosInstance = useAxiosPrivateFood();
   return useQuery({
     queryKey: ["GET_STATIONDETAIL"],
@@ -80,9 +78,7 @@ export const useStationDetail = (
   });
 };
 
-export const useMenuList = (
-  stationId: string
-) => {
+export const useMenuList = (stationId: string) => {
   const axiosInstance = useAxiosPrivateFood();
   return useQuery({
     queryKey: ["GET_MENULIST"],
@@ -96,10 +92,7 @@ export const useMenuList = (
   });
 };
 
-export const useFoodItemList = (
-  stationId: string,
-  menuId: string
-) => {
+export const useFoodItemList = (stationId: string, menuId: string) => {
   const axiosInstance = useAxiosPrivateFood();
   return useQuery({
     queryKey: ["GET_FOODITEMLIST"],
@@ -114,16 +107,32 @@ export const useFoodItemList = (
   });
 };
 
-export const useRestroList = (
-) => {
+export const useRestroList = () => {
   const axiosInstance = useAxiosPrivateFood();
   return useQuery({
     queryKey: ["GET_RESTROLIST"],
     queryFn: async () => {
-      const res = await axiosInstance.get("/restaurants/list/",
+      const res = await axiosInstance.get("/restaurants/list/", {
+        headers: {
+          "x-country-code": "NP",
+        },
+      });
+      const data = res.data.data;
+      return data;
+    },
+  });
+};
+
+export const useRestroDetail = (restroId: string) => {
+  const axiosInstance = useAxiosPrivateFood();
+  return useQuery({
+    queryKey: ["GET_RESTRODETAIL"],
+    queryFn: async () => {
+      const res = await axios.get(
+        `https://api.morefood.se/api/moreclub/user/restaurants/${restroId}/`,
         {
           headers: {
-            "x-country-code": "NP",
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
           },
         }
       );
@@ -133,17 +142,16 @@ export const useRestroList = (
   });
 };
 
-export const useRestroMenuList = (
-  restroId: string
-) => {
+export const useRestroMenuList = (restroId: string) => {
   const axiosInstance = useAxiosPrivateFood();
   return useQuery({
     queryKey: ["GET_RESTROMENULIST"],
     queryFn: async () => {
       const res = await axios.get(
-        `https://api.morefood.se/api/moreclub/user/menus/${restroId}/`, {
+        `https://api.morefood.se/api/moreclub/user/menus/${restroId}/`,
+        {
           headers: {
-            Authorization: `Bearer ${"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyMDk4NDk3LCJpYXQiOjE3MzIwMTIwOTcsImp0aSI6IjYwNjQ3YzVhYTIwNDQ1OGRiZmU0YmNmMjRkYzFjNjU0IiwidXNlcl9pZCI6IjZmYTk5NDYyLTJkMjgtNDZmZS04MzE2LTg1MGIzYzhjM2Y4YSJ9.EGqNkisEUmmaGOXXnI_dUAYPYA6jhhn6XJvW5rIKxEM"}`,
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
           },
         }
       );
@@ -153,19 +161,56 @@ export const useRestroMenuList = (
   });
 };
 
-
-export const useRestroItemList = (
-  restroId: string,
-  menuId: string
-) => {
+export const useRestroItemList = (restroId: string, menuId: string) => {
   const axiosInstance = useAxiosPrivateFood();
   return useQuery({
     queryKey: ["GET_RESTROITEMLIST"],
     queryFn: async () => {
       const res = await axios.get(
-        `https://api.morefood.se/api/moreclub/user/food/items/${menuId}/${restroId}/`,{
+        `https://api.morefood.se/api/moreclub/user/food/items/${menuId}/${restroId}/`,
+        {
           headers: {
-            Authorization: `Bearer ${"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyMDg4NjMyLCJpYXQiOjE3MzIwMDIyMzIsImp0aSI6IjBlZTEzYWUyN2JjYzRmYTE4NTFmYjJjM2YyNWU5M2I2IiwidXNlcl9pZCI6IjZmYTk5NDYyLTJkMjgtNDZmZS04MzE2LTg1MGIzYzhjM2Y4YSJ9.TnP-81BFMUd7invifSzF5PUYl5GW3430V9957NsWW2s"}`,
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
+          },
+        }
+      );
+      console.log(res.data.data);
+      const data = res.data.data;
+      return data;
+    },
+  });
+};
+
+export const useCuisineList = (restroId: string) => {
+  const axiosInstance = useAxiosPrivateFood();
+  return useQuery({
+    queryKey: ["GET_CUISINELIST"],
+    queryFn: async () => {
+      const res = await axios.get(
+        `https://api.morefood.se/api/moreclub/user/cuisines/${restroId}/`,
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
+          },
+        }
+      );
+      console.log(res.data.data);
+      const data = res.data.data;
+      return data;
+    },
+  });
+};
+
+export const useOrderList = (restroId: string) => {
+  const axiosInstance = useAxiosPrivateFood();
+  return useQuery({
+    queryKey: ["GET_ORDERLIST"],
+    queryFn: async () => {
+      const res = await axios.get(
+        `https://api.morefood.se/api/moreclub/user/orders/${restroId}/`,
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
           },
         }
       );

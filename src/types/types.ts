@@ -275,3 +275,63 @@ export interface RestroFoodItem {
   ];
   ingredient: string;
 }
+
+export interface Cuisine {
+  id: number;
+  name: string;
+  image: string;
+}
+
+export interface OrderData {
+  id: string;
+  order_id: string;
+  full_name: string;
+  email: string;
+  phone_no: string;
+  restaurant: {
+    id: string;
+    logo: string;
+    name: string;
+    address: string;
+    short_description: string;
+    long_description: string;
+    lat: number;
+    lng: number;
+    banner: string;
+    email: string;
+    contact_no: string;
+    is_delivery: boolean;
+    is_pickup: boolean;
+    is_dine: boolean;
+    is_open: boolean;
+    timezone: string;
+    min_order: number;
+    delivery_per_km: number;
+    station_no_of_packed_item: number;
+    delivery_time: string;
+    website_link: string;
+    facebook_link: string;
+    instagram_link: string;
+    user: string;
+    country: number;
+    currency: number;
+  };
+  order_status: string;
+  order_type: string;
+  lat: number;
+  lng: number;
+  address: string;
+  ordered_date: string;
+  arrival_time: string;
+  note: string;
+  order_items: string[];
+  currency_symbol: string;
+}
+
+export interface WorkingHours {
+  day_name: string;
+  end_time: string;
+  id: string;
+  is_open: boolean;
+  start_time: string;
+}

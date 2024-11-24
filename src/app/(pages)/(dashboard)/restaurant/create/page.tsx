@@ -304,7 +304,7 @@ const Restaurant = () => {
           {
             headers: {
               "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyMDc3NzY5LCJpYXQiOjE3MzE5OTEzNjksImp0aSI6ImI4ZmQ5OGY1NGNlZTQ3YWZhMmM0YzdmNzFmMTk3NWNmIiwidXNlcl9pZCI6IjZmYTk5NDYyLTJkMjgtNDZmZS04MzE2LTg1MGIzYzhjM2Y4YSJ9.DINlalzvTCF5P2NTSmyiMnPvbH2HyJmt66On0bZ8rr8"}`,
+              Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
             },
           }
         )
@@ -338,12 +338,17 @@ const Restaurant = () => {
           setIsSubmitting(false);
         });
     } else {
-      axiosInstance
-        .post("/moreclub/restaurant/setup/", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
+      axios
+        .post(
+          "https://api.morefood.se/api/moreclub/restaurant/setup/",
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
+            },
+          }
+        )
         .then((response) => {
           console.log("Form submitted successfully:", response.data);
           form.reset();
