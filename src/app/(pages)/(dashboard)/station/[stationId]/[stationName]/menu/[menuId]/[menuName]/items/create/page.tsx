@@ -69,6 +69,7 @@ const Page = ({
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const dispatch = useAppDispatch();
+  const menuName = decodeURIComponent(params.menuName);
   const itemData = useAppSelector(
     (state: RootState) => state.foodItem.currentFoodItems
   );
@@ -191,8 +192,7 @@ const Page = ({
       <h1
         className={`text-primary_text dark:text-secondary_text text-lg font-medium mb-4 ${open_sans.className}`}
       >
-        {itemData ? "Update Food Item for" : "Add Food Item for"}{" "}
-        {params.menuName}
+        {itemData ? "Update Food Item for" : "Add Food Item for"} {menuName}
       </h1>
       <Form {...form}>
         <form

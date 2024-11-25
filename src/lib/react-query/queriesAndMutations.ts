@@ -3,8 +3,10 @@ import axios, { axiosPrivate } from "@/axios/axios";
 import {
   FoodItem,
   MenuItem,
+  NearByStationDetail,
   RestroListData,
   StationData,
+  StationMenuItem,
   UserListType,
 } from "@/types/types";
 import { signIn } from "next-auth/react";
@@ -208,6 +210,91 @@ export const useOrderList = (restroId: string) => {
     queryFn: async () => {
       const res = await axios.get(
         `https://api.morefood.se/api/moreclub/user/orders/${restroId}/`,
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
+          },
+        }
+      );
+      console.log(res.data.data);
+      const data = res.data.data;
+      return data;
+    },
+  });
+};
+
+
+export const useNearbyStationList = (restroId: string) => {
+  const axiosInstance = useAxiosPrivateFood();
+  return useQuery({
+    queryKey: ["GET_NEARBYSTATIONLIST"],
+    queryFn: async () => {
+      const res = await axios.get(
+        `https://api.morefood.se/api/moreclub/station/${restroId}/nearby/`,
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
+            "x-country-code": "NP",
+          },
+        }
+      );
+      console.log(res.data.data);
+      const data = res.data.data;
+      return data;
+    },
+  });
+};
+
+
+export const useStationMenu = (restroId: string, stationId: string) => {
+  const axiosInstance = useAxiosPrivateFood();
+  return useQuery({
+    queryKey: ["GET_STATIONMENU"],
+    queryFn: async () => {
+      const res = await axios.get(
+        `https://api.morefood.se/api/moreclub/station/${stationId}/restaurant/${restroId}/food-items/restro/`,
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
+          },
+        }
+      );
+      console.log(res.data.data);
+      const data = res.data.data;
+      return data;
+    },
+  });
+};
+
+
+export const useNearbyStationDetail = (stationId: string) => {
+  const axiosInstance = useAxiosPrivateFood();
+  return useQuery({
+    queryKey: ["GET_NEARBYSTATIONDETAIL"],
+    queryFn: async () => {
+      const res = await axios.get(
+        `https://api.morefood.se/api/moreclub/station/restro/${stationId}/by/restaurant/`,
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
+          },
+        }
+      );
+      console.log(res.data.data);
+      const data:NearByStationDetail = res.data.data;
+      return data;
+    },
+  });
+};
+
+
+export const useMenuListByRestro = (restroId: string) => {
+  const axiosInstance = useAxiosPrivateFood();
+  return useQuery({
+    queryKey: ["GET_MENULISTBYRESTRO"],
+    queryFn: async () => {
+      const res = await axios.get(
+        `https://api.morefood.se/api/moreclub/station/restro/${restroId}/by/restaurant/menu/`,
         {
           headers: {
             Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,

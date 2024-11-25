@@ -40,7 +40,7 @@ const Page = ({
 
   //set Food detail
   useEffect(() => {
-    if (foodItems?.length > 0) {
+    if (foodItems.length > 0) {
       const matchedData = getFoodDetails(params.itemId);
       if (matchedData) {
         setFoodDetails(matchedData);

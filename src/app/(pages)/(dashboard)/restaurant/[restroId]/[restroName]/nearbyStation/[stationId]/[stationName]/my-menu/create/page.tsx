@@ -34,23 +34,21 @@ import { clearFoodItem } from "@/lib/store/features/foodItem/foodItemSlice";
 import Loader from "@/components/ui/Loader";
 import axios from "axios";
 import { Textarea } from "@/components/ui/textarea";
-import { Cuisine } from "@/types/types";
-import { clearRestroItem } from "@/lib/store/features/restroItem/restroItemSlice";
+import { Cuisine, MenuItem, RestroMenuItem } from "@/types/types";
+import { useMenuListByRestro } from "@/lib/react-query/queriesAndMutations";
 
 const formSchema = z.object({
   name: z.string().min(2, {
     message: "name can't be empty.",
   }),
-  image: z.instanceof(File).optional(),
-  price: z.string(),
-  discount_price: z.string(),
+  retailer_price: z.string(),
   short_description: z.string().min(6, {
     message: "Short Description must be atleast 6 characters",
   }),
+  image: z.instanceof(File).optional(),
   ingredient: z.string(),
-  cuisine_id: z.number(),
   restaurant_id: z.string(),
-  menu: z.string(),
+  menu_id: z.string(),
 });
 
 const open_sans = Open_Sans({
@@ -64,81 +62,49 @@ const Page = ({
   params: {
     restroId: string;
     restroName: string;
-    menuId: string;
-    menuName: string;
+    stationId: string;
+    stationName: string;
   };
 }) => {
   const { data: session } = useSession();
   const axiosInstance = useAxiosPrivateFood();
-  const MenuName = decodeURIComponent(params.menuName);
+  //   const MenuName = decodeURIComponent(params.menuName);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const [cuisines, setCuisines] = useState<Cuisine[]>([]);
-  const [selectedCuisineId, setSelectedCuisineId] = useState<number | null>(
-    null
-  );
+  const [selectedMenuId, setSelectedMenuId] = useState<string | null>(null);
 
   const dispatch = useAppDispatch();
   const itemData = useAppSelector(
-    (state: RootState) => state.restroFoodItem.currentRestroItem
+    (state: RootState) => state.foodItem.currentFoodItems
   );
+  const { data: menuList } = useMenuListByRestro(params.restroId);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
       image: undefined,
-      price: "",
-      discount_price: "",
+      retailer_price: "",
       short_description: "",
       ingredient: "",
       restaurant_id: params.restroId,
-      menu: params.menuId,
+      menu_id: "",
     },
   });
 
-  const fetchCuisine = async () => {
-    try {
-      const res = await axios.get(
-        `https://api.morefood.se/api/moreclub/user/cuisines/${params.restroId}/`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
-          },
-        }
-      );
-      console.log(res.data.data);
-      setCuisines(res.data.data);
-    } catch (error) {
-      console.log("Error fetching cuisines!");
-    }
-  };
+  //   useEffect(() => {
+  //     if (itemData) {
+  //       form.setValue("name", itemData.name || "");
+  //       form.setValue("ingredient", itemData.ingredient);
+  //       form.setValue("offerPrice", itemData.item_price.toString());
+  //       form.setValue("price", itemData.actual_price.toString());
+  //       form.setValue("retailer_price", itemData.retailer_price);
+  //       form.setValue("short_description", itemData.short_description);
+  //       form.setValue("is_active", itemData.is_active);
 
-  useEffect(() => {
-    fetchCuisine();
-  }, []);
-
-  useEffect(() => {
-    if (itemData) {
-      form.setValue("name", itemData.name || "");
-      form.setValue("ingredient", itemData.ingredient);
-      form.setValue("discount_price", itemData.item_price.toString());
-      form.setValue("price", itemData.actual_price.toString());
-      form.setValue("short_description", itemData.short_description);
-
-      const cuisineSelected = cuisines.find(
-        (cuisine) =>
-          cuisine.name.toLowerCase() === itemData.cuisine[0].name.toLowerCase()
-      );
-      if (cuisineSelected) {
-        console.log("Selected Cuisine:", cuisineSelected);
-        setSelectedCuisineId(cuisineSelected.id);
-        form.setValue("cuisine_id", cuisineSelected.id);
-      }
-
-      setImagePreview(itemData.image);
-    }
-  }, [itemData, cuisines]);
+  //       setImagePreview(itemData.image);
+  //     }
+  //   }, [itemData]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     if (!session) {
@@ -157,12 +123,6 @@ const Page = ({
           const fileBlob = new Blob([value], { type: value.type });
           formData.append(key, fileBlob, value.name);
         }
-      } else if (key === "cuisine_id") {
-        // Check if cuisine_id is already an array, otherwise convert to array
-        const cuisineArray = Array.isArray(value) ? value : [value];
-        cuisineArray.forEach((id) => {
-          formData.append("cuisine_id[]", id?.toString()); // Use `cuisine_id[]` for array in FormData
-        });
       } else {
         // Append other values as strings
         formData.append(key, value as string);
@@ -170,72 +130,78 @@ const Page = ({
     });
 
     formData.append("restaurant_id", params.restroId);
-    formData.append("menu", params.menuId);
 
-    if (itemData) {
-      axios
-        .patch(
-          `https://api.morefood.se/api/moreclub/user/food/items/${params.menuId}/${itemData.id}/${params.restroId}/`,
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
-            },
-          }
-        )
-        .then((response) => {
-          console.log("Form submitted successfully:", response.data);
-          form.reset();
-          toast.success("Food item Updated Successfully!", {
-            duration: 5000,
-            position: "top-right",
-          });
-        })
-        .catch((error) => {
-          console.error("Error submitting form:", error);
-          toast.error("Error updating food item!", {
-            duration: 5000,
-            position: "top-right",
-          });
-        })
-        .finally(() => {
-          dispatch(clearRestroItem());
-          setIsSubmitting(false);
-          setImagePreview(null);
-        });
-    } else {
-      axios
-        .post(
-          `https://api.morefood.se/api/moreclub/user/food/items/${params.menuId}/${params.restroId}/`,
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
-            },
-          }
-        )
-        .then((response) => {
-          console.log("Form submitted successfully:", response.data);
-          form.reset();
-          toast.success("Food Item Added Successfully!", {
-            duration: 5000,
-            position: "top-right",
-          });
-        })
-        .catch((error) => {
-          console.error("Error submitting form:", error);
-          toast.error("Error adding food item!", {
-            duration: 5000,
-            position: "top-right",
-          });
-        })
-        .finally(() => {
-          setIsSubmitting(false);
-          setImagePreview(null);
-        });
-    }
+    axios.post(
+      `https://api.morefood.se/api/moreclub/station/${params.stationId}}/restaurant/${params.restroId}/food-items/restro/`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
+        },
+      }
+    );
+
+    // if (itemData) {
+    //   axiosInstance
+    //     .patch(
+    //       `/moreclub/station/${params.stationId}/${params.menuId}/${itemData.id}/food-items/`,
+    //       formData,
+    //       {
+    //         headers: {
+    //           "Content-Type": "multipart/form-data",
+    //         },
+    //       }
+    //     )
+    //     .then((response) => {
+    //       console.log("Form submitted successfully:", response.data);
+    //       form.reset(); // Clear form after successful submission
+    //       toast.success("Food item Updated Successfully!", {
+    //         duration: 5000,
+    //         position: "top-right",
+    //       });
+    //     })
+    //     .catch((error) => {
+    //       console.error("Error submitting form:", error);
+    //       toast.error("Error updating food item!", {
+    //         duration: 5000,
+    //         position: "top-right",
+    //       });
+    //     })
+    //     .finally(() => {
+    //       dispatch(clearFoodItem());
+    //       setIsSubmitting(false);
+    //     });
+    // } else {
+    //   axiosInstance
+    //     .post(
+    //       `/moreclub/station/${params.stationId}/${params.menuId}/food-items/`,
+    //       formData,
+    //       {
+    //         headers: {
+    //           "Content-Type": "multipart/form-data",
+    //         },
+    //       }
+    //     )
+    //     .then((response) => {
+    //       console.log("Form submitted successfully:", response.data);
+    //       form.reset();
+    //       toast.success("Food Item Added Successfully!", {
+    //         duration: 5000,
+    //         position: "top-right",
+    //       });
+    //     })
+    //     .catch((error) => {
+    //       console.error("Error submitting form:", error);
+    //       toast.error("Error adding food item!", {
+    //         duration: 5000,
+    //         position: "top-right",
+    //       });
+    //     })
+    //     .finally(() => {
+    //       setIsSubmitting(false);
+    //     });
+    // }
   }
 
   return (
@@ -243,7 +209,7 @@ const Page = ({
       <h1
         className={`text-primary_text dark:text-secondary_text text-lg font-medium mb-4 ${open_sans.className}`}
       >
-        {itemData ? "Update Food Item for" : "Add Food Item for"} {MenuName}
+        {itemData ? "Update Food Item for" : "Add Food Item for"}
       </h1>
       <Form {...form}>
         <form
@@ -266,7 +232,7 @@ const Page = ({
             />
             <FormField
               control={form.control}
-              name="price"
+              name="retailer_price"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Price</FormLabel>
@@ -277,43 +243,31 @@ const Page = ({
                 </FormItem>
               )}
             />
+
             <FormField
               control={form.control}
-              name="discount_price"
+              name="menu_id"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Discount Price</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="cuisine_id"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Cuisine</FormLabel>
+                  <FormLabel>Menu</FormLabel>
                   <FormControl>
                     <Select
                       onValueChange={(value) => {
-                        const selectedCuisine = cuisines.find(
-                          (cuisine) => cuisine.name === value
+                        const selectedMenuItem = menuList.find(
+                          (menuItem: RestroMenuItem) => menuItem.name === value
                         );
-                        if (selectedCuisine) {
-                          field.onChange(selectedCuisine.id);
-                          setSelectedCuisineId(selectedCuisine.id);
+                        if (selectedMenuItem) {
+                          field.onChange(selectedMenuItem.id);
+                          setSelectedMenuId(selectedMenuItem.id);
                         } else {
                           field.onChange(null);
-                          setSelectedCuisineId(null);
                         }
                       }}
                       value={
-                        selectedCuisineId
-                          ? cuisines.find(
-                              (cuisine) => cuisine.id === selectedCuisineId
+                        selectedMenuId
+                          ? menuList.find(
+                              (menuItem: RestroMenuItem) =>
+                                menuItem.id === selectedMenuId
                             )?.name
                           : ""
                       }
@@ -322,9 +276,9 @@ const Page = ({
                         <SelectValue placeholder="Select a cuisine" />
                       </SelectTrigger>
                       <SelectContent>
-                        {cuisines.map((cuisine) => (
-                          <SelectItem key={cuisine.id} value={cuisine.name}>
-                            {cuisine.name}
+                        {menuList?.map((menuItem: RestroMenuItem) => (
+                          <SelectItem key={menuItem.id} value={menuItem.name}>
+                            {menuItem.name}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -407,7 +361,7 @@ const Page = ({
             }}
             className="bg-primary_text dark:bg-secondary_text hover:bg-l_orange dark:hover:bg-blue text-white h-8 mb-6 place-self-start rounded-lg"
           >
-            {isSubmitting ? <Loader /> : itemData ? "Edit" : "Add"}
+            {/* {isSubmitting ? <Loader /> : itemData ? "Edit" : "Add"} */} Add
           </Button>
         </form>
       </Form>
@@ -416,3 +370,10 @@ const Page = ({
 };
 
 export default Page;
+// name: Cinnamon Roll
+// retailer_price: 300
+// short_description: Flour, cinnamon, sugar, butter
+// image: (binary)
+// ingredient: Flour, cinnamon, sugar, butter
+// restaurant_id: a3033826-214a-46d9-a249-b01622ce1419
+// menu_id: 31f73a35-a306-45c2-bfcc-b31490e39385

@@ -1,13 +1,17 @@
 "use client";
 
 import { useRestroItemList } from "@/lib/react-query/queriesAndMutations";
-import { clearFoodItem } from "@/lib/store/features/foodItem/foodItemSlice";
+import {
+  clearRestroItem,
+  setRestroItem,
+} from "@/lib/store/features/restroItem/restroItemSlice";
 import { useAppDispatch } from "@/lib/store/hooks";
-import { FoodItem, RestroFoodItem } from "@/types/types";
+import { RestroFoodItem } from "@/types/types";
 import { Open_Sans } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect } from "react";
+import { CiEdit } from "react-icons/ci";
 import { HiPlusSmall } from "react-icons/hi2";
 
 const open_sans = Open_Sans({
@@ -32,7 +36,7 @@ const Page = ({
   );
 
   useEffect(() => {
-    dispatch(clearFoodItem());
+    dispatch(clearRestroItem());
   }, [dispatch]);
 
   return (
@@ -67,7 +71,7 @@ const Page = ({
                 className="flex flex-col gap-2 pb-4 w-48 dark:bg-primary_dark bg-white rounded-md shadow-md shadow-vll_gray dark:shadow-none"
               >
                 <Link
-                  href={`/station/${params.restroId}/${params.restroName}/menu/${params.menuId}/${params.menuName}/items/${food.id}/${food.name}`}
+                  href={`/restaurant/${params.restroId}/${params.restroName}/menu/${params.menuId}/${params.menuName}/items/${food.id}/${food.name}`}
                 >
                   <Image
                     src={food.image || ""}
@@ -78,21 +82,34 @@ const Page = ({
                   />
                 </Link>
                 <div className="flex flex-col gap-1  px-2">
-                  <div className="flex gap-1 items-end">
+                  <div className="flex justify-between items-end">
                     <h2 className="text-black dark:text-secondary_text font-medium  text-base capitalize line-clamp-1">
                       {food.name}
                     </h2>
+                    <Link
+                      href={`/restaurant/${params.restroId}/${params.restroName}/menu/${params.menuId}/${params.menuName}/items/create`}
+                      onClick={() => {
+                        dispatch(setRestroItem(food));
+                      }}
+                    >
+                      <CiEdit
+                        size={23}
+                        className="text-primary_text dark:text-secondary_text"
+                      />
+                    </Link>
+                  </div>
+                  <div className="flex justify-between">
+                    <div className="flex items-center gap-1">
+                      <p className="text-primary_text dark:text-secondary_text font-medium  text-sm">
+                        Rs. {food.item_price}
+                      </p>
+                      <p className="text-primary_text dark:text-secondary_text font-medium  text-xs line-through">
+                        Rs. {food.actual_price}
+                      </p>
+                    </div>
                     <div className="text-primary_text dark:text-secondary_text font-medium place-self-start text-sm flex ">
                       <div>{food.discount_percentage}%</div> <p>off</p>
                     </div>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <p className="text-primary_text dark:text-secondary_text font-medium  text-sm">
-                      Rs. {food.item_price}
-                    </p>
-                    <p className="text-primary_text dark:text-secondary_text font-medium  text-xs line-through">
-                      Rs. {food.actual_price}
-                    </p>
                   </div>
                 </div>
               </div>
