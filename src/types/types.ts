@@ -235,7 +235,7 @@ export interface MenuItem {
   icon: string | null;
 }
 
-export interface RestroMenuItem {
+export interface RestroMenuList {
   id: string;
   no_of_items: number;
   name: string;
@@ -354,7 +354,7 @@ export interface NearbyStations {
   long_description: string;
 }
 
-export interface StationMenuItem {
+export interface NearbyStationMenuItem {
   id: string,
   name: string,
   menu: string,

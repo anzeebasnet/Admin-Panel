@@ -1,18 +1,17 @@
 "use client";
 
+import { useStationMenu } from "@/lib/react-query/queriesAndMutations";
 import {
-  useStationDetail,
-  useStationMenu,
-} from "@/lib/react-query/queriesAndMutations";
-import { setStationData } from "@/lib/store/features/station/stationSlice";
-import { useAppSelector } from "@/lib/store/hooks";
-import { RootState } from "@/lib/store/store";
-import { StationMenuItem } from "@/types/types";
+  clearNearbyItem,
+  setNearbyItem,
+} from "@/lib/store/features/nearbyItem/nearbyItemSlice";
+import { NearbyStationMenuItem } from "@/types/types";
 import { Plus } from "lucide-react";
 import { Open_Sans } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect } from "react";
+import { CiEdit } from "react-icons/ci";
 import { useDispatch } from "react-redux";
 
 const open_sans = Open_Sans({
@@ -31,19 +30,14 @@ const Page = ({
   };
 }) => {
   const dispatch = useDispatch();
-  const stationData = useAppSelector(
-    (state: RootState) => state.station.currentStation
-  );
   const { data: menuItems, isLoading: isLoading } = useStationMenu(
     params.restroId,
     params.stationId
   );
 
-  //   useEffect(() => {
-  //     if (stationDetail) {
-  //       dispatch(setStationData(stationDetail));
-  //     }
-  //   }, [stationDetail, dispatch]);
+  useEffect(() => {
+    dispatch(clearNearbyItem());
+  }, []);
 
   return (
     <div
@@ -71,7 +65,7 @@ const Page = ({
           <p>Loading Food Item List...</p>
         ) : menuItems && menuItems.length > 0 ? (
           <div className="flex flex-wrap gap-4">
-            {menuItems.map((food: StationMenuItem, index: any) => (
+            {menuItems.map((food: NearbyStationMenuItem, index: any) => (
               <div
                 key={index}
                 className="flex flex-col gap-2 pb-4 w-48 dark:bg-primary_dark bg-white rounded-md shadow-md shadow-vll_gray dark:shadow-none"
@@ -84,17 +78,21 @@ const Page = ({
                   className="w-48 h-32 rounded-t-md"
                 />
                 <div className="flex flex-col gap-1  px-2">
-                  <div className="flex gap-1 items-end">
+                  <div className="flex justify-between items-end">
                     <h2 className="text-black dark:text-secondary_text font-medium  text-base capitalize line-clamp-1">
                       {food.name}
                     </h2>
-                    {food.discount_percentage ? (
-                      <div className="text-primary_text dark:text-secondary_text font-medium place-self-start text-sm flex ">
-                        <div>{food.discount_percentage}%</div> <p>off</p>
-                      </div>
-                    ) : (
-                      ""
-                    )}
+                    <Link
+                      href={`/restaurant/${params.restroId}/${params.restroName}/nearbyStation/${params.stationId}/${params.stationName}/my-menu/create`}
+                      onClick={() => {
+                        dispatch(setNearbyItem(food));
+                      }}
+                    >
+                      <CiEdit
+                        size={23}
+                        className="text-primary_text dark:text-secondary_text"
+                      />
+                    </Link>
                   </div>
                   <div className="flex items-center gap-1">
                     <p className="text-primary_text dark:text-secondary_text font-medium  text-sm">
@@ -104,6 +102,13 @@ const Page = ({
                       <p className="text-primary_text dark:text-secondary_text font-medium  text-xs line-through">
                         Rs. {food.actual_price}
                       </p>
+                    ) : (
+                      ""
+                    )}
+                    {food.discount_percentage ? (
+                      <div className="text-primary_text dark:text-secondary_text font-medium place-self-start text-sm flex ">
+                        <div>{food.discount_percentage}%</div> <p>off</p>
+                      </div>
                     ) : (
                       ""
                     )}

@@ -6,6 +6,7 @@ import foodItemReducer from "./features/foodItem/foodItemSlice"
 import restaurantReducer from "./features/restaurant/restaurantSlice"
 import cuisineReducer from "./features/cuisine/CuisineSlice"
 import restroFoodItemReducer from "./features/restroItem/restroItemSlice"
+import nearbyItemReducer from "./features/nearbyItem/nearbyItemSlice"
 
 export const makeStore = () => {
     return configureStore({
@@ -17,6 +18,7 @@ export const makeStore = () => {
           restaurant: restaurantReducer,
           cuisine: cuisineReducer,
           restroFoodItem: restroFoodItemReducer,
+          nearbyItem: nearbyItemReducer,
         },
       })
 }

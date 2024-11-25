@@ -34,8 +34,9 @@ import { clearFoodItem } from "@/lib/store/features/foodItem/foodItemSlice";
 import Loader from "@/components/ui/Loader";
 import axios from "axios";
 import { Textarea } from "@/components/ui/textarea";
-import { Cuisine, MenuItem, RestroMenuItem } from "@/types/types";
+import { Cuisine, MenuItem, RestroMenuList } from "@/types/types";
 import { useMenuListByRestro } from "@/lib/react-query/queriesAndMutations";
+import { identity } from "lodash";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -68,14 +69,13 @@ const Page = ({
 }) => {
   const { data: session } = useSession();
   const axiosInstance = useAxiosPrivateFood();
-  //   const MenuName = decodeURIComponent(params.menuName);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [selectedMenuId, setSelectedMenuId] = useState<string | null>(null);
 
   const dispatch = useAppDispatch();
-  const itemData = useAppSelector(
-    (state: RootState) => state.foodItem.currentFoodItems
+  const nearbyItemData = useAppSelector(
+    (state: RootState) => state.nearbyItem.currentNearbyItem
   );
   const { data: menuList } = useMenuListByRestro(params.restroId);
 
@@ -92,19 +92,30 @@ const Page = ({
     },
   });
 
-  //   useEffect(() => {
-  //     if (itemData) {
-  //       form.setValue("name", itemData.name || "");
-  //       form.setValue("ingredient", itemData.ingredient);
-  //       form.setValue("offerPrice", itemData.item_price.toString());
-  //       form.setValue("price", itemData.actual_price.toString());
-  //       form.setValue("retailer_price", itemData.retailer_price);
-  //       form.setValue("short_description", itemData.short_description);
-  //       form.setValue("is_active", itemData.is_active);
+  useEffect(() => {
+    if (nearbyItemData) {
+      form.setValue("name", nearbyItemData.name || "");
+      form.setValue("ingredient", nearbyItemData.ingredient);
+      form.setValue("retailer_price", nearbyItemData.retailer_price);
+      form.setValue("short_description", nearbyItemData.short_description);
 
-  //       setImagePreview(itemData.image);
-  //     }
-  //   }, [itemData]);
+      const selectedMenu = menuList?.find(
+        (menu: RestroMenuList) =>
+          menu.name.toLowerCase() === nearbyItemData.menu.toLowerCase()
+      );
+      if (selectedMenu) {
+        console.log("Selected Menu:", selectedMenu);
+        setSelectedMenuId(selectedMenu.id);
+        form.setValue("menu_id", selectedMenu.id);
+        console.log("menu id", selectedMenuId);
+      }
+      if (selectedMenuId) {
+        console.log("Selected menu id", selectedMenuId);
+      }
+
+      setImagePreview(nearbyItemData.image);
+    }
+  }, [nearbyItemData, menuList]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     if (!session) {
@@ -131,77 +142,68 @@ const Page = ({
 
     formData.append("restaurant_id", params.restroId);
 
-    axios.post(
-      `https://api.morefood.se/api/moreclub/station/${params.stationId}}/restaurant/${params.restroId}/food-items/restro/`,
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
-        },
-      }
-    );
-
-    // if (itemData) {
-    //   axiosInstance
-    //     .patch(
-    //       `/moreclub/station/${params.stationId}/${params.menuId}/${itemData.id}/food-items/`,
-    //       formData,
-    //       {
-    //         headers: {
-    //           "Content-Type": "multipart/form-data",
-    //         },
-    //       }
-    //     )
-    //     .then((response) => {
-    //       console.log("Form submitted successfully:", response.data);
-    //       form.reset(); // Clear form after successful submission
-    //       toast.success("Food item Updated Successfully!", {
-    //         duration: 5000,
-    //         position: "top-right",
-    //       });
-    //     })
-    //     .catch((error) => {
-    //       console.error("Error submitting form:", error);
-    //       toast.error("Error updating food item!", {
-    //         duration: 5000,
-    //         position: "top-right",
-    //       });
-    //     })
-    //     .finally(() => {
-    //       dispatch(clearFoodItem());
-    //       setIsSubmitting(false);
-    //     });
-    // } else {
-    //   axiosInstance
-    //     .post(
-    //       `/moreclub/station/${params.stationId}/${params.menuId}/food-items/`,
-    //       formData,
-    //       {
-    //         headers: {
-    //           "Content-Type": "multipart/form-data",
-    //         },
-    //       }
-    //     )
-    //     .then((response) => {
-    //       console.log("Form submitted successfully:", response.data);
-    //       form.reset();
-    //       toast.success("Food Item Added Successfully!", {
-    //         duration: 5000,
-    //         position: "top-right",
-    //       });
-    //     })
-    //     .catch((error) => {
-    //       console.error("Error submitting form:", error);
-    //       toast.error("Error adding food item!", {
-    //         duration: 5000,
-    //         position: "top-right",
-    //       });
-    //     })
-    //     .finally(() => {
-    //       setIsSubmitting(false);
-    //     });
-    // }
+    if (nearbyItemData) {
+      axios
+        .patch(
+          `https://api.morefood.se/api/moreclub/station/${params.stationId}/${params.restroId}/${nearbyItemData.id}/food-items/restro/update/`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
+            },
+          }
+        )
+        .then((response) => {
+          console.log("Form submitted successfully:", response.data);
+          form.reset(); // Clear form after successful submission
+          toast.success("Food item Updated Successfully!", {
+            duration: 5000,
+            position: "top-right",
+          });
+        })
+        .catch((error) => {
+          console.error("Error submitting form:", error);
+          toast.error("Error updating food item!", {
+            duration: 5000,
+            position: "top-right",
+          });
+        })
+        .finally(() => {
+          dispatch(clearFoodItem());
+          setIsSubmitting(false);
+        });
+    } else {
+      axios
+        .post(
+          `https://api.morefood.se/api/moreclub/station/${params.stationId}}/restaurant/${params.restroId}/food-items/restro/`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
+            },
+          }
+        )
+        .then((response) => {
+          console.log("Form submitted successfully:", response.data);
+          form.reset();
+          toast.success("Food Item Added Successfully!", {
+            duration: 5000,
+            position: "top-right",
+          });
+        })
+        .catch((error) => {
+          console.error("Error submitting form:", error);
+          toast.error("Error adding food item!", {
+            duration: 5000,
+            position: "top-right",
+          });
+        })
+        .finally(() => {
+          setIsSubmitting(false);
+        });
+    }
   }
 
   return (
@@ -209,7 +211,7 @@ const Page = ({
       <h1
         className={`text-primary_text dark:text-secondary_text text-lg font-medium mb-4 ${open_sans.className}`}
       >
-        {itemData ? "Update Food Item for" : "Add Food Item for"}
+        {nearbyItemData ? "Update Menu Item" : "Add Menu Item"}
       </h1>
       <Form {...form}>
         <form
@@ -222,7 +224,7 @@ const Page = ({
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>Item Name</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -235,7 +237,7 @@ const Page = ({
               name="retailer_price"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Price</FormLabel>
+                  <FormLabel>Retailer Price</FormLabel>
                   <FormControl>
                     <Input {...field} />
                   </FormControl>
@@ -254,29 +256,30 @@ const Page = ({
                     <Select
                       onValueChange={(value) => {
                         const selectedMenuItem = menuList.find(
-                          (menuItem: RestroMenuItem) => menuItem.name === value
+                          (menuItem: RestroMenuList) => menuItem.name === value
                         );
                         if (selectedMenuItem) {
                           field.onChange(selectedMenuItem.id);
                           setSelectedMenuId(selectedMenuItem.id);
                         } else {
                           field.onChange(null);
+                          setSelectedMenuId(null);
                         }
                       }}
                       value={
                         selectedMenuId
                           ? menuList.find(
-                              (menuItem: RestroMenuItem) =>
+                              (menuItem: RestroMenuList) =>
                                 menuItem.id === selectedMenuId
                             )?.name
                           : ""
                       }
                     >
                       <SelectTrigger className=" h-8">
-                        <SelectValue placeholder="Select a cuisine" />
+                        <SelectValue placeholder="Select a menu" />
                       </SelectTrigger>
                       <SelectContent>
-                        {menuList?.map((menuItem: RestroMenuItem) => (
+                        {menuList?.map((menuItem: RestroMenuList) => (
                           <SelectItem key={menuItem.id} value={menuItem.name}>
                             {menuItem.name}
                           </SelectItem>
@@ -354,14 +357,9 @@ const Page = ({
           </div>
           <Button
             type="submit"
-            onClick={() => {
-              console.log("Button Clicked!");
-              const formValues = form.getValues();
-              console.log(formValues);
-            }}
             className="bg-primary_text dark:bg-secondary_text hover:bg-l_orange dark:hover:bg-blue text-white h-8 mb-6 place-self-start rounded-lg"
           >
-            {/* {isSubmitting ? <Loader /> : itemData ? "Edit" : "Add"} */} Add
+            {isSubmitting ? <Loader /> : nearbyItemData ? "Edit" : "Add"}
           </Button>
         </form>
       </Form>
@@ -370,10 +368,3 @@ const Page = ({
 };
 
 export default Page;
-// name: Cinnamon Roll
-// retailer_price: 300
-// short_description: Flour, cinnamon, sugar, butter
-// image: (binary)
-// ingredient: Flour, cinnamon, sugar, butter
-// restaurant_id: a3033826-214a-46d9-a249-b01622ce1419
-// menu_id: 31f73a35-a306-45c2-bfcc-b31490e39385

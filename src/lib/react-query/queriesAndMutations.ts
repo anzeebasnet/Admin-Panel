@@ -6,7 +6,7 @@ import {
   NearByStationDetail,
   RestroListData,
   StationData,
-  StationMenuItem,
+  NearbyStationMenuItem,
   UserListType,
 } from "@/types/types";
 import { signIn } from "next-auth/react";

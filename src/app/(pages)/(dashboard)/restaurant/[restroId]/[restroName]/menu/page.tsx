@@ -9,7 +9,7 @@ import {
   setMenuItem,
 } from "@/lib/store/features/menu/menuSlice";
 import { useAppDispatch } from "@/lib/store/hooks";
-import { MenuItem, RestroMenuItem } from "@/types/types";
+import { MenuItem, RestroMenuList } from "@/types/types";
 import { Open_Sans } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
@@ -63,7 +63,7 @@ const Page = ({
           <p>Loading Menu List...</p>
         ) : restroMenuList && restroMenuList.length > 0 ? (
           <div className="flex flex-wrap gap-4">
-            {restroMenuList.map((menu: RestroMenuItem, index: any) => (
+            {restroMenuList.map((menu: RestroMenuList, index: any) => (
               <div
                 key={index}
                 className="flex flex-col gap-2 dark:bg-primary_dark rounded-md bg-white shadow-md shadow-vll_gray dark:shadow-none"
