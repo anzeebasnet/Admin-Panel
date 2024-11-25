@@ -1,6 +1,9 @@
 "use client";
 
-import { useFoodItemList } from "@/lib/react-query/queriesAndMutations";
+import {
+  useFoodItemList,
+  useRestroItemList,
+} from "@/lib/react-query/queriesAndMutations";
 import { setFoodItem } from "@/lib/store/features/foodItem/foodItemSlice";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { RootState } from "@/lib/store/store";
@@ -19,8 +22,8 @@ const Page = ({
   params,
 }: {
   params: {
-    stationId: string;
-    stationName: string;
+    restroId: string;
+    restroName: string;
     menuId: string;
     menuName: string;
     itemId: string;
@@ -33,8 +36,8 @@ const Page = ({
   const dispatch = useAppDispatch();
   const [foodDetails, setFoodDetails] = useState<FoodItem | null>(null);
 
-  const { data: foodItems, isLoading: isLoading } = useFoodItemList(
-    params.stationId,
+  const { data: foodItems, isLoading: isLoading } = useRestroItemList(
+    params.restroId,
     params.menuId
   );
 
@@ -114,7 +117,7 @@ const Page = ({
               Description: {foodDetails?.short_description}
             </h3>
           </div>
-          <div className="flex gap-4">
+          {/* <div className="flex gap-4">
             {itemData ? (
               <div>
                 <Link
@@ -127,7 +130,7 @@ const Page = ({
             ) : (
               ""
             )}
-          </div>
+          </div> */}
         </div>
       ) : (
         <p>Couldn&apos;t find item detail.</p>

@@ -83,9 +83,12 @@ const Page = ({
                 </Link>
                 <div className="flex flex-col gap-1  px-2">
                   <div className="flex justify-between items-end">
-                    <h2 className="text-black dark:text-secondary_text font-medium  text-base capitalize line-clamp-1">
+                    <Link
+                      href={`/restaurant/${params.restroId}/${params.restroName}/menu/${params.menuId}/${params.menuName}/items/${food.id}/${food.name}`}
+                      className="text-black dark:text-secondary_text font-medium  text-base capitalize line-clamp-1"
+                    >
                       {food.name}
-                    </h2>
+                    </Link>
                     <Link
                       href={`/restaurant/${params.restroId}/${params.restroName}/menu/${params.menuId}/${params.menuName}/items/create`}
                       onClick={() => {
