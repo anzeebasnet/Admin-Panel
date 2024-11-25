@@ -223,7 +223,6 @@ export const useOrderList = (restroId: string) => {
   });
 };
 
-
 export const useNearbyStationList = (restroId: string) => {
   const axiosInstance = useAxiosPrivateFood();
   return useQuery({
@@ -295,6 +294,26 @@ export const useMenuListByRestro = (restroId: string) => {
     queryFn: async () => {
       const res = await axios.get(
         `https://api.morefood.se/api/moreclub/station/restro/${restroId}/by/restaurant/menu/`,
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
+          },
+        }
+      );
+      console.log(res.data.data);
+      const data = res.data.data;
+      return data;
+    },
+  });
+};
+
+export const useStationOrderList = (restroId: string) => {
+  const axiosInstance = useAxiosPrivateFood();
+  return useQuery({
+    queryKey: ["GET_STATIONORDERLIST"],
+    queryFn: async () => {
+      const res = await axios.get(
+        `https://api.morefood.se/api/moreclub/station/restro/${restroId}/all/orders/`,
         {
           headers: {
             Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,

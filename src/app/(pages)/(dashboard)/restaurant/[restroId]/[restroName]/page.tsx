@@ -159,6 +159,14 @@ const Page = ({
               Nearby Stations
             </Link>
           </div>
+          <div>
+            <Link
+              href={`/restaurant/${params.restroId}/${params.restroName}/stationOrder`}
+              className="bg-primary_text dark:bg-btn_blue text-white text-sm hover:bg-l_orange dark:hover:bg-blue py-1 px-4 rounded place-self-end"
+            >
+              Station Orders
+            </Link>
+          </div>
         </div>
       </div>
     </div>

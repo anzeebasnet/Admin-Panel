@@ -355,34 +355,51 @@ export interface NearbyStations {
 }
 
 export interface NearbyStationMenuItem {
-  id: string,
-  name: string,
-  menu: string,
-  image: string,
-  short_description: string,
-  retailer_price: string,
-  is_active: boolean,
-  actual_price: number,
-  discount_percentage: boolean,
-  currency_symbol: string,
-  item_price: number,
-  ingredient: string
+  id: string;
+  name: string;
+  menu: string;
+  image: string;
+  short_description: string;
+  retailer_price: string;
+  is_active: boolean;
+  actual_price: number;
+  discount_percentage: boolean;
+  currency_symbol: string;
+  item_price: number;
+  ingredient: string;
 }
 
 export interface NearByStationDetail {
-  id: string,
-  lat: number,
-  user: string,
-  restaurant: boolean,
-  lng: number,
-  address: string,
-  name: string,
-  banner: string,
-  logo: string,
-  email: string,
-  contact_no: string,
-  country: number,
-  currency: number,
-  short_description: string,
-  long_description: string
+  id: string;
+  lat: number;
+  user: string;
+  restaurant: boolean;
+  lng: number;
+  address: string;
+  name: string;
+  banner: string;
+  logo: string;
+  email: string;
+  contact_no: string;
+  country: number;
+  currency: number;
+  short_description: string;
+  long_description: string;
+}
+
+export interface StationOrderList {
+  id: string;
+  order: {
+    id: string;
+    order_id: string;
+    order_status: string;
+    full_name: string;
+    order_type: string;
+    arrival_time: string;
+    ordered_date: string;
+  };
+  order_status: string;
+  restaurant: {
+    id: string;
+  };
 }
