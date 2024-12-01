@@ -360,7 +360,7 @@ const Station = () => {
   return (
     <ScrollArea className="bg-white dark:bg-secondary_dark p-6 h-[88vh]">
       <h1
-        className={`text-primary_text dark:text-secondary_text text-lg font-medium mb-4 ${open_sans.className}`}
+        className={`text-primary_text dark:text-sidebar_blue text-lg font-medium mb-4 ${open_sans.className}`}
       >
         {stationData ? "Update Station" : "Create Station"}
       </h1>
@@ -372,7 +372,7 @@ const Station = () => {
           {!stationData ? (
             <div className="flex flex-col gap-2">
               <h3
-                className={`text-primary_text dark:text-secondary_text text-base font-medium  ${open_sans.className}`}
+                className={`text-primary_text dark:text-sidebar_blue text-base font-medium  ${open_sans.className}`}
               >
                 User Information
               </h3>
@@ -517,7 +517,7 @@ const Station = () => {
 
           <div className="flex flex-col gap-2">
             <h3
-              className={`text-primary_text dark:text-secondary_text text-base font-medium ${open_sans.className}`}
+              className={`text-primary_text dark:text-sidebar_blue text-base font-medium ${open_sans.className}`}
             >
               Station Information
             </h3>
@@ -881,7 +881,7 @@ const Station = () => {
               const formValues = form.getValues();
               console.log(formValues);
             }}
-            className="bg-primary_text dark:bg-secondary_text hover:bg-l_orange dark:hover:bg-blue text-white h-8 mb-6 place-self-start rounded-lg"
+            className="bg-primary_text dark:bg-sidebar_blue hover:bg-l_orange dark:hover:bg-blue text-white h-8 mb-6 place-self-start rounded-lg"
           >
             {stationData ? "Update" : "Create"}
           </Button>

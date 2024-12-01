@@ -20,9 +20,17 @@ export default function BasicTimePicker({
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer components={["TimePicker"]}>
         <TimePicker
-          label="Basic time picker"
+          label=""
           value={value}
           onChange={onChange}
+          slotProps={{
+            textField: {
+              className: "h-12 w-3 text-sm", // Apply Tailwind classes here
+              InputProps: {
+                className: "h-8 p-2", // Adjust input padding and height
+              },
+            },
+          }}
         />
       </DemoContainer>
     </LocalizationProvider>

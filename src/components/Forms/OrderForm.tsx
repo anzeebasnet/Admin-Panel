@@ -64,7 +64,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
   return (
     <Form {...form}>
       <form
-        className={`grid grid-cols-4 p-4 gap-4 justify-center rounded-sm bg-white dark:bg-primary_dark shadow-sm shadow-vll_gray dark:shadow-none  ${open_sans.className}`}
+        className={`grid sm:grid-cols-4 grid-cols-1 p-4 gap-4 justify-center rounded-sm bg-white dark:bg-primary_dark shadow-sm shadow-vll_gray dark:shadow-none  ${open_sans.className}`}
         onSubmit={form.handleSubmit(onSubmit)}
       >
         <FormField

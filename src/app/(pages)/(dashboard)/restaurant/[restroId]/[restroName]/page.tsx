@@ -1,5 +1,6 @@
 "use client";
 
+import { Separator } from "@/components/ui/separator";
 import { useRestroDetail } from "@/lib/react-query/queriesAndMutations";
 import { setRestroData } from "@/lib/store/features/restaurant/restaurantSlice";
 import { useAppSelector } from "@/lib/store/hooks";
@@ -8,6 +9,10 @@ import { Open_Sans } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect } from "react";
+import { CiEdit } from "react-icons/ci";
+import { IoIosMail } from "react-icons/io";
+import { IoLocationSharp } from "react-icons/io5";
+import { MdLocalPhone } from "react-icons/md";
 import { useDispatch } from "react-redux";
 
 const open_sans = Open_Sans({
@@ -24,6 +29,7 @@ const Page = ({
     (state: RootState) => state.restaurant.currentRestro
   );
   const dispatch = useDispatch();
+  const RestroName = decodeURIComponent(params.restroName);
   const { data: restroDetails, isLoading: isLoading } = useRestroDetail(
     params.restroId
   );
@@ -40,9 +46,9 @@ const Page = ({
     >
       <div className="flex sm:flex-row flex-col justify-between">
         <h1
-          className={`text-primary_text dark:text-secondary_text text-lg font-medium ${open_sans.className}`}
+          className={`text-primary_text dark:text-sidebar_blue text-lg font-medium ${open_sans.className}`}
         >
-          Restaurant Details
+          {RestroName}
         </h1>
       </div>
 
@@ -52,122 +58,276 @@ const Page = ({
         ) : !restroDetails ? (
           <p>Restaurant Detail not found!</p>
         ) : restroDetails ? (
-          <div className="flex flex-col gap-3">
-            <Image
-              src={restroDetails?.banner || ""}
-              alt="restaurant banner"
-              width={300}
-              height={200}
-              className="rounded"
-            />
-            <div className="flex flex-col gap-1">
-              <h3 className="font-medium text-base capitalize">
-                {restroDetails.name}
-              </h3>
-              <div className="font-normal text-sm flex gap-1">
-                <h3 className="font-semibold">Restaurant ID :</h3>{" "}
-                {restroDetails.id}
+          <div className="flex flex-col gap-8">
+            <div className="grid lg:grid-cols-2 grid-cols-1 gap-4">
+              <div className="flex flex-col gap-4">
+                {restroDetails.logo ? (
+                  <Image
+                    src={restroDetails.logo}
+                    alt="salon logo"
+                    width={100}
+                    height={100}
+                    className="rounded-full w-36 h-36 bg-deep_red"
+                  />
+                ) : (
+                  ""
+                )}
+
+                <div className="flex flex-col gap-2">
+                  <div className="pl-1 flex items-center gap-1">
+                    <h2
+                      className={`text-deep_red dark:text-white sm:text-xl text-lg font-semibold`}
+                    >
+                      {restroDetails.name}
+                    </h2>
+                    {restroData ? (
+                      <Link
+                        href={`/restaurant/create`}
+                        className="place-self-end"
+                      >
+                        <CiEdit
+                          size={24}
+                          className="text-deep_red dark:text-white"
+                        />
+                      </Link>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                  <div className="flex gap-1 items-end">
+                    <IoLocationSharp
+                      size={22}
+                      className="text-primary_text dark:text-sidebar_blue"
+                    />
+                    <p className="text-sm font-medium">
+                      {restroDetails.address}
+                    </p>
+                  </div>
+                  <div className="flex gap-2">
+                    {restroDetails.is_delivery ? (
+                      <div className="flex gap-2 pl-1">
+                        <p className="text-sm font-medium ">Delivery</p>
+                        <div>
+                          <Separator
+                            orientation="vertical"
+                            color="black"
+                            className="bg-gray-400 w-[2px] "
+                          />
+                        </div>
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                    {restroDetails.is_dine ? (
+                      <div className="flex gap-2 pl-1">
+                        <p className="text-sm font-medium ">Dine</p>
+                        <div>
+                          <Separator
+                            orientation="vertical"
+                            color="black"
+                            className="bg-gray-400 w-[2px] "
+                          />
+                        </div>
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                    {restroDetails.is_pickup ? (
+                      <div className="pl-1">
+                        <p className="text-sm font-medium ">Pick up</p>
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                  <div className="flex sm:flex-row flex-col gap-2">
+                    <div className="flex gap-1 items-end pl-1">
+                      <MdLocalPhone
+                        size={22}
+                        className="text-primary_text dark:text-sidebar_blue"
+                      />
+                      <p className="text-sm font-medium ">
+                        {restroDetails.contact_no}
+                      </p>
+                    </div>
+                    <Separator
+                      orientation="vertical"
+                      color="black"
+                      className="bg-gray-400 w-[2px] sm:block hidden"
+                    />
+                    <div className="flex gap-1 items-end pl-1">
+                      <IoIosMail
+                        size={22}
+                        className="text-primary_text dark:text-sidebar_blue"
+                      />
+                      <p className="text-sm font-medium ">
+                        {restroDetails.email}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="text-sm font-medium pl-1 flex gap-2">
+                    <p>Delivery in {restroDetails.delivery_time}, </p>
+                    <p>Minimum Order of Rs.{restroDetails.min_order}</p>
+                  </div>
+
+                  <p className="text-sm font-medium pl-1">
+                    {restroDetails.short_description}
+                  </p>
+                </div>
               </div>
-              <div className="font-normal text-sm flex gap-1">
-                <h3 className="font-semibold">Address :</h3>{" "}
-                {restroDetails.address}
+              <div className="flex items-center lg:place-self-end h-full">
+                <Image
+                  src={restroDetails?.banner || ""}
+                  alt="salon banner"
+                  width={500}
+                  height={500}
+                  className="rounded w-[35rem] h-80 bg-deep_red"
+                />
               </div>
-              <div className="font-normal text-sm flex gap-1">
-                <h3 className="font-semibold">Contact :</h3>{" "}
-                {restroDetails.contact_no}
+            </div>
+            <div className="inline-flex flex-wrap gap-4 pl-1 mt-4">
+              <div className="w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded flex items-center justify-center">
+                <Link
+                  href={`/restaurant/${params.restroId}/${params.restroName}/menu`}
+                  className="flex flex-col gap-2 items-center"
+                >
+                  <Image
+                    src={"/images/menuu.png"}
+                    alt="menu"
+                    width={200}
+                    height={200}
+                    className="w-16 h-16 rounded"
+                  />
+                  <p className="text-sm font-semibold">Menus</p>
+                </Link>
               </div>
-              <div className="font-normal text-sm flex gap-1">
-                <h3 className="font-semibold">Email Address :</h3>{" "}
-                {restroDetails.email}
+
+              <div className="w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded flex items-center justify-center">
+                <Link
+                  href={`/restaurant/${params.restroId}/${params.restroName}/cuisines`}
+                  className="flex flex-col gap-2 items-center"
+                >
+                  <Image
+                    src={"/images/cuisine.png"}
+                    alt="menu"
+                    width={200}
+                    height={200}
+                    className="w-16 h-16  rounded"
+                  />
+                  <p className="text-sm font-semibold">Cuisines</p>
+                </Link>
               </div>
-              <div className="font-normal text-sm flex gap-1">
-                <h3 className="font-semibold">Delivery Time :</h3>{" "}
-                {restroDetails.delivery_time}
+              <div className="w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded flex items-center justify-center">
+                <Link
+                  href={`/restaurant/${params.restroId}/${params.restroName}/offer`}
+                  className="flex flex-col gap-2 items-center"
+                >
+                  <Image
+                    src={"/images/offer.png"}
+                    alt="menu"
+                    width={200}
+                    height={200}
+                    className="w-16 h-16  rounded"
+                  />
+                  <p className="text-sm font-semibold">Offers</p>
+                </Link>
               </div>
-              <div className="font-normal text-sm flex gap-1">
-                <h3 className="font-semibold">Minimum Order :</h3>{" "}
-                {restroDetails.min_order}
+              <div className="w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded flex items-center justify-center">
+                <Link
+                  href={`/restaurant/${params.restroId}/${params.restroName}/order`}
+                  className="flex flex-col gap-2 items-center"
+                >
+                  <Image
+                    src={"/images/order.png"}
+                    alt="menu"
+                    width={200}
+                    height={200}
+                    className="w-16 h-16  rounded"
+                  />
+                  <p className="text-sm font-semibold">Orders</p>
+                </Link>
               </div>
-              <div className="font-normal text-sm flex gap-1">
-                <h3 className="font-semibold">Maximum Station Package :</h3>{" "}
-                {restroDetails.station_no_of_packed_item}
+              <div className="w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded flex items-center justify-center">
+                <Link
+                  href={`/restaurant/${params.restroId}/${params.restroName}/hours`}
+                  className="flex flex-col gap-2 items-center"
+                >
+                  <Image
+                    src={"/images/opening.png"}
+                    alt="menu"
+                    width={200}
+                    height={200}
+                    className="w-16 h-16  rounded"
+                  />
+                  <p className="text-sm font-semibold">Opening Hours</p>
+                </Link>
               </div>
-              <div className="font-normal text-sm flex gap-1">
-                <h3 className="font-semibold">Short Description :</h3>{" "}
-                {restroDetails.short_description}
+              <div className="w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded flex items-center justify-center">
+                <Link
+                  href={`/restaurant/${params.restroId}/${params.restroName}/nearbyStation`}
+                  className="flex flex-col gap-2 items-center"
+                >
+                  <Image
+                    src={"/images/station.png"}
+                    alt="menu"
+                    width={200}
+                    height={200}
+                    className="w-16 h-16  rounded"
+                  />
+                  <p className="text-sm font-semibold">Nearby Stations</p>
+                </Link>
               </div>
-              <div className="font-normal text-sm flex gap-1">
-                <h3 className="font-semibold">Long Description :</h3>{" "}
-                {restroDetails.long_description}
+              <div className="w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded flex items-center justify-center">
+                <Link
+                  href={`/restaurant/${params.restroId}/${params.restroName}/gallery`}
+                  className="flex flex-col gap-2 items-center"
+                >
+                  <Image
+                    src={"/images/gallery.png"}
+                    alt="menu"
+                    width={200}
+                    height={200}
+                    className="w-16 h-16  rounded"
+                  />
+                  <p className="text-sm font-semibold">Gallery</p>
+                </Link>
+              </div>
+              <div className="w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded flex items-center justify-center">
+                <Link
+                  href={`/restaurant/${params.restroId}/${params.restroName}/stationOrder`}
+                  className="flex flex-col gap-2 items-center"
+                >
+                  <Image
+                    src={"/images/statOrder.png"}
+                    alt="menu"
+                    width={200}
+                    height={200}
+                    className="w-16 h-16  rounded"
+                  />
+                  <p className="text-sm font-semibold">Station Orders</p>
+                </Link>
+              </div>
+              <div className="w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded flex items-center justify-center">
+                <Link
+                  href={`/restaurant/${params.restroId}/${params.restroName}/orderSummary`}
+                  className="flex flex-col gap-2 items-center"
+                >
+                  <Image
+                    src={"/images/orderSummary.png"}
+                    alt="menu"
+                    width={200}
+                    height={200}
+                    className="w-16 h-16  rounded"
+                  />
+                  <p className="text-sm font-semibold">Order Summary</p>
+                </Link>
               </div>
             </div>
           </div>
         ) : (
           <p>Couldn&apos;t find restaurant detail!</p>
         )}
-
-        <div className="flex flex-wrap gap-4">
-          {restroData ? (
-            <div>
-              <Link
-                href={`/restaurant/create`}
-                className="bg-primary_text dark:bg-btn_blue text-white text-sm hover:bg-l_orange dark:hover:bg-blue py-1 px-4 rounded place-self-end"
-              >
-                Edit Restaurant
-              </Link>
-            </div>
-          ) : (
-            ""
-          )}
-          <div>
-            <Link
-              href={`/restaurant/${params.restroId}/${params.restroName}/menu`}
-              className="bg-primary_text dark:bg-btn_blue text-white text-sm hover:bg-l_orange dark:hover:bg-blue py-1 px-4 rounded place-self-end"
-            >
-              Menu
-            </Link>
-          </div>
-          <div>
-            <Link
-              href={`/restaurant/${params.restroId}/${params.restroName}/cuisines`}
-              className="bg-primary_text dark:bg-btn_blue text-white text-sm hover:bg-l_orange dark:hover:bg-blue py-1 px-4 rounded place-self-end"
-            >
-              Cuisines
-            </Link>
-          </div>
-          <div>
-            <Link
-              href={`/restaurant/${params.restroId}/${params.restroName}/order`}
-              className="bg-primary_text dark:bg-btn_blue text-white text-sm hover:bg-l_orange dark:hover:bg-blue py-1 px-4 rounded place-self-end"
-            >
-              Orders
-            </Link>
-          </div>
-          <div>
-            <Link
-              href={`/restaurant/${params.restroId}/${params.restroName}/hours`}
-              className="bg-primary_text dark:bg-btn_blue text-white text-sm hover:bg-l_orange dark:hover:bg-blue py-1 px-4 rounded place-self-end"
-            >
-              Working Hours
-            </Link>
-          </div>
-          <div>
-            <Link
-              href={`/restaurant/${params.restroId}/${params.restroName}/nearbyStation`}
-              className="bg-primary_text dark:bg-btn_blue text-white text-sm hover:bg-l_orange dark:hover:bg-blue py-1 px-4 rounded place-self-end"
-            >
-              Nearby Stations
-            </Link>
-          </div>
-          <div>
-            <Link
-              href={`/restaurant/${params.restroId}/${params.restroName}/stationOrder`}
-              className="bg-primary_text dark:bg-btn_blue text-white text-sm hover:bg-l_orange dark:hover:bg-blue py-1 px-4 rounded place-self-end"
-            >
-              Station Orders
-            </Link>
-          </div>
-        </div>
       </div>
     </div>
   );

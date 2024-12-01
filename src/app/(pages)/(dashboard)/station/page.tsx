@@ -42,7 +42,7 @@ const Page = () => {
     >
       <div className="flex sm:flex-row flex-col justify-between">
         <h1
-          className={`text-primary_text dark:text-secondary_text text-lg font-medium ${open_sans.className}`}
+          className={`text-primary_text dark:text-sidebar_blue text-lg font-medium ${open_sans.className}`}
         >
           Station List
         </h1>
@@ -57,97 +57,56 @@ const Page = () => {
         <p>Loading Station List...</p>
       ) : stations && stations.length > 0 ? (
         <div className="overflow-x-auto">
-          {sidebar ? (
-            <ScrollArea className="h-[75vh] xl:w-[76vw] lg:w-[70vw] w-[90vw]">
-              <Table className="">
-                <TableCaption></TableCaption>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Id</TableHead>
-                    <TableHead>Address</TableHead>
-                    <TableHead>Email</TableHead>
-                    <TableHead>Contact</TableHead>
-                    <TableHead>User</TableHead>
-                    <TableHead>Restaurant</TableHead>
-                  </TableRow>
-                </TableHeader>
-                {stations && stations.length > 0 ? (
-                  <TableBody>
-                    {stations.map((station: StationData) => {
-                      return (
-                        <TableRow key={station.id} className="">
-                          <TableCell>
-                            <Link
-                              href={`/station/${station.id}/${station.name}`}
-                              className="hover:text-primary_text dark:hover:text-secondary_text"
-                            >
-                              {station.name}
-                            </Link>
-                          </TableCell>
-                          <TableCell>{station.id}</TableCell>
-                          <TableCell>{station.address}</TableCell>
-                          <TableCell>{station.email}</TableCell>
-                          <TableCell>{station.contact_no}</TableCell>
-                          <TableCell>{station.user || "Null"}</TableCell>
-                          <TableCell>{station.restaurant || "Null"}</TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  </TableBody>
-                ) : (
-                  <div className="text-base font-normal text-center pt-12">
-                    Couldn&apos;t fetch station list
-                  </div>
-                )}
-              </Table>
-            </ScrollArea>
-          ) : (
-            <ScrollArea className="h-[75vh] w-[88vw]">
-              <Table className="">
-                <TableCaption></TableCaption>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Id</TableHead>
-                    <TableHead>Address</TableHead>
-                    <TableHead>Email</TableHead>
-                    <TableHead>Contact</TableHead>
-                    <TableHead>User</TableHead>
-                    <TableHead>Restaurant</TableHead>
-                  </TableRow>
-                </TableHeader>
-                {stations && stations.length > 0 ? (
-                  <TableBody>
-                    {stations.map((station: StationData) => {
-                      return (
-                        <TableRow key={station.id} className="">
-                          <TableCell>
-                            <Link
-                              href={`/station/${station.id}/${station.name}`}
-                              className="hover:text-primary_text dark:hover:text-secondary_text"
-                            >
-                              {station.name}
-                            </Link>
-                          </TableCell>
-                          <TableCell>{station.id}</TableCell>
-                          <TableCell>{station.address}</TableCell>
-                          <TableCell>{station.email}</TableCell>
-                          <TableCell>{station.contact_no}</TableCell>
-                          <TableCell>{station.user || "Null"}</TableCell>
-                          <TableCell>{station.restaurant || "Null"}</TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  </TableBody>
-                ) : (
-                  <div className="text-base font-normal text-center pt-12">
-                    Couldn&apos;t fetch station list
-                  </div>
-                )}
-              </Table>
-            </ScrollArea>
-          )}
+          <ScrollArea
+            className={`${
+              sidebar
+                ? "h-[75vh] xl:w-[76vw] lg:w-[70vw] w-[90vw]"
+                : "h-[75vh] w-[88vw]"
+            }`}
+          >
+            <Table className="">
+              <TableCaption></TableCaption>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Id</TableHead>
+                  <TableHead>Address</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead>Contact</TableHead>
+                  <TableHead>User</TableHead>
+                  <TableHead>Restaurant</TableHead>
+                </TableRow>
+              </TableHeader>
+              {stations && stations.length > 0 ? (
+                <TableBody>
+                  {stations.map((station: StationData) => {
+                    return (
+                      <TableRow key={station.id} className="">
+                        <TableCell>
+                          <Link
+                            href={`/station/${station.id}/${station.name}`}
+                            className="hover:text-primary_text dark:hover:text-sidebar_blue"
+                          >
+                            {station.name}
+                          </Link>
+                        </TableCell>
+                        <TableCell>{station.id}</TableCell>
+                        <TableCell>{station.address}</TableCell>
+                        <TableCell>{station.email}</TableCell>
+                        <TableCell>{station.contact_no}</TableCell>
+                        <TableCell>{station.user || "Null"}</TableCell>
+                        <TableCell>{station.restaurant || "Null"}</TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              ) : (
+                <div className="text-base font-normal text-center pt-12">
+                  Couldn&apos;t fetch station list
+                </div>
+              )}
+            </Table>
+          </ScrollArea>
         </div>
       ) : stations.length <= 0 ? (
         <p>No stations found!</p>

@@ -8,9 +8,13 @@ import {
   StationData,
   NearbyStationMenuItem,
   UserListType,
+  OrderSummary,
+  SalonType,
+  RestroDetail,
 } from "@/types/types";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import useAxiosPrivateFood from "@/hooks/useAxiosPrivateFood";
+import useAxiosPrivateSalon from "@/hooks/useAxiosPrivateSalon";
 
 // export const useLogin = () => {
 //   return useMutation({
@@ -74,7 +78,7 @@ export const useStationDetail = (stationId: string) => {
     queryKey: ["GET_STATIONDETAIL"],
     queryFn: async () => {
       const res = await axiosInstance.get(`/moreclub/station/${stationId}/`);
-      const data = res.data.data;
+      const data: StationData = res.data.data;
       return data;
     },
   });
@@ -126,7 +130,8 @@ export const useRestroList = () => {
 };
 
 export const useRestroDetail = (restroId: string) => {
-  const axiosInstance = useAxiosPrivateFood();
+  const { data: session } = useSession();
+  const token = session?.accessToken || session?.user.token;
   return useQuery({
     queryKey: ["GET_RESTRODETAIL"],
     queryFn: async () => {
@@ -134,18 +139,19 @@ export const useRestroDetail = (restroId: string) => {
         `https://api.morefood.se/api/moreclub/user/restaurants/${restroId}/`,
         {
           headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
-      const data = res.data.data;
+      const data: RestroDetail = res.data.data;
       return data;
     },
   });
 };
 
 export const useRestroMenuList = (restroId: string) => {
-  const axiosInstance = useAxiosPrivateFood();
+  const { data: session } = useSession();
+  const token = session?.accessToken || session?.user.token;
   return useQuery({
     queryKey: ["GET_RESTROMENULIST"],
     queryFn: async () => {
@@ -153,7 +159,7 @@ export const useRestroMenuList = (restroId: string) => {
         `https://api.morefood.se/api/moreclub/user/menus/${restroId}/`,
         {
           headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -244,7 +250,6 @@ export const useNearbyStationList = (restroId: string) => {
   });
 };
 
-
 export const useStationMenu = (restroId: string, stationId: string) => {
   const axiosInstance = useAxiosPrivateFood();
   return useQuery({
@@ -265,7 +270,6 @@ export const useStationMenu = (restroId: string, stationId: string) => {
   });
 };
 
-
 export const useNearbyStationDetail = (stationId: string) => {
   const axiosInstance = useAxiosPrivateFood();
   return useQuery({
@@ -280,12 +284,11 @@ export const useNearbyStationDetail = (stationId: string) => {
         }
       );
       console.log(res.data.data);
-      const data:NearByStationDetail = res.data.data;
+      const data: NearByStationDetail = res.data.data;
       return data;
     },
   });
 };
-
 
 export const useMenuListByRestro = (restroId: string) => {
   const axiosInstance = useAxiosPrivateFood();
@@ -320,6 +323,137 @@ export const useStationOrderList = (restroId: string) => {
           },
         }
       );
+      console.log(res.data.data);
+      const data = res.data.data;
+      return data;
+    },
+  });
+};
+
+export const useOrderSummary = (restroId: string) => {
+  const axiosInstance = useAxiosPrivateFood();
+  return useQuery({
+    queryKey: ["GET_ORDERSUMMARY"],
+    queryFn: async () => {
+      const res = await axios.get(
+        `https://api.morefood.se/api/moreclub/station/restro/${restroId}/all/orders/summary/`,
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
+          },
+        }
+      );
+      console.log(res.data.data);
+      const data: OrderSummary = res.data.data;
+      return data;
+    },
+  });
+};
+
+export const useRestroGallery = (restroId: string) => {
+  const axiosInstance = useAxiosPrivateFood();
+  return useQuery({
+    queryKey: ["GET_RESTROGALLERY"],
+    queryFn: async () => {
+      const res = await axios.get(
+        `https://api.morefood.se/api/moreclub/user/restaurants/gallery/${restroId}/`,
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
+          },
+        }
+      );
+      console.log(res.data.data);
+      const data = res.data.data;
+      return data;
+    },
+  });
+};
+
+export const usePendingGallery = (restroId: string) => {
+  const axiosInstance = useAxiosPrivateFood();
+  return useQuery({
+    queryKey: ["GET_PENDINGGALLERY"],
+    queryFn: async () => {
+      const res = await axios.get(
+        `https://api.morefood.se/api/moreclub/user/restaurants/gallery/user/upload/${restroId}/?status=unverified`,
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
+          },
+        }
+      );
+      console.log(res.data.data);
+      const data = res.data.data;
+      return data;
+    },
+  });
+};
+
+export const useAcceptedGallery = (restroId: string) => {
+  const axiosInstance = useAxiosPrivateFood();
+  return useQuery({
+    queryKey: ["GET_ACCEPTEDGALLERY"],
+    queryFn: async () => {
+      const res = await axios.get(
+        `https://api.morefood.se/api/moreclub/user/restaurants/gallery/user/upload/${restroId}/?status=verified`,
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
+          },
+        }
+      );
+      console.log(res.data.data);
+      const data = res.data.data;
+      return data;
+    },
+  });
+};
+
+export const useSalonList = () => {
+  const axiosInstance = useAxiosPrivateSalon();
+  return useQuery({
+    queryKey: ["GET_SALONLIST"],
+    queryFn: async () => {
+      const res = await axiosInstance.get("/moreclub/users/saloons/list/", {});
+      const data = res.data.data;
+      return data;
+    },
+  });
+};
+
+export const useSalonDetail = (salonId: string) => {
+  const axiosInstance = useAxiosPrivateSalon();
+  return useQuery({
+    queryKey: ["GET_SALONDETAIL"],
+    queryFn: async () => {
+      const res = await axiosInstance.get(`/moreclub/users/saloon/${salonId}/`);
+      console.log(res.data.data);
+      const data: SalonType = res.data.data;
+      return data;
+    },
+  });
+};
+
+export const useSalonServices = (salonId: string) => {
+  const axiosInstance = useAxiosPrivateSalon();
+  return useQuery({
+    queryKey: ["GET_SALONSERVICES"],
+    queryFn: async () => {
+      const res = await axiosInstance.get(`/moreclub/users/saloons/${salonId}/services/`);
+      console.log(res.data.data);
+      const data = res.data.data;
+      return data;
+    },
+  });
+};
+
+export const useSalonVariation = (salonId: string, serviceId: string) => {
+  const axiosInstance = useAxiosPrivateSalon();
+  return useQuery({
+    queryKey: ["GET_SALONVARIATION"],
+    queryFn: async () => {
+      const res = await axiosInstance.get(`/moreclub/users/saloons/${salonId}/services/${serviceId}/variations/`);
       console.log(res.data.data);
       const data = res.data.data;
       return data;

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import { Open_Sans } from "next/font/google";
+import { Open_Sans, Poppins, Raleway } from "next/font/google";
 import { usePathname } from "next/navigation";
 import { PiHandWithdraw, PiSphereLight } from "react-icons/pi";
 import { Anton } from "next/font/google";
@@ -52,6 +52,11 @@ const anton = Anton({
 });
 
 const open_sans = Open_Sans({
+  weight: ["300", "400", "500", "600", "700"],
+  subsets: ["latin"],
+});
+
+const raleway = Raleway({
   weight: ["300", "400", "500", "600", "700"],
   subsets: ["latin"],
 });
@@ -120,7 +125,7 @@ const SideBar = () => {
   };
 
   return (
-    <ScrollArea className="bg-white dark:bg-grayy lg:flex flex-col hidden gap-2 h-screen p-2">
+    <ScrollArea className="bg-white dark:bg-sidebar_gray lg:flex flex-col hidden gap-2 h-screen p-2">
       <Collapsible open={isOpen} onOpenChange={handleToggle}>
         <CollapsibleTrigger className="collapsible-trigger flex items-center w-full">
           {isOpen ? (
@@ -132,10 +137,10 @@ const SideBar = () => {
               >
                 <PiSphereLight
                   size={25}
-                  className="text-primary_text dark:text-secondary_text"
+                  className="text-primary_text dark:text-sidebar_blue"
                 />
                 <h2
-                  className={`${anton.className} font-medium xl:text-xl text-lg text-primary_text dark:text-secondary_text`}
+                  className={`${anton.className} font-medium xl:text-xl text-lg text-primary_text dark:text-sidebar_blue `}
                 >
                   MoreClub
                 </h2>
@@ -155,44 +160,44 @@ const SideBar = () => {
           className={`collapsible-content ${isOpen ? "open" : ""}`}
         >
           <div
-            className={`flex flex-col gap-4 xl:px-4 py-2 ${open_sans.className}`}
+            className={`flex flex-col gap-4 xl:px-4 py-2 ${raleway.className} font-medium text-sm`}
           >
             <div className="flex flex-col gap-1">
               <Link
                 href="/"
                 prefetch={true}
-                className={`flex gap-3 items-center py-3 pb-1 px-4 rounded-md ${
+                className={`flex gap-4 items-center py-2 px-4 rounded-md ${
                   pathname === "/"
-                    ? "bg-primary_text dark:bg-secondary_text text-white"
-                    : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                    ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                    : "dark:text-white text-black hover:bg-shadow_gray dark:hover:bg-vl_gray"
                 }`}
               >
                 <LayoutDashboard size={20} />
-                <p className={` font-normal  text-sm`}>Dashboard</p>
+                <p>Dashboard</p>
               </Link>
               <Link
                 href="/users"
                 prefetch={true}
-                className={`flex gap-3 items-center py-3 pb-1 px-4 rounded-md ${
+                className={`flex gap-4 items-center py-2 px-4 rounded-md ${
                   pathname === "/users"
-                    ? "bg-primary_text dark:bg-secondary_text text-white"
-                    : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                    ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                    : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
                 }`}
               >
                 <Users size={20} />
-                <p className={` font-normal  text-sm `}>User</p>
+                <p>User</p>
               </Link>
               <Link
                 href="/station"
                 prefetch={true}
-                className={`flex gap-3 items-center py-3 pb-1 px-4 rounded-md ${
+                className={`flex gap-4 items-center py-2 px-4 rounded-md ${
                   pathname === "/station"
-                    ? "bg-primary_text dark:bg-secondary_text text-white"
-                    : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                    ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                    : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
                 }`}
               >
                 <BsFillHouseFill size={20} />
-                <p className={` font-normal  text-sm`}>Station</p>
+                <p>Station</p>
               </Link>
 
               {/* <Link
@@ -200,12 +205,12 @@ const SideBar = () => {
                 prefetch={true}
                 className={`flex gap-[11px] items-center pt-2 pb-[2px] pl-3 px-4 rounded-md ${
                   pathname === "/restaurant"
-                    ? "bg-primary_text dark:bg-secondary_text text-white"
-                    : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                    ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                    : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
                 }`}
               >
                 <MdFoodBank size={25} />
-                <p className={` font-normal  text-sm`}>Restaurant</p>
+                <p >Restaurant</p>
               </Link> */}
 
               <Accordion
@@ -217,26 +222,24 @@ const SideBar = () => {
               >
                 <AccordionItem value="item-1">
                   <AccordionTrigger
-                    className={`py-3 pb-1 px-4 rounded-md hover:bg-shadow_gray dark:hover:bg-vl_gray`}
+                    className={`py-2 px-4 rounded-md hover:bg-shadow_gray dark:hover:bg-vl_gray`}
                   >
                     <span
-                      className={`flex gap-3 items-center dark:text-white text-text_gray`}
+                      className={`flex gap-4 items-center dark:text-white text-charcoal`}
                     >
                       <ArrowLeftRight size={20} />
-                      <p className={` font-normal  text-sm `}>
-                        Overall Transaction
-                      </p>
+                      <p>Overall Transaction</p>
                     </span>
                   </AccordionTrigger>
-                  <AccordionContent className="flex flex-col pt-2 sm:pl-6 gap-1">
+                  <AccordionContent className="flex flex-col pt-2 sm:pl-6 gap-1  font-medium text-sm ">
                     <Link
                       href={"/overall-transaction/total-billing"}
                       prefetch={true}
                       className={`${
                         pathname === "/overall-transaction/total-billing"
-                          ? "bg-primary_text dark:bg-secondary_text text-white"
-                          : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
-                      } py-1 px-4 rounded-md font-normal  text-sm`}
+                          ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                          : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                      } py-1 px-4 rounded-md `}
                     >
                       Total Billing
                     </Link>
@@ -245,9 +248,9 @@ const SideBar = () => {
                       prefetch={true}
                       className={`${
                         pathname === "/overall-transaction/total-business"
-                          ? "bg-primary_text dark:bg-secondary_text text-white"
-                          : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
-                      } py-1 px-4 rounded-md font-normal  text-sm`}
+                          ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                          : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                      } py-1 px-4 rounded-md `}
                     >
                       Total Business
                     </Link>
@@ -256,27 +259,26 @@ const SideBar = () => {
 
                 <AccordionItem value="item-2">
                   <AccordionTrigger
-                    className={`py-3 pb-1 px-4 rounded-md hover:bg-shadow_gray dark:hover:bg-vl_gray`}
+                    className={`py-2 px-4 rounded-md hover:bg-shadow_gray dark:hover:bg-vl_gray`}
                   >
                     <span
-                      className={`flex gap-[12px] items-center dark:text-white text-text_gray`}
+                      className={`flex gap-[16px] items-center dark:text-white text-charcoal`}
                     >
                       <Database size={20} />
-                      <p className={` font-normal  text-sm `}>Meta</p>
+                      <p>Meta</p>
                     </span>
                   </AccordionTrigger>
-                  <AccordionContent className="flex flex-col pt-2 sm:pl-6 gap-2">
+                  <AccordionContent className="flex flex-col pt-2 sm:pl-6 gap-2 font-medium text-sm ">
                     <Link
                       href={"/meta/business-type"}
                       prefetch={true}
                       className={`flex gap-2 items-center py-1 px-2 rounded-md ${
                         pathname === "/meta/business-type"
-                          ? "bg-primary_text dark:bg-secondary_text text-white"
-                          : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                          ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                          : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
                       }`}
                     >
-                      {/* <BsFillBriefcaseFill size={19} /> */}
-                      <p className={` font-normal  text-sm`}>Business Type</p>
+                      <p>Business Type</p>
                     </Link>
 
                     <Link
@@ -284,14 +286,11 @@ const SideBar = () => {
                       prefetch={true}
                       className={`flex gap-2 items-center py-1 px-2 rounded-md ${
                         pathname === "/meta/company-info"
-                          ? "bg-primary_text dark:bg-secondary_text text-white"
-                          : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                          ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                          : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
                       }`}
                     >
-                      {/* <AiFillInfoCircle size={20} /> */}
-                      <p className={` font-normal  text-sm`}>
-                        Company Information
-                      </p>
+                      <p>Company Information</p>
                     </Link>
 
                     <Link
@@ -299,12 +298,11 @@ const SideBar = () => {
                       prefetch={true}
                       className={`flex gap-2 items-center py-1 px-2 rounded-md ${
                         pathname === "/meta/continent"
-                          ? "bg-primary_text dark:bg-secondary_text text-white"
-                          : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                          ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                          : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
                       }`}
                     >
-                      {/* <FaGlobeAmericas size={20} /> */}
-                      <p className={` font-normal  text-sm`}>Continent</p>
+                      <p>Continent</p>
                     </Link>
 
                     <Link
@@ -312,24 +310,22 @@ const SideBar = () => {
                       prefetch={true}
                       className={`flex gap-2 items-center py-1 px-2 rounded-md ${
                         pathname === "/meta/country"
-                          ? "bg-primary_text dark:bg-secondary_text text-white"
-                          : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                          ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                          : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
                       }`}
                     >
-                      {/* <BsFlagFill size={20} /> */}
-                      <p className={` font-normal  text-sm`}>Country</p>
+                      <p>Country</p>
                     </Link>
                     <Link
                       href={"/meta/currency"}
                       prefetch={true}
                       className={`flex gap-2 items-center py-1 px-2 rounded-md ${
                         pathname === "/meta/currency"
-                          ? "bg-primary_text dark:bg-secondary_text text-white"
-                          : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                          ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                          : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
                       }`}
                     >
-                      {/* <HiCurrencyDollar size={20} /> */}
-                      <p className={` font-normal  text-sm`}>Currency</p>
+                      <p>Currency</p>
                     </Link>
 
                     <Link
@@ -337,12 +333,11 @@ const SideBar = () => {
                       prefetch={true}
                       className={`flex gap-2 items-center py-1 px-2 rounded-md ${
                         pathname === "/meta/faqs"
-                          ? "bg-primary_text dark:bg-secondary_text text-white"
-                          : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                          ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                          : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
                       }`}
                     >
-                      {/* <RiQuestionnaireFill size={20} /> */}
-                      <p className={` font-normal  text-sm`}>FAQs</p>
+                      <p>FAQs</p>
                     </Link>
 
                     <Link
@@ -350,12 +345,11 @@ const SideBar = () => {
                       prefetch={true}
                       className={`flex gap-2 items-center py-1 px-2 rounded-md ${
                         pathname === "/meta/privacy-policy"
-                          ? "bg-primary_text dark:bg-secondary_text text-white"
-                          : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                          ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                          : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
                       }`}
                     >
-                      {/* <BsFileEarmarkLock2 size={20} /> */}
-                      <p className={` font-normal  text-sm`}>Privacy Policy</p>
+                      <p>Privacy Policy</p>
                     </Link>
 
                     <Link
@@ -363,91 +357,85 @@ const SideBar = () => {
                       prefetch={true}
                       className={`flex gap-2 items-center py-1 px-2 rounded-md ${
                         pathname === "/meta/terms-and-conditions"
-                          ? "bg-primary_text dark:bg-secondary_text text-white"
-                          : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                          ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                          : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
                       }`}
                     >
-                      {/* <HiOutlineClipboardDocumentCheck size={20} /> */}
-                      <p className={` font-normal  text-sm`}>
-                        Terms and Conditions
-                      </p>
+                      <p>Terms and Conditions</p>
                     </Link>
                   </AccordionContent>
                 </AccordionItem>
 
                 <AccordionItem value="item-3">
                   <AccordionTrigger
-                    className={`py-3 pb-1 px-4 rounded-md hover:bg-shadow_gray dark:hover:bg-vl_gray`}
+                    className={`py-2 px-4 rounded-md hover:bg-shadow_gray dark:hover:bg-vl_gray`}
                   >
                     <span
-                      className={`flex gap-3 items-center dark:text-white text-text_gray`}
+                      className={`flex gap-4 items-center dark:text-white text-charcoal`}
                     >
                       <CalendarRange size={20} />
-                      <p className={` font-normal  text-sm `}>Event</p>
+                      <p>Event</p>
                     </span>
                   </AccordionTrigger>
-                  <AccordionContent className="flex flex-col pt-2 sm:pl-6 gap-2">
+                  <AccordionContent className="flex flex-col pt-2 sm:pl-6 gap-2 font-medium text-sm ">
                     <Link
                       href={"/event/event-create"}
                       prefetch={true}
-                      className={`flex gap-3 items-center py-1 px-4 rounded-md ${
+                      className={`flex gap-4 items-center py-1 px-4 rounded-md ${
                         pathname === "/event/event-create"
-                          ? "bg-primary_text dark:bg-secondary_text text-white"
-                          : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                          ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                          : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
                       }`}
                     >
-                      {/* <TbCalendarPlus size={20} /> */}
-                      <p className="font-normal text-sm"> Event Create</p>
+                      <p> Event Create</p>
                     </Link>
 
                     <Link
                       href={"/event/event-fee"}
                       prefetch={true}
-                      className={`flex gap-3 items-center py-1 px-4 rounded-md ${
+                      className={`flex gap-4 items-center py-1 px-4 rounded-md ${
                         pathname === "/event/event-fee"
-                          ? "bg-primary_text dark:bg-secondary_text text-white"
-                          : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                          ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                          : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
                       }`}
                     >
-                      {/* <TbCalendarDollar size={20} /> */}
-                      <p className={` font-normal  text-sm `}>Event Fee</p>
+                      <p>Event Fee</p>
                     </Link>
 
                     <Link
                       href={"/event/event-book"}
                       prefetch={true}
-                      className={`flex gap-3 items-center py-1 px-4 rounded-md ${
+                      className={`flex gap-4 items-center py-1 px-4 rounded-md ${
                         pathname === "/event/event-book"
-                          ? "bg-primary_text dark:bg-secondary_text text-white"
-                          : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                          ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                          : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
                       }`}
                     >
-                      {/* <TbCalendarCheck size={20} /> */}
-                      <p className={` font-normal  text-sm `}>Event Book</p>
+                      <p>Event Book</p>
                     </Link>
                   </AccordionContent>
                 </AccordionItem>
 
                 <AccordionItem value="item-4">
                   <AccordionTrigger
-                    className={`py-3 pb-1 px-4 rounded-md hover:bg-shadow_gray dark:hover:bg-vl_gray`}
+                    className={`py-2 px-4 rounded-md hover:bg-shadow_gray dark:hover:bg-vl_gray`}
                   >
                     <span
-                      className={`flex gap-3 items-center dark:text-white text-text_gray`}
+                      className={`flex gap-4 items-center dark:text-white text-charcoal`}
                     >
                       <IdCard size={20} />
-                      <p className={` font-normal  text-sm`}>Membership</p>
+                      <p>Membership</p>
                     </span>
                   </AccordionTrigger>
-                  <AccordionContent className="flex flex-col pt-2 sm:pl-6 gap-2">
+                  <AccordionContent className="flex flex-col pt-2 sm:pl-6 gap-2 font-medium text-sm ">
                     <Link
                       href={"/membership/membership"}
                       prefetch={true}
                       className={`${
                         pathname === "/membership/membership"
-                          ? "bg-primary_text dark:bg-secondary_text text-white"
-                          : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
-                      } py-1 px-4 rounded-md font-normal  text-sm`}
+                          ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                          : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                      } py-1 px-4 rounded-md `}
                     >
                       Membership
                     </Link>
@@ -456,9 +444,9 @@ const SideBar = () => {
                       prefetch={true}
                       className={`${
                         pathname === "/membership/membership-type"
-                          ? "bg-primary_text dark:bg-secondary_text text-white"
-                          : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
-                      } py-1 px-4 rounded-md font-normal  text-sm`}
+                          ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                          : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                      } py-1 px-4 rounded-md `}
                     >
                       Membership Type
                     </Link>
@@ -467,9 +455,9 @@ const SideBar = () => {
                       prefetch={true}
                       className={`${
                         pathname === "/membership/project-discount"
-                          ? "bg-primary_text dark:bg-secondary_text text-white"
-                          : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
-                      } py-1 px-4 rounded-md font-normal  text-sm`}
+                          ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                          : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                      } py-1 px-4 rounded-md `}
                     >
                       Project Discount
                     </Link>
@@ -478,9 +466,9 @@ const SideBar = () => {
                       prefetch={true}
                       className={`${
                         pathname === "/membership/type-discount"
-                          ? "bg-primary_text dark:bg-secondary_text text-white"
-                          : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
-                      } py-1 px-4 rounded-md font-normal  text-sm`}
+                          ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                          : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                      } py-1 px-4 rounded-md `}
                     >
                       Type Discount
                     </Link>
@@ -489,24 +477,24 @@ const SideBar = () => {
 
                 <AccordionItem value="item-5">
                   <AccordionTrigger
-                    className={`py-3 pb-1 px-4 rounded-md hover:bg-shadow_gray dark:hover:bg-vl_gray`}
+                    className={`py-2 px-4 rounded-md hover:bg-shadow_gray dark:hover:bg-vl_gray`}
                   >
                     <span
-                      className={`flex gap-3 items-center dark:text-white text-text_gray`}
+                      className={`flex gap-4 items-center dark:text-white text-charcoal`}
                     >
                       <Network size={20} />
-                      <p className={` font-normal  text-sm`}>Referral</p>
+                      <p>Referral</p>
                     </span>
                   </AccordionTrigger>
-                  <AccordionContent className="flex flex-col pt-2 sm:pl-6 gap-2">
+                  <AccordionContent className="flex flex-col pt-2 sm:pl-6 gap-2 font-medium text-sm ">
                     <Link
                       href={"/referral/referral"}
                       prefetch={true}
                       className={`${
                         pathname === "/referral/referral"
-                          ? "bg-primary_text dark:bg-secondary_text text-white"
-                          : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
-                      } py-1 px-4 rounded-md font-normal  text-sm`}
+                          ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                          : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                      } py-1 px-4 rounded-md `}
                     >
                       Referral
                     </Link>
@@ -515,9 +503,9 @@ const SideBar = () => {
                       prefetch={true}
                       className={`${
                         pathname === "/referral/business-referral"
-                          ? "bg-primary_text dark:bg-secondary_text text-white"
-                          : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
-                      } py-1 px-4 rounded-md font-normal  text-sm`}
+                          ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                          : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                      } py-1 px-4 rounded-md `}
                     >
                       Business Referral
                     </Link>
@@ -526,39 +514,37 @@ const SideBar = () => {
 
                 <AccordionItem value="item-6">
                   <AccordionTrigger
-                    className={`py-3 pb-1 px-4 rounded-md hover:bg-shadow_gray dark:hover:bg-vl_gray`}
+                    className={`py-2 px-4 rounded-md hover:bg-shadow_gray dark:hover:bg-vl_gray`}
                   >
                     <span
-                      className={`flex gap-3 items-center dark:text-white text-text_gray`}
+                      className={`flex gap-4 items-center dark:text-white text-charcoal`}
                     >
                       <Wallet size={20} />
-                      <p className={` font-normal  text-sm`}>Wallet</p>
+                      <p>Wallet</p>
                     </span>
                   </AccordionTrigger>
-                  <AccordionContent className="flex flex-col pt-2 sm:pl-6 gap-2">
+                  <AccordionContent className="flex flex-col pt-2 sm:pl-6 gap-2 font-medium text-sm ">
                     <Link
                       href="/wallet/transaction"
                       prefetch={true}
-                      className={`flex gap-3 items-center py-1 px-4 rounded-md ${
+                      className={`flex gap-4 items-center py-1 px-4 rounded-md ${
                         pathname === "/wallet/transaction"
-                          ? "bg-primary_text dark:bg-secondary_text text-white"
-                          : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                          ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                          : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
                       }`}
                     >
-                      {/* <GrTransaction size={20} /> */}
-                      <p className={` font-normal  text-sm`}>Transaction</p>
+                      <p>Transaction</p>
                     </Link>
                     <Link
                       href="/wallet/user-wallet"
                       prefetch={true}
-                      className={`flex gap-3 items-center py-1 px-4 rounded-md ${
+                      className={`flex gap-4 items-center py-1 px-4 rounded-md ${
                         pathname === "/wallet/user-wallet"
-                          ? "bg-primary_text dark:bg-secondary_text text-white"
-                          : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                          ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                          : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
                       }`}
                     >
-                      {/* <IoWalletOutline size={20} /> */}
-                      <p className={` font-normal  text-sm`}>User Wallet</p>
+                      <p>User Wallet</p>
                     </Link>
                   </AccordionContent>
                 </AccordionItem>
@@ -567,85 +553,85 @@ const SideBar = () => {
               <Link
                 href="/kyc"
                 prefetch={true}
-                className={`flex gap-3 items-center pt-3 pb-1 px-4 rounded-md ${
+                className={`flex gap-4 items-center py-2 px-4  rounded-md ${
                   pathname === "/kyc"
-                    ? "bg-primary_text dark:bg-secondary_text text-white"
-                    : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                    ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                    : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
                 }`}
               >
                 <FileCheck size={20} />
-                <p className={` font-normal  text-sm`}>KYC</p>
+                <p>KYC</p>
               </Link>
 
               <Link
                 href="/notification"
                 prefetch={true}
-                className={`flex gap-[10px] items-center pt-2 pb-[2px] pl-4 px-4 rounded-md ${
+                className={`flex gap-[14px] items-center py-2 px-4  rounded-md ${
                   pathname === "/notification"
-                    ? "bg-primary_text dark:bg-secondary_text text-white"
-                    : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                    ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                    : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
                 }`}
               >
                 <Bell size={22} />
-                <p className={` font-normal  text-sm`}>Notification</p>
+                <p>Notification</p>
               </Link>
 
               <Link
                 href="/partners"
                 prefetch={true}
-                className={`flex gap-3 items-center pt-[10px] pb-1 pl-4 px-4 rounded-md ${
+                className={`flex gap-4 items-center py-2 px-4  rounded-md ${
                   pathname === "/partners"
-                    ? "bg-primary_text dark:bg-secondary_text text-white"
-                    : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                    ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                    : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
                 }`}
               >
                 <Handshake size={20} />
-                <p className={` font-normal  text-sm`}>Partners</p>
+                <p>Partners</p>
               </Link>
 
               <Link
                 href="/project"
                 prefetch={true}
-                className={`flex gap-3 items-center pt-2 pb-[2px] pl-4 px-4 rounded-md ${
+                className={`flex gap-4 items-center py-2 px-4 rounded-md ${
                   pathname === "/project"
-                    ? "bg-primary_text dark:bg-secondary_text text-white"
-                    : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                    ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                    : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
                 }`}
               >
                 <NotebookPen size={20} />
-                <p className={` font-normal  text-sm `}>Project</p>
+                <p>Project</p>
               </Link>
 
               <Link
                 href="/subscription"
                 prefetch={true}
-                className={`flex gap-3 items-center py-3 pb-1 px-4 rounded-md ${
+                className={`flex gap-4 items-center py-2 px-4 rounded-md ${
                   pathname === "/subscription"
-                    ? "bg-primary_text dark:bg-secondary_text text-white"
-                    : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                    ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                    : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
                 }`}
               >
                 <MdOutlineSubscriptions size={20} />
-                <p className={` font-normal  text-sm `}>Subscription</p>
+                <p>Subscription</p>
               </Link>
 
               <Link
                 href="/withdraw"
                 prefetch={true}
-                className={`flex gap-3 items-center py-3 pb-1 px-4 rounded-md ${
+                className={`flex gap-4 items-center py-2 px-4 rounded-md ${
                   pathname === "/withdraw"
-                    ? "bg-primary_text dark:bg-secondary_text text-white"
-                    : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                    ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                    : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
                 }`}
               >
                 <PiHandWithdraw size={20} />
-                <p className={` font-normal  text-sm`}>Withdraw</p>
+                <p>Withdraw</p>
               </Link>
             </div>
             {status === "authenticated" ? (
               <Button
                 onClick={handleLogout}
-                className="bg-primary_text dark:bg-secondary_text hover:bg-l_orange dark:hover:bg-blue text-white w-full  h-8 mb-6 self-center rounded-lg"
+                className="bg-primary_text dark:bg-sidebar_blue dark:hover:opacity-65 hover:bg-l_orange text-white w-full  h-8 mb-6 self-center rounded-lg"
               >
                 Sign out
               </Button>
@@ -667,8 +653,8 @@ const SideBar = () => {
                     size={20}
                     className={`${
                       pathname === "/"
-                        ? "text-primary_text dark:text-secondary_text"
-                        : "dark:text-white text-text_gray"
+                        ? "text-primary_text dark:text-sidebar_blue"
+                        : "dark:text-white text-charcoal"
                     }`}
                   />
                 </Link>
@@ -688,8 +674,8 @@ const SideBar = () => {
                     size={20}
                     className={`${
                       pathname === "/users"
-                        ? "text-primary_text dark:text-secondary_text"
-                        : "dark:text-white text-text_gray"
+                        ? "text-primary_text dark:text-sidebar_blue"
+                        : "dark:text-white text-charcoal"
                     }`}
                   />
                 </Link>
@@ -708,8 +694,8 @@ const SideBar = () => {
                     size={20}
                     className={`${
                       pathname === "/station"
-                        ? "text-primary_text dark:text-secondary_text"
-                        : "dark:text-white text-text_gray"
+                        ? "text-primary_text dark:text-sidebar_blue"
+                        : "dark:text-white text-charcoal"
                     }`}
                   />
                 </Link>
@@ -728,8 +714,8 @@ const SideBar = () => {
                     size={25}
                     className={`${
                       pathname === "/restaurant"
-                        ? "text-primary_text dark:text-secondary_text"
-                        : "dark:text-white text-text_gray"
+                        ? "text-primary_text dark:text-sidebar_blue"
+                        : "dark:text-white text-charcoal"
                     }`}
                   />
                 </Link>
@@ -744,7 +730,7 @@ const SideBar = () => {
             <Tooltip>
               <TooltipTrigger className="pl-2">
                 <span
-                  className={`flex gap-3 items-center dark:text-white text-text_gray`}
+                  className={`flex gap-4 items-center dark:text-white text-charcoal`}
                 >
                   <ArrowLeftRight size={20} />
                 </span>
@@ -755,9 +741,9 @@ const SideBar = () => {
                   prefetch={true}
                   className={`${
                     pathname === "/overall-transaction/total-billing"
-                      ? "bg-primary_text dark:bg-secondary_text text-white"
-                      : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
-                  } py-3 pb-1 px-4 rounded-md font-normal  text-sm`}
+                      ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                      : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                  } py-2 px-4 rounded-md `}
                 >
                   Total Billing
                 </Link>
@@ -766,9 +752,9 @@ const SideBar = () => {
                   prefetch={true}
                   className={`${
                     pathname === "/overall-transaction/total-business"
-                      ? "bg-primary_text dark:bg-secondary_text text-white"
-                      : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
-                  } py-3 pb-1 px-4 rounded-md font-normal  text-sm`}
+                      ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                      : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                  } py-2 px-4 rounded-md `}
                 >
                   Total Business
                 </Link>
@@ -780,7 +766,7 @@ const SideBar = () => {
             <Tooltip>
               <TooltipTrigger className="pl-2">
                 <span
-                  className={`flex gap-3 items-center dark:text-white text-text_gray`}
+                  className={`flex gap-4 items-center dark:text-white text-charcoal`}
                 >
                   <Database size={20} />
                 </span>
@@ -789,106 +775,104 @@ const SideBar = () => {
                 <Link
                   href={"/meta/business-type"}
                   prefetch={true}
-                  className={`flex gap-2 items-center py-3 pb-1 px-2 rounded-md ${
+                  className={`flex gap-2 items-center py-2 px-2 rounded-md ${
                     pathname === "/meta/business-type"
-                      ? "bg-primary_text dark:bg-secondary_text text-white"
-                      : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                      ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                      : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
                   }`}
                 >
                   {/* <BsFillBriefcaseFill size={19} /> */}
-                  <p className={` font-normal  text-sm`}>Business Type</p>
+                  <p>Business Type</p>
                 </Link>
 
                 <Link
                   href={"/meta/company-info"}
                   prefetch={true}
-                  className={`flex gap-2 items-center py-3 pb-1 px-2 rounded-md ${
+                  className={`flex gap-2 items-center py-2 px-2 rounded-md ${
                     pathname === "/meta/company-info"
-                      ? "bg-primary_text dark:bg-secondary_text text-white"
-                      : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                      ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                      : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
                   }`}
                 >
                   {/* <AiFillInfoCircle size={20} /> */}
-                  <p className={` font-normal  text-sm`}>Company Information</p>
+                  <p>Company Information</p>
                 </Link>
 
                 <Link
                   href={"/meta/continent"}
                   prefetch={true}
-                  className={`flex gap-2 items-center py-3 pb-1 px-2 rounded-md ${
+                  className={`flex gap-2 items-center py-2 px-2 rounded-md ${
                     pathname === "/meta/continent"
-                      ? "bg-primary_text dark:bg-secondary_text text-white"
-                      : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                      ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                      : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
                   }`}
                 >
                   {/* <FaGlobeAmericas size={20} /> */}
-                  <p className={` font-normal  text-sm`}>Continent</p>
+                  <p>Continent</p>
                 </Link>
 
                 <Link
                   href={"/meta/country"}
                   prefetch={true}
-                  className={`flex gap-2 items-center py-3 pb-1 px-2 rounded-md ${
+                  className={`flex gap-2 items-center py-2 px-2 rounded-md ${
                     pathname === "/meta/country"
-                      ? "bg-primary_text dark:bg-secondary_text text-white"
-                      : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                      ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                      : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
                   }`}
                 >
                   {/* <BsFlagFill size={20} /> */}
-                  <p className={` font-normal  text-sm`}>Country</p>
+                  <p>Country</p>
                 </Link>
                 <Link
                   href={"/meta/currency"}
                   prefetch={true}
-                  className={`flex gap-2 items-center py-3 pb-1 px-2 rounded-md ${
+                  className={`flex gap-2 items-center py-2 px-2 rounded-md ${
                     pathname === "/meta/currency"
-                      ? "bg-primary_text dark:bg-secondary_text text-white"
-                      : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                      ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                      : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
                   }`}
                 >
                   {/* <HiCurrencyDollar size={20} /> */}
-                  <p className={` font-normal  text-sm`}>Currency</p>
+                  <p>Currency</p>
                 </Link>
 
                 <Link
                   href={"/meta/faqs"}
                   prefetch={true}
-                  className={`flex gap-2 items-center py-3 pb-1 px-2 rounded-md ${
+                  className={`flex gap-2 items-center py-2 px-2 rounded-md ${
                     pathname === "/meta/faqs"
-                      ? "bg-primary_text dark:bg-secondary_text text-white"
-                      : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                      ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                      : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
                   }`}
                 >
                   {/* <RiQuestionnaireFill size={20} /> */}
-                  <p className={` font-normal  text-sm`}>FAQs</p>
+                  <p>FAQs</p>
                 </Link>
 
                 <Link
                   href={"/meta/privacy-policy"}
                   prefetch={true}
-                  className={`flex gap-2 items-center py-3 pb-1 px-2 rounded-md ${
+                  className={`flex gap-2 items-center py-2 px-2 rounded-md ${
                     pathname === "/meta/privacy-policy"
-                      ? "bg-primary_text dark:bg-secondary_text text-white"
-                      : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                      ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                      : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
                   }`}
                 >
                   {/* <BsFileEarmarkLock2 size={20} /> */}
-                  <p className={` font-normal  text-sm`}>Privacy Policy</p>
+                  <p>Privacy Policy</p>
                 </Link>
 
                 <Link
                   href={"/meta/terms-and-conditions"}
                   prefetch={true}
-                  className={`flex gap-2 items-center py-3 pb-1 px-2 rounded-md ${
+                  className={`flex gap-2 items-center py-2 px-2 rounded-md ${
                     pathname === "/meta/terms-and-conditions"
-                      ? "bg-primary_text dark:bg-secondary_text text-white"
-                      : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                      ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                      : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
                   }`}
                 >
                   {/* <HiOutlineClipboardDocumentCheck size={20} /> */}
-                  <p className={` font-normal  text-sm`}>
-                    Terms and Conditions
-                  </p>
+                  <p>Terms and Conditions</p>
                 </Link>
               </TooltipContent>
             </Tooltip>
@@ -897,7 +881,7 @@ const SideBar = () => {
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger className="pl-2">
-                <span className={` dark:text-white text-text_gray`}>
+                <span className={` dark:text-white text-charcoal`}>
                   <CalendarRange size={20} />
                 </span>
               </TooltipTrigger>
@@ -905,10 +889,10 @@ const SideBar = () => {
                 <Link
                   href={"/event/event-create"}
                   prefetch={true}
-                  className={`flex gap-3 items-center py-3 pb-1 px-4 rounded-md ${
+                  className={`flex gap-4 items-center py-2 px-4 rounded-md ${
                     pathname === "/event/event-create"
-                      ? "bg-primary_text dark:bg-secondary_text text-white"
-                      : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                      ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                      : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
                   }`}
                 >
                   {/* <TbCalendarPlus size={20} /> */}
@@ -918,27 +902,27 @@ const SideBar = () => {
                 <Link
                   href={"/event/event-fee"}
                   prefetch={true}
-                  className={`flex gap-3 items-center py-3 pb-1 px-4 rounded-md ${
+                  className={`flex gap-4 items-center py-2 px-4 rounded-md ${
                     pathname === "/event/event-fee"
-                      ? "bg-primary_text dark:bg-secondary_text text-white"
-                      : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                      ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                      : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
                   }`}
                 >
                   {/* <TbCalendarDollar size={20} /> */}
-                  <p className={` font-normal  text-sm `}>Event Fee</p>
+                  <p>Event Fee</p>
                 </Link>
 
                 <Link
                   href={"/event/event-book"}
                   prefetch={true}
-                  className={`flex gap-3 items-center py-3 pb-1 px-4 rounded-md ${
+                  className={`flex gap-4 items-center py-2 px-4 rounded-md ${
                     pathname === "/event/event-book"
-                      ? "bg-primary_text dark:bg-secondary_text text-white"
-                      : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                      ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                      : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
                   }`}
                 >
                   {/* <TbCalendarCheck size={20} /> */}
-                  <p className={` font-normal  text-sm `}>Event Book</p>
+                  <p>Event Book</p>
                 </Link>
               </TooltipContent>
             </Tooltip>
@@ -947,7 +931,7 @@ const SideBar = () => {
           <TooltipProvider>
             <Tooltip>
               <TooltipTrigger className="pl-2">
-                <span className={` dark:text-white text-text_gray`}>
+                <span className={` dark:text-white text-charcoal`}>
                   <IdCard size={20} />
                 </span>
               </TooltipTrigger>
@@ -957,9 +941,9 @@ const SideBar = () => {
                   prefetch={true}
                   className={`${
                     pathname === "/membership/membership"
-                      ? "bg-primary_text dark:bg-secondary_text text-white"
-                      : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
-                  } py-3 pb-1 px-4 rounded-md font-normal  text-sm`}
+                      ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                      : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                  } py-2 px-4 rounded-md `}
                 >
                   Membership
                 </Link>
@@ -968,9 +952,9 @@ const SideBar = () => {
                   prefetch={true}
                   className={`${
                     pathname === "/membership/membership-type"
-                      ? "bg-primary_text dark:bg-secondary_text text-white"
-                      : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
-                  } py-3 pb-1 px-4 rounded-md font-normal  text-sm`}
+                      ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                      : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                  } py-2 px-4 rounded-md `}
                 >
                   Membership Type
                 </Link>
@@ -979,9 +963,9 @@ const SideBar = () => {
                   prefetch={true}
                   className={`${
                     pathname === "/membership/project-discount"
-                      ? "bg-primary_text dark:bg-secondary_text text-white"
-                      : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
-                  } py-3 pb-1 px-4 rounded-md font-normal  text-sm`}
+                      ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                      : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                  } py-2 px-4 rounded-md `}
                 >
                   Project Discount
                 </Link>
@@ -990,9 +974,9 @@ const SideBar = () => {
                   prefetch={true}
                   className={`${
                     pathname === "/membership/type-discount"
-                      ? "bg-primary_text dark:bg-secondary_text text-white"
-                      : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
-                  } py-3 pb-1 px-4 rounded-md font-normal  text-sm`}
+                      ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                      : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                  } py-2 px-4 rounded-md `}
                 >
                   Type Discount
                 </Link>
@@ -1004,7 +988,7 @@ const SideBar = () => {
             <Tooltip>
               <TooltipTrigger className="pl-2">
                 <span
-                  className={`flex justify-center items-center dark:text-white text-text_gray`}
+                  className={`flex justify-center items-center dark:text-white text-charcoal`}
                 >
                   <Network size={20} />
                 </span>
@@ -1015,9 +999,9 @@ const SideBar = () => {
                   prefetch={true}
                   className={`${
                     pathname === "/referral/referral"
-                      ? "bg-primary_text dark:bg-secondary_text text-white"
-                      : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
-                  } py-3 pb-1 px-4 rounded-md font-normal  text-sm`}
+                      ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                      : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                  } py-2 px-4 rounded-md `}
                 >
                   Referral
                 </Link>
@@ -1026,9 +1010,9 @@ const SideBar = () => {
                   prefetch={true}
                   className={`${
                     pathname === "/referral/business-referral"
-                      ? "bg-primary_text dark:bg-secondary_text text-white"
-                      : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
-                  } py-3 pb-1 px-4 rounded-md font-normal  text-sm`}
+                      ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                      : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                  } py-2 px-4 rounded-md `}
                 >
                   Business Referral
                 </Link>
@@ -1040,7 +1024,7 @@ const SideBar = () => {
             <Tooltip>
               <TooltipTrigger className="pl-2">
                 <span
-                  className={`flex gap-3 items-center dark:text-white text-text_gray`}
+                  className={`flex gap-4 items-center dark:text-white text-charcoal`}
                 >
                   <Wallet size={20} />
                 </span>
@@ -1049,26 +1033,26 @@ const SideBar = () => {
                 <Link
                   href="/wallet/transaction"
                   prefetch={true}
-                  className={`flex gap-3 items-center py-3 pb-1 px-4 rounded-md ${
+                  className={`flex gap-4 items-center py-2 px-4 rounded-md ${
                     pathname === "/wallet/transaction"
-                      ? "bg-primary_text dark:bg-secondary_text text-white"
-                      : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                      ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                      : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
                   }`}
                 >
                   {/* <GrTransaction size={20} /> */}
-                  <p className={` font-normal  text-sm`}>Transaction</p>
+                  <p>Transaction</p>
                 </Link>
                 <Link
                   href="/wallet/user-wallet"
                   prefetch={true}
-                  className={`flex gap-3 items-center py-3 pb-1 px-4 rounded-md ${
+                  className={`flex gap-4 items-center py-2 px-4 rounded-md ${
                     pathname === "/wallet/user-wallet"
-                      ? "bg-primary_text dark:bg-secondary_text text-white"
-                      : "dark:text-white text-text_gray hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                      ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                      : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
                   }`}
                 >
                   {/* <IoWalletOutline size={20} /> */}
-                  <p className={` font-normal  text-sm`}>User Wallet</p>
+                  <p>User Wallet</p>
                 </Link>
               </TooltipContent>
             </Tooltip>
@@ -1082,8 +1066,8 @@ const SideBar = () => {
                     size={20}
                     className={`${
                       pathname === "/kyc"
-                        ? "text-primary_text dark:text-secondary_text"
-                        : "dark:text-white text-text_gray"
+                        ? "text-primary_text dark:text-sidebar_blue"
+                        : "dark:text-white text-charcoal"
                     }`}
                   />
                 </Link>
@@ -1102,8 +1086,8 @@ const SideBar = () => {
                     size={22}
                     className={`${
                       pathname === "/notification"
-                        ? "text-primary_text dark:text-secondary_text"
-                        : "dark:text-white text-text_gray"
+                        ? "text-primary_text dark:text-sidebar_blue"
+                        : "dark:text-white text-charcoal"
                     }`}
                   />
                 </Link>
@@ -1122,8 +1106,8 @@ const SideBar = () => {
                     size={20}
                     className={`${
                       pathname === "/partners"
-                        ? "text-primary_text dark:text-secondary_text"
-                        : "dark:text-white text-text_gray"
+                        ? "text-primary_text dark:text-sidebar_blue"
+                        : "dark:text-white text-charcoal"
                     }`}
                   />
                 </Link>
@@ -1142,8 +1126,8 @@ const SideBar = () => {
                     size={20}
                     className={`${
                       pathname === "/project"
-                        ? "text-primary_text dark:text-secondary_text"
-                        : "dark:text-white text-text_gray"
+                        ? "text-primary_text dark:text-sidebar_blue"
+                        : "dark:text-white text-charcoal"
                     }`}
                   />
                 </Link>
@@ -1162,8 +1146,8 @@ const SideBar = () => {
                     size={20}
                     className={`${
                       pathname === "/subscription"
-                        ? "text-primary_text dark:text-secondary_text"
-                        : "dark:text-white text-text_gray"
+                        ? "text-primary_text dark:text-sidebar_blue"
+                        : "dark:text-white text-charcoal"
                     }`}
                   />
                 </Link>
@@ -1182,8 +1166,8 @@ const SideBar = () => {
                     size={20}
                     className={`${
                       pathname === "/withdraw"
-                        ? "text-primary_text dark:text-secondary_text"
-                        : "dark:text-white text-text_gray"
+                        ? "text-primary_text dark:text-sidebar_blue"
+                        : "dark:text-white text-charcoal"
                     }`}
                   />
                 </Link>

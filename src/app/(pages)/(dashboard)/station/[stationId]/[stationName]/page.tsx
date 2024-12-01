@@ -1,5 +1,6 @@
 "use client";
 
+import { Separator } from "@/components/ui/separator";
 import { useStationDetail } from "@/lib/react-query/queriesAndMutations";
 import { setStationData } from "@/lib/store/features/station/stationSlice";
 import { useAppSelector } from "@/lib/store/hooks";
@@ -8,6 +9,10 @@ import { Open_Sans } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect } from "react";
+import { CiEdit } from "react-icons/ci";
+import { IoIosMail } from "react-icons/io";
+import { IoLocationSharp } from "react-icons/io5";
+import { MdLocalPhone } from "react-icons/md";
 import { useDispatch } from "react-redux";
 
 const open_sans = Open_Sans({
@@ -40,7 +45,7 @@ const Page = ({
     >
       <div className="flex sm:flex-row flex-col justify-between">
         <h1
-          className={`text-primary_text dark:text-secondary_text text-lg font-medium ${open_sans.className}`}
+          className={`text-primary_text dark:text-sidebar_blue text-lg font-medium ${open_sans.className}`}
         >
           Station Details
         </h1>
@@ -52,76 +57,109 @@ const Page = ({
         ) : !stationDetail ? (
           <p>Station Detail not found!</p>
         ) : stationDetail ? (
-          <div className="flex flex-col gap-3">
-            <Image
-              src={stationDetail?.banner || ""}
-              alt="station banner"
-              width={300}
-              height={200}
-              className="rounded"
-            />
-            <div className="flex flex-col gap-1">
-              <div className="font-medium text-base capitalize flex gap-1">
-                <h3 className="font-medium">{stationDetail.name}</h3>
-              </div>
-              <div className="font-normal text-sm flex gap-1">
-                <h3 className="font-medium">Station ID :</h3> {stationDetail.id}
-              </div>
-              <div className="font-normal text-sm flex gap-1">
-                <h3 className="font-medium">Email :</h3> {stationDetail.email}
-              </div>
-              <div className="font-normal text-sm flex gap-1">
-                <h3 className="font-medium">Address :</h3>{" "}
-                {stationDetail.address}
-              </div>
-              <div className="font-normal text-sm flex gap-1">
-                <h3 className="font-medium">Contact :</h3>{" "}
-                {stationDetail.contact_no}
-              </div>
-              {stationDetail.restaurant ? (
-                <div className="font-normal text-sm flex gap-1">
-                  <h3 className="font-medium">Restaurant :</h3>{" "}
-                  {stationDetail.restaurant}
+          <div className="flex flex-col gap-8">
+            <div className="grid lg:grid-cols-2 grid-cols-1 gap-4">
+              <div className="flex flex-col gap-4">
+                {stationDetail.logo ? (
+                  <Image
+                    src={stationDetail.logo}
+                    alt="salon logo"
+                    width={100}
+                    height={100}
+                    className="rounded-full w-36 h-36 bg-deep_red"
+                  />
+                ) : (
+                  ""
+                )}
+
+                <div className="flex flex-col gap-2">
+                  <div className="pl-1 flex items-center gap-1">
+                    <h2
+                      className={`text-deep_red dark:text-white sm:text-xl text-lg font-semibold`}
+                    >
+                      {stationDetail.name}
+                    </h2>
+                    {stationData ? (
+                      <Link href={`/station/create`} className="place-self-end">
+                        <CiEdit
+                          size={24}
+                          className="text-deep_red dark:text-white"
+                        />
+                      </Link>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                  <div className="flex gap-1 items-end">
+                    <IoLocationSharp
+                      size={22}
+                      className="text-primary_text dark:text-sidebar_blue"
+                    />
+                    <p className="text-sm font-medium">
+                      {stationDetail.address}
+                    </p>
+                  </div>
+                  <div className="flex sm:flex-row flex-col gap-2">
+                    <div className="flex gap-1 items-end pl-1">
+                      <MdLocalPhone
+                        size={22}
+                        className="text-primary_text dark:text-sidebar_blue"
+                      />
+                      <p className="text-sm font-medium ">
+                        {stationDetail.contact_no}
+                      </p>
+                    </div>
+                    <Separator
+                      orientation="vertical"
+                      color="black"
+                      className="bg-gray-400 w-[2px] sm:block hidden"
+                    />
+                    <div className="flex gap-1 items-end pl-1">
+                      <IoIosMail
+                        size={22}
+                        className="text-primary_text dark:text-sidebar_blue"
+                      />
+                      <p className="text-sm font-medium ">
+                        {stationDetail.email}
+                      </p>
+                    </div>
+                  </div>
+                  <p className="text-sm font-medium pl-1">
+                    {stationDetail.short_description}
+                  </p>
                 </div>
-              ) : (
-                ""
-              )}
-              <div className="font-normal text-sm flex gap-1">
-                <h3 className="font-medium">Short Description :</h3>{" "}
-                {stationDetail.short_description}
               </div>
-              <div className="font-normal text-sm flex gap-1">
-                <h3 className="font-medium">Long Description :</h3>{" "}
-                {stationDetail.long_description}
+              <div className="flex items-center h-full">
+                <Image
+                  src={stationDetail?.banner || ""}
+                  alt="salon banner"
+                  width={500}
+                  height={500}
+                  className="rounded w-[35rem] h-80 bg-deep_red"
+                />
+              </div>
+            </div>
+            <div className="inline-flex gap-4 pl-1 mt-4">
+              <div className="w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded flex items-center justify-center">
+                <Link
+                  href={`/station/${params.stationId}/${params.stationName}/menu`}
+                  className="flex flex-col gap-2 items-center"
+                >
+                  <Image
+                    src={"/images/menuu.png"}
+                    alt="menu"
+                    width={200}
+                    height={200}
+                    className="w-16 h-16 rounded"
+                  />
+                  <p className="text-sm font-semibold">Menus</p>
+                </Link>
               </div>
             </div>
           </div>
         ) : (
           <p>Couldn&apos;t find station detail!</p>
         )}
-
-        <div className="flex gap-4">
-          {stationData ? (
-            <div>
-              <Link
-                href={`/station/create`}
-                className="bg-primary_text dark:bg-btn_blue text-white text-sm hover:bg-l_orange dark:hover:bg-blue py-1 px-4 rounded place-self-end"
-              >
-                Edit Station
-              </Link>
-            </div>
-          ) : (
-            ""
-          )}
-          <div>
-            <Link
-              href={`/station/${params.stationId}/${params.stationName}/menu`}
-              className="bg-primary_text dark:bg-btn_blue text-white text-sm hover:bg-l_orange dark:hover:bg-blue py-1 px-4 rounded place-self-end"
-            >
-              View Menu
-            </Link>
-          </div>
-        </div>
       </div>
     </div>
   );

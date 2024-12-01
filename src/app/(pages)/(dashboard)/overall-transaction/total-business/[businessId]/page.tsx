@@ -29,7 +29,7 @@ const Page = ({ params }: { params: { businessId: string[] } }) => {
   return (
     <div className="flex flex-col gap-4">
       <h1
-        className={`text-primary_text dark:text-secondary_text text-lg font-medium ${open_sans.className}`}
+        className={`text-primary_text dark:text-sidebar_blue text-lg font-medium ${open_sans.className}`}
       >
         Business Detail
       </h1>
@@ -54,7 +54,7 @@ const Page = ({ params }: { params: { businessId: string[] } }) => {
               <div className="bg-white dark:bg-secondary_dark rounded-sm shadow-md shadow-vll_gray dark:shadow-none sm:p-8 p-4 flex flex-col gap-2">
                 <div className="flex items-center gap-2 border-b border-b-vl_gray ">
                   <h2
-                    className={`text-primary_text dark:text-secondary_text sm:text-xl text-lg  font-medium ${inria_sans.className}  sm:pb-2`}
+                    className={`text-primary_text dark:text-sidebar_blue sm:text-xl text-lg  font-medium ${inria_sans.className}  sm:pb-2`}
                   >
                     Business Profile
                   </h2>
@@ -80,7 +80,7 @@ const Page = ({ params }: { params: { businessId: string[] } }) => {
               </div>
               <div className="bg-white dark:bg-secondary_dark rounded-sm shadow-md shadow-vll_gray dark:shadow-none sm:p-8 p-4 flex flex-col gap-4">
                 <h2
-                  className={`text-primary_text dark:text-secondary_text sm:text-xl text-lg font-medium ${inria_sans.className} border-b border-b-vl_gray sm:pb-2`}
+                  className={`text-primary_text dark:text-sidebar_blue sm:text-xl text-lg font-medium ${inria_sans.className} border-b border-b-vl_gray sm:pb-2`}
                 >
                   Basic Detail
                 </h2>
@@ -122,7 +122,7 @@ const Page = ({ params }: { params: { businessId: string[] } }) => {
             <div className="flex flex-col sm:gap-8 gap-4">
               <div className="dark:bg-card_dark bg-white  sm:p-8 p-4 rounded-md flex flex-col gap-4">
                 <h2
-                  className={`text-primary_text dark:text-secondary_text sm:text-xl text-lg font-medium ${inria_sans.className} border-b border-b-vl_gray sm:pb-2`}
+                  className={`text-primary_text dark:text-sidebar_blue sm:text-xl text-lg font-medium ${inria_sans.className} border-b border-b-vl_gray sm:pb-2`}
                 >
                   Create Event
                 </h2>
@@ -133,7 +133,7 @@ const Page = ({ params }: { params: { businessId: string[] } }) => {
             <div className="flex flex-col sm:gap-8 gap-4">
               <div className="dark:bg-card_dark bg-white  sm:p-8 p-4 rounded-md flex flex-col gap-4">
                 <h2
-                  className={`text-primary_text dark:text-secondary_text sm:text-xl text-lg font-medium ${inria_sans.className} border-b border-b-vl_gray sm:pb-2`}
+                  className={`text-primary_text dark:text-sidebar_blue sm:text-xl text-lg font-medium ${inria_sans.className} border-b border-b-vl_gray sm:pb-2`}
                 >
                   Book Event
                 </h2>
@@ -144,7 +144,7 @@ const Page = ({ params }: { params: { businessId: string[] } }) => {
 
         <div className="bg-white dark:bg-secondary_dark rounded-sm shadow-md shadow-vll_gray dark:shadow-none sm:py-8 sm:pr-4 sm:pl-8 pl-4 py-4 pr-2 flex flex-col gap-4 sm:mt-16">
           <h2
-            className={`text-primary_text dark:text-secondary_text sm:text-xl text-lg font-medium ${inria_sans.className} border-b border-b-vl_gray sm:pb-2`}
+            className={`text-primary_text dark:text-sidebar_blue sm:text-xl text-lg font-medium ${inria_sans.className} border-b border-b-vl_gray sm:pb-2`}
           >
             Transaction Detail
           </h2>

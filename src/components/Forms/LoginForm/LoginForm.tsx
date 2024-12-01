@@ -200,7 +200,7 @@ export function LogInForm() {
 
           <Button
             type="submit"
-            className="bg-primary_text hover:bg-btnBlue/80 w-full mt-2 h-8 self-center rounded-lg"
+            className="bg-primary_text hover:bg-btnBlue/80 w-full mt-2 h-8 self-center rounded-lg text-white"
           >
             {isSubmitting ? <Loader /> : "Sign in"}
           </Button>

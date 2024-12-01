@@ -241,7 +241,7 @@ const Page = ({
   return (
     <ScrollArea className="bg-white dark:bg-secondary_dark p-6 h-[88vh]">
       <h1
-        className={`text-primary_text dark:text-secondary_text text-lg font-medium mb-4 ${open_sans.className}`}
+        className={`text-primary_text dark:text-sidebar_blue text-lg font-medium mb-4 ${open_sans.className}`}
       >
         {itemData ? "Update Food Item for" : "Add Food Item for"} {MenuName}
       </h1>
@@ -405,7 +405,7 @@ const Page = ({
               const formValues = form.getValues();
               console.log(formValues);
             }}
-            className="bg-primary_text dark:bg-secondary_text hover:bg-l_orange dark:hover:bg-blue text-white h-8 mb-6 place-self-start rounded-lg"
+            className="bg-primary_text dark:bg-sidebar_blue hover:bg-l_orange dark:hover:bg-blue text-white h-8 mb-6 place-self-start rounded-lg"
           >
             {isSubmitting ? <Loader /> : itemData ? "Edit" : "Add"}
           </Button>

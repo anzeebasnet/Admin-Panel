@@ -389,7 +389,7 @@ const Restaurant = () => {
   return (
     <ScrollArea className="bg-white dark:bg-secondary_dark p-6 sm:pr-10 h-[88vh]">
       <h1
-        className={`text-primary_text dark:text-secondary_text text-lg font-medium mb-4 ${open_sans.className}`}
+        className={`text-primary_text dark:text-sidebar_blue text-lg font-medium mb-4 ${open_sans.className}`}
       >
         {restroData ? "Update Restaurant" : "Create Restaurant"}
       </h1>
@@ -610,7 +610,7 @@ const Restaurant = () => {
                 </div>
                 <div className="flex flex-col">
                   <h2
-                    className={`text-primary_text dark:text-secondary_text text-base font-medium mb-4 ${open_sans.className}`}
+                    className={`text-primary_text dark:text-sidebar_blue text-base font-medium mb-4 ${open_sans.className}`}
                   >
                     Social Media Links
                   </h2>
@@ -768,7 +768,7 @@ const Restaurant = () => {
                 const formValues = form.getValues();
                 console.log(formValues);
               }}
-              className="bg-primary_text dark:bg-secondary_text hover:bg-l_orange dark:hover:bg-blue text-white h-8 mb-6 place-self-start rounded-lg"
+              className="bg-primary_text dark:bg-sidebar_blue hover:bg-l_orange dark:hover:bg-blue text-white h-8 mb-6 place-self-start rounded-lg"
             >
               {restroData ? "Update" : "Create"}
             </Button>

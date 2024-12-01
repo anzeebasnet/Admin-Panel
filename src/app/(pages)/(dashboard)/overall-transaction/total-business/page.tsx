@@ -28,7 +28,7 @@ const Page = () => {
     <div className="flex flex-col gap-6 bg-white dark:bg-secondary_dark rounded-sm shadow-md shadow-vll_gray dark:shadow-none p-6">
       <div className="flex sm:flex-row flex-col justify-between">
         <h1
-          className={`text-primary_text dark:text-secondary_text text-lg font-medium ${open_sans.className}`}
+          className={`text-primary_text dark:text-sidebar_blue text-lg font-medium ${open_sans.className}`}
         >
           Businesses
         </h1>
@@ -52,7 +52,7 @@ const Page = () => {
                 <TableCell>
                   <Link
                     href={`/overall-transaction/total-business/3Fe23Gt`}
-                    className="hover:text-primary_text dark:hover:text-secondary_text"
+                    className="hover:text-primary_text dark:hover:text-sidebar_blue"
                     prefetch={true}
                   >
                     3Fe23Gt

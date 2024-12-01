@@ -125,7 +125,7 @@ const Page = () => {
       <div className="flex flex-col">
         <div className="flex sm:flex-row flex-col justify-between">
           <h1
-            className={`text-primary_text dark:text-secondary_text text-lg font-medium ${open_sans.className}`}
+            className={`text-primary_text dark:text-sidebar_blue text-lg font-medium ${open_sans.className}`}
           >
             Total Billing
           </h1>

@@ -53,8 +53,6 @@ const CreateRestroMenu = ({
   const dispatch = useAppDispatch();
   const axiosInstance = useAxiosPrivateFood();
 
-  const menuData = useAppSelector((state: RootState) => state.menu.currentMenu);
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -62,13 +60,6 @@ const CreateRestroMenu = ({
       icon: undefined,
     },
   });
-
-  useEffect(() => {
-    if (menuData) {
-      form.setValue("name", menuData.name || "");
-      setLogoPreview(menuData.icon);
-    }
-  }, [menuData]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     if (!session) {
@@ -93,68 +84,13 @@ const CreateRestroMenu = ({
       }
     });
 
-    // if (menuData) {
-    //   axiosInstance
-    //     .patch(`/moreclub/station/menu/${menuData.id}/update/`, formData, {
-    //       headers: {
-    //         "Content-Type": "multipart/form-data",
-    //       },
-    //     })
-    //     .then((response) => {
-    //       console.log("Form submitted successfully:", response.data);
-    //       form.reset();
-    //       toast.success("Menu Updated Successfully!", {
-    //         duration: 5000,
-    //         position: "top-right",
-    //       });
-    //     })
-    //     .catch((error: any) => {
-    //       console.error("Error submitting form:", error);
-    //       toast.error("Error updating menu!", {
-    //         duration: 5000,
-    //         position: "top-right",
-    //       });
-    //     })
-    //     .finally(() => {
-    //       dispatch(clearMenuItem());
-    //       setLogoPreview(null);
-    //       setIsSubmitting(false);
-    //     });
-    // } else {
-    //   axiosInstance
-    //     .post(`/moreclub/station/${params.restroId}/menu/`, formData, {
-    //       headers: {
-    //         "Content-Type": "multipart/form-data",
-    //       },
-    //     })
-    //     .then((response) => {
-    //       console.log("Form submitted successfully:", response.data);
-    //       form.reset();
-    //       toast.success("Menu Created Successfully!", {
-    //         duration: 5000,
-    //         position: "top-right",
-    //       });
-    //     })
-    //     .catch((error) => {
-    //       console.error("Error submitting form:", error);
-    //       toast.error("Error creating menu!", {
-    //         duration: 5000,
-    //         position: "top-right",
-    //       });
-    //     })
-    //     .finally(() => {
-    //       setLogoPreview(null);
-    //       setIsSubmitting(false);
-    //     });
-    // }
-
     axios.post(
       `https://api.morefood.se/api/moreclub/user/menus/${params.restroId}/`,
       formData,
       {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMyMTc3MzUwLCJpYXQiOjE3MzIwOTA5NTAsImp0aSI6ImQxOWQzM2RhNmZmYjQ3N2Y5NWY5NGIwMDk1NWY4YzY0IiwidXNlcl9pZCI6IjZmYTk5NDYyLTJkMjgtNDZmZS04MzE2LTg1MGIzYzhjM2Y4YSJ9.8Aaluj7PuQ2QTIlaDQ1BQSeOFUpXO_yP3nevFpsR71o"}`,
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
         },
       }
     );
@@ -163,7 +99,7 @@ const CreateRestroMenu = ({
   return (
     <ScrollArea className="bg-white dark:bg-secondary_dark p-6 h-[88vh]">
       <h1
-        className={`text-primary_text dark:text-secondary_text text-lg font-medium mb-4 ${open_sans.className}`}
+        className={`text-primary_text dark:text-sidebar_blue text-lg font-medium mb-4 ${open_sans.className}`}
       >
         Create Menu for {RestroName}
       </h1>
@@ -224,10 +160,9 @@ const CreateRestroMenu = ({
 
           <Button
             type="submit"
-            className="bg-primary_text dark:bg-secondary_text hover:bg-l_orange dark:hover:bg-blue text-white h-8 mb-6 place-self-start rounded-lg"
+            className="bg-primary_text dark:bg-sidebar_blue hover:bg-l_orange dark:hover:bg-blue text-white h-8 mb-6 place-self-start rounded-lg"
           >
-            {/* {isSubmitting ? <Loader /> : menuData ? "Edit" : "Create"} */}{" "}
-            Create
+            Create Menu
           </Button>
         </form>
       </Form>

@@ -39,7 +39,7 @@ const Page = ({
     >
       <div className="flex sm:flex-row flex-col sm:justify-between sm:gap-0 gap-4">
         <h1
-          className={`text-primary_text dark:text-secondary_text text-lg font-medium ${open_sans.className}`}
+          className={`text-primary_text dark:text-sidebar_blue text-lg font-medium ${open_sans.className}`}
         >
           Cuisines
         </h1>
@@ -72,7 +72,7 @@ const Page = ({
                   className="w-40 h-32 rounded-t-md"
                 />
                 <div className="flex justify-between px-2 pb-4">
-                  <h2 className="text-primary_text dark:text-secondary_text font-semibold place-self-center text-sm capitalize">
+                  <h2 className="text-primary_text dark:text-sidebar_blue font-semibold place-self-center text-sm capitalize">
                     {cuisine.name}
                   </h2>
                   <Link
@@ -83,7 +83,7 @@ const Page = ({
                   >
                     <CiEdit
                       size={23}
-                      className="text-primary_text dark:text-secondary_text"
+                      className="text-primary_text dark:text-sidebar_blue"
                     />
                   </Link>
                 </div>

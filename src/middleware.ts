@@ -52,7 +52,6 @@ export async function middleware(request: any) {
 }
 
 export const config = {
-  // matcher: ["/", "/:path*", "/auth/login", "/((?!_next/static|favicon.ico).*)"],
   matcher: ["/((?!_next/static|favicon.ico).*)"], // Adjusted matcher
 };
 

@@ -380,9 +380,9 @@ const Page = ({
   return (
     <ScrollArea className="bg-white dark:bg-secondary_dark p-6 h-[88vh]">
       <h1
-        className={`text-primary_text dark:text-secondary_text text-lg font-medium mb-4 ${open_sans.className}`}
+        className={`text-primary_text dark:text-sidebar_blue text-lg font-medium mb-4 ${open_sans.className}`}
       >
-        Working Hours for {restroName}
+        Opening Hours for {restroName}
       </h1>
 
       <Form {...form}>
@@ -390,489 +390,470 @@ const Page = ({
           onSubmit={form.handleSubmit(onSubmit)}
           className="flex flex-col gap-4"
         >
-          {/* <TimePicker onTimeChange={handleTimeChange} /> */}
-          <FormField
-            control={form.control}
-            name="Sunday"
-            render={({ field }) => (
-              <FormItem>
-                <div>
-                  <FormLabel>Sunday</FormLabel>
-                  <Switch
-                    checked={isSundayOn}
-                    onCheckedChange={(checked) => {
-                      setIsSundayOn(checked);
-                      if (!checked) {
-                        // Reset time values when day is closed
-                        setStartTimeValue(null);
-                        setEndTimeValue(null);
-                        form.setValue("Sunday", {
-                          start_time: "",
-                          end_time: "",
-                          is_open: false,
-                        });
-                      } else {
-                        // Set is_open to true when day is enabled
-                        form.setValue("Sunday.is_open", true);
-                      }
-                    }}
-                  />
-                </div>
-
-                {isSundayOn && (
-                  <>
-                    {/* Start Time Picker */}
-                    <FormControl>
-                      <div className="mt-2">
-                        <FormLabel>Start Time</FormLabel>
-                        <BasicTimePicker
-                          value={startTimeValue}
-                          onChange={(newValue: Dayjs | null) => {
-                            setStartTimeValue(newValue);
-                            form.setValue(
-                              "Sunday.start_time",
-                              newValue ? newValue.format("HH:mm:ss") : ""
-                            );
-                          }}
-                        />
-                      </div>
-                    </FormControl>
-
-                    {/* End Time Picker */}
-                    <FormControl>
-                      <div className="mt-2">
-                        <FormLabel>End Time</FormLabel>
-                        <BasicTimePicker
-                          value={endTimeValue}
-                          onChange={(newValue: Dayjs | null) => {
-                            setEndTimeValue(newValue);
-                            form.setValue(
-                              "Sunday.end_time",
-                              newValue ? newValue.format("HH:mm:ss") : ""
-                            );
-                          }}
-                        />
-                      </div>
-                    </FormControl>
-                  </>
-                )}
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="Monday"
-            render={({ field }) => (
-              <FormItem>
-                <div>
-                  <FormLabel>Monday</FormLabel>
-                  <Switch
-                    checked={isMondayOn}
-                    onCheckedChange={(checked) => {
-                      setIsMondayOn(checked);
-                      if (!checked) {
-                        // Reset time values when day is closed
-                        form.setValue("Monday", {
-                          start_time: "",
-                          end_time: "",
-                          is_open: false,
-                        });
-                      } else {
-                        // Set is_open to true when day is enabled
-                        form.setValue("Monday.is_open", true);
-                      }
-                    }}
-                  />
-                </div>
-
-                {isMondayOn && (
-                  <>
-                    {/* Start Time Picker */}
-                    <FormControl>
-                      <div className="mt-2">
-                        <FormLabel>Start Time</FormLabel>
-                        <BasicTimePicker
-                          value={monstartTimeValue}
-                          onChange={(newValue: Dayjs | null) => {
-                            setMonStartTimeValue(newValue);
-                            form.setValue(
-                              "Monday.start_time",
-                              newValue ? newValue.format("HH:mm:ss") : ""
-                            );
-                          }}
-                        />
-                      </div>
-                    </FormControl>
-
-                    {/* End Time Picker */}
-                    <FormControl>
-                      <div className="mt-2">
-                        <FormLabel>End Time</FormLabel>
-                        <BasicTimePicker
-                          value={monendTimeValue}
-                          onChange={(newValue: Dayjs | null) => {
-                            setMonEndTimeValue(newValue);
-                            form.setValue(
-                              "Monday.end_time",
-                              newValue ? newValue.format("HH:mm:ss") : ""
-                            );
-                          }}
-                        />
-                      </div>
-                    </FormControl>
-                  </>
-                )}
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="Tuesday"
-            render={({ field }) => (
-              <FormItem>
-                <div>
-                  <FormLabel>Tuesday</FormLabel>
-                  <Switch
-                    checked={isTuesdayOn}
-                    onCheckedChange={(checked) => {
-                      setIsTuesdayOn(checked);
-                      if (!checked) {
-                        // Reset time values when day is closed
-                        form.setValue("Tuesday", {
-                          start_time: "",
-                          end_time: "",
-                          is_open: false,
-                        });
-                      } else {
-                        // Set is_open to true when day is enabled
-                        form.setValue("Tuesday.is_open", true);
-                      }
-                    }}
-                  />
-                </div>
-
-                {isTuesdayOn && (
-                  <>
-                    {/* Start Time Picker */}
-                    <FormControl>
-                      <div className="mt-2">
-                        <FormLabel>Start Time</FormLabel>
-                        <BasicTimePicker
-                          value={tuestartTimeValue}
-                          onChange={(newValue: Dayjs | null) => {
-                            setTueStartTimeValue(newValue);
-                            form.setValue(
-                              "Tuesday.start_time",
-                              newValue ? newValue.format("HH:mm:ss") : ""
-                            );
-                          }}
-                        />
-                      </div>
-                    </FormControl>
-
-                    {/* End Time Picker */}
-                    <FormControl>
-                      <div className="mt-2">
-                        <FormLabel>End Time</FormLabel>
-                        <BasicTimePicker
-                          value={tueendTimeValue}
-                          onChange={(newValue: Dayjs | null) => {
-                            setTueEndTimeValue(newValue);
-                            form.setValue(
-                              "Tuesday.end_time",
-                              newValue ? newValue.format("HH:mm:ss") : ""
-                            );
-                          }}
-                        />
-                      </div>
-                    </FormControl>
-                  </>
-                )}
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="Wednesday"
-            render={({ field }) => (
-              <FormItem>
-                <div>
-                  <FormLabel>Wednesday</FormLabel>
-                  <Switch
-                    checked={isWednesdayOn}
-                    onCheckedChange={(checked) => {
-                      setIsWednesdayOn(checked);
-                      if (!checked) {
-                        // Reset time values when day is closed
-                        form.setValue("Wednesday", {
-                          start_time: "",
-                          end_time: "",
-                          is_open: false,
-                        });
-                      } else {
-                        // Set is_open to true when day is enabled
-                        form.setValue("Wednesday.is_open", true);
-                      }
-                    }}
-                  />
-                </div>
-
-                {isWednesdayOn && (
-                  <>
-                    {/* Start Time Picker */}
-                    <FormControl>
-                      <div className="mt-2">
-                        <FormLabel>Start Time</FormLabel>
-                        <BasicTimePicker
-                          value={wedstartTimeValue}
-                          onChange={(newValue: Dayjs | null) => {
-                            setWedStartTimeValue(newValue);
-                            form.setValue(
-                              "Wednesday.start_time",
-                              newValue ? newValue.format("HH:mm:ss") : ""
-                            );
-                          }}
-                        />
-                      </div>
-                    </FormControl>
-
-                    {/* End Time Picker */}
-                    <FormControl>
-                      <div className="mt-2">
-                        <FormLabel>End Time</FormLabel>
-                        <BasicTimePicker
-                          value={wedendTimeValue}
-                          onChange={(newValue: Dayjs | null) => {
-                            setWedEndTimeValue(newValue);
-                            form.setValue(
-                              "Wednesday.end_time",
-                              newValue ? newValue.format("HH:mm:ss") : ""
-                            );
-                          }}
-                        />
-                      </div>
-                    </FormControl>
-                  </>
-                )}
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="Thursday"
-            render={({ field }) => (
-              <FormItem>
-                <div>
-                  <FormLabel>Thursday</FormLabel>
-                  <Switch
-                    checked={isThursdayOn}
-                    onCheckedChange={(checked) => {
-                      setIsThursdayOn(checked);
-                      if (!checked) {
-                        // Reset time values when day is closed
-                        form.setValue("Thursday", {
-                          start_time: "",
-                          end_time: "",
-                          is_open: false,
-                        });
-                      } else {
-                        // Set is_open to true when day is enabled
-                        form.setValue("Thursday.is_open", true);
-                      }
-                    }}
-                  />
-                </div>
-
-                {isThursdayOn && (
-                  <>
-                    {/* Start Time Picker */}
-                    <FormControl>
-                      <div className="mt-2">
-                        <FormLabel>Start Time</FormLabel>
-                        <BasicTimePicker
-                          value={thustartTimeValue}
-                          onChange={(newValue: Dayjs | null) => {
-                            setThuStartTimeValue(newValue);
-                            form.setValue(
-                              "Thursday.start_time",
-                              newValue ? newValue.format("HH:mm:ss") : ""
-                            );
-                          }}
-                        />
-                      </div>
-                    </FormControl>
-
-                    {/* End Time Picker */}
-                    <FormControl>
-                      <div className="mt-2">
-                        <FormLabel>End Time</FormLabel>
-                        <BasicTimePicker
-                          value={thuendTimeValue}
-                          onChange={(newValue: Dayjs | null) => {
-                            setThuEndTimeValue(newValue);
-                            form.setValue(
-                              "Thursday.end_time",
-                              newValue ? newValue.format("HH:mm:ss") : ""
-                            );
-                          }}
-                        />
-                      </div>
-                    </FormControl>
-                  </>
-                )}
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="Friday"
-            render={({ field }) => (
-              <FormItem>
-                <div>
-                  <FormLabel>Friday</FormLabel>
-                  <Switch
-                    checked={isFridayOn}
-                    onCheckedChange={(checked) => {
-                      setIsFridayOn(checked);
-                      if (!checked) {
-                        // Reset time values when day is closed
-                        form.setValue("Friday", {
-                          start_time: "",
-                          end_time: "",
-                          is_open: false,
-                        });
-                      } else {
-                        // Set is_open to true when day is enabled
-                        form.setValue("Friday.is_open", true);
-                      }
-                    }}
-                  />
-                </div>
-
-                {isFridayOn && (
-                  <>
-                    {/* Start Time Picker */}
-                    <FormControl>
-                      <div className="mt-2">
-                        <FormLabel>Start Time</FormLabel>
-                        <BasicTimePicker
-                          value={fristartTimeValue}
-                          onChange={(newValue: Dayjs | null) => {
-                            setFriStartTimeValue(newValue);
-                            form.setValue(
-                              "Friday.start_time",
-                              newValue ? newValue.format("HH:mm:ss") : ""
-                            );
-                          }}
-                        />
-                      </div>
-                    </FormControl>
-
-                    {/* End Time Picker */}
-                    <FormControl>
-                      <div className="mt-2">
-                        <FormLabel>End Time</FormLabel>
-                        <BasicTimePicker
-                          value={friendTimeValue}
-                          onChange={(newValue: Dayjs | null) => {
-                            setFriEndTimeValue(newValue);
-                            form.setValue(
-                              "Friday.end_time",
-                              newValue ? newValue.format("HH:mm:ss") : ""
-                            );
-                          }}
-                        />
-                      </div>
-                    </FormControl>
-                  </>
-                )}
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="Saturday"
-            render={({ field }) => (
-              <FormItem>
-                <div>
-                  <FormLabel>Saturday</FormLabel>
-                  <Switch
-                    checked={isSaturdayOn}
-                    onCheckedChange={(checked) => {
-                      setIsSaturdayOn(checked);
-                      if (!checked) {
-                        // Reset time values when day is closed
-                        form.setValue("Saturday", {
-                          start_time: "",
-                          end_time: "",
-                          is_open: false,
-                        });
-                      } else {
-                        // Set is_open to true when day is enabled
-                        form.setValue("Saturday.is_open", true);
-                      }
-                    }}
-                  />
-                </div>
-
-                {isSaturdayOn && (
-                  <>
-                    {/* Start Time Picker */}
-                    <FormControl>
-                      <div className="mt-2">
-                        <FormLabel>Start Time</FormLabel>
-                        <BasicTimePicker
-                          value={satstartTimeValue}
-                          onChange={(newValue: Dayjs | null) => {
-                            setSatStartTimeValue(newValue);
-                            form.setValue(
-                              "Saturday.start_time",
-                              newValue ? newValue.format("HH:mm:ss") : ""
-                            );
-                          }}
-                        />
-                      </div>
-                    </FormControl>
-
-                    {/* End Time Picker */}
-                    <FormControl>
-                      <div className="mt-2">
-                        <FormLabel>End Time</FormLabel>
-                        <BasicTimePicker
-                          value={satendTimeValue}
-                          onChange={(newValue: Dayjs | null) => {
-                            setSatEndTimeValue(newValue);
-                            form.setValue(
-                              "Saturday.end_time",
-                              newValue ? newValue.format("HH:mm:ss") : ""
-                            );
-                          }}
-                        />
-                      </div>
-                    </FormControl>
-                  </>
-                )}
-
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+          <div className="xl:grid xl:grid-cols-2 xl:gap-8 gap-4 flex flex-wrap justify-between mt-4 xl:w-[65vw]">
+            {/* <TimePicker onTimeChange={handleTimeChange} /> */}
+            <FormField
+              control={form.control}
+              name="Sunday"
+              render={({ field }) => (
+                <FormItem>
+                  <div className="flex items-center gap-2">
+                    <FormLabel>Sunday</FormLabel>
+                    <Switch
+                      checked={isSundayOn}
+                      onCheckedChange={(checked) => {
+                        setIsSundayOn(checked);
+                        if (!checked) {
+                          // Reset time values when day is closed
+                          setStartTimeValue(null);
+                          setEndTimeValue(null);
+                          form.setValue("Sunday", {
+                            start_time: "",
+                            end_time: "",
+                            is_open: false,
+                          });
+                        } else {
+                          // Set is_open to true when day is enabled
+                          form.setValue("Sunday.is_open", true);
+                        }
+                      }}
+                    />
+                  </div>
+                  {isSundayOn && (
+                    <div className="flex sm:flex-row flex-col sm:gap-4 gap-0">
+                      {/* Start Time Picker */}
+                      <FormControl>
+                        <div className="">
+                          <FormLabel>Start Time</FormLabel>
+                          <BasicTimePicker
+                            value={startTimeValue}
+                            onChange={(newValue: Dayjs | null) => {
+                              setStartTimeValue(newValue);
+                              form.setValue(
+                                "Sunday.start_time",
+                                newValue ? newValue.format("HH:mm:ss") : ""
+                              );
+                            }}
+                          />
+                        </div>
+                      </FormControl>
+                      {/* End Time Picker */}
+                      <FormControl>
+                        <div className="">
+                          <FormLabel>End Time</FormLabel>
+                          <BasicTimePicker
+                            value={endTimeValue}
+                            onChange={(newValue: Dayjs | null) => {
+                              setEndTimeValue(newValue);
+                              form.setValue(
+                                "Sunday.end_time",
+                                newValue ? newValue.format("HH:mm:ss") : ""
+                              );
+                            }}
+                          />
+                        </div>
+                      </FormControl>
+                    </div>
+                  )}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="Monday"
+              render={({ field }) => (
+                <FormItem>
+                  <div className="flex items-center gap-2">
+                    <FormLabel>Monday</FormLabel>
+                    <Switch
+                      checked={isMondayOn}
+                      onCheckedChange={(checked) => {
+                        setIsMondayOn(checked);
+                        if (!checked) {
+                          // Reset time values when day is closed
+                          form.setValue("Monday", {
+                            start_time: "",
+                            end_time: "",
+                            is_open: false,
+                          });
+                        } else {
+                          // Set is_open to true when day is enabled
+                          form.setValue("Monday.is_open", true);
+                        }
+                      }}
+                    />
+                  </div>
+                  {isMondayOn && (
+                    <div className="flex sm:flex-row flex-col sm:gap-4 gap-0">
+                      {/* Start Time Picker */}
+                      <FormControl>
+                        <div className="">
+                          <FormLabel>Start Time</FormLabel>
+                          <BasicTimePicker
+                            value={monstartTimeValue}
+                            onChange={(newValue: Dayjs | null) => {
+                              setMonStartTimeValue(newValue);
+                              form.setValue(
+                                "Monday.start_time",
+                                newValue ? newValue.format("HH:mm:ss") : ""
+                              );
+                            }}
+                          />
+                        </div>
+                      </FormControl>
+                      {/* End Time Picker */}
+                      <FormControl>
+                        <div className="">
+                          <FormLabel>End Time</FormLabel>
+                          <BasicTimePicker
+                            value={monendTimeValue}
+                            onChange={(newValue: Dayjs | null) => {
+                              setMonEndTimeValue(newValue);
+                              form.setValue(
+                                "Monday.end_time",
+                                newValue ? newValue.format("HH:mm:ss") : ""
+                              );
+                            }}
+                          />
+                        </div>
+                      </FormControl>
+                    </div>
+                  )}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="Tuesday"
+              render={({ field }) => (
+                <FormItem>
+                  <div className="flex items-center gap-2">
+                    <FormLabel>Tuesday</FormLabel>
+                    <Switch
+                      checked={isTuesdayOn}
+                      onCheckedChange={(checked) => {
+                        setIsTuesdayOn(checked);
+                        if (!checked) {
+                          // Reset time values when day is closed
+                          form.setValue("Tuesday", {
+                            start_time: "",
+                            end_time: "",
+                            is_open: false,
+                          });
+                        } else {
+                          // Set is_open to true when day is enabled
+                          form.setValue("Tuesday.is_open", true);
+                        }
+                      }}
+                    />
+                  </div>
+                  {isTuesdayOn && (
+                    <div className="flex sm:flex-row flex-col sm:gap-4 gap-0">
+                      {/* Start Time Picker */}
+                      <FormControl>
+                        <div className="">
+                          <FormLabel>Start Time</FormLabel>
+                          <BasicTimePicker
+                            value={tuestartTimeValue}
+                            onChange={(newValue: Dayjs | null) => {
+                              setTueStartTimeValue(newValue);
+                              form.setValue(
+                                "Tuesday.start_time",
+                                newValue ? newValue.format("HH:mm:ss") : ""
+                              );
+                            }}
+                          />
+                        </div>
+                      </FormControl>
+                      {/* End Time Picker */}
+                      <FormControl>
+                        <div className="">
+                          <FormLabel>End Time</FormLabel>
+                          <BasicTimePicker
+                            value={tueendTimeValue}
+                            onChange={(newValue: Dayjs | null) => {
+                              setTueEndTimeValue(newValue);
+                              form.setValue(
+                                "Tuesday.end_time",
+                                newValue ? newValue.format("HH:mm:ss") : ""
+                              );
+                            }}
+                          />
+                        </div>
+                      </FormControl>
+                    </div>
+                  )}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="Wednesday"
+              render={({ field }) => (
+                <FormItem>
+                  <div className="flex items-center gap-2">
+                    <FormLabel>Wednesday</FormLabel>
+                    <Switch
+                      checked={isWednesdayOn}
+                      onCheckedChange={(checked) => {
+                        setIsWednesdayOn(checked);
+                        if (!checked) {
+                          // Reset time values when day is closed
+                          form.setValue("Wednesday", {
+                            start_time: "",
+                            end_time: "",
+                            is_open: false,
+                          });
+                        } else {
+                          // Set is_open to true when day is enabled
+                          form.setValue("Wednesday.is_open", true);
+                        }
+                      }}
+                    />
+                  </div>
+                  {isWednesdayOn && (
+                    <div className="flex sm:flex-row flex-col sm:gap-4 gap-0">
+                      {/* Start Time Picker */}
+                      <FormControl>
+                        <div className="">
+                          <FormLabel>Start Time</FormLabel>
+                          <BasicTimePicker
+                            value={wedstartTimeValue}
+                            onChange={(newValue: Dayjs | null) => {
+                              setWedStartTimeValue(newValue);
+                              form.setValue(
+                                "Wednesday.start_time",
+                                newValue ? newValue.format("HH:mm:ss") : ""
+                              );
+                            }}
+                          />
+                        </div>
+                      </FormControl>
+                      {/* End Time Picker */}
+                      <FormControl>
+                        <div className="">
+                          <FormLabel>End Time</FormLabel>
+                          <BasicTimePicker
+                            value={wedendTimeValue}
+                            onChange={(newValue: Dayjs | null) => {
+                              setWedEndTimeValue(newValue);
+                              form.setValue(
+                                "Wednesday.end_time",
+                                newValue ? newValue.format("HH:mm:ss") : ""
+                              );
+                            }}
+                          />
+                        </div>
+                      </FormControl>
+                    </div>
+                  )}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="Thursday"
+              render={({ field }) => (
+                <FormItem>
+                  <div className="flex items-center gap-2">
+                    <FormLabel>Thursday</FormLabel>
+                    <Switch
+                      checked={isThursdayOn}
+                      onCheckedChange={(checked) => {
+                        setIsThursdayOn(checked);
+                        if (!checked) {
+                          // Reset time values when day is closed
+                          form.setValue("Thursday", {
+                            start_time: "",
+                            end_time: "",
+                            is_open: false,
+                          });
+                        } else {
+                          // Set is_open to true when day is enabled
+                          form.setValue("Thursday.is_open", true);
+                        }
+                      }}
+                    />
+                  </div>
+                  {isThursdayOn && (
+                    <div className="flex sm:flex-row flex-col sm:gap-4 gap-0">
+                      {/* Start Time Picker */}
+                      <FormControl>
+                        <div className="">
+                          <FormLabel>Start Time</FormLabel>
+                          <BasicTimePicker
+                            value={thustartTimeValue}
+                            onChange={(newValue: Dayjs | null) => {
+                              setThuStartTimeValue(newValue);
+                              form.setValue(
+                                "Thursday.start_time",
+                                newValue ? newValue.format("HH:mm:ss") : ""
+                              );
+                            }}
+                          />
+                        </div>
+                      </FormControl>
+                      {/* End Time Picker */}
+                      <FormControl>
+                        <div className="">
+                          <FormLabel>End Time</FormLabel>
+                          <BasicTimePicker
+                            value={thuendTimeValue}
+                            onChange={(newValue: Dayjs | null) => {
+                              setThuEndTimeValue(newValue);
+                              form.setValue(
+                                "Thursday.end_time",
+                                newValue ? newValue.format("HH:mm:ss") : ""
+                              );
+                            }}
+                          />
+                        </div>
+                      </FormControl>
+                    </div>
+                  )}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="Friday"
+              render={({ field }) => (
+                <FormItem>
+                  <div className="flex items-center gap-2">
+                    <FormLabel>Friday</FormLabel>
+                    <Switch
+                      checked={isFridayOn}
+                      onCheckedChange={(checked) => {
+                        setIsFridayOn(checked);
+                        if (!checked) {
+                          // Reset time values when day is closed
+                          form.setValue("Friday", {
+                            start_time: "",
+                            end_time: "",
+                            is_open: false,
+                          });
+                        } else {
+                          // Set is_open to true when day is enabled
+                          form.setValue("Friday.is_open", true);
+                        }
+                      }}
+                    />
+                  </div>
+                  {isFridayOn && (
+                    <div className="flex sm:flex-row flex-col sm:gap-4 gap-0">
+                      {/* Start Time Picker */}
+                      <FormControl>
+                        <div className="">
+                          <FormLabel>Start Time</FormLabel>
+                          <BasicTimePicker
+                            value={fristartTimeValue}
+                            onChange={(newValue: Dayjs | null) => {
+                              setFriStartTimeValue(newValue);
+                              form.setValue(
+                                "Friday.start_time",
+                                newValue ? newValue.format("HH:mm:ss") : ""
+                              );
+                            }}
+                          />
+                        </div>
+                      </FormControl>
+                      {/* End Time Picker */}
+                      <FormControl>
+                        <div className="">
+                          <FormLabel>End Time</FormLabel>
+                          <BasicTimePicker
+                            value={friendTimeValue}
+                            onChange={(newValue: Dayjs | null) => {
+                              setFriEndTimeValue(newValue);
+                              form.setValue(
+                                "Friday.end_time",
+                                newValue ? newValue.format("HH:mm:ss") : ""
+                              );
+                            }}
+                          />
+                        </div>
+                      </FormControl>
+                    </div>
+                  )}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="Saturday"
+              render={({ field }) => (
+                <FormItem>
+                  <div className="flex items-center gap-2">
+                    <FormLabel>Saturday</FormLabel>
+                    <Switch
+                      checked={isSaturdayOn}
+                      onCheckedChange={(checked) => {
+                        setIsSaturdayOn(checked);
+                        if (!checked) {
+                          // Reset time values when day is closed
+                          form.setValue("Saturday", {
+                            start_time: "",
+                            end_time: "",
+                            is_open: false,
+                          });
+                        } else {
+                          // Set is_open to true when day is enabled
+                          form.setValue("Saturday.is_open", true);
+                        }
+                      }}
+                    />
+                  </div>
+                  {isSaturdayOn && (
+                    <div className="flex sm:flex-row flex-col sm:gap-4 gap-0">
+                      {/* Start Time Picker */}
+                      <FormControl>
+                        <div className="">
+                          <FormLabel>Start Time</FormLabel>
+                          <BasicTimePicker
+                            value={satstartTimeValue}
+                            onChange={(newValue: Dayjs | null) => {
+                              setSatStartTimeValue(newValue);
+                              form.setValue(
+                                "Saturday.start_time",
+                                newValue ? newValue.format("HH:mm:ss") : ""
+                              );
+                            }}
+                          />
+                        </div>
+                      </FormControl>
+                      {/* End Time Picker */}
+                      <FormControl>
+                        <div className="">
+                          <FormLabel>End Time</FormLabel>
+                          <BasicTimePicker
+                            value={satendTimeValue}
+                            onChange={(newValue: Dayjs | null) => {
+                              setSatEndTimeValue(newValue);
+                              form.setValue(
+                                "Saturday.end_time",
+                                newValue ? newValue.format("HH:mm:ss") : ""
+                              );
+                            }}
+                          />
+                        </div>
+                      </FormControl>
+                    </div>
+                  )}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
           <Button
             type="submit"
-            className="bg-primary_text dark:bg-secondary_text hover:bg-l_orange dark:hover:bg-blue text-white h-8 mb-6 place-self-start rounded-lg"
+            className="bg-primary_text dark:bg-sidebar_blue hover:bg-l_orange dark:hover:bg-blue text-white h-8 mb-6 place-self-start rounded-lg"
           >
             {isSubmitting ? <Loader /> : hours ? "Update" : "Add"}
           </Button>

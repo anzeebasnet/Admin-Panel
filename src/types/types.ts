@@ -403,3 +403,75 @@ export interface StationOrderList {
     id: string;
   };
 }
+
+export interface OrderSummary {
+  restaurant_id: string;
+  order_items: [
+    {
+      date: string;
+      items: [
+        {
+          food_item_name: string;
+          total_quantity: number;
+        }
+      ];
+      total_quantity: number;
+    }
+  ];
+}
+
+export interface GalleryList {
+  id: string;
+  image: string;
+  height: number;
+  width: number;
+}
+
+export interface AcceptedGallery {
+  id: string;
+  image: string;
+  is_verified: boolean;
+}
+
+export interface SalonType {
+  id: string;
+  name: string;
+  address: string;
+  email: string;
+  contact_no: string;
+  country: number;
+  currency: number;
+  lat: number;
+  lng: number;
+  short_description: string;
+  long_description: string;
+  website_link: string;
+  facebook_link: string;
+  instagram_link: string;
+  logo: string;
+  banner: string;
+  amenities: string[];
+  country_code: string;
+  currency_code: string;
+}
+
+export interface SalonServices {
+  id: string;
+  name: string;
+  logo: string;
+  variations: string[];
+}
+
+export interface SalonVariation {
+  id: string;
+  name: string;
+  description: string;
+  duration: string;
+  price: string;
+  discount_price: string;
+  images: {
+    id: string;
+    image: string;
+  }[];
+  currency: string;
+}

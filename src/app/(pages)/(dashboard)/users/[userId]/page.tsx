@@ -78,7 +78,7 @@ const Page = ({ params }: { params: { userId: string[] } }) => {
   return (
     <div className="flex flex-col gap-4 bg-white dark:bg-secondary_dark rounded-sm p-6 shadow-sm shadow-vll_gray dark:shadow-none">
       <h1
-        className={`text-primary_text dark:text-secondary_text  text-2xl font-medium ${inria_sans.className}`}
+        className={`text-primary_text dark:text-sidebar_blue  text-2xl font-medium ${inria_sans.className}`}
       >
         User Details
       </h1>
@@ -178,7 +178,7 @@ const Page = ({ params }: { params: { userId: string[] } }) => {
                 <TabsContent value="basic">
                   <div className="dark:bg-primary_dark bg-white  sm:p-6 p-4 rounded-md flex flex-col gap-4">
                     <h2
-                      className={`text-primary_text dark:text-secondary_text sm:text-xl text-lg font-medium ${inria_sans.className} border-b border-b-vl_gray sm:pb-2`}
+                      className={`text-primary_text dark:text-sidebar_blue sm:text-xl text-lg font-medium ${inria_sans.className} border-b border-b-vl_gray sm:pb-2`}
                     >
                       Basic Detail
                     </h2>
@@ -199,7 +199,7 @@ const Page = ({ params }: { params: { userId: string[] } }) => {
                 <TabsContent value="personal">
                   <div className="dark:bg-primary_dark bg-white  sm:p-6 p-4 rounded-md flex flex-col gap-4">
                     <h2
-                      className={`text-primary_text dark:text-secondary_text sm:text-xl text-lg font-medium ${inria_sans.className} border-b border-b-vl_gray sm:pb-2`}
+                      className={`text-primary_text dark:text-sidebar_blue sm:text-xl text-lg font-medium ${inria_sans.className} border-b border-b-vl_gray sm:pb-2`}
                     >
                       Personal Detail
                     </h2>
@@ -319,7 +319,7 @@ const Page = ({ params }: { params: { userId: string[] } }) => {
                 <TabsContent value="userKyc">
                   <div className="dark:bg-primary_dark bg-white  sm:p-6 p-4 rounded-md flex flex-col gap-4">
                     <h2
-                      className={`text-primary_text dark:text-secondary_text sm:text-xl text-lg font-medium ${inria_sans.className} 
+                      className={`text-primary_text dark:text-sidebar_blue sm:text-xl text-lg font-medium ${inria_sans.className} 
                       border-b border-b-vl_gray sm:pb-2`}
                     >
                       User KYC
@@ -381,7 +381,7 @@ const Page = ({ params }: { params: { userId: string[] } }) => {
                 <TabsContent value="wallets">
                   <div className="dark:bg-primary_dark bg-white  sm:p-6 p-4 rounded-md flex flex-col gap-4">
                     <h2
-                      className={`text-primary_text dark:text-secondary_text sm:text-xl text-lg font-medium ${inria_sans.className} border-b border-b-vl_gray sm:pb-2`}
+                      className={`text-primary_text dark:text-sidebar_blue sm:text-xl text-lg font-medium ${inria_sans.className} border-b border-b-vl_gray sm:pb-2`}
                     >
                       Wallets
                     </h2>
@@ -430,7 +430,7 @@ const Page = ({ params }: { params: { userId: string[] } }) => {
                 <TabsContent value="userWithdrawl">
                   <div className="dark:bg-primary_dark bg-white  sm:p-6 p-4 rounded-md flex flex-col gap-4">
                     <h2
-                      className={`text-primary_text dark:text-secondary_text sm:text-xl text-lg font-medium ${inria_sans.className} border-b border-b-vl_gray sm:pb-2`}
+                      className={`text-primary_text dark:text-sidebar_blue sm:text-xl text-lg font-medium ${inria_sans.className} border-b border-b-vl_gray sm:pb-2`}
                     >
                       User Withdrawl
                     </h2>
@@ -479,7 +479,7 @@ const Page = ({ params }: { params: { userId: string[] } }) => {
                 <TabsContent value="userReferral">
                   <div className="dark:bg-primary_dark bg-white  sm:p-6 p-4 rounded-md flex flex-col gap-4">
                     <h2
-                      className={`text-primary_text dark:text-secondary_text sm:text-xl text-lg font-medium ${inria_sans.className} border-b border-b-vl_gray sm:pb-2`}
+                      className={`text-primary_text dark:text-sidebar_blue sm:text-xl text-lg font-medium ${inria_sans.className} border-b border-b-vl_gray sm:pb-2`}
                     >
                       User Referral
                     </h2>
@@ -528,7 +528,7 @@ const Page = ({ params }: { params: { userId: string[] } }) => {
                 <TabsContent value="userBusiness">
                   <div className="dark:bg-primary_dark bg-white  sm:p-6 p-4 rounded-md flex flex-col gap-4">
                     <h2
-                      className={`text-primary_text dark:text-secondary_text sm:text-xl text-lg font-medium ${inria_sans.className} border-b border-b-vl_gray sm:pb-2`}
+                      className={`text-primary_text dark:text-sidebar_blue sm:text-xl text-lg font-medium ${inria_sans.className} border-b border-b-vl_gray sm:pb-2`}
                     >
                       User Business
                     </h2>
@@ -577,7 +577,7 @@ const Page = ({ params }: { params: { userId: string[] } }) => {
                 <TabsContent value="userBilling">
                   <div className="dark:bg-primary_dark bg-white  sm:p-6 p-4 rounded-md flex flex-col gap-4">
                     <h2
-                      className={`text-primary_text dark:text-secondary_text sm:text-xl text-lg font-medium ${inria_sans.className} border-b border-b-vl_gray sm:pb-2`}
+                      className={`text-primary_text dark:text-sidebar_blue sm:text-xl text-lg font-medium ${inria_sans.className} border-b border-b-vl_gray sm:pb-2`}
                     >
                       User Billing
                     </h2>
@@ -626,7 +626,7 @@ const Page = ({ params }: { params: { userId: string[] } }) => {
                 <TabsContent value="membershipSubscription">
                   <div className="dark:bg-primary_dark bg-white  sm:p-6 p-4 rounded-md flex flex-col gap-4">
                     <h2
-                      className={`text-primary_text dark:text-secondary_text sm:text-xl text-lg font-medium ${inria_sans.className} border-b border-b-vl_gray sm:pb-2`}
+                      className={`text-primary_text dark:text-sidebar_blue sm:text-xl text-lg font-medium ${inria_sans.className} border-b border-b-vl_gray sm:pb-2`}
                     >
                       Membership Subscription
                     </h2>
@@ -675,7 +675,7 @@ const Page = ({ params }: { params: { userId: string[] } }) => {
                 <TabsContent value="userEventBook">
                   <div className="dark:bg-primary_dark bg-white  sm:p-6 p-4 rounded-md flex flex-col gap-4">
                     <h2
-                      className={`text-primary_text dark:text-secondary_text sm:text-xl text-lg font-medium ${inria_sans.className} border-b border-b-vl_gray sm:pb-2`}
+                      className={`text-primary_text dark:text-sidebar_blue sm:text-xl text-lg font-medium ${inria_sans.className} border-b border-b-vl_gray sm:pb-2`}
                     >
                       User Event Book
                     </h2>
@@ -724,7 +724,7 @@ const Page = ({ params }: { params: { userId: string[] } }) => {
               </div>
               {/* <div className="dark:bg-primary_dark bg-white  sm:py-6 sm:pr-4 sm:pl-6 pl-4 py-4 pr-2 rounded-md flex flex-col gap-4 shadow-md shadow-vll_gray dark:shadow-none">
                 <h2
-                  className={`text-primary_text dark:text-secondary_text sm:text-xl text-lg font-medium ${inria_sans.className} border-b border-b-vl_gray sm:pb-2`}
+                  className={`text-primary_text dark:text-sidebar_blue sm:text-xl text-lg font-medium ${inria_sans.className} border-b border-b-vl_gray sm:pb-2`}
                 >
                   Transaction Detail
                 </h2>

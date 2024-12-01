@@ -42,7 +42,7 @@ const Page = () => {
     >
       <div className="flex sm:flex-row flex-col gap-y-2 sm:justify-between">
         <h1
-          className={`text-primary_text dark:text-secondary_text text-lg font-medium ${open_sans.className}`}
+          className={`text-primary_text dark:text-sidebar_blue text-lg font-medium ${open_sans.className}`}
         >
           Restaurant List
         </h1>
@@ -57,95 +57,56 @@ const Page = () => {
         <p>Loading Restaurant List...</p>
       ) : restroList && restroList.length > 0 ? (
         <div className="overflow-x-auto">
-          {sidebar ? (
-            <ScrollArea className="h-[75vh] xl:w-[75vw] lg:w-[70vw] w-[90vw]">
-              <Table className="">
-                <TableCaption></TableCaption>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Id</TableHead>
-                    <TableHead>Address</TableHead>
-                    <TableHead>Opening Hours</TableHead>
-                  </TableRow>
-                </TableHeader>
-                {restroList && restroList.length > 0 ? (
-                  <TableBody>
-                    {restroList.map((restro: RestroListData) => {
-                      return (
-                        <TableRow key={restro.id} className="">
-                          <TableCell>
-                            <Link
-                              href={`/restaurant/${restro.id}/${restro.name}`}
-                              className="hover:text-primary_text dark:hover:text-secondary_text"
-                            >
-                              {restro.name}
-                            </Link>
-                          </TableCell>
-                          <TableCell>{restro.id}</TableCell>
-                          <TableCell>{restro.address}</TableCell>
-                          {restro.open_hrs === "Open" ? (
-                            <TableCell>Open</TableCell>
-                          ) : (
-                            <TableCell>Closed</TableCell>
-                          )}
-                        </TableRow>
-                      );
-                    })}
-                  </TableBody>
-                ) : (
-                  <div className="text-base font-normal text-center pt-12">
-                    Couldn&apos;t fetch restro list
-                  </div>
-                )}
-              </Table>
-            </ScrollArea>
-          ) : (
-            <ScrollArea className="h-[75vh] w-[85vw]">
-              <Table className="">
-                <TableCaption></TableCaption>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Id</TableHead>
-                    <TableHead>Address</TableHead>
-                    <TableHead>Opening Hours</TableHead>
-                  </TableRow>
-                </TableHeader>
-                {restroList && restroList.length > 0 ? (
-                  <TableBody>
-                    {restroList.map((restro: RestroListData) => {
-                      return (
-                        <TableRow key={restro.id} className="">
-                          <TableCell>
-                            <Link
-                              href={`/restaurant/${restro.id}/${restro.name}`}
-                              className="hover:text-primary_text dark:hover:text-secondary_text"
-                            >
-                              {restro.name}
-                            </Link>
-                          </TableCell>
-                          <TableCell>{restro.id}</TableCell>
-                          <TableCell>{restro.address}</TableCell>
-                          {restro.open_hrs === "Open" ? (
-                            <TableCell>Open</TableCell>
-                          ) : (
-                            <TableCell>Closed</TableCell>
-                          )}{" "}
-                        </TableRow>
-                      );
-                    })}
-                  </TableBody>
-                ) : (
-                  <div className="text-base font-normal text-center pt-12">
-                    Couldn&apos;t fetch restro list
-                  </div>
-                )}
-              </Table>
-            </ScrollArea>
-          )}
+          <ScrollArea
+            className={`${
+              sidebar
+                ? "h-[75vh] xl:w-[75vw] lg:w-[70vw] w-[90vw]"
+                : "h-[75vh] w-[85vw]"
+            }`}
+          >
+            <Table className="">
+              <TableCaption></TableCaption>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Id</TableHead>
+                  <TableHead>Address</TableHead>
+                  <TableHead>Opening Hours</TableHead>
+                </TableRow>
+              </TableHeader>
+              {restroList && restroList.length > 0 ? (
+                <TableBody>
+                  {restroList.map((restro: RestroListData) => {
+                    return (
+                      <TableRow key={restro.id} className="">
+                        <TableCell>
+                          <Link
+                            href={`/restaurant/${restro.id}/${restro.name}`}
+                            className="hover:text-primary_text dark:hover:text-sidebar_blue"
+                          >
+                            {restro.name}
+                          </Link>
+                        </TableCell>
+                        <TableCell>{restro.id}</TableCell>
+                        <TableCell>{restro.address}</TableCell>
+                        {restro.open_hrs === "Open" ? (
+                          <TableCell>Open</TableCell>
+                        ) : (
+                          <TableCell>Closed</TableCell>
+                        )}
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              ) : (
+                <div className="text-base font-normal text-center pt-12">
+                  Couldn&apos;t fetch restro list
+                </div>
+              )}
+            </Table>
+          </ScrollArea>
         </div>
-      ) : restroList.length <= 0 ? (
+      ) : restroList?.length <= 0 ? (
         <p>No restaurant found!</p>
       ) : (
         <p>Couldn&apos;t load restaurant list!</p>

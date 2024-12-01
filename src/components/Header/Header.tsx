@@ -23,7 +23,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import Link from "next/link";
-import { Archivo } from "next/font/google";
+import { Archivo, Raleway } from "next/font/google";
 import { usePathname } from "next/navigation";
 import { PiHandWithdraw, PiSphereLight } from "react-icons/pi";
 import { Kalam } from "next/font/google";
@@ -54,8 +54,8 @@ const archivo = Archivo({
   subsets: ["latin"],
 });
 
-const kalam = Kalam({
-  weight: ["300", "400", "700"],
+const raleway = Raleway({
+  weight: ["300", "400", "500", "600", "700"],
   subsets: ["latin"],
 });
 
@@ -127,7 +127,10 @@ const Header = () => {
         <div className="lg:hidden block place-self-end sm:p-4 overflow-y-auto">
           <Sheet>
             <SheetTrigger className="pt-2">
-              <RiMenuLine color="#eb5025" size={25} />
+              <RiMenuLine
+                className="text-primary_text dark:text-sidebar_blue"
+                size={25}
+              />
             </SheetTrigger>
             <SheetContent className="dark:bg-primary_dark bg-white h-full overflow-y-auto">
               <SheetHeader className=" flex flex-col relative">
@@ -146,9 +149,12 @@ const Header = () => {
                       prefetch={true}
                       className="w-full flex justify-start gap-1 px-4 pb-3 border-b border-b-vl_gray"
                     >
-                      <PiSphereLight size={25} className=" text-primary_text" />
+                      <PiSphereLight
+                        size={25}
+                        className=" text-primary_text dark:text-sidebar_blue"
+                      />
                       <h2
-                        className={`${anton.className} font-medium text-lg text-primary_text`}
+                        className={`${anton.className} font-medium text-lg text-primary_text dark:text-sidebar_blue`}
                       >
                         MoreClub
                       </h2>
@@ -157,7 +163,7 @@ const Header = () => {
                 </SheetTitle>
                 <SheetDescription>
                   <div
-                    className={`flex flex-col gap-2 py-4  ${archivo.className}`}
+                    className={`flex flex-col gap-2 py-4  ${raleway.className} font-medium text-[13px]`}
                   >
                     <SheetClose asChild>
                       <Link href="/" prefetch={true}>
@@ -165,13 +171,11 @@ const Header = () => {
                           className={`flex gap-2 items-center py-2 pb-1 px-2 rounded-md ${
                             pathname === "/"
                               ? "bg-primary_text text-white"
-                              : "dark:text-white text-text_gray"
+                              : "dark:text-white text-charcoal"
                           }`}
                         >
                           <LayoutDashboard size={18} />
-                          <p className={` font-normal sm:text-base text-sm`}>
-                            Dashboard
-                          </p>
+                          <p>Dashboard</p>
                         </span>
                       </Link>
                     </SheetClose>
@@ -182,12 +186,12 @@ const Header = () => {
                           className={`flex gap-2 items-center py-2 pb-1 px-2 rounded-md ${
                             pathname === "/users"
                               ? "bg-primary_text text-white"
-                              : "dark:text-white text-text_gray"
+                              : "dark:text-white text-charcoal"
                           }`}
                         >
                           <Users size={18} />
                           <p
-                            className={` font-normal sm:text-base text-sm
+                            className={` 
                               `}
                           >
                             User
@@ -202,12 +206,12 @@ const Header = () => {
                           className={`flex gap-2 items-center py-2 pb-1 px-2 rounded-md ${
                             pathname === "/station"
                               ? "bg-primary_text text-white"
-                              : "dark:text-white text-text_gray"
+                              : "dark:text-white text-charcoal"
                           }`}
                         >
                           <BsFillHouseFill size={18} />
                           <p
-                            className={` font-normal sm:text-base text-sm
+                            className={` 
                               `}
                           >
                             Station
@@ -222,12 +226,12 @@ const Header = () => {
                           className={`flex gap-2 items-center py-2 pb-1 px-2 pl-1 rounded-md ${
                             pathname === "/restaurant"
                               ? "bg-primary_text text-white"
-                              : "dark:text-white text-text_gray"
+                              : "dark:text-white text-charcoal"
                           }`}
                         >
                           <MdFoodBank size={25} />
                           <p
-                            className={` font-normal sm:text-base text-sm
+                            className={` 
                               `}
                           >
                             Restaurant
@@ -248,15 +252,13 @@ const Header = () => {
                           className={`py-2 pb-1 px-2 rounded-md `}
                         >
                           <span
-                            className={`flex gap-2 items-center dark:text-white text-text_gray`}
+                            className={`flex gap-2 items-center dark:text-white text-charcoal`}
                           >
                             <ArrowLeftRight size={18} />
-                            <p className={` font-normal sm:text-base text-sm`}>
-                              Overall Transaction
-                            </p>
+                            <p>Overall Transaction</p>
                           </span>
                         </AccordionTrigger>
-                        <AccordionContent className="flex flex-col pl-3">
+                        <AccordionContent className="flex flex-col pl-3 font-medium text-[13px]">
                           <SheetClose asChild>
                             <Link
                               href={"/overall-transaction/total-billing"}
@@ -265,8 +267,8 @@ const Header = () => {
                                 pathname ===
                                 "/overall-transaction/total-billing"
                                   ? "bg-primary_text text-white"
-                                  : "dark:text-white text-text_gray"
-                              } py-2 pb-1 px-2 rounded-md font-normal  sm:text-base text-sm flex justify-start`}
+                                  : "dark:text-white text-charcoal"
+                              } py-2 pb-1 px-2 rounded-md flex justify-start`}
                             >
                               Total Billing
                             </Link>
@@ -279,8 +281,8 @@ const Header = () => {
                                 pathname ===
                                 "/overall-transaction/total-business"
                                   ? "bg-primary_text text-white"
-                                  : "dark:text-white text-text_gray"
-                              } py-2 pb-1 px-2 rounded-md font-normal  sm:text-base text-sm flex justify-start`}
+                                  : "dark:text-white text-charcoal"
+                              } py-2 pb-1 px-2 rounded-md flex justify-start`}
                             >
                               Total Business
                             </Link>
@@ -294,31 +296,23 @@ const Header = () => {
                            `}
                         >
                           <span
-                            className={`flex gap-[6px] items-center dark:text-white text-text_gray`}
+                            className={`flex gap-[6px] items-center dark:text-white text-charcoal`}
                           >
                             <Database size={20} />
-                            <p className={` font-normal sm:text-base text-sm`}>
-                              Meta
-                            </p>
+                            <p>Meta</p>
                           </span>
                         </AccordionTrigger>
-                        <AccordionContent className="flex flex-col pl-3">
+                        <AccordionContent className="flex flex-col pl-3 text-[13px] font-medium">
                           <SheetClose asChild>
                             <Link href="/meta/business-type" prefetch={true}>
                               <span
                                 className={`flex gap-2 items-center py-2 pb-1 px-2 rounded-md ${
                                   pathname === "/meta/business-type"
                                     ? "bg-primary_text text-white"
-                                    : "dark:text-white text-text_gray"
+                                    : "dark:text-white text-charcoal"
                                 }`}
                               >
-                                {/* <BsFillBriefcaseFill size={18} /> */}
-                                <p
-                                  className={` font-normal sm:text-base text-sm
-                              `}
-                                >
-                                  Business Type
-                                </p>
+                                <p>Business Type</p>
                               </span>
                             </Link>
                           </SheetClose>
@@ -328,16 +322,10 @@ const Header = () => {
                                 className={`flex gap-2 items-center py-2 pb-1 px-2 rounded-md ${
                                   pathname === "/meta/company-info"
                                     ? "bg-primary_text text-white"
-                                    : "dark:text-white text-text_gray"
+                                    : "dark:text-white text-charcoal"
                                 }`}
                               >
-                                {/* <AiFillInfoCircle size={18} /> */}
-                                <p
-                                  className={` font-normal sm:text-base text-sm
-                              `}
-                                >
-                                  Company Information
-                                </p>
+                                <p>Company Information</p>
                               </span>
                             </Link>
                           </SheetClose>
@@ -348,12 +336,11 @@ const Header = () => {
                                 className={`flex gap-2 items-center py-2 pb-1 px-2 rounded-md ${
                                   pathname === "/meta/continent"
                                     ? "bg-primary_text text-white"
-                                    : "dark:text-white text-text_gray"
+                                    : "dark:text-white text-charcoal"
                                 }`}
                               >
-                                {/* <FaGlobeAmericas size={18} /> */}
                                 <p
-                                  className={` font-normal sm:text-base text-sm
+                                  className={` 
                               `}
                                 >
                                   Continent
@@ -368,12 +355,11 @@ const Header = () => {
                                 className={`flex gap-2 items-center py-2 pb-1 px-2 rounded-md ${
                                   pathname === "/meta/country"
                                     ? "bg-primary_text text-white"
-                                    : "dark:text-white text-text_gray"
+                                    : "dark:text-white text-charcoal"
                                 }`}
                               >
-                                {/* <BsFlagFill size={18} /> */}
                                 <p
-                                  className={` font-normal sm:text-base text-sm
+                                  className={` 
                               `}
                                 >
                                   Country
@@ -388,12 +374,11 @@ const Header = () => {
                                 className={`flex gap-2 items-center py-2 pb-1 px-2 rounded-md ${
                                   pathname === "/meta/currency"
                                     ? "bg-primary_text text-white"
-                                    : "dark:text-white text-text_gray"
+                                    : "dark:text-white text-charcoal"
                                 }`}
                               >
-                                {/* <HiCurrencyDollar size={18} /> */}
                                 <p
-                                  className={` font-normal sm:text-base text-sm
+                                  className={` 
                               `}
                                 >
                                   Currency
@@ -408,12 +393,11 @@ const Header = () => {
                                 className={`flex gap-2 items-center py-2 pb-1 px-2 rounded-md ${
                                   pathname === "/meta/faqs"
                                     ? "bg-primary_text text-white"
-                                    : "dark:text-white text-text_gray"
+                                    : "dark:text-white text-charcoal"
                                 }`}
                               >
-                                {/* <RiQuestionnaireFill size={18} /> */}
                                 <p
-                                  className={` font-normal sm:text-base text-sm
+                                  className={` 
                               `}
                                 >
                                   FAQs
@@ -428,12 +412,11 @@ const Header = () => {
                                 className={`flex gap-2 items-center py-2 pb-1 px-2 rounded-md ${
                                   pathname === "/meta/privacy-policy"
                                     ? "bg-primary_text text-white"
-                                    : "dark:text-white text-text_gray"
+                                    : "dark:text-white text-charcoal"
                                 }`}
                               >
-                                {/* <BsFileEarmarkLock2 size={18} /> */}
                                 <p
-                                  className={` font-normal sm:text-base text-sm
+                                  className={` 
                               `}
                                 >
                                   Privacy Policy
@@ -451,12 +434,11 @@ const Header = () => {
                                 className={`flex gap-2 items-center py-2 pb-1 px-2 rounded-md ${
                                   pathname === "/meta/terms-and-conditions"
                                     ? "bg-primary_text text-white"
-                                    : "dark:text-white text-text_gray"
+                                    : "dark:text-white text-charcoal"
                                 }`}
                               >
-                                {/* <HiOutlineClipboardDocumentCheck size={18} /> */}
                                 <p
-                                  className={` font-normal sm:text-base text-sm
+                                  className={` 
                               `}
                                 >
                                   Terms and Conditions
@@ -472,27 +454,24 @@ const Header = () => {
                           className={`py-2 pb-1 px-2 rounded-md `}
                         >
                           <span
-                            className={`flex gap-[6px] items-center dark:text-white text-text_gray`}
+                            className={`flex gap-[6px] items-center dark:text-white text-charcoal`}
                           >
                             <CalendarRange size={20} />
-                            <p className={` font-normal sm:text-base text-sm`}>
-                              Event
-                            </p>
+                            <p>Event</p>
                           </span>
                         </AccordionTrigger>
-                        <AccordionContent className="flex flex-col pl-3">
+                        <AccordionContent className="flex flex-col pl-3 font-medium text-[13px]">
                           <SheetClose asChild>
                             <Link href="/event/event-create" prefetch={true}>
                               <span
                                 className={`flex gap-2 items-center py-2 pb-1 px-2 rounded-md ${
                                   pathname === "/event/event-create"
                                     ? "bg-primary_text text-white"
-                                    : "dark:text-white text-text_gray"
+                                    : "dark:text-white text-charcoal"
                                 }`}
                               >
-                                {/* <TbCalendarPlus size={18} /> */}
                                 <p
-                                  className={` font-normal sm:text-base text-sm
+                                  className={` 
                               `}
                                 >
                                   Event Create
@@ -507,12 +486,11 @@ const Header = () => {
                                 className={`flex gap-2 items-center py-2 pb-1 px-2 rounded-md ${
                                   pathname === "/event/event-fee"
                                     ? "bg-primary_text text-white"
-                                    : "dark:text-white text-text_gray"
+                                    : "dark:text-white text-charcoal"
                                 }`}
                               >
-                                {/* <TbCalendarDollar size={18} /> */}
                                 <p
-                                  className={` font-normal sm:text-base text-sm
+                                  className={` 
                               `}
                                 >
                                   Event Fee
@@ -527,12 +505,11 @@ const Header = () => {
                                 className={`flex gap-2 items-center py-2 pb-1 px-2 rounded-md ${
                                   pathname === "/event/event-book"
                                     ? "bg-primary_text text-white"
-                                    : "dark:text-white text-text_gray"
+                                    : "dark:text-white text-charcoal"
                                 }`}
                               >
-                                {/* <TbCalendarCheck size={18} /> */}
                                 <p
-                                  className={` font-normal sm:text-base text-sm
+                                  className={` 
                               `}
                                 >
                                   Event Book
@@ -548,15 +525,13 @@ const Header = () => {
                           className={`py-2 pb-1 px-2 rounded-md `}
                         >
                           <span
-                            className={`flex gap-2 items-center dark:text-white text-text_gray `}
+                            className={`flex gap-2 items-center dark:text-white text-charcoal `}
                           >
                             <IdCard size={18} />
-                            <p className={` font-normal sm:text-base text-sm`}>
-                              Membership
-                            </p>
+                            <p>Membership</p>
                           </span>
                         </AccordionTrigger>
-                        <AccordionContent className="flex flex-col pl-3">
+                        <AccordionContent className="flex flex-col pl-3 font-medium text-[13px]">
                           <SheetClose asChild>
                             <Link
                               href={"/membership/membership"}
@@ -564,8 +539,8 @@ const Header = () => {
                               className={`${
                                 pathname === "/membership/membership"
                                   ? "bg-primary_text text-white"
-                                  : "dark:text-white text-text_gray"
-                              } py-2 pb-1 px-2 rounded-md font-normal  sm:text-base text-sm flex justify-start`}
+                                  : "dark:text-white text-charcoal"
+                              } py-2 pb-1 px-2 rounded-md flex justify-start`}
                             >
                               Membership
                             </Link>
@@ -577,8 +552,8 @@ const Header = () => {
                               className={`${
                                 pathname === "/membership/membership-type"
                                   ? "bg-primary_text text-white"
-                                  : "dark:text-white text-text_gray"
-                              } py-2 pb-1 px-2 rounded-md font-normal  sm:text-base text-sm flex justify-start`}
+                                  : "dark:text-white text-charcoal"
+                              } py-2 pb-1 px-2 rounded-md flex justify-start`}
                             >
                               Membership Type
                             </Link>
@@ -590,8 +565,8 @@ const Header = () => {
                               className={`${
                                 pathname === "/membership/project-discount"
                                   ? "bg-primary_text text-white"
-                                  : "dark:text-white text-text_gray"
-                              } py-2 pb-1 px-2 rounded-md font-normal  sm:text-base text-sm flex justify-start`}
+                                  : "dark:text-white text-charcoal"
+                              } py-2 pb-1 px-2 rounded-md flex justify-start`}
                             >
                               Project Discount
                             </Link>
@@ -603,8 +578,8 @@ const Header = () => {
                               className={`${
                                 pathname === "/membership/type-discount"
                                   ? "bg-primary_text text-white"
-                                  : "dark:text-white text-text_gray"
-                              } py-2 pb-1 px-2 rounded-md font-normal  sm:text-base text-sm flex justify-start`}
+                                  : "dark:text-white text-charcoal"
+                              } py-2 pb-1 px-2 rounded-md flex justify-start`}
                             >
                               Type Discount
                             </Link>
@@ -617,15 +592,13 @@ const Header = () => {
                           className={`py-2 pb-1 px-2 rounded-md `}
                         >
                           <span
-                            className={`flex gap-2 items-center dark:text-white text-text_gray `}
+                            className={`flex gap-2 items-center dark:text-white text-charcoal `}
                           >
                             <Network size={18} />
-                            <p className={` font-normal sm:text-base text-sm`}>
-                              Referral
-                            </p>
+                            <p>Referral</p>
                           </span>
                         </AccordionTrigger>
-                        <AccordionContent className="flex flex-col pl-3">
+                        <AccordionContent className="flex flex-col pl-3 font-medium text-[13px]">
                           <SheetClose asChild>
                             <Link
                               href={"/referral/referral"}
@@ -633,8 +606,8 @@ const Header = () => {
                               className={`${
                                 pathname === "/referral/referral"
                                   ? "bg-primary_text text-white"
-                                  : "dark:text-white text-text_gray"
-                              } py-2 pb-1 px-2 rounded-md font-normal  sm:text-base text-sm flex justify-start`}
+                                  : "dark:text-white text-charcoal"
+                              } py-2 pb-1 px-2 rounded-md flex justify-start`}
                             >
                               Referral
                             </Link>
@@ -646,8 +619,8 @@ const Header = () => {
                               className={`${
                                 pathname === "/referral/business-referral"
                                   ? "bg-primary_text text-white"
-                                  : "dark:text-white text-text_gray"
-                              } py-2 pb-1 px-2 rounded-md font-normal  sm:text-base text-sm flex justify-start`}
+                                  : "dark:text-white text-charcoal"
+                              } py-2 pb-1 px-2 rounded-md flex justify-start`}
                             >
                               Business Referral
                             </Link>
@@ -660,30 +633,23 @@ const Header = () => {
                           className={`py-2 pb-1 px-2 rounded-md `}
                         >
                           <span
-                            className={`flex gap-2 items-center dark:text-white text-text_gray `}
+                            className={`flex gap-2 items-center dark:text-white text-charcoal `}
                           >
                             <Wallet size={18} />
-                            <p className={` font-normal sm:text-base text-sm`}>
-                              Wallet
-                            </p>
+                            <p>Wallet</p>
                           </span>
                         </AccordionTrigger>
-                        <AccordionContent className="flex flex-col pl-3">
+                        <AccordionContent className="flex flex-col pl-3 font-medium text-[13px]">
                           <SheetClose asChild>
                             <Link href="/wallet/transaction" prefetch={true}>
                               <span
                                 className={`flex gap-2 items-center py-2 pb-1 px-2 rounded-md ${
                                   pathname === "/wallet/transaction"
                                     ? "bg-primary_text text-white"
-                                    : "dark:text-white text-text_gray"
+                                    : "dark:text-white text-charcoal"
                                 }`}
                               >
-                                {/* <GrTransaction size={18} /> */}
-                                <p
-                                  className={` font-normal sm:text-base text-sm`}
-                                >
-                                  Transaction
-                                </p>
+                                <p>Transaction</p>
                               </span>
                             </Link>
                           </SheetClose>
@@ -693,15 +659,10 @@ const Header = () => {
                                 className={`flex gap-2 items-center py-2 pb-1 px-2 rounded-md ${
                                   pathname === "/wallet/user-wallet"
                                     ? "bg-primary_text text-white"
-                                    : "dark:text-white text-text_gray"
+                                    : "dark:text-white text-charcoal"
                                 }`}
                               >
-                                {/* <IoWalletOutline size={18} /> */}
-                                <p
-                                  className={` font-normal sm:text-base text-sm`}
-                                >
-                                  User Wallet
-                                </p>
+                                <p>User Wallet</p>
                               </span>
                             </Link>
                           </SheetClose>
@@ -715,12 +676,12 @@ const Header = () => {
                           className={`flex gap-2 items-center py-2 pb-1 px-2 rounded-md ${
                             pathname === "/kyc"
                               ? "bg-primary_text text-white"
-                              : "dark:text-white text-text_gray"
+                              : "dark:text-white text-charcoal"
                           }`}
                         >
                           <FileCheck size={18} />
                           <p
-                            className={` font-normal sm:text-base text-sm
+                            className={` 
                               `}
                           >
                             KYC
@@ -735,13 +696,11 @@ const Header = () => {
                           className={`flex gap-2 items-center py-2 pb-1 px-2 pl-[6px] rounded-md ${
                             pathname === "/notification"
                               ? "bg-primary_text text-white"
-                              : "dark:text-white text-text_gray"
+                              : "dark:text-white text-charcoal"
                           }`}
                         >
                           <Bell size={21} />
-                          <p className={` font-normal sm:text-base text-sm`}>
-                            Notification
-                          </p>
+                          <p>Notification</p>
                         </span>
                       </Link>
                     </SheetClose>
@@ -752,13 +711,11 @@ const Header = () => {
                           className={`flex gap-2 items-center py-2 pb-1 px-2 rounded-md ${
                             pathname === "/partners"
                               ? "bg-primary_text text-white"
-                              : "dark:text-white text-text_gray"
+                              : "dark:text-white text-charcoal"
                           }`}
                         >
                           <Handshake size={18} />
-                          <p className={` font-normal sm:text-base text-sm`}>
-                            Partners
-                          </p>
+                          <p>Partners</p>
                         </span>
                       </Link>
                     </SheetClose>
@@ -769,13 +726,11 @@ const Header = () => {
                           className={`flex gap-2 items-center py-2 pb-1 px-2 rounded-md ${
                             pathname === "/project"
                               ? "bg-primary_text text-white"
-                              : "dark:text-white text-text_gray"
+                              : "dark:text-white text-charcoal"
                           }`}
                         >
                           <NotebookPen size={18} />
-                          <p className={` font-normal sm:text-base text-sm`}>
-                            Project
-                          </p>
+                          <p>Project</p>
                         </span>
                       </Link>
                     </SheetClose>
@@ -786,13 +741,11 @@ const Header = () => {
                           className={`flex gap-2 items-center py-2 pb-1 px-2 rounded-md ${
                             pathname === "/subscription"
                               ? "bg-primary_text text-white"
-                              : "dark:text-white text-text_gray"
+                              : "dark:text-white text-charcoal"
                           }`}
                         >
                           <MdOutlineSubscriptions size={18} />
-                          <p className={` font-normal sm:text-base text-sm`}>
-                            Subscription
-                          </p>
+                          <p>Subscription</p>
                         </span>
                       </Link>
                     </SheetClose>
@@ -803,13 +756,11 @@ const Header = () => {
                           className={`flex gap-2 items-center py-2 pb-1 px-2 rounded-md ${
                             pathname === "/withdraw"
                               ? "bg-primary_text text-white"
-                              : "dark:text-white text-text_gray"
+                              : "dark:text-white text-charcoal"
                           }`}
                         >
                           <PiHandWithdraw size={18} />
-                          <p className={` font-normal sm:text-base text-sm`}>
-                            Withdraw
-                          </p>
+                          <p>Withdraw</p>
                         </span>
                       </Link>
                     </SheetClose>
@@ -819,7 +770,7 @@ const Header = () => {
                     {status === "authenticated" ? (
                       <Button
                         onClick={handleLogout}
-                        className="bg-primary_text hover:bg-l_orange text-white w-full sm:h-12 h-8 self-center rounded-lg"
+                        className="bg-primary_text hover:bg-l_orange dark:bg-sidebar_blue dark:hover:opacity-65 text-white w-full sm:h-12 h-8 self-center rounded-lg"
                       >
                         Sign out
                       </Button>
@@ -877,7 +828,7 @@ const Header = () => {
                 <AccordionContent className="flex flex-col justify-start bg-white dark:bg-secondary_dark h-16 p-3 absolute top-10 right-2 rounded-sm shadow-md z-40">
                   <Button
                     onClick={handleLogout}
-                    className="bg-primary_text dark:bg-secondary_text hover:bg-l_orange dark:hover:bg-blue text-white w-full  h-8 mb-6 self-center rounded-lg"
+                    className="bg-primary_text dark:bg-sidebar_blue hover:bg-l_orange dark:hover:bg-blue text-white w-full  h-8 mb-6 self-center rounded-lg"
                   >
                     Sign out
                   </Button>
@@ -888,7 +839,7 @@ const Header = () => {
         ) : (
           <Button
             onClick={handleLogin}
-            className="bg-primary_text dark:bg-secondary_text hover:bg-l_orange text-white w-full h-9 self-center rounded-lg"
+            className="bg-primary_text dark:bg-sidebar_blue hover:bg-l_orange text-white w-full h-9 self-center rounded-lg"
           >
             Sign in
           </Button>

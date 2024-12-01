@@ -41,7 +41,7 @@ const Page = ({
     >
       <div className="flex sm:flex-row flex-col sm:justify-between sm:gap-0 gap-4">
         <h1
-          className={`text-primary_text dark:text-secondary_text text-lg font-medium ${open_sans.className}`}
+          className={`text-primary_text dark:text-sidebar_blue text-lg font-medium ${open_sans.className}`}
         >
           Menu List
         </h1>
@@ -80,7 +80,7 @@ const Page = ({
                 <div className="flex gap-1 justify-between px-2 pb-4">
                   <Link
                     href={`/station/${params.stationId}/${params.stationName}/menu/${menu.id}/${menu.name}/items`}
-                    className="text-primary_text dark:text-secondary_text font-medium place-self-center text-sm capitalize line-clamp-1"
+                    className="text-primary_text dark:text-sidebar_blue font-medium place-self-center text-sm capitalize line-clamp-1"
                   >
                     {menu.name}
                   </Link>
@@ -92,7 +92,7 @@ const Page = ({
                   >
                     <CiEdit
                       size={23}
-                      className="text-primary_text dark:text-secondary_text"
+                      className="text-primary_text dark:text-sidebar_blue"
                     />
                   </Link>
                 </div>
