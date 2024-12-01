@@ -68,7 +68,7 @@ const Page = ({
           className="relative"
         >
           <Image
-            src={"/images/restroGallery.jpg"}
+            src={"/images/restrogallery.jpg"}
             alt="restaurant gallery"
             width={300}
             height={300}
