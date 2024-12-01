@@ -189,7 +189,7 @@ const Page = ({
               </div>
               <div className="w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded flex items-center justify-center">
                 <Link
-                  href={`/salon/${params.salonId}/${params.salonName}/menu`}
+                  href={`/salon/${params.salonId}/${params.salonName}/`}
                   className="flex flex-col gap-2 items-center"
                 >
                   <Image
@@ -204,7 +204,7 @@ const Page = ({
               </div>
               <div className="w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded flex items-center justify-center">
                 <Link
-                  href={`/salon/${params.salonId}/${params.salonName}/hours`}
+                  href={`/salon/${params.salonId}/${params.salonName}/`}
                   className="flex flex-col gap-2 items-center"
                 >
                   <Image
@@ -220,7 +220,7 @@ const Page = ({
 
               <div className="w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded flex items-center justify-center">
                 <Link
-                  href={`/salon/${params.salonId}/${params.salonName}/gallery`}
+                  href={`/salon/${params.salonId}/${params.salonName}/`}
                   className="flex flex-col gap-2 items-center"
                 >
                   <Image
@@ -236,7 +236,7 @@ const Page = ({
 
               <div className="w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded flex items-center justify-center">
                 <Link
-                  href={`/salon/${params.salonId}/${params.salonName}/hours`}
+                  href={`/salon/${params.salonId}/${params.salonName}/`}
                   className="flex flex-col gap-2 items-center"
                 >
                   <Image
