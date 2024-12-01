@@ -7,7 +7,7 @@ import { usePathname } from "next/navigation";
 import { PiHandWithdraw, PiSphereLight } from "react-icons/pi";
 import { Anton } from "next/font/google";
 import { BsDoorClosed, BsFillHouseFill } from "react-icons/bs";
-import { MdOutlineSubscriptions } from "react-icons/md";
+import { MdFoodBank, MdOutlineSubscriptions } from "react-icons/md";
 import {
   Accordion,
   AccordionContent,
@@ -45,6 +45,7 @@ import {
   Users,
   Wallet,
 } from "lucide-react";
+import { RxScissors } from "react-icons/rx";
 
 const anton = Anton({
   weight: ["400"],
@@ -200,18 +201,31 @@ const SideBar = () => {
                 <p>Station</p>
               </Link>
 
-              {/* <Link
+              <Link
                 href="/restaurant"
                 prefetch={true}
-                className={`flex gap-[11px] items-center pt-2 pb-[2px] pl-3 px-4 rounded-md ${
+                className={`flex gap-[12px] items-center pt-2 pb-[4px] pl-[14px] px-4 rounded-md ${
                   pathname === "/restaurant"
                     ? "bg-primary_text dark:bg-sidebar_blue text-white"
                     : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
                 }`}
               >
                 <MdFoodBank size={25} />
-                <p >Restaurant</p>
-              </Link> */}
+                <p>Restaurant</p>
+              </Link>
+
+              <Link
+                href="/salon"
+                prefetch={true}
+                className={`flex gap-[15px] items-center pt-2 pb-[4px] pl-4 px-4 rounded-md ${
+                  pathname === "/salon"
+                    ? "bg-primary_text dark:bg-sidebar_blue text-white"
+                    : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                }`}
+              >
+                <RxScissors size={20} />
+                <p>Salon</p>
+              </Link>
 
               <Accordion
                 type="single"

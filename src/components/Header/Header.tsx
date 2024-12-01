@@ -28,9 +28,9 @@ import { usePathname } from "next/navigation";
 import { PiHandWithdraw, PiSphereLight } from "react-icons/pi";
 import { Kalam } from "next/font/google";
 import { Anton } from "next/font/google";
-import { RxCrossCircled } from "react-icons/rx";
+import { RxCrossCircled, RxScissors } from "react-icons/rx";
 import { BsFillHouseFill } from "react-icons/bs";
-import { MdOutlineSubscriptions } from "react-icons/md";
+import { MdFoodBank, MdOutlineSubscriptions } from "react-icons/md";
 import { Button } from "../ui/button";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { ModeToggle } from "../ThemeToggle/ThemeToggle";
@@ -220,7 +220,7 @@ const Header = () => {
                       </Link>
                     </SheetClose>
 
-                    {/* <SheetClose asChild>
+                    <SheetClose asChild>
                       <Link href="/restaurant" prefetch={true}>
                         <span
                           className={`flex gap-2 items-center py-2 pb-1 px-2 pl-1 rounded-md ${
@@ -229,7 +229,7 @@ const Header = () => {
                               : "dark:text-white text-charcoal"
                           }`}
                         >
-                          <MdFoodBank size={25} />
+                          <MdFoodBank size={23} />
                           <p
                             className={` 
                               `}
@@ -238,7 +238,27 @@ const Header = () => {
                           </p>
                         </span>
                       </Link>
-                    </SheetClose> */}
+                    </SheetClose>
+
+                    <SheetClose asChild>
+                      <Link href="/salon" prefetch={true}>
+                        <span
+                          className={`flex gap-2 items-center py-2 pb-1 px-2 pl-2 rounded-md ${
+                            pathname === "/salon"
+                              ? "bg-primary_text text-white"
+                              : "dark:text-white text-charcoal"
+                          }`}
+                        >
+                          <RxScissors size={19} />
+                          <p
+                            className={` 
+                              `}
+                          >
+                            Salon
+                          </p>
+                        </span>
+                      </Link>
+                    </SheetClose>
 
                     <Accordion
                       type="single"
