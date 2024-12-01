@@ -314,13 +314,8 @@ export const useRestroGallery = (restroId: string) => {
   return useQuery({
     queryKey: ["GET_RESTROGALLERY"],
     queryFn: async () => {
-      const res = await axios.get(
-        `https://api.morefood.se/api/moreclub/user/restaurants/gallery/${restroId}/`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
-          },
-        }
+      const res = await axiosInstance.get(
+        `/moreclub/user/restaurants/gallery/${restroId}/`,
       );
       console.log(res.data.data);
       const data = res.data.data;
@@ -334,13 +329,8 @@ export const usePendingGallery = (restroId: string) => {
   return useQuery({
     queryKey: ["GET_PENDINGGALLERY"],
     queryFn: async () => {
-      const res = await axios.get(
-        `https://api.morefood.se/api/moreclub/user/restaurants/gallery/user/upload/${restroId}/?status=unverified`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
-          },
-        }
+      const res = await axiosInstance.get(
+        `/moreclub/user/restaurants/gallery/user/upload/${restroId}/?status=unverified`,
       );
       console.log(res.data.data);
       const data = res.data.data;
@@ -354,13 +344,8 @@ export const useAcceptedGallery = (restroId: string) => {
   return useQuery({
     queryKey: ["GET_ACCEPTEDGALLERY"],
     queryFn: async () => {
-      const res = await axios.get(
-        `https://api.morefood.se/api/moreclub/user/restaurants/gallery/user/upload/${restroId}/?status=verified`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
-          },
-        }
+      const res = await axiosInstance.get(
+        `/moreclub/user/restaurants/gallery/user/upload/${restroId}/?status=verified`,
       );
       console.log(res.data.data);
       const data = res.data.data;
