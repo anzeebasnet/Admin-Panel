@@ -99,13 +99,8 @@ const Page = ({
 
   const fetchCuisine = async () => {
     try {
-      const res = await axios.get(
-        `https://api.morefood.se/api/moreclub/user/cuisines/${params.restroId}/`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
-          },
-        }
+      const res = await axiosInstance.get(
+        `/moreclub/user/cuisines/${params.restroId}/`
       );
       console.log(res.data.data);
       setCuisines(res.data.data);
@@ -173,14 +168,13 @@ const Page = ({
     formData.append("menu", params.menuId);
 
     if (itemData) {
-      axios
+      axiosInstance
         .patch(
-          `https://api.morefood.se/api/moreclub/user/food/items/${params.menuId}/${itemData.id}/${params.restroId}/`,
+          `/moreclub/user/food/items/${params.menuId}/${itemData.id}/${params.restroId}/`,
           formData,
           {
             headers: {
               "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
             },
           }
         )
@@ -205,14 +199,13 @@ const Page = ({
           setImagePreview(null);
         });
     } else {
-      axios
+      axiosInstance
         .post(
-          `https://api.morefood.se/api/moreclub/user/food/items/${params.menuId}/${params.restroId}/`,
+          `/moreclub/user/food/items/${params.menuId}/${params.restroId}/`,
           formData,
           {
             headers: {
               "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
             },
           }
         )

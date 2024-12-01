@@ -17,6 +17,7 @@ import axios from "axios";
 import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
 import Loader from "@/components/ui/Loader";
+import useAxiosPrivateFood from "@/hooks/useAxiosPrivateFood";
 
 const open_sans = Open_Sans({
   weight: ["300", "400", "500", "600", "700"],
@@ -31,6 +32,7 @@ const Page = ({
   const dispatch = useAppDispatch();
   const [isVerifying, setisVerifying] = useState(false);
   const [isDeleting, setisDeleting] = useState(false);
+  const axiosInstance = useAxiosPrivateFood();
   const sidebar = useAppSelector(
     (state: RootState) => state.collapsible.collapse
   );
@@ -47,15 +49,10 @@ const Page = ({
       status: "verified",
     };
     setisVerifying(true);
-    axios
+    axiosInstance
       .post(
-        `https://api.morefood.se/api/moreclub/user/restaurants/gallery/user/upload/${params.restroId}/${imageId}/`,
-        payload,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
-          },
-        }
+        `/moreclub/user/restaurants/gallery/user/upload/${params.restroId}/${imageId}/`,
+        payload
       )
       .then((response) => {
         console.log("Image Verified", response);
@@ -81,15 +78,10 @@ const Page = ({
       status: "delete",
     };
     setisDeleting(true);
-    axios
+    axiosInstance
       .post(
-        `https://api.morefood.se/api/moreclub/user/restaurants/gallery/user/upload/${params.restroId}/${imageId}/`,
-        payload,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
-          },
-        }
+        `/moreclub/user/restaurants/gallery/user/upload/${params.restroId}/${imageId}/`,
+        payload
       )
       .then((response) => {
         console.log("Image Deleted", response);

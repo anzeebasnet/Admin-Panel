@@ -143,14 +143,13 @@ const Page = ({
     formData.append("restaurant_id", params.restroId);
 
     if (nearbyItemData) {
-      axios
+      axiosInstance
         .patch(
-          `https://api.morefood.se/api/moreclub/station/${params.stationId}/${params.restroId}/${nearbyItemData.id}/food-items/restro/update/`,
+          `/moreclub/station/${params.stationId}/${params.restroId}/${nearbyItemData.id}/food-items/restro/update/`,
           formData,
           {
             headers: {
               "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
             },
           }
         )
@@ -174,14 +173,13 @@ const Page = ({
           setIsSubmitting(false);
         });
     } else {
-      axios
+      axiosInstance
         .post(
-          `https://api.morefood.se/api/moreclub/station/${params.stationId}}/restaurant/${params.restroId}/food-items/restro/`,
+          `/moreclub/station/${params.stationId}}/restaurant/${params.restroId}/food-items/restro/`,
           formData,
           {
             headers: {
               "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
             },
           }
         )

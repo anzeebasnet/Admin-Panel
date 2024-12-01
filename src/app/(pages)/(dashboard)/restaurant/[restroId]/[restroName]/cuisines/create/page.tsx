@@ -99,14 +99,13 @@ const CreateCuisine = ({
     formData.append("restaurant_id", params.restroId);
 
     if (cuisineData) {
-      axios
+      axiosInstance
         .patch(
-          `https://api.morefood.se/api/moreclub/user/cuisines/update/${cuisineData.id}/${params.restroId}/`,
+          `/moreclub/user/cuisines/update/${cuisineData.id}/${params.restroId}/`,
           formData,
           {
             headers: {
               "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
             },
           }
         )
@@ -131,17 +130,12 @@ const CreateCuisine = ({
           setIsSubmitting(false);
         });
     } else {
-      axios
-        .post(
-          `https://api.morefood.se/api/moreclub/user/cuisines/${params.restroId}/`,
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
-            },
-          }
-        )
+      axiosInstance
+        .post(`/moreclub/user/cuisines/${params.restroId}/`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
         .then((response) => {
           console.log("Form submitted successfully:", response.data);
           form.reset();

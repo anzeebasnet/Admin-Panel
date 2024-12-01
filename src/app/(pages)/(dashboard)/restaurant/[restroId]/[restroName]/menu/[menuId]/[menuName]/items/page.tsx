@@ -1,5 +1,6 @@
 "use client";
 
+import useAxiosPrivateFood from "@/hooks/useAxiosPrivateFood";
 import { useRestroItemList } from "@/lib/react-query/queriesAndMutations";
 import {
   clearRestroItem,
@@ -33,6 +34,7 @@ const Page = ({
   };
 }) => {
   const dispatch = useAppDispatch();
+  const axiosInstance = useAxiosPrivateFood();
   const { data: foodList, isLoading: isLoading } = useRestroItemList(
     params.restroId,
     params.menuId
@@ -43,14 +45,9 @@ const Page = ({
   }, [dispatch]);
 
   const deleteMenu = async (foodId: string) => {
-    axios
+    axiosInstance
       .delete(
-        `https://api.morefood.se/api/moreclub/user/food/items/${params.menuId}/${foodId}/${params.restroId}/`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
-          },
-        }
+        `/moreclub/user/food/items/${params.menuId}/${foodId}/${params.restroId}/`
       )
       .then((response) => {
         console.log("Successfully Deleted food item", response);

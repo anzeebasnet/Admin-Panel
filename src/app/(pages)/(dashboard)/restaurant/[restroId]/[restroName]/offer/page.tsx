@@ -92,6 +92,7 @@ const Page = ({
 
   const { data: restroMenuList } = useRestroMenuList(params.restroId);
   const token = session?.accessToken || session?.user.token;
+  const axiosInstance = useAxiosPrivateFood();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -150,13 +151,8 @@ const Page = ({
     async function fetchFoodItems() {
       if (!selectedCategoryId) return;
 
-      const res = await axios.get(
-        `https://api.morefood.se/api/moreclub/user/food/items/${selectedCategoryId}/${params.restroId}/`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+      const res = await axiosInstance.get(
+        `/moreclub/user/food/items/${selectedCategoryId}/${params.restroId}/`
       );
       const data = res.data.data;
       setFoodItems(data);

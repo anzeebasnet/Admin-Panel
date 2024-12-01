@@ -38,6 +38,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { RxCross2 } from "react-icons/rx";
 import { clearSalonData } from "@/lib/store/features/salonDetailSlice/salonDetailSlice";
+import useAxiosPrivateSalon from "@/hooks/useAxiosPrivateSalon";
 
 type PasswordVisibility = {
   password: boolean;
@@ -144,6 +145,7 @@ const Salon = () => {
   const [amenityInput, setAmenityInput] = useState("");
 
   const dispatch = useAppDispatch();
+  const axiosInstance = useAxiosPrivateSalon();
 
   const salonData = useAppSelector(
     (state: RootState) => state.salon.currentSalon
@@ -175,9 +177,7 @@ const Salon = () => {
 
   const fetchCountry = async () => {
     try {
-      const res = await axios.get(
-        `https://moresaloon-backend.vercel.app/api/country/list/`
-      );
+      const res = await axiosInstance.get(`/country/list/`);
       console.log(res.data.data);
       setCountries(res.data.data);
     } catch (error) {
@@ -280,17 +280,12 @@ const Salon = () => {
     });
 
     if (salonData) {
-      axios
-        .patch(
-          `https://moresaloon-backend.vercel.app/api/moreclub/users/saloon/${salonData.id}/`,
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
-            },
-          }
-        )
+      axiosInstance
+        .patch(`/moreclub/users/saloon/${salonData.id}/`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
         .then((response) => {
           console.log("Form submitted successfully:", response.data);
           form.reset();
@@ -321,17 +316,12 @@ const Salon = () => {
           setIsSubmitting(false);
         });
     } else {
-      axios
-        .post(
-          "https://moresaloon-backend.vercel.app/api/moreclub/saloon/setup/",
-          formData,
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
-            },
-          }
-        )
+      axiosInstance
+        .post("/moreclub/saloon/setup/", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
         .then((response) => {
           console.log("Form submitted successfully:", response.data);
           form.reset();
@@ -374,24 +364,6 @@ const Salon = () => {
 
   // Render the list of amenities
   const amenitiesList = form.watch("amenities") || []; // Reactively watch amenities changes
-
-  // name: Sujit Business
-  // address: Pokhara, Nepal
-  // email: 10sujitkhanal@gmail.com
-  // contact_no: +9779842765535
-  // country: 2
-  // currency: 2
-  // lat: 28.2095831
-  // lng: 83.9855674
-  // banner: (binary)
-  // logo: (binary)
-  // short_description: Newly opened salon Newly opened salon Newly opened salon Newly opened salon Newly opened salon Newly opened salon Newly opened salon
-  // long_description: Newly opened salon Newly opened salon Newly opened salon Newly opened salon Newly opened salon Newly opened salon Newly opened salon Newly opened salon Newly opened salon Newly opened salon Newly opened salon Newly opened salon Newly opened salon Newly opened salon Newly opened salon Newly opened salon
-  // website_link: https://www.destinationgranby.com/things-to-do/wellness/hair-salons/
-  // facebook_link:
-  // instagram_link:
-  // amenities[]: wifi
-  // amenities[]: parking
 
   return (
     <ScrollArea className="bg-white dark:bg-secondary_dark p-6 sm:pr-10 h-[88vh]">

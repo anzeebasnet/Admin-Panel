@@ -33,10 +33,6 @@ const Page = ({
   const dispatch = useAppDispatch();
   const RestroName = decodeURIComponent(params.restroName);
 
-  const { data: restroMenuList, isLoading: isLoading } = useRestroMenuList(
-    params.restroId
-  );
-
   return (
     <div
       className={` bg-white dark:bg-secondary_dark rounded-sm p-6 flex flex-col gap-6 shadow-sm shadow-vll_gray dark:shadow-none ${open_sans.className}`}

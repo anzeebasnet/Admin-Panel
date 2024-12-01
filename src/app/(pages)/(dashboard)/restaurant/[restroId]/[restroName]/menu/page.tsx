@@ -19,6 +19,7 @@ import { CiEdit } from "react-icons/ci";
 import { AiOutlineDelete } from "react-icons/ai";
 import axios from "axios";
 import toast from "react-hot-toast";
+import useAxiosPrivateFood from "@/hooks/useAxiosPrivateFood";
 
 const open_sans = Open_Sans({
   weight: ["300", "400", "500", "600", "700"],
@@ -31,6 +32,7 @@ const Page = ({
   params: { restroId: string; restroName: string };
 }) => {
   const dispatch = useAppDispatch();
+  const axiosInstance = useAxiosPrivateFood();
 
   const { data: restroMenuList, isLoading: isLoading } = useRestroMenuList(
     params.restroId
@@ -41,15 +43,8 @@ const Page = ({
   }, [dispatch]);
 
   const deleteMenu = async (menuId: string) => {
-    axios
-      .delete(
-        `https://api.morefood.se/api/moreclub/user/menus/${menuId}/${params.restroId}/`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
-          },
-        }
-      )
+    axiosInstance
+      .delete(`/moreclub/user/menus/${menuId}/${params.restroId}/`)
       .then((response) => {
         console.log("Successfully Deleted menu", response);
         toast.success("Successfully Deleted menu", {

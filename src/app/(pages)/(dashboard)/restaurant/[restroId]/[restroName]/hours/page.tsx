@@ -171,14 +171,13 @@ const Page = ({
     };
 
     if (hours) {
-      axios
+      axiosInstance
         .patch(
-          `https://api.morefood.se/api/moreclub/user/restaurants/${params.restroId}/working/hours/`,
+          `/moreclub/user/restaurants/${params.restroId}/working/hours/`,
           payload,
           {
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
             },
           }
         )
@@ -199,14 +198,13 @@ const Page = ({
           setIsSubmitting(false);
         });
     } else {
-      axios
+      axiosInstance
         .post(
-          `https://api.morefood.se/api/moreclub/user/restaurants/${params.restroId}/working/hours/`,
+          `/moreclub/user/restaurants/${params.restroId}/working/hours/`,
           payload,
           {
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
             },
           }
         )
@@ -232,13 +230,8 @@ const Page = ({
   useEffect(() => {
     const fetchWorkingHours = async () => {
       try {
-        const res = await axios.get(
-          `https://api.morefood.se/api/moreclub/user/restaurants/${params.restroId}/working/hours/`,
-          {
-            headers: {
-              Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
-            },
-          }
+        const res = await axiosInstance.get(
+          `/moreclub/user/restaurants/${params.restroId}/working/hours/`
         );
         console.log(res.data.data);
         setHours(res.data.data);

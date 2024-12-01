@@ -84,16 +84,11 @@ const CreateRestroMenu = ({
       }
     });
 
-    axios.post(
-      `https://api.morefood.se/api/moreclub/user/menus/${params.restroId}/`,
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
-        },
-      }
-    );
+    axiosInstance.post(`/moreclub/user/menus/${params.restroId}/`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
   }
 
   return (

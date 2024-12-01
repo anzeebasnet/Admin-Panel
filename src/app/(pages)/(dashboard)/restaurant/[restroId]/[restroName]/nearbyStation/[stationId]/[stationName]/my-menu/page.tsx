@@ -1,5 +1,6 @@
 "use client";
 
+import useAxiosPrivateFood from "@/hooks/useAxiosPrivateFood";
 import { useStationMenu } from "@/lib/react-query/queriesAndMutations";
 import {
   clearNearbyItem,
@@ -33,6 +34,7 @@ const Page = ({
   };
 }) => {
   const dispatch = useDispatch();
+  const axiosInstance = useAxiosPrivateFood();
   const { data: menuItems, isLoading: isLoading } = useStationMenu(
     params.restroId,
     params.stationId
@@ -43,14 +45,9 @@ const Page = ({
   }, []);
 
   const deleteItem = (foodId: string) => {
-    axios
+    axiosInstance
       .delete(
-        `https://api.morefood.se/api/moreclub/station/${params.stationId}/${params.restroId}/${foodId}/food-items/restro/update/`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
-          },
-        }
+        `/moreclub/station/${params.stationId}/${params.restroId}/${foodId}/food-items/restro/update/`
       )
       .then((response) => {
         console.log("Deleted Item", response);

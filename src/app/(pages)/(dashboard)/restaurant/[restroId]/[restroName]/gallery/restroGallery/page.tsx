@@ -26,6 +26,7 @@ import axios from "axios";
 import { AiOutlineDelete } from "react-icons/ai";
 import toast from "react-hot-toast";
 import { duration } from "@mui/material";
+import useAxiosPrivateFood from "@/hooks/useAxiosPrivateFood";
 
 const formSchema = z.object({
   id: z.string(),
@@ -48,6 +49,7 @@ const Page = ({
   );
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const { data: session } = useSession();
+  const axiosInstance = useAxiosPrivateFood();
   const RestroName = decodeURIComponent(params.restroName);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -80,13 +82,12 @@ const Page = ({
 
     formData.append("id", params.restroId);
 
-    axios.post(
-      `http://192.168.1.72:8001/api/moreclub/user/restaurants/gallery/${params.restroId}/`,
+    axiosInstance.post(
+      `/moreclub/user/restaurants/gallery/${params.restroId}/`,
       formData,
       {
         headers: {
           "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
         },
       }
     );
@@ -96,14 +97,9 @@ const Page = ({
   // images[]: (binary)
 
   const DeleteImage = async (imageId: string) => {
-    axios
+    axiosInstance
       .delete(
-        `https://api.morefood.se/api/moreclub/user/restaurants/gallery/${params.restroId}/${imageId}/delete/`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
-          },
-        }
+        `/moreclub/user/restaurants/gallery/${params.restroId}/${imageId}/delete/`
       )
       .then((response) => {
         console.log("Image Deleted", response);

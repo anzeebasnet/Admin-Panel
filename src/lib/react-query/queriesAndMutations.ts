@@ -174,13 +174,8 @@ export const useRestroItemList = (restroId: string, menuId: string) => {
   return useQuery({
     queryKey: ["GET_RESTROITEMLIST"],
     queryFn: async () => {
-      const res = await axios.get(
-        `https://api.morefood.se/api/moreclub/user/food/items/${menuId}/${restroId}/`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
-          },
-        }
+      const res = await axiosInstance.get(
+        `/moreclub/user/food/items/${menuId}/${restroId}/`,
       );
       console.log(res.data.data);
       const data = res.data.data;
@@ -194,13 +189,8 @@ export const useCuisineList = (restroId: string) => {
   return useQuery({
     queryKey: ["GET_CUISINELIST"],
     queryFn: async () => {
-      const res = await axios.get(
-        `https://api.morefood.se/api/moreclub/user/cuisines/${restroId}/`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
-          },
-        }
+      const res = await axiosInstance.get(
+        `/moreclub/user/cuisines/${restroId}/`,
       );
       console.log(res.data.data);
       const data = res.data.data;
@@ -214,13 +204,8 @@ export const useOrderList = (restroId: string) => {
   return useQuery({
     queryKey: ["GET_ORDERLIST"],
     queryFn: async () => {
-      const res = await axios.get(
-        `https://api.morefood.se/api/moreclub/user/orders/${restroId}/`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
-          },
-        }
+      const res = await axiosInstance.get(
+        `/moreclub/user/orders/${restroId}/`,
       );
       console.log(res.data.data);
       const data = res.data.data;
@@ -234,11 +219,10 @@ export const useNearbyStationList = (restroId: string) => {
   return useQuery({
     queryKey: ["GET_NEARBYSTATIONLIST"],
     queryFn: async () => {
-      const res = await axios.get(
-        `https://api.morefood.se/api/moreclub/station/${restroId}/nearby/`,
+      const res = await axiosInstance.get(
+        `/moreclub/station/${restroId}/nearby/`,
         {
           headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
             "x-country-code": "NP",
           },
         }
@@ -255,13 +239,8 @@ export const useStationMenu = (restroId: string, stationId: string) => {
   return useQuery({
     queryKey: ["GET_STATIONMENU"],
     queryFn: async () => {
-      const res = await axios.get(
-        `https://api.morefood.se/api/moreclub/station/${stationId}/restaurant/${restroId}/food-items/restro/`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
-          },
-        }
+      const res = await axiosInstance.get(
+        `/moreclub/station/${stationId}/restaurant/${restroId}/food-items/restro/`,
       );
       console.log(res.data.data);
       const data = res.data.data;
@@ -275,13 +254,8 @@ export const useNearbyStationDetail = (stationId: string) => {
   return useQuery({
     queryKey: ["GET_NEARBYSTATIONDETAIL"],
     queryFn: async () => {
-      const res = await axios.get(
-        `https://api.morefood.se/api/moreclub/station/restro/${stationId}/by/restaurant/`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
-          },
-        }
+      const res = await axiosInstance.get(
+        `/moreclub/station/restro/${stationId}/by/restaurant/`,
       );
       console.log(res.data.data);
       const data: NearByStationDetail = res.data.data;
@@ -295,13 +269,8 @@ export const useMenuListByRestro = (restroId: string) => {
   return useQuery({
     queryKey: ["GET_MENULISTBYRESTRO"],
     queryFn: async () => {
-      const res = await axios.get(
-        `https://api.morefood.se/api/moreclub/station/restro/${restroId}/by/restaurant/menu/`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
-          },
-        }
+      const res = await axiosInstance.get(
+        `/moreclub/station/restro/${restroId}/by/restaurant/menu/`,
       );
       console.log(res.data.data);
       const data = res.data.data;
@@ -315,13 +284,8 @@ export const useStationOrderList = (restroId: string) => {
   return useQuery({
     queryKey: ["GET_STATIONORDERLIST"],
     queryFn: async () => {
-      const res = await axios.get(
-        `https://api.morefood.se/api/moreclub/station/restro/${restroId}/all/orders/`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
-          },
-        }
+      const res = await axiosInstance.get(
+        `/moreclub/station/restro/${restroId}/all/orders/`,
       );
       console.log(res.data.data);
       const data = res.data.data;
@@ -335,13 +299,8 @@ export const useOrderSummary = (restroId: string) => {
   return useQuery({
     queryKey: ["GET_ORDERSUMMARY"],
     queryFn: async () => {
-      const res = await axios.get(
-        `https://api.morefood.se/api/moreclub/station/restro/${restroId}/all/orders/summary/`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
-          },
-        }
+      const res = await axiosInstance.get(
+        `/moreclub/station/restro/${restroId}/all/orders/summary/`,
       );
       console.log(res.data.data);
       const data: OrderSummary = res.data.data;
