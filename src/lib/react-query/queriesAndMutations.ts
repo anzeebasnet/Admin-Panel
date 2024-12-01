@@ -359,7 +359,7 @@ export const useSalonList = () => {
   return useQuery({
     queryKey: ["GET_SALONLIST"],
     queryFn: async () => {
-      const res = await axiosInstance.get("/moreclub/users/saloons/list/", {});
+      const res = await axiosInstance.get("/moreclub/users/saloons/list/");
       const data = res.data.data;
       return data;
     },

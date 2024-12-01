@@ -56,7 +56,7 @@ const Page = ({
 
       <div className="flex flex-col gap-5">
         {isLoading ? (
-          <p>Loading Salon Detail...</p>
+          <p>Loading Salon Detail... </p>
         ) : !salonDetail ? (
           <p>Salon Detail not found!</p>
         ) : salonDetail ? (
