@@ -209,13 +209,13 @@ const Page = ({
       ) : restroGallery && restroGallery.length > 0 ? (
         <div className="flex flex-wrap gap-4">
           {restroGallery.map((item: GalleryList) => (
-            <div key={item.id} className="relative">
+            <div key={item.id} className="relative w-40 h-40">
               <Image
                 src={item.image}
                 alt="image"
                 width={200}
                 height={200}
-                className="w-40 h-w-40"
+                className=""
               />
               <button
                 onClick={() => {
