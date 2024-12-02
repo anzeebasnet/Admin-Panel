@@ -105,29 +105,45 @@ const Page = ({
                   </div>
                   <div className="flex gap-2">
                     {restroDetails.is_delivery ? (
-                      <div className="flex gap-2 pl-1">
-                        <p className="text-sm font-medium ">Delivery</p>
-                        <div>
-                          <Separator
-                            orientation="vertical"
-                            color="black"
-                            className="bg-gray-400 w-[2px] "
-                          />
-                        </div>
+                      <div className=" pl-1">
+                        <p className="text-sm font-medium ">Home Delivery</p>
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                    {restroDetails.is_delivery && restroDetails.is_dine ? (
+                      <div className="mx-2">
+                        <Separator
+                          orientation="vertical"
+                          color="black"
+                          className="bg-gray-400 w-[2px] "
+                        />
+                      </div>
+                    ) : restroDetails.is_delivery && restroDetails.is_pickup ? (
+                      <div className="mx-2">
+                        <Separator
+                          orientation="vertical"
+                          color="black"
+                          className="bg-gray-400 w-[2px] "
+                        />
                       </div>
                     ) : (
                       ""
                     )}
                     {restroDetails.is_dine ? (
-                      <div className="flex gap-2 pl-1">
-                        <p className="text-sm font-medium ">Dine</p>
-                        <div>
-                          <Separator
-                            orientation="vertical"
-                            color="black"
-                            className="bg-gray-400 w-[2px] "
-                          />
-                        </div>
+                      <div className="pl-1">
+                        <p className="text-sm font-medium ">Dine-in</p>
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                    {restroDetails.is_dine && restroDetails.is_pickup ? (
+                      <div className="mx-2">
+                        <Separator
+                          orientation="vertical"
+                          color="black"
+                          className="bg-gray-400 w-[2px] "
+                        />
                       </div>
                     ) : (
                       ""
