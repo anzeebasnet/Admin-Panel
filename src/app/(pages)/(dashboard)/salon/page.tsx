@@ -18,6 +18,15 @@ import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { clearStationData } from "@/lib/store/features/station/stationSlice";
 import { useSalonList } from "@/lib/react-query/queriesAndMutations";
 import { RootState } from "@/lib/store/store";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { CgArrowLeft } from "react-icons/cg";
 
 const open_sans = Open_Sans({
   weight: ["300", "400", "500", "600", "700"],
@@ -41,11 +50,23 @@ const Page = () => {
       className={` bg-white dark:bg-secondary_dark rounded-sm sm:p-6 p-4 flex flex-col gap-6 shadow-sm shadow-vll_gray dark:shadow-none ${open_sans.className}`}
     >
       <div className="flex sm:flex-row flex-col gap-y-2 sm:justify-between">
-        <h1
-          className={`text-primary_text dark:text-sidebar_blue text-lg font-medium ${open_sans.className}`}
-        >
-          Salon List
-        </h1>
+        <Breadcrumb>
+          <BreadcrumbList className="flex sm:gap-1">
+            <BreadcrumbItem>
+              <BreadcrumbLink href={`/`}>
+                <CgArrowLeft
+                  className="text-primary_text dark:text-sidebar_blue"
+                  size={25}
+                />
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbItem>
+              <BreadcrumbPage className="sm:text-xl text-lg font-medium text-primary_text dark:text-sidebar_blue">
+                Salons
+              </BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
         <Link
           href={"/salon/create"}
           className="bg-primary_text dark:bg-btn_blue text-white text-sm hover:bg-l_orange dark:hover:bg-blue py-1 px-4 rounded place-self-end"
@@ -53,60 +74,62 @@ const Page = () => {
           Add Salon
         </Link>
       </div>
-      {isloading ? (
-        <p>Loading Salon List...</p>
-      ) : salonList && salonList.length > 0 ? (
-        <div className="overflow-x-auto">
-          <ScrollArea
-            className={`${
-              sidebar
-                ? "h-[75vh] xl:w-[75vw] lg:w-[70vw] w-[90vw]"
-                : "h-[75vh] w-[85vw]"
-            }`}
-          >
-            <Table className="">
-              <TableCaption></TableCaption>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Id</TableHead>
-                  <TableHead>Address</TableHead>
-                  <TableHead>Contact</TableHead>
-                </TableRow>
-              </TableHeader>
-              {salonList && salonList.length > 0 ? (
-                <TableBody>
-                  {salonList.map((salon: SalonType) => {
-                    return (
-                      <TableRow key={salon.id} className="">
-                        <TableCell>
-                          <Link
-                            href={`/salon/${salon.id}/${salon.name}`}
-                            className="hover:text-primary_text dark:hover:text-sidebar_blue"
-                          >
-                            {salon.name}
-                          </Link>
-                        </TableCell>
-                        <TableCell>{salon.id}</TableCell>
-                        <TableCell>{salon.address}</TableCell>
-                        <TableCell>{salon.contact_no}</TableCell>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              ) : (
-                <div className="text-base font-normal text-center pt-12">
-                  Couldn&apos;t fetch salon list
-                </div>
-              )}
-            </Table>
-          </ScrollArea>
-        </div>
-      ) : salonList?.length <= 0 ? (
-        <p>No salon found!</p>
-      ) : (
-        <p>Couldn&apos;t load salon list!</p>
-      )}
+      <div className="pl-1">
+        {isloading ? (
+          <p>Loading Salon List...</p>
+        ) : salonList && salonList.length > 0 ? (
+          <div className="overflow-x-auto">
+            <ScrollArea
+              className={`${
+                sidebar
+                  ? "h-[75vh] xl:w-[75vw] lg:w-[70vw] w-[90vw]"
+                  : "h-[75vh] w-[85vw]"
+              }`}
+            >
+              <Table className="">
+                <TableCaption></TableCaption>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Name</TableHead>
+                    <TableHead>Id</TableHead>
+                    <TableHead>Address</TableHead>
+                    <TableHead>Contact</TableHead>
+                  </TableRow>
+                </TableHeader>
+                {salonList && salonList.length > 0 ? (
+                  <TableBody>
+                    {salonList.map((salon: SalonType) => {
+                      return (
+                        <TableRow key={salon.id} className="">
+                          <TableCell>
+                            <Link
+                              href={`/salon/${salon.id}/${salon.name}`}
+                              className="hover:text-primary_text dark:hover:text-sidebar_blue"
+                            >
+                              {salon.name}
+                            </Link>
+                          </TableCell>
+                          <TableCell>{salon.id}</TableCell>
+                          <TableCell>{salon.address}</TableCell>
+                          <TableCell>{salon.contact_no}</TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                ) : (
+                  <div className="text-base font-normal text-center pt-12">
+                    Couldn&apos;t fetch salon list
+                  </div>
+                )}
+              </Table>
+            </ScrollArea>
+          </div>
+        ) : salonList?.length <= 0 ? (
+          <p>No salon found!</p>
+        ) : (
+          <p>Couldn&apos;t load salon list!</p>
+        )}
+      </div>
     </div>
   );
 };

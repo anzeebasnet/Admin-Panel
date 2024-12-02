@@ -22,7 +22,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useEffect, useState } from "react";
-import axios from "@/axios/axios";
 import { CountryType } from "@/types/types";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useSession } from "next-auth/react";
@@ -33,12 +32,19 @@ import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { RootState } from "@/lib/store/store";
 import Image from "next/image";
 import toast from "react-hot-toast";
-import useAxiosPrivateFood from "@/hooks/useAxiosPrivateFood";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { RxCross2 } from "react-icons/rx";
 import { clearSalonData } from "@/lib/store/features/salonDetailSlice/salonDetailSlice";
 import useAxiosPrivateSalon from "@/hooks/useAxiosPrivateSalon";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { CgArrowLeft } from "react-icons/cg";
 
 type PasswordVisibility = {
   password: boolean;
@@ -143,7 +149,6 @@ const Salon = () => {
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [amenityInput, setAmenityInput] = useState("");
-
   const dispatch = useAppDispatch();
   const axiosInstance = useAxiosPrivateSalon();
 
@@ -367,15 +372,27 @@ const Salon = () => {
 
   return (
     <ScrollArea className="bg-white dark:bg-secondary_dark p-6 sm:pr-10 h-[88vh]">
-      <h1
-        className={`text-primary_text dark:text-sidebar_blue text-lg font-medium mb-4 ${open_sans.className}`}
-      >
-        {salonData ? "Update Salon" : "Create Salon"}
-      </h1>
+      <Breadcrumb className="mb-4">
+        <BreadcrumbList className="flex sm:gap-1">
+          <BreadcrumbItem>
+            <BreadcrumbLink href={`/salon`}>
+              <CgArrowLeft
+                className="text-primary_text dark:text-sidebar_blue"
+                size={25}
+              />
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbItem>
+            <BreadcrumbPage className="sm:text-xl text-lg font-medium text-primary_text dark:text-sidebar_blue">
+              {salonData ? `Update ${salonData.name}` : "Create Salon"}
+            </BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col gap-4"
+          className="flex flex-col gap-4 pl-1"
         >
           <div className=" flex flex-col gap-6">
             <div className="grid sm:grid-cols-2 grid-cols-1 gap-x-6 gap-y-4">

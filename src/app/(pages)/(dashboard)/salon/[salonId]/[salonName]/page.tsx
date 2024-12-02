@@ -16,6 +16,15 @@ import { Separator } from "@/components/ui/separator";
 import { GoLink } from "react-icons/go";
 import { FiEdit3 } from "react-icons/fi";
 import { CiEdit } from "react-icons/ci";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { CgArrowLeft } from "react-icons/cg";
 
 const open_sans = Open_Sans({
   weight: ["300", "400", "500", "600", "700"],
@@ -46,15 +55,25 @@ const Page = ({
     <div
       className={` bg-white dark:bg-secondary_dark rounded-sm p-6 flex flex-col gap-6 shadow-sm shadow-vll_gray dark:shadow-none ${open_sans.className}`}
     >
-      <div className="flex sm:flex-row flex-col justify-between">
-        <h1
-          className={`text-primary_text dark:text-sidebar_blue sm:text-xl text-lg font-semibold`}
-        >
-          {SalonName}
-        </h1>
-      </div>
+      <Breadcrumb className="mb-4">
+        <BreadcrumbList className="flex sm:gap-1">
+          <BreadcrumbItem>
+            <BreadcrumbLink href={`/salon`}>
+              <CgArrowLeft
+                className="text-primary_text dark:text-sidebar_blue"
+                size={25}
+              />
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbItem>
+            <BreadcrumbPage className="sm:text-xl text-lg font-medium text-primary_text dark:text-sidebar_blue">
+              {SalonName}
+            </BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
 
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-5 pl-1">
         {isLoading ? (
           <p>Loading Salon Detail... </p>
         ) : !salonDetail ? (
