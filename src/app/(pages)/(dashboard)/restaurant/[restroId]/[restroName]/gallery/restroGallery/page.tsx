@@ -27,6 +27,7 @@ import { AiOutlineDelete } from "react-icons/ai";
 import toast from "react-hot-toast";
 import { duration } from "@mui/material";
 import useAxiosPrivateFood from "@/hooks/useAxiosPrivateFood";
+import Loader from "@/components/ui/Loader";
 
 const formSchema = z.object({
   id: z.string(),
@@ -108,6 +109,7 @@ const Page = ({
       })
       .finally(() => {
         setIsUploading(false);
+        setIsSubmitting(false);
       });
   }
 
@@ -184,7 +186,7 @@ const Page = ({
                 type="submit"
                 className="bg-primary_text dark:bg-sidebar_blue hover:bg-l_orange dark:hover:bg-blue text-white h-8 mb-6 place-self-start rounded-lg"
               >
-                Add Image
+                {isSubmitting ? <Loader /> : "Add Image"}
               </Button>
             </form>
           </Form>
