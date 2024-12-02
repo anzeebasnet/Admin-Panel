@@ -164,6 +164,8 @@ const Page = ({
                   </div>
                 ))}
               </div>
+            ) : acceptedGallery.length < 0 ? (
+              <p>No images found!</p>
             ) : (
               <p>Couldn&apos;t load accepted gallery!</p>
             )}
@@ -213,6 +215,8 @@ const Page = ({
                   </div>
                 ))}
               </div>
+            ) : pendingGallery.length < 0 ? (
+              <p>No images found!</p>
             ) : (
               <p>Couldn&apos;t load pending gallery!</p>
             )}

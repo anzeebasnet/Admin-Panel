@@ -214,6 +214,8 @@ const Page = ({
             </div>
           ))}
         </div>
+      ) : restroGallery?.length < 0 ? (
+        <p>No images in the gallery. Upload some images!</p>
       ) : (
         <p>Could not load gallery.</p>
       )}
