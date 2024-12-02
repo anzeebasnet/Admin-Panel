@@ -105,11 +105,11 @@ const Page = ({
           duration: 5000,
           position: "top-right",
         });
+      })
+      .finally(() => {
+        setIsUploading(false);
       });
   }
-  // https://api.morefood.se/api/moreclub/user/restaurants/gallery/a3033826-214a-46d9-a249-b01622ce1419/
-  // id: a3033826-214a-46d9-a249-b01622ce1419
-  // images[]: (binary)
 
   const DeleteImage = async (imageId: string) => {
     axiosInstance
@@ -182,9 +182,6 @@ const Page = ({
 
               <Button
                 type="submit"
-                onClick={() => {
-                  console.log("Values: ", form.getValues());
-                }}
                 className="bg-primary_text dark:bg-sidebar_blue hover:bg-l_orange dark:hover:bg-blue text-white h-8 mb-6 place-self-start rounded-lg"
               >
                 Add Image
