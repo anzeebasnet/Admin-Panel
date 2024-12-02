@@ -160,21 +160,19 @@ const Page = ({
               </div>
             </div>
             <div className="inline-flex gap-4 pl-1 mt-4">
-              <div className="w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded flex items-center justify-center">
-                <Link
-                  href={`/station/${params.stationId}/${params.stationName}/menu`}
-                  className="flex flex-col gap-2 items-center"
-                >
-                  <Image
-                    src={"/images/menuu.png"}
-                    alt="menu"
-                    width={200}
-                    height={200}
-                    className="w-16 h-16 rounded"
-                  />
-                  <p className="text-sm font-semibold">Menus</p>
-                </Link>
-              </div>
+              <Link
+                href={`/station/${params.stationId}/${params.stationName}/menu`}
+                className="flex flex-col gap-2 justify-center items-center w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded"
+              >
+                <Image
+                  src={"/images/menuu.png"}
+                  alt="menu"
+                  width={200}
+                  height={200}
+                  className="w-16 h-16 rounded"
+                />
+                <p className="text-sm font-semibold">Menus</p>
+              </Link>
             </div>
           </div>
         ) : (
