@@ -270,6 +270,7 @@ const Page = ({
       return;
     }
     console.log(values);
+    setIsSubmitting(true);
 
     const payload = {
       Sunday: {
