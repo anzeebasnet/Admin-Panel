@@ -38,6 +38,15 @@ import { clearStationData } from "@/lib/store/features/station/stationSlice";
 import toast from "react-hot-toast";
 import useAxiosPrivateFood from "@/hooks/useAxiosPrivateFood";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { CgArrowLeft } from "react-icons/cg";
 
 type PasswordVisibility = {
   password: boolean;
@@ -359,15 +368,27 @@ const Station = () => {
 
   return (
     <ScrollArea className="bg-white dark:bg-secondary_dark p-6 h-[88vh]">
-      <h1
-        className={`text-primary_text dark:text-sidebar_blue text-lg font-medium mb-4 ${open_sans.className}`}
-      >
-        {stationData ? "Update Station" : "Create Station"}
-      </h1>
+      <Breadcrumb className="mb-4">
+        <BreadcrumbList className="flex sm:gap-1">
+          <BreadcrumbItem>
+            <BreadcrumbLink href="/station">
+              <CgArrowLeft
+                className="text-primary_text dark:text-sidebar_blue"
+                size={25}
+              />
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbItem>
+            <BreadcrumbPage className="sm:text-xl text-lg font-medium text-primary_text dark:text-sidebar_blue">
+              {stationData ? "Update Station" : "Create Station"}
+            </BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col gap-6"
+          className="flex flex-col gap-6 pl-1"
         >
           {!stationData ? (
             <div className="flex flex-col gap-2">

@@ -9,6 +9,15 @@ import { Open_Sans } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { CgArrowLeft } from "react-icons/cg";
 
 const open_sans = Open_Sans({
   weight: ["300", "400", "500", "600", "700"],
@@ -31,6 +40,7 @@ const Page = ({
     (state: RootState) => state.foodItem.currentFoodItems
   );
   const dispatch = useAppDispatch();
+  const ItemName = decodeURIComponent(params.itemName);
   const [foodDetails, setFoodDetails] = useState<FoodItem | null>(null);
 
   const { data: foodItems, isLoading: isLoading } = useFoodItemList(
@@ -63,75 +73,89 @@ const Page = ({
     <div
       className={` bg-white dark:bg-secondary_dark rounded-sm p-6 flex flex-col gap-6 shadow-sm shadow-vll_gray dark:shadow-none ${open_sans.className}`}
     >
-      <div className="flex sm:flex-row flex-col justify-between">
-        <h1
-          className={`text-primary_text dark:text-sidebar_blue text-lg font-medium ${open_sans.className}`}
-        >
-          Item Detail
-        </h1>
-      </div>
+      <Breadcrumb className="mb-4">
+        <BreadcrumbList className="flex sm:gap-1">
+          <BreadcrumbItem>
+            <BreadcrumbLink
+              href={`/station/${params.stationId}/${params.stationName}/menu/${params.menuId}/${params.menuName}/items`}
+            >
+              <CgArrowLeft
+                className="text-primary_text dark:text-sidebar_blue"
+                size={25}
+              />
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbItem>
+            <BreadcrumbPage className="sm:text-xl text-lg font-medium text-primary_text dark:text-sidebar_blue">
+              {ItemName}
+            </BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
 
-      {isLoading ? (
-        <p>Loading Item Details...</p>
-      ) : !foodDetails ? (
-        <p>Item Detail not found!</p>
-      ) : foodDetails ? (
-        <div className="flex flex-col gap-3">
-          <Image
-            src={foodDetails?.image || ""}
-            alt="menu icon"
-            width={200}
-            height={200}
-            className="rounded"
-          />
-          <div>
-            <h3 className="font-medium text-base capitalize">
-              {foodDetails.name}
-            </h3>
-            <h3 className="font-medium text-sm">Id: {foodDetails.id}</h3>
-            <h3 className="font-medium text-sm">
-              Status: {foodDetails.is_active ? "Active" : "Inactive"}
-            </h3>
-            <h3 className="font-medium text-sm">
-              Actual Price: {foodDetails?.currency_symbol}.{" "}
-              {foodDetails?.actual_price}
-            </h3>
-            <h3 className="font-medium text-sm">
-              Item Price: {foodDetails?.currency_symbol}.{" "}
-              {foodDetails?.item_price}
-            </h3>
-            <h3 className="font-medium text-sm">
-              Retailer Price: {foodDetails?.currency_symbol}.{" "}
-              {foodDetails?.retailer_price}
-            </h3>
-            <h3 className="font-medium text-sm">
-              Discount Percentage: {foodDetails?.discount_percentage || "0"}
-            </h3>
-            <h3 className="font-medium text-sm">
-              Ingredient: {foodDetails?.ingredient}
-            </h3>
-            <h3 className="font-medium text-sm">
-              Description: {foodDetails?.short_description}
-            </h3>
+      <div className="pl-1">
+        {isLoading ? (
+          <p>Loading Item Details...</p>
+        ) : !foodDetails ? (
+          <p>Item Detail not found!</p>
+        ) : foodDetails ? (
+          <div className="flex flex-col gap-3">
+            <Image
+              src={foodDetails?.image || ""}
+              alt="menu icon"
+              width={200}
+              height={200}
+              className="rounded"
+            />
+            <div>
+              <h3 className="font-medium text-base capitalize">
+                {foodDetails.name}
+              </h3>
+              <h3 className="font-medium text-sm">Id: {foodDetails.id}</h3>
+              <h3 className="font-medium text-sm">
+                Status: {foodDetails.is_active ? "Active" : "Inactive"}
+              </h3>
+              <h3 className="font-medium text-sm">
+                Actual Price: {foodDetails?.currency_symbol}.{" "}
+                {foodDetails?.actual_price}
+              </h3>
+              <h3 className="font-medium text-sm">
+                Item Price: {foodDetails?.currency_symbol}.{" "}
+                {foodDetails?.item_price}
+              </h3>
+              <h3 className="font-medium text-sm">
+                Retailer Price: {foodDetails?.currency_symbol}.{" "}
+                {foodDetails?.retailer_price}
+              </h3>
+              <h3 className="font-medium text-sm">
+                Discount Percentage: {foodDetails?.discount_percentage || "0"}
+              </h3>
+              <h3 className="font-medium text-sm">
+                Ingredient: {foodDetails?.ingredient}
+              </h3>
+              <h3 className="font-medium text-sm">
+                Description: {foodDetails?.short_description}
+              </h3>
+            </div>
+            <div className="flex gap-4">
+              {itemData ? (
+                <div>
+                  <Link
+                    href={`/station/${params.stationId}/${params.stationName}/menu/${params.menuId}/${params.menuName}/items/create`}
+                    className="bg-primary_text dark:bg-btn_blue text-white text-sm hover:bg-l_orange dark:hover:bg-blue py-1 px-4 rounded place-self-end"
+                  >
+                    Edit Item
+                  </Link>
+                </div>
+              ) : (
+                ""
+              )}
+            </div>
           </div>
-          <div className="flex gap-4">
-            {itemData ? (
-              <div>
-                <Link
-                  href={`/station/${params.stationId}/${params.stationName}/menu/${params.menuId}/${params.menuName}/items/create`}
-                  className="bg-primary_text dark:bg-btn_blue text-white text-sm hover:bg-l_orange dark:hover:bg-blue py-1 px-4 rounded place-self-end"
-                >
-                  Edit Item
-                </Link>
-              </div>
-            ) : (
-              ""
-            )}
-          </div>
-        </div>
-      ) : (
-        <p>Couldn&apos;t find item detail.</p>
-      )}
+        ) : (
+          <p>Couldn&apos;t find item detail.</p>
+        )}
+      </div>
     </div>
   );
 };

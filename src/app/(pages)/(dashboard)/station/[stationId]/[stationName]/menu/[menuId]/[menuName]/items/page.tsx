@@ -17,6 +17,15 @@ import toast from "react-hot-toast";
 import { AiOutlineDelete } from "react-icons/ai";
 import { CiEdit } from "react-icons/ci";
 import { HiPlusSmall } from "react-icons/hi2";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { CgArrowLeft } from "react-icons/cg";
 
 const open_sans = Open_Sans({
   weight: ["300", "400", "500", "600", "700"],
@@ -35,6 +44,7 @@ const Page = ({
 }) => {
   const dispatch = useAppDispatch();
   const axiosInstance = useAxiosPrivateFood();
+  const MenuName = decodeURIComponent(params.menuName);
   const { data: foodList, isLoading: isLoading } = useFoodItemList(
     params.stationId,
     params.menuId
@@ -70,11 +80,25 @@ const Page = ({
       className={` bg-white dark:bg-secondary_dark rounded-sm p-6 flex flex-col gap-6 shadow-sm shadow-vll_gray dark:shadow-none ${open_sans.className}`}
     >
       <div className="flex sm:flex-row flex-col sm:justify-between sm:gap-0 gap-4">
-        <h1
-          className={`text-primary_text dark:text-sidebar_blue text-lg font-medium ${open_sans.className}`}
-        >
-          Food Items
-        </h1>
+        <Breadcrumb className="mb-4">
+          <BreadcrumbList className="flex sm:gap-1">
+            <BreadcrumbItem>
+              <BreadcrumbLink
+                href={`/station/${params.stationId}/${params.stationName}/menu/`}
+              >
+                <CgArrowLeft
+                  className="text-primary_text dark:text-sidebar_blue"
+                  size={25}
+                />
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbItem>
+              <BreadcrumbPage className="sm:text-xl text-lg font-medium text-primary_text dark:text-sidebar_blue">
+                {MenuName} Items
+              </BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
         <div className="flex gap-4">
           <Link
             href={`/station/${params.stationId}/${params.stationName}/menu/${params.menuId}/${params.menuName}/items/create`}
@@ -86,7 +110,7 @@ const Page = ({
           </Link>
         </div>
       </div>
-      <div>
+      <div className="pl-1">
         {isLoading ? (
           <p>Loading Food Item List...</p>
         ) : foodList && foodList?.length > 0 ? (

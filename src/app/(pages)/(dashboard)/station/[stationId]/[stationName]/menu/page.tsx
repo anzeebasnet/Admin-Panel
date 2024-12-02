@@ -14,6 +14,15 @@ import Link from "next/link";
 import React, { useEffect } from "react";
 import { HiPlusSmall } from "react-icons/hi2";
 import { CiEdit } from "react-icons/ci";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { CgArrowLeft } from "react-icons/cg";
 
 const open_sans = Open_Sans({
   weight: ["300", "400", "500", "600", "700"],
@@ -26,7 +35,7 @@ const Page = ({
   params: { stationId: string; stationName: string };
 }) => {
   const dispatch = useAppDispatch();
-
+  const StationName = decodeURIComponent(params.stationName);
   const { data: menuList, isLoading: isLoading } = useMenuList(
     params.stationId
   );
@@ -40,11 +49,25 @@ const Page = ({
       className={` bg-white dark:bg-secondary_dark rounded-sm p-6 flex flex-col gap-6 shadow-sm shadow-vll_gray dark:shadow-none ${open_sans.className}`}
     >
       <div className="flex sm:flex-row flex-col sm:justify-between sm:gap-0 gap-4">
-        <h1
-          className={`text-primary_text dark:text-sidebar_blue text-lg font-medium ${open_sans.className}`}
-        >
-          Menu List
-        </h1>
+        <Breadcrumb>
+          <BreadcrumbList className="flex sm:gap-1">
+            <BreadcrumbItem>
+              <BreadcrumbLink
+                href={`/station/${params.stationId}/${params.stationName}/`}
+              >
+                <CgArrowLeft
+                  className="text-primary_text dark:text-sidebar_blue"
+                  size={25}
+                />
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbItem>
+              <BreadcrumbPage className="sm:text-xl text-lg font-medium text-primary_text dark:text-sidebar_blue">
+                {StationName} Menu
+              </BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb>
         <div className="flex gap-4">
           <Link
             href={`/station/${params.stationId}/${params.stationName}/menu/create`}
@@ -56,7 +79,7 @@ const Page = ({
           </Link>
         </div>
       </div>
-      <div>
+      <div className="pl-1">
         {isLoading ? (
           <p>Loading Menu List...</p>
         ) : menuList && menuList.length > 0 ? (
@@ -99,7 +122,7 @@ const Page = ({
               </div>
             ))}
           </div>
-        ) : menuList.length <= 0 ? (
+        ) : menuList?.length <= 0 ? (
           <p>No menus found. Add new menu!</p>
         ) : (
           <p>Couldnot load menu list</p>
