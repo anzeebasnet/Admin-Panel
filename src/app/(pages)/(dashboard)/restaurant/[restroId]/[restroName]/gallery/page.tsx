@@ -1,24 +1,19 @@
 "use client";
 
-import {
-  useMenuList,
-  useRestroMenuList,
-} from "@/lib/react-query/queriesAndMutations";
-import {
-  clearMenuItem,
-  setMenuItem,
-} from "@/lib/store/features/menu/menuSlice";
 import { useAppDispatch } from "@/lib/store/hooks";
-import { MenuItem, RestroMenuList } from "@/types/types";
 import { Open_Sans } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect } from "react";
-import { HiPlusSmall } from "react-icons/hi2";
-import { CiEdit } from "react-icons/ci";
-import { AiOutlineDelete } from "react-icons/ai";
-import axios from "axios";
-import toast from "react-hot-toast";
+import React from "react";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { CgArrowLeft } from "react-icons/cg";
 
 const open_sans = Open_Sans({
   weight: ["300", "400", "500", "600", "700"],
@@ -37,15 +32,26 @@ const Page = ({
     <div
       className={` bg-white dark:bg-secondary_dark rounded-sm p-6 flex flex-col gap-6 shadow-sm shadow-vll_gray dark:shadow-none ${open_sans.className}`}
     >
-      <div className="flex sm:flex-row flex-col sm:justify-between sm:gap-0 gap-4">
-        <h1
-          className={`text-primary_text dark:text-sidebar_blue text-lg font-semibold ${open_sans.className}`}
-        >
-          {RestroName} Gallery
-        </h1>
-      </div>
-
-      <div className="flex sm:gap-8 gap-4">
+      <Breadcrumb className="mb-4">
+        <BreadcrumbList className="flex sm:gap-1">
+          <BreadcrumbItem>
+            <BreadcrumbLink
+              href={`/restaurant/${params.restroId}/${params.restroName}`}
+            >
+              <CgArrowLeft
+                className="text-primary_text dark:text-sidebar_blue"
+                size={25}
+              />
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbItem>
+            <BreadcrumbPage className="sm:text-xl text-lg font-medium text-primary_text dark:text-sidebar_blue">
+              {RestroName} Gallery
+            </BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+      <div className="flex sm:gap-8 gap-4 pl-1">
         <Link
           href={`/restaurant/${params.restroId}/${params.restroName}/gallery/restroGallery`}
           className="relative "

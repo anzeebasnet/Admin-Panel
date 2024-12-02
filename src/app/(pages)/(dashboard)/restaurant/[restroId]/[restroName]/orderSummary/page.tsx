@@ -22,7 +22,15 @@ import {
   useRestroList,
 } from "@/lib/react-query/queriesAndMutations";
 import { RootState } from "@/lib/store/store";
-import OrderForm from "@/components/Forms/OrderForm";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { CgArrowLeft } from "react-icons/cg";
 
 const open_sans = Open_Sans({
   weight: ["300", "400", "500", "600", "700"],
@@ -47,40 +55,54 @@ const Page = ({
     <div
       className={` bg-white dark:bg-secondary_dark rounded-sm sm:p-6 p-4 flex flex-col gap-6 shadow-sm shadow-vll_gray dark:shadow-none ${open_sans.className}`}
     >
-      <div className="flex sm:flex-row flex-col gap-y-2 sm:justify-between">
-        <h1
-          className={`text-primary_text dark:text-sidebar_blue text-lg font-medium ${open_sans.className}`}
-        >
-          Order Summary
-        </h1>
-      </div>
-      {isloading ? (
-        <p>Loading...</p>
-      ) : orderSummary && orderSummary.order_items.length > 0 ? (
-        orderSummary.order_items.map((items, index) => (
-          <Table className="" key={index}>
-            <TableCaption></TableCaption>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Item</TableHead>
-                <TableHead>Quantity</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {items.items.map((item, index) => (
-                <TableRow key={index}>
-                  <TableCell>{item.food_item_name}</TableCell>
-                  <TableCell>{item.total_quantity}</TableCell>
+      <Breadcrumb className="mb-4">
+        <BreadcrumbList className="flex sm:gap-1">
+          <BreadcrumbItem>
+            <BreadcrumbLink
+              href={`/restaurant/${params.restroId}/${params.restroName}/`}
+            >
+              <CgArrowLeft
+                className="text-primary_text dark:text-sidebar_blue"
+                size={25}
+              />
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbItem>
+            <BreadcrumbPage className="sm:text-xl text-lg font-medium text-primary_text dark:text-sidebar_blue">
+              Order Summary
+            </BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+      <div className="pl-1">
+        {isloading ? (
+          <p>Loading...</p>
+        ) : orderSummary && orderSummary.order_items.length > 0 ? (
+          orderSummary.order_items.map((items, index) => (
+            <Table className="" key={index}>
+              <TableCaption></TableCaption>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Item</TableHead>
+                  <TableHead>Quantity</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        ))
-      ) : orderSummary && orderSummary?.order_items?.length <= 0 ? (
-        <p>No orders found!</p>
-      ) : (
-        <p>Couldn&apos;t load order summary!</p>
-      )}
+              </TableHeader>
+              <TableBody>
+                {items.items.map((item, index) => (
+                  <TableRow key={index}>
+                    <TableCell>{item.food_item_name}</TableCell>
+                    <TableCell>{item.total_quantity}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          ))
+        ) : orderSummary && orderSummary?.order_items?.length <= 0 ? (
+          <p>No orders found!</p>
+        ) : (
+          <p>Couldn&apos;t load order summary!</p>
+        )}
+      </div>
     </div>
   );
 };

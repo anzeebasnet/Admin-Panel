@@ -14,6 +14,15 @@ import { IoIosMail } from "react-icons/io";
 import { IoLocationSharp } from "react-icons/io5";
 import { MdLocalPhone } from "react-icons/md";
 import { useDispatch } from "react-redux";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { CgArrowLeft } from "react-icons/cg";
 
 const open_sans = Open_Sans({
   weight: ["300", "400", "500", "600", "700"],
@@ -44,15 +53,25 @@ const Page = ({
     <div
       className={` bg-white dark:bg-secondary_dark rounded-sm p-6 flex flex-col gap-6 shadow-sm shadow-vll_gray dark:shadow-none ${open_sans.className}`}
     >
-      <div className="flex sm:flex-row flex-col justify-between">
-        <h1
-          className={`text-primary_text dark:text-sidebar_blue text-lg font-medium ${open_sans.className}`}
-        >
-          {RestroName}
-        </h1>
-      </div>
+      <Breadcrumb>
+        <BreadcrumbList className="flex sm:gap-1">
+          <BreadcrumbItem className="pl-0">
+            <BreadcrumbLink href="/restaurant">
+              <CgArrowLeft
+                className="text-primary_text dark:text-sidebar_blue"
+                size={25}
+              />
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbItem>
+            <BreadcrumbPage className="sm:text-xl text-lg font-medium text-primary_text dark:text-sidebar_blue">
+              {RestroName}
+            </BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
 
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-5 pl-1">
         {isLoading ? (
           <p>Loading Restaurant Detail...</p>
         ) : !restroDetails ? (

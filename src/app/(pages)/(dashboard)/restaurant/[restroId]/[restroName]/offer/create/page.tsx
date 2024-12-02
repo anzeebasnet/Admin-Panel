@@ -40,6 +40,15 @@ import axios from "axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css"; // Import CSS for DatePicker styling
 import toast from "react-hot-toast";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { CgArrowLeft } from "react-icons/cg";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -184,15 +193,29 @@ const Page = ({
 
   return (
     <ScrollArea className="bg-white dark:bg-secondary_dark p-6 h-[88vh]">
-      <h1
-        className={`text-primary_text dark:text-sidebar_blue text-lg font-medium mb-4 ${open_sans.className}`}
-      >
-        Add New Offer
-      </h1>
+      <Breadcrumb className="mb-4">
+        <BreadcrumbList className="flex sm:gap-1">
+          <BreadcrumbItem>
+            <BreadcrumbLink
+              href={`/restaurant/${params.restroId}/${params.restroName}/offer`}
+            >
+              <CgArrowLeft
+                className="text-primary_text dark:text-sidebar_blue"
+                size={25}
+              />
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbItem>
+            <BreadcrumbPage className="sm:text-xl text-lg font-medium text-primary_text dark:text-sidebar_blue">
+              Add New Offer
+            </BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col gap-4"
+          className="flex flex-col gap-4 pl-1"
         >
           <div className="grid sm:grid-cols-2 grid-cols-1 sm:gap-8 gap-4">
             <div className="flex flex-col gap-4">

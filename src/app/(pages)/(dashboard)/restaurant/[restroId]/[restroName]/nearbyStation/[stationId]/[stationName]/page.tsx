@@ -10,13 +10,16 @@ import { Open_Sans } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect } from "react";
-import { HiPlusSmall } from "react-icons/hi2";
-import { CiEdit } from "react-icons/ci";
+import { clearCuisineItem } from "@/lib/store/features/cuisine/CuisineSlice";
 import {
-  clearCuisineItem,
-  setCuisineItem,
-} from "@/lib/store/features/cuisine/CuisineSlice";
-import { NearByStationDetail, NearbyStations } from "@/types/types";
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { CgArrowLeft } from "react-icons/cg";
 
 const open_sans = Open_Sans({
   weight: ["300", "400", "500", "600", "700"],
@@ -46,15 +49,27 @@ const Page = ({
     <div
       className={` bg-white dark:bg-secondary_dark rounded-sm p-6 flex flex-col gap-6 shadow-sm shadow-vll_gray dark:shadow-none ${open_sans.className}`}
     >
-      <div className="flex sm:flex-row flex-col justify-between">
-        <h1
-          className={`text-primary_text dark:text-sidebar_blue text-lg font-medium ${open_sans.className}`}
-        >
-          {stationName}
-        </h1>
-      </div>
+      <Breadcrumb className="mb-4">
+        <BreadcrumbList className="flex sm:gap-1">
+          <BreadcrumbItem>
+            <BreadcrumbLink
+              href={`/restaurant/${params.restroId}/${params.restroName}/nearbyStation`}
+            >
+              <CgArrowLeft
+                className="text-primary_text dark:text-sidebar_blue"
+                size={25}
+              />
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbItem>
+            <BreadcrumbPage className="sm:text-xl text-lg font-medium text-primary_text dark:text-sidebar_blue">
+              {stationName}
+            </BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
 
-      <div className="flex flex-col gap-5">
+      <div className="flex flex-col gap-5 pl-1">
         {isLoading ? (
           <p>Loading Station Detail...</p>
         ) : nearbyStationDetail ? (

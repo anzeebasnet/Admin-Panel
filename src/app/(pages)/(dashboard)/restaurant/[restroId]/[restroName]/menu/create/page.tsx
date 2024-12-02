@@ -20,14 +20,17 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useSession } from "next-auth/react";
 import { Open_Sans } from "next/font/google";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { RootState } from "@/lib/store/store";
 import Image from "next/image";
-import { clearMenuItem } from "@/lib/store/features/menu/menuSlice";
-import toast from "react-hot-toast";
 import useAxiosPrivateFood from "@/hooks/useAxiosPrivateFood";
-import Loader from "@/components/ui/Loader";
-import axios from "axios";
-import axiosFood from "@/axios/axiosFood";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { CgArrowLeft } from "react-icons/cg";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -93,15 +96,29 @@ const CreateRestroMenu = ({
 
   return (
     <ScrollArea className="bg-white dark:bg-secondary_dark p-6 h-[88vh]">
-      <h1
-        className={`text-primary_text dark:text-sidebar_blue text-lg font-medium mb-4 ${open_sans.className}`}
-      >
-        Create Menu for {RestroName}
-      </h1>
+      <Breadcrumb className="mb-4">
+        <BreadcrumbList className="flex sm:gap-1">
+          <BreadcrumbItem>
+            <BreadcrumbLink
+              href={`/restaurant/${params.restroId}/${params.restroName}/menu`}
+            >
+              <CgArrowLeft
+                className="text-primary_text dark:text-sidebar_blue"
+                size={25}
+              />
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbItem>
+            <BreadcrumbPage className="sm:text-xl text-lg font-medium text-primary_text dark:text-sidebar_blue">
+              Create Menu for {RestroName}
+            </BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col gap-4"
+          className="flex flex-col gap-4 pl-1"
         >
           <FormField
             control={form.control}

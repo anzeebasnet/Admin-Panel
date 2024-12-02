@@ -3,21 +3,26 @@
 import {
   useAcceptedGallery,
   usePendingGallery,
-  useRestroMenuList,
 } from "@/lib/react-query/queriesAndMutations";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { Open_Sans } from "next/font/google";
 import Image from "next/image";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AcceptedGallery } from "@/types/types";
 import { RootState } from "@/lib/store/store";
-import axios from "axios";
 import { Button } from "@/components/ui/button";
 import toast from "react-hot-toast";
-import Loader from "@/components/ui/Loader";
 import useAxiosPrivateFood from "@/hooks/useAxiosPrivateFood";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { CgArrowLeft } from "react-icons/cg";
 
 const open_sans = Open_Sans({
   weight: ["300", "400", "500", "600", "700"],
@@ -106,13 +111,26 @@ const Page = ({
     <div
       className={` bg-white dark:bg-secondary_dark rounded-sm p-6 flex flex-col gap-6 shadow-sm shadow-vll_gray dark:shadow-none ${open_sans.className}`}
     >
-      <h1
-        className={`text-primary_text dark:text-sidebar_blue text-lg font-semibold ${open_sans.className}`}
-      >
-        User Gallery
-      </h1>
-
-      <div>
+      <Breadcrumb className="mb-4">
+        <BreadcrumbList className="flex sm:gap-1">
+          <BreadcrumbItem>
+            <BreadcrumbLink
+              href={`/restaurant/${params.restroId}/${params.restroName}/gallery`}
+            >
+              <CgArrowLeft
+                className="text-primary_text dark:text-sidebar_blue"
+                size={25}
+              />
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbItem>
+            <BreadcrumbPage className="sm:text-xl text-lg font-medium text-primary_text dark:text-sidebar_blue">
+              User Gallery
+            </BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+      <div className="pl-1">
         <Tabs defaultValue="accepted" className=" flex flex-col gap-6">
           <TabsList className="bg-white dark:bg-secondary_dark gap-2 place-self-start">
             <TabsTrigger

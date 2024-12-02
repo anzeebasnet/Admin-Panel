@@ -18,6 +18,15 @@ import { clearStationData } from "@/lib/store/features/station/stationSlice";
 import { useStationOrderList } from "@/lib/react-query/queriesAndMutations";
 import { RootState } from "@/lib/store/store";
 import OrderForm from "@/components/Forms/OrderForm";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { CgArrowLeft } from "react-icons/cg";
 
 const open_sans = Open_Sans({
   weight: ["300", "400", "500", "600", "700"],
@@ -90,63 +99,77 @@ const Page = ({
     <div
       className={` bg-white dark:bg-secondary_dark rounded-sm sm:p-6 p-4 flex flex-col gap-6 shadow-sm shadow-vll_gray dark:shadow-none ${open_sans.className}`}
     >
-      <div className="flex sm:flex-row flex-col gap-y-2 sm:justify-between">
-        <h1
-          className={`text-primary_text dark:text-sidebar_blue text-lg font-medium ${open_sans.className}`}
-        >
-          Orders
-        </h1>
-      </div>
-      <div>
-        <OrderForm onSubmit={applyFilters} />
-      </div>
-      {isloading ? (
-        <p>Loading Order List...</p>
-      ) : orderList && orderList.length > 0 ? (
-        <div className="overflow-x-auto">
-          <ScrollArea
-            className={`${
-              sidebar
-                ? "h-[75vh] xl:w-[75vw] lg:w-[70vw] w-[90vw]"
-                : "h-[75vh] w-[85vw]"
-            }`}
-          >
-            <Table className="">
-              <TableCaption></TableCaption>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Order ID</TableHead>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Customer Name</TableHead>
-                  <TableHead>Order Status</TableHead>
-                </TableRow>
-              </TableHeader>
-              {filteredData && filteredData.length > 0 ? (
-                <TableBody>
-                  {filteredData.map((order: StationOrderList) => {
-                    return (
-                      <TableRow key={order.id} className="">
-                        <TableCell>{order.order.order_id}</TableCell>
-                        <TableCell>{order.order.ordered_date}</TableCell>
-                        <TableCell>{order.order.full_name}</TableCell>
-                        <TableCell>{order.order_status}</TableCell>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              ) : (
-                <div className="text-base font-normal text-center pt-12">
-                  No matching items found!
-                </div>
-              )}
-            </Table>
-          </ScrollArea>
+      <Breadcrumb className="mb-4">
+        <BreadcrumbList className="flex sm:gap-1">
+          <BreadcrumbItem>
+            <BreadcrumbLink
+              href={`/restaurant/${params.restroId}/${params.restroName}/`}
+            >
+              <CgArrowLeft
+                className="text-primary_text dark:text-sidebar_blue"
+                size={25}
+              />
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbItem>
+            <BreadcrumbPage className="sm:text-xl text-lg font-medium text-primary_text dark:text-sidebar_blue">
+              Station Orders
+            </BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+      <div className="pl-1">
+        <div>
+          <OrderForm onSubmit={applyFilters} />
         </div>
-      ) : orderList.length <= 0 ? (
-        <p>No orders found!</p>
-      ) : (
-        <p>Couldn&apos;t load order list!</p>
-      )}
+        {isloading ? (
+          <p>Loading Order List...</p>
+        ) : orderList && orderList.length > 0 ? (
+          <div className="overflow-x-auto">
+            <ScrollArea
+              className={`${
+                sidebar
+                  ? "h-[75vh] xl:w-[75vw] lg:w-[70vw] w-[90vw]"
+                  : "h-[75vh] w-[85vw]"
+              }`}
+            >
+              <Table className="">
+                <TableCaption></TableCaption>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Order ID</TableHead>
+                    <TableHead>Date</TableHead>
+                    <TableHead>Customer Name</TableHead>
+                    <TableHead>Order Status</TableHead>
+                  </TableRow>
+                </TableHeader>
+                {filteredData && filteredData.length > 0 ? (
+                  <TableBody>
+                    {filteredData.map((order: StationOrderList) => {
+                      return (
+                        <TableRow key={order.id} className="">
+                          <TableCell>{order.order.order_id}</TableCell>
+                          <TableCell>{order.order.ordered_date}</TableCell>
+                          <TableCell>{order.order.full_name}</TableCell>
+                          <TableCell>{order.order_status}</TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                ) : (
+                  <div className="text-base font-normal text-center pt-12">
+                    No matching items found!
+                  </div>
+                )}
+              </Table>
+            </ScrollArea>
+          </div>
+        ) : orderList?.length <= 0 ? (
+          <p>No orders found!</p>
+        ) : (
+          <p>Couldn&apos;t load order list!</p>
+        )}
+      </div>
     </div>
   );
 };

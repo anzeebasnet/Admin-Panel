@@ -26,6 +26,15 @@ import BasicTimePicker from "@/components/DataSelector/DateSelector";
 import dayjs, { Dayjs } from "dayjs";
 import { useWorkingHours } from "@/lib/react-query/queriesAndMutations";
 import customParseFormat from "dayjs/plugin/customParseFormat";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { CgArrowLeft } from "react-icons/cg";
 
 const daySchema = z.object({
   start_time: z
@@ -142,13 +151,13 @@ const Page = ({
         (day: WorkingHours) => day.day_name === "Saturday"
       );
 
-      console.log("Sunday Data:", sundayData);
-      const startTime = dayjs(sundayData.start_time.trim(), "HH:mm:ss", true);
-      console.log(
-        "Parsed Start Time:",
-        startTime.format("HH:mm:ss"),
-        startTime.isValid()
-      );
+      // console.log("Sunday Data:", sundayData);
+      // const startTime = dayjs(sundayData.start_time.trim(), "HH:mm:ss", true);
+      // console.log(
+      //   "Parsed Start Time:",
+      //   startTime.format("HH:mm:ss"),
+      //   startTime.isValid()
+      // );
 
       if (sundayData) {
         const { is_open, start_time, end_time } = sundayData;
@@ -369,16 +378,30 @@ const Page = ({
 
   return (
     <ScrollArea className="bg-white dark:bg-secondary_dark p-6 h-[88vh]">
-      <h1
-        className={`text-primary_text dark:text-sidebar_blue text-lg font-medium mb-4 ${open_sans.className}`}
-      >
-        Opening Hours for {restroName}
-      </h1>
+      <Breadcrumb className="mb-4">
+        <BreadcrumbList className="flex sm:gap-1">
+          <BreadcrumbItem>
+            <BreadcrumbLink
+              href={`/restaurant/${params.restroId}/${params.restroName}/`}
+            >
+              <CgArrowLeft
+                className="text-primary_text dark:text-sidebar_blue"
+                size={25}
+              />
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbItem>
+            <BreadcrumbPage className="sm:text-xl text-lg font-medium text-primary_text dark:text-sidebar_blue">
+              Opening Hours for {restroName}
+            </BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
 
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col gap-4"
+          className="flex flex-col gap-4 pl-1"
         >
           <div className="xl:grid xl:grid-cols-2 xl:gap-8 gap-4 flex flex-wrap justify-between mt-4 xl:w-[65vw]">
             {/* <TimePicker onTimeChange={handleTimeChange} /> */}
