@@ -15,9 +15,9 @@ import Link from "next/link";
 import React, { useEffect } from "react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { clearStationData } from "@/lib/store/features/station/stationSlice";
 import { useRestroList } from "@/lib/react-query/queriesAndMutations";
 import { RootState } from "@/lib/store/store";
+import { clearRestroData } from "@/lib/store/features/restaurant/restaurantSlice";
 
 const open_sans = Open_Sans({
   weight: ["300", "400", "500", "600", "700"],
@@ -33,7 +33,7 @@ const Page = () => {
   const { data: restroList, isLoading: isloading } = useRestroList();
 
   useEffect(() => {
-    dispatch(clearStationData());
+    dispatch(clearRestroData());
   }, [dispatch]);
 
   return (
