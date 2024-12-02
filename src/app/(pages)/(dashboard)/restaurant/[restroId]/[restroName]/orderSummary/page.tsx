@@ -56,32 +56,30 @@ const Page = ({
       </div>
       {isloading ? (
         <p>Loading...</p>
-      ) : orderSummary ? (
-        orderSummary.order_items.map((items, index) => {
-          return (
-            <Table className="" key={index}>
-              <TableCaption></TableCaption>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Item</TableHead>
-                  <TableHead>Quantity</TableHead>
+      ) : orderSummary && orderSummary.order_items.length > 0 ? (
+        orderSummary.order_items.map((items, index) => (
+          <Table className="" key={index}>
+            <TableCaption></TableCaption>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Item</TableHead>
+                <TableHead>Quantity</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {items.items.map((item, index) => (
+                <TableRow key={index}>
+                  <TableCell>{item.food_item_name}</TableCell>
+                  <TableCell>{item.total_quantity}</TableCell>
                 </TableRow>
-              </TableHeader>
-              <TableBody>
-                {items.items.map((item, index) => {
-                  return (
-                    <TableRow key={index}>
-                      <TableCell>{item.food_item_name}</TableCell>
-                      <TableCell>{item.total_quantity}</TableCell>
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          );
-        })
-      ) : (
+              ))}
+            </TableBody>
+          </Table>
+        ))
+      ) : orderSummary && orderSummary?.order_items?.length <= 0 ? (
         <p>No orders found!</p>
+      ) : (
+        <p>Couldn&apos;t load order summary!</p>
       )}
     </div>
   );
