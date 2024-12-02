@@ -13,25 +13,19 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
-import { Country, WorkingHours } from "@/types/types";
+import { WorkingHours } from "@/types/types";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useSession } from "next-auth/react";
 import { Open_Sans } from "next/font/google";
-import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
-import { RootState } from "@/lib/store/store";
-import Image from "next/image";
-import { clearMenuItem } from "@/lib/store/features/menu/menuSlice";
 import toast from "react-hot-toast";
 import useAxiosPrivateFood from "@/hooks/useAxiosPrivateFood";
 import Loader from "@/components/ui/Loader";
-import axios from "axios";
-import axiosFood from "@/axios/axiosFood";
-import { clearCuisineItem } from "@/lib/store/features/cuisine/CuisineSlice";
 import { Switch } from "@/components/ui/switch";
 import BasicTimePicker from "@/components/DataSelector/DateSelector";
 import dayjs, { Dayjs } from "dayjs";
+import { useWorkingHours } from "@/lib/react-query/queriesAndMutations";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 
 const daySchema = z.object({
   start_time: z
@@ -67,11 +61,9 @@ const Page = ({
 }: {
   params: { restroId: string; restroName: string };
 }) => {
-  const [logoPreview, setLogoPreview] = useState<string | null>(null);
+  dayjs.extend(customParseFormat);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const { data: session } = useSession();
-  const RestroName = decodeURIComponent(params.restroName);
-  const dispatch = useAppDispatch();
   const axiosInstance = useAxiosPrivateFood();
   const [isSundayOn, setIsSundayOn] = useState<boolean>(false);
   const [isMondayOn, setIsMondayOn] = useState<boolean>(false);
@@ -108,7 +100,7 @@ const Page = ({
   );
   const [satendTimeValue, setSatEndTimeValue] = useState<Dayjs | null>(null);
   const restroName = decodeURIComponent(params.restroName);
-  const [hours, setHours] = useState<WorkingHours[]>([]);
+  const { data: hours } = useWorkingHours(params.restroId);
 
   const defaultValues = {
     Sunday: { start_time: "", end_time: "", is_open: false },
@@ -125,136 +117,38 @@ const Page = ({
     defaultValues,
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    if (!session) {
-      console.error("Session not available. Cannot submit.");
-      return;
-    }
-    console.log(values);
-
-    const payload = {
-      Sunday: {
-        start_time: values.Sunday.start_time || "",
-        end_time: values.Sunday.end_time || "",
-        is_open: values.Sunday.is_open,
-      },
-      Monday: {
-        start_time: values.Monday.start_time || "",
-        end_time: values.Monday.end_time || "",
-        is_open: values.Monday.is_open,
-      },
-      Tuesday: {
-        start_time: values.Tuesday.start_time || "",
-        end_time: values.Tuesday.end_time || "",
-        is_open: values.Tuesday.is_open,
-      },
-      Wednesday: {
-        start_time: values.Wednesday.start_time || "",
-        end_time: values.Wednesday.end_time || "",
-        is_open: values.Wednesday.is_open,
-      },
-      Thursday: {
-        start_time: values.Thursday.start_time || "",
-        end_time: values.Thursday.end_time || "",
-        is_open: values.Thursday.is_open,
-      },
-      Friday: {
-        start_time: values.Friday.start_time || "",
-        end_time: values.Friday.end_time || "",
-        is_open: values.Friday.is_open,
-      },
-      Saturday: {
-        start_time: values.Saturday.start_time || "",
-        end_time: values.Saturday.end_time || "",
-        is_open: values.Saturday.is_open,
-      },
-    };
-
-    if (hours) {
-      axiosInstance
-        .patch(
-          `/moreclub/user/restaurants/${params.restroId}/working/hours/`,
-          payload,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        )
-        .then((response) => {
-          // dispatch(setWorkingHours(formValues));
-          console.log("Working hours updated successfully.", response.data);
-          form.reset();
-          toast.success("Working Hours updated successfully!", {
-            duration: 5000,
-            position: "top-right",
-          });
-        })
-        .catch((error) => {
-          console.log("Error updating working hours!", error);
-          toast.error("Error updating Working Hours!");
-        })
-        .finally(() => {
-          setIsSubmitting(false);
-        });
-    } else {
-      axiosInstance
-        .post(
-          `/moreclub/user/restaurants/${params.restroId}/working/hours/`,
-          payload,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        )
-        .then((response) => {
-          // dispatch(setWorkingHours(formValues));
-          console.log("Working hours created successfully.", response.data);
-          form.reset();
-          toast.success("Working Hours created successfully!", {
-            duration: 5000,
-            position: "top-right",
-          });
-        })
-        .catch((error) => {
-          console.log("Error creating working hours!", error);
-          toast.error("Error Creating Working Hours!");
-        })
-        .finally(() => {
-          setIsSubmitting(false);
-        });
-    }
-  }
-
-  useEffect(() => {
-    const fetchWorkingHours = async () => {
-      try {
-        const res = await axiosInstance.get(
-          `/moreclub/user/restaurants/${params.restroId}/working/hours/`
-        );
-        console.log(res.data.data);
-        setHours(res.data.data);
-      } catch (error) {
-        console.log("Error fetching working hours");
-      }
-    };
-
-    fetchWorkingHours();
-  }, [params.restroId]);
-
   // Update form values once hours have been fetched
   useEffect(() => {
     if (hours) {
-      const sundayData = hours.find((day) => day.day_name === "Sunday");
-      const mondayData = hours.find((day) => day.day_name === "Monday");
-      const tuedayData = hours.find((day) => day.day_name === "Tuesday");
-      const wednesdayData = hours.find((day) => day.day_name === "Wednesday");
-      const thursdayData = hours.find((day) => day.day_name === "Thursday");
-      const fridayData = hours.find((day) => day.day_name === "Friday");
-      const saturdayData = hours.find((day) => day.day_name === "Saturday");
+      const sundayData = hours.find(
+        (day: WorkingHours) => day.day_name === "Sunday"
+      );
+      const mondayData = hours.find(
+        (day: WorkingHours) => day.day_name === "Monday"
+      );
+      const tuedayData = hours.find(
+        (day: WorkingHours) => day.day_name === "Tuesday"
+      );
+      const wednesdayData = hours.find(
+        (day: WorkingHours) => day.day_name === "Wednesday"
+      );
+      const thursdayData = hours.find(
+        (day: WorkingHours) => day.day_name === "Thursday"
+      );
+      const fridayData = hours.find(
+        (day: WorkingHours) => day.day_name === "Friday"
+      );
+      const saturdayData = hours.find(
+        (day: WorkingHours) => day.day_name === "Saturday"
+      );
 
       console.log("Sunday Data:", sundayData);
+      const startTime = dayjs(sundayData.start_time.trim(), "HH:mm:ss", true);
+      console.log(
+        "Parsed Start Time:",
+        startTime.format("HH:mm:ss"),
+        startTime.isValid()
+      );
 
       if (sundayData) {
         const { is_open, start_time, end_time } = sundayData;
@@ -368,7 +262,109 @@ const Page = ({
         });
       }
     }
-  }, [hours]); // Trigger only when `hours` changes
+  }, [hours, form]); // Trigger only when `hours` changes
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    if (!session) {
+      console.error("Session not available. Cannot submit.");
+      return;
+    }
+    console.log(values);
+
+    const payload = {
+      Sunday: {
+        start_time: values.Sunday.start_time || "",
+        end_time: values.Sunday.end_time || "",
+        is_open: values.Sunday.is_open,
+      },
+      Monday: {
+        start_time: values.Monday.start_time || "",
+        end_time: values.Monday.end_time || "",
+        is_open: values.Monday.is_open,
+      },
+      Tuesday: {
+        start_time: values.Tuesday.start_time || "",
+        end_time: values.Tuesday.end_time || "",
+        is_open: values.Tuesday.is_open,
+      },
+      Wednesday: {
+        start_time: values.Wednesday.start_time || "",
+        end_time: values.Wednesday.end_time || "",
+        is_open: values.Wednesday.is_open,
+      },
+      Thursday: {
+        start_time: values.Thursday.start_time || "",
+        end_time: values.Thursday.end_time || "",
+        is_open: values.Thursday.is_open,
+      },
+      Friday: {
+        start_time: values.Friday.start_time || "",
+        end_time: values.Friday.end_time || "",
+        is_open: values.Friday.is_open,
+      },
+      Saturday: {
+        start_time: values.Saturday.start_time || "",
+        end_time: values.Saturday.end_time || "",
+        is_open: values.Saturday.is_open,
+      },
+    };
+
+    if (hours?.length > 0) {
+      axiosInstance
+        .patch(
+          `/moreclub/user/restaurants/${params.restroId}/working/hours/`,
+          payload,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then((response) => {
+          // dispatch(setWorkingHours(formValues));
+          console.log("Working hours updated successfully.", response.data);
+          form.reset();
+          toast.success("Working Hours updated successfully!", {
+            duration: 5000,
+            position: "top-right",
+          });
+        })
+        .catch((error) => {
+          console.log("Error updating working hours!", error);
+          toast.error("Error updating Working Hours!");
+        })
+        .finally(() => {
+          setIsSubmitting(false);
+        });
+    } else {
+      axiosInstance
+        .post(
+          `/moreclub/user/restaurants/${params.restroId}/working/hours/`,
+          payload,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        )
+        .then((response) => {
+          // dispatch(setWorkingHours(formValues));
+          console.log("Working hours created successfully.", response.data);
+          form.reset();
+          toast.success("Working Hours created successfully!", {
+            duration: 5000,
+            position: "top-right",
+          });
+        })
+        .catch((error) => {
+          console.log("Error creating working hours!", error);
+          toast.error("Error Creating Working Hours!");
+        })
+        .finally(() => {
+          setIsSubmitting(false);
+        });
+    }
+  }
 
   return (
     <ScrollArea className="bg-white dark:bg-secondary_dark p-6 h-[88vh]">

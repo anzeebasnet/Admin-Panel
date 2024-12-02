@@ -420,6 +420,24 @@ export interface OrderSummary {
   ];
 }
 
+export interface Offer {
+  id: string;
+  name: string;
+  food_item: [
+    {
+      id: string;
+      name: string;
+    }
+  ];
+  currency: string;
+  banner: string;
+  restaurant: string;
+  price: number;
+  description: string;
+  start_offer: string;
+  end_offer: string;
+}
+
 export interface GalleryList {
   id: string;
   image: string;
@@ -469,9 +487,11 @@ export interface SalonVariation {
   duration: string;
   price: string;
   discount_price: string;
-  images: {
-    id: string;
-    image: string;
-  }[];
+  images: [
+    {
+      id: string;
+      image: string;
+    }
+  ];
   currency: string;
 }

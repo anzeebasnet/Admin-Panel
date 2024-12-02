@@ -25,9 +25,9 @@ export default function BasicTimePicker({
           onChange={onChange}
           slotProps={{
             textField: {
-              className: "h-12 w-3 text-sm", // Apply Tailwind classes here
+              className: "h-12 w-3 text-sm ", // Apply Tailwind classes here
               InputProps: {
-                className: "h-8 p-2", // Adjust input padding and height
+                className: "h-8 p-2 dark:bg-white dark:text-black", // Adjust input padding and height
               },
             },
           }}

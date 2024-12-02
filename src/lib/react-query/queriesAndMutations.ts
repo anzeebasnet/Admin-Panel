@@ -58,7 +58,6 @@ export const useUsersList = (
 };
 
 export const useStationList = () =>
-  // setStationList: (data: StationData[]) => void
   {
     const axiosInstance = useAxiosPrivateFood();
     return useQuery({
@@ -66,7 +65,6 @@ export const useStationList = () =>
       queryFn: async () => {
         const res = await axiosInstance.get("/moreclub/stations/list/");
         const data = res.data.data;
-        // setStationList(data);
         return data;
       },
     });
@@ -117,8 +115,8 @@ export const useRestroList = () => {
   const axiosInstance = useAxiosPrivateFood();
   return useQuery({
     queryKey: ["GET_RESTROLIST"],
-    queryFn: async () => {
-      const res = await axiosInstance.get("/restaurants/list/", {
+    queryFn: async () => { 
+      const res = await axiosInstance.get("/moreclub/user/restaurants/list/", {
         headers: {
           "x-country-code": "NP",
         },
@@ -191,6 +189,39 @@ export const useCuisineList = (restroId: string) => {
     queryFn: async () => {
       const res = await axiosInstance.get(
         `/moreclub/user/cuisines/${restroId}/`,
+      );
+      console.log(res.data.data);
+      const data = res.data.data;
+      return data;
+    },
+  });
+};
+
+export const useWorkingHours = (restroId: string) => {
+  const axiosInstance = useAxiosPrivateFood();
+  return useQuery({
+    queryKey: ["GET_WORKINGHOURS"],
+    queryFn: async () => {
+      const res = await axiosInstance.get(
+        `https://api.morefood.se/api/moreclub/user/restaurants/${restroId}/working/hours/`, {
+          
+        }
+      );
+      console.log(res.data.data);
+      const data = res.data.data;
+      return data;
+    },
+  });
+};
+
+
+export const useOfferList = (restroId: string) => {
+  const axiosInstance = useAxiosPrivateFood();
+  return useQuery({
+    queryKey: ["GET_OFFERLIST"],
+    queryFn: async () => {
+      const res = await axiosInstance.get(
+        `/moreclub/user/offers/${restroId}/`,
       );
       console.log(res.data.data);
       const data = res.data.data;

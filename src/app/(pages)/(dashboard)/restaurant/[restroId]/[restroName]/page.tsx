@@ -187,142 +187,131 @@ const Page = ({
               </div>
             </div>
             <div className="inline-flex flex-wrap gap-4 pl-1 mt-4">
-              <div className="w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded flex items-center justify-center">
-                <Link
-                  href={`/restaurant/${params.restroId}/${params.restroName}/menu`}
-                  className="flex flex-col gap-2 items-center"
-                >
-                  <Image
-                    src={"/images/menuu.png"}
-                    alt="menu"
-                    width={200}
-                    height={200}
-                    className="w-16 h-16 rounded"
-                  />
-                  <p className="text-sm font-semibold">Menus</p>
-                </Link>
-              </div>
+              <Link
+                href={`/restaurant/${params.restroId}/${params.restroName}/menu`}
+                className="flex flex-col items-center justify-center gap-2 w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded"
+              >
+                <Image
+                  src={"/images/menuu.png"}
+                  alt="menu"
+                  width={200}
+                  height={200}
+                  className="w-16 h-16 rounded"
+                />
+                <p className="text-sm font-semibold">Menus</p>
+              </Link>
 
-              <div className="w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded flex items-center justify-center">
-                <Link
-                  href={`/restaurant/${params.restroId}/${params.restroName}/cuisines`}
-                  className="flex flex-col gap-2 items-center"
-                >
-                  <Image
-                    src={"/images/cuisine.png"}
-                    alt="menu"
-                    width={200}
-                    height={200}
-                    className="w-16 h-16  rounded"
-                  />
-                  <p className="text-sm font-semibold">Cuisines</p>
-                </Link>
-              </div>
-              <div className="w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded flex items-center justify-center">
-                <Link
-                  href={`/restaurant/${params.restroId}/${params.restroName}/offer`}
-                  className="flex flex-col gap-2 items-center"
-                >
-                  <Image
-                    src={"/images/offer.png"}
-                    alt="menu"
-                    width={200}
-                    height={200}
-                    className="w-16 h-16  rounded"
-                  />
-                  <p className="text-sm font-semibold">Offers</p>
-                </Link>
-              </div>
-              <div className="w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded flex items-center justify-center">
-                <Link
-                  href={`/restaurant/${params.restroId}/${params.restroName}/order`}
-                  className="flex flex-col gap-2 items-center"
-                >
-                  <Image
-                    src={"/images/order.png"}
-                    alt="menu"
-                    width={200}
-                    height={200}
-                    className="w-16 h-16  rounded"
-                  />
-                  <p className="text-sm font-semibold">Orders</p>
-                </Link>
-              </div>
-              <div className="w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded flex items-center justify-center">
-                <Link
-                  href={`/restaurant/${params.restroId}/${params.restroName}/hours`}
-                  className="flex flex-col gap-2 items-center"
-                >
-                  <Image
-                    src={"/images/opening.png"}
-                    alt="menu"
-                    width={200}
-                    height={200}
-                    className="w-16 h-16  rounded"
-                  />
-                  <p className="text-sm font-semibold">Opening Hours</p>
-                </Link>
-              </div>
-              <div className="w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded flex items-center justify-center">
-                <Link
-                  href={`/restaurant/${params.restroId}/${params.restroName}/nearbyStation`}
-                  className="flex flex-col gap-2 items-center"
-                >
-                  <Image
-                    src={"/images/station.png"}
-                    alt="menu"
-                    width={200}
-                    height={200}
-                    className="w-16 h-16  rounded"
-                  />
-                  <p className="text-sm font-semibold">Nearby Stations</p>
-                </Link>
-              </div>
-              <div className="w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded flex items-center justify-center">
-                <Link
-                  href={`/restaurant/${params.restroId}/${params.restroName}/gallery`}
-                  className="flex flex-col gap-2 items-center"
-                >
-                  <Image
-                    src={"/images/gallery.png"}
-                    alt="menu"
-                    width={200}
-                    height={200}
-                    className="w-16 h-16  rounded"
-                  />
-                  <p className="text-sm font-semibold">Gallery</p>
-                </Link>
-              </div>
-              <div className="w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded flex items-center justify-center">
-                <Link
-                  href={`/restaurant/${params.restroId}/${params.restroName}/stationOrder`}
-                  className="flex flex-col gap-2 items-center"
-                >
-                  <Image
-                    src={"/images/statOrder.png"}
-                    alt="menu"
-                    width={200}
-                    height={200}
-                    className="w-16 h-16  rounded"
-                  />
-                  <p className="text-sm font-semibold">Station Orders</p>
-                </Link>
-              </div>
-              <div className="w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded flex items-center justify-center">
-                <Link
-                  href={`/restaurant/${params.restroId}/${params.restroName}/orderSummary`}
-                  className="flex flex-col gap-2 items-center"
-                >
-                  <Image
-                    src={"/images/orderSummary.png"}
-                    alt="menu"
-                    width={200}
-                    height={200}
-                    className="w-16 h-16  rounded"
-                  />
-                  <p className="text-sm font-semibold">Order Summary</p>
-                </Link>
-              </div>
+              <Link
+                href={`/restaurant/${params.restroId}/${params.restroName}/cuisines`}
+                className="flex flex-col items-center justify-center gap-2 w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded"
+              >
+                <Image
+                  src={"/images/cuisine.png"}
+                  alt="menu"
+                  width={200}
+                  height={200}
+                  className="w-16 h-16  rounded"
+                />
+                <p className="text-sm font-semibold">Cuisines</p>
+              </Link>
+
+              <Link
+                href={`/restaurant/${params.restroId}/${params.restroName}/offer`}
+                className="flex flex-col items-center justify-center gap-2 w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded"
+              >
+                <Image
+                  src={"/images/offer.png"}
+                  alt="menu"
+                  width={200}
+                  height={200}
+                  className="w-16 h-16  rounded"
+                />
+                <p className="text-sm font-semibold">Offers</p>
+              </Link>
+
+              <Link
+                href={`/restaurant/${params.restroId}/${params.restroName}/order`}
+                className="flex flex-col items-center justify-center gap-2 w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded"
+              >
+                <Image
+                  src={"/images/order.png"}
+                  alt="menu"
+                  width={200}
+                  height={200}
+                  className="w-16 h-16  rounded"
+                />
+                <p className="text-sm font-semibold">Orders</p>
+              </Link>
+
+              <Link
+                href={`/restaurant/${params.restroId}/${params.restroName}/hours`}
+                className="flex flex-col items-center justify-center gap-2 w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded"
+              >
+                <Image
+                  src={"/images/opening.png"}
+                  alt="menu"
+                  width={200}
+                  height={200}
+                  className="w-16 h-16  rounded"
+                />
+                <p className="text-sm font-semibold">Opening Hours</p>
+              </Link>
+
+              <Link
+                href={`/restaurant/${params.restroId}/${params.restroName}/nearbyStation`}
+                className="flex flex-col items-center justify-center gap-2 w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded"
+              >
+                <Image
+                  src={"/images/station.png"}
+                  alt="menu"
+                  width={200}
+                  height={200}
+                  className="w-16 h-16  rounded"
+                />
+                <p className="text-sm font-semibold">Nearby Stations</p>
+              </Link>
+
+              <Link
+                href={`/restaurant/${params.restroId}/${params.restroName}/gallery`}
+                className="flex flex-col items-center justify-center gap-2 w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded"
+              >
+                <Image
+                  src={"/images/gallery.png"}
+                  alt="menu"
+                  width={200}
+                  height={200}
+                  className="w-16 h-16  rounded"
+                />
+                <p className="text-sm font-semibold">Gallery</p>
+              </Link>
+
+              <Link
+                href={`/restaurant/${params.restroId}/${params.restroName}/stationOrder`}
+                className="flex flex-col items-center justify-center gap-2 w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded"
+              >
+                <Image
+                  src={"/images/statOrder.png"}
+                  alt="menu"
+                  width={200}
+                  height={200}
+                  className="w-16 h-16  rounded"
+                />
+                <p className="text-sm font-semibold">Station Orders</p>
+              </Link>
+
+              <Link
+                href={`/restaurant/${params.restroId}/${params.restroName}/orderSummary`}
+                className="flex flex-col items-center justify-center gap-2 w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded"
+              >
+                <Image
+                  src={"/images/orderSummary.png"}
+                  alt="menu"
+                  width={200}
+                  height={200}
+                  className="w-16 h-16  rounded"
+                />
+                <p className="text-sm font-semibold">Order Summary</p>
+              </Link>
             </div>
           </div>
         ) : (
