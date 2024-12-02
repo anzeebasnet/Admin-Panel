@@ -82,15 +82,30 @@ const Page = ({
 
     formData.append("id", params.restroId);
 
-    axiosInstance.post(
-      `/moreclub/user/restaurants/gallery/${params.restroId}/`,
-      formData,
-      {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
+    axiosInstance
+      .post(
+        `/moreclub/user/restaurants/gallery/${params.restroId}/`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      )
+      .then((response) => {
+        console.log("Added image successfully", response);
+        toast.success("Successfully added image!", {
+          duration: 5000,
+          position: "top-right",
+        });
+      })
+      .catch((error) => {
+        console.log("Error adding image", error);
+        toast.error("Error adding image!", {
+          duration: 5000,
+          position: "top-right",
+        });
+      });
   }
   // https://api.morefood.se/api/moreclub/user/restaurants/gallery/a3033826-214a-46d9-a249-b01622ce1419/
   // id: a3033826-214a-46d9-a249-b01622ce1419
@@ -172,7 +187,7 @@ const Page = ({
                 }}
                 className="bg-primary_text dark:bg-sidebar_blue hover:bg-l_orange dark:hover:bg-blue text-white h-8 mb-6 place-self-start rounded-lg"
               >
-                Create Menu
+                Add Image
               </Button>
             </form>
           </Form>
