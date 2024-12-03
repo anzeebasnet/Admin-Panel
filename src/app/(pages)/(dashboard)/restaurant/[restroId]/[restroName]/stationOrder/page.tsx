@@ -39,6 +39,7 @@ const Page = ({
   params: { restroId: string; restroName: string };
 }) => {
   const dispatch = useAppDispatch();
+  const restroName = decodeURIComponent(params.restroName);
   const sidebar = useAppSelector(
     (state: RootState) => state.collapsible.collapse
   );
@@ -113,12 +114,12 @@ const Page = ({
           </BreadcrumbItem>
           <BreadcrumbItem>
             <BreadcrumbPage className="sm:text-xl text-lg font-medium text-primary_text dark:text-sidebar_blue">
-              Station Orders
+              {restroName} Station Orders
             </BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <div className="pl-1">
+      <div className="pl-1 flex flex-col gap-4">
         <div>
           <OrderForm onSubmit={applyFilters} />
         </div>

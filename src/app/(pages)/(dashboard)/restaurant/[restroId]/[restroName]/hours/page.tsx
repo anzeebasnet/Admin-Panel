@@ -392,7 +392,7 @@ const Page = ({
           </BreadcrumbItem>
           <BreadcrumbItem>
             <BreadcrumbPage className="sm:text-xl text-lg font-medium text-primary_text dark:text-sidebar_blue">
-              Opening Hours for {restroName}
+              {restroName} Opening Duration
             </BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>

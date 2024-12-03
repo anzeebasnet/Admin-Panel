@@ -129,7 +129,7 @@ const Page = () => {
       </div>
       {/* {loading ? (
         <div className="text-center font-normal text-lg">Loading...</div>
-      ) : userList.length > 0 ? (
+      ) : userList?.length > 0 ? (
         <div>
           <div className="overflow-x-auto">
             <div className="lg:w-[80vw] w-[90vw]">

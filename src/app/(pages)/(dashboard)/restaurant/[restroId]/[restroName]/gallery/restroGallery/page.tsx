@@ -202,12 +202,22 @@ const Page = ({
                     </FormItem>
                   )}
                 />
-                <Button
-                  type="submit"
-                  className="bg-primary_text dark:bg-sidebar_blue hover:bg-l_orange dark:hover:bg-blue text-white h-8 mb-6 place-self-start rounded-lg"
-                >
-                  {isSubmitting ? <Loader /> : "Add Image"}
-                </Button>
+                <div className="flex gap-4">
+                  <Button
+                    type="submit"
+                    className="bg-primary_text dark:bg-sidebar_blue hover:bg-l_orange dark:hover:bg-blue text-white h-8 mb-6 place-self-start rounded-lg"
+                  >
+                    {isSubmitting ? <Loader /> : "Add Image"}
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      setIsUploading(false);
+                    }}
+                    className="bg-primary_text dark:bg-sidebar_blue hover:bg-l_orange dark:hover:bg-blue text-white h-8 mb-6 place-self-start rounded-lg"
+                  >
+                    Cancel
+                  </Button>
+                </div>
               </form>
             </Form>
           </div>
@@ -217,9 +227,9 @@ const Page = ({
               onClick={() => {
                 setIsUploading(true);
               }}
-              className="bg-primary_text dark:bg-sidebar_blue"
+              className="bg-primary_text dark:bg-sidebar_blue text-white"
             >
-              Upload Gallery
+              Upload Images
             </Button>
           </div>
         )}

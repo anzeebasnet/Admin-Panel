@@ -42,6 +42,7 @@ const config = {
         grayy: "hsl(var(--grayy))",
         sidebar_gray: "hsl(var(--sidebar-gray))",
         sidebar_blue: "hsl(var(--sidebar-blue))",
+        card_blue: "hsl(var(--card-blue))",
         teal: "hsl(var(--teal))",
         deep_teal: "hsl(var(--deep-teal))",
         light_sea_green: "hsl(var(--light-sea-green))",

@@ -38,6 +38,7 @@ const Page = ({
 }) => {
   const dispatch = useAppDispatch();
   const { data: offers, isLoading: isLoading } = useOfferList(params.restroId);
+  const restroName = decodeURIComponent(params.restroName);
 
   useEffect(() => {
     dispatch(clearCuisineItem());
@@ -62,7 +63,7 @@ const Page = ({
             </BreadcrumbItem>
             <BreadcrumbItem>
               <BreadcrumbPage className="sm:text-xl text-lg font-medium text-primary_text dark:text-sidebar_blue">
-                Offers
+                {restroName} Offers
               </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
@@ -82,7 +83,7 @@ const Page = ({
         {isLoading ? (
           <p>Loading offers...</p>
         ) : offers && offers.length > 0 ? (
-          <div className="flex flex-wrap gap-4">
+          <div className="flex flex-wrap sm:gap-8 gap-4">
             {offers.map((offer: Offer, index: any) => (
               <div
                 key={index}
@@ -96,24 +97,39 @@ const Page = ({
                     height={100}
                     className="w-80 h-64 rounded-t-md object-fill"
                   />
-                  <h2 className="absolute top-0 right-0 bg-beige text-deep_red dark:bg-sidebar_blue w-full p-4 rounded-t-md bg-opacity-50 text-center dark:text-white font-semibold place-self-center text-sm capitalize">
+                  <h2 className="absolute top-0 right-0 bg-beige dark:bg-card_blue text-deep_red dark:text-white w-full p-4 rounded-t-md bg-opacity-5 text-center  font-semibold place-self-center text-sm capitalize">
                     {offer.name}
                   </h2>
                 </div>
-                <div className="flex flex-col p-4 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue rounded-b-md">
-                  <p>
-                    Starts on {new Date(offer.start_offer).toLocaleDateString()}{" "}
-                    at {new Date(offer.start_offer).toLocaleTimeString()}
+                <div className="flex flex-col gap-1 p-4 bg-beige dark:bg-card_blue rounded-b-md">
+                  <p className="text-[15px] font-medium">
+                    Starts at{" "}
+                    {new Date(offer.start_offer).toLocaleDateString("en-US", {
+                      weekday: "long",
+                      day: "2-digit",
+                      month: "short",
+                      year: "2-digit",
+                    })}
                   </p>
-                  <p>
-                    Ends on {new Date(offer.end_offer).toLocaleDateString()} at{" "}
-                    {new Date(offer.end_offer).toLocaleTimeString()}
+                  <p className="text-[15px] font-medium">
+                    Up-to{" "}
+                    {new Date(offer.end_offer).toLocaleDateString("en-US", {
+                      weekday: "long",
+                      day: "2-digit",
+                      month: "short",
+                      year: "2-digit",
+                    })}
                   </p>
-                  {offer.food_item?.map((item, index) => (
-                    <div key={index}>
-                      <p>{item.name}</p>
-                    </div>
-                  ))}
+                  <div className="flex gap-2 mt-2">
+                    {offer.food_item?.map((item, index) => (
+                      <div key={index}>
+                        <p className="bg-deep_red dark:bg-sidebar_blue text-white rounded text-[13px] p-1">
+                          {item.name}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-sm font-normal ">Rs. {offer.price} only</p>
                 </div>
               </div>
             ))}

@@ -129,12 +129,12 @@ const Page = ({
                     />
                   </Link>
                   <button
-                    className="absolute right-0 top-0 bg-white p-1 rounded-tr-md rounded-bl-md "
+                    className="absolute right-0 top-0 bg-red-500  p-1 rounded-tr-md rounded-bl-md "
                     onClick={() => {
                       deleteMenu(menu.id);
                     }}
                   >
-                    <AiOutlineDelete size="20" color="red" />
+                    <AiOutlineDelete size="20" className="text-white" />
                   </button>
                 </div>
                 <div className="flex justify-between px-2 pb-4">
@@ -154,7 +154,7 @@ const Page = ({
               </div>
             ))}
           </div>
-        ) : restroMenuList.length <= 0 ? (
+        ) : restroMenuList?.length <= 0 ? (
           <p>No menus found. Add new menu!</p>
         ) : (
           <p>Couldn&apos;t load menu list</p>

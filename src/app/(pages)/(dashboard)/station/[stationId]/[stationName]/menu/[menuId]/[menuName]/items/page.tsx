@@ -133,12 +133,15 @@ const Page = ({
                     />
                   </Link>
                   <button
-                    className="absolute right-0 top-0 bg-white p-1 rounded-tr-md "
+                    className="absolute right-0 top-0 bg-red-500 dark:bg-sidebar_blue p-1 rounded-tr-md "
                     onClick={() => {
                       deleteItem(food.id);
                     }}
                   >
-                    <AiOutlineDelete size={22} color="red" />
+                    <AiOutlineDelete
+                      size={22}
+                      className="text-white dark:text-white"
+                    />
                   </button>
                 </div>
                 <div className="flex justify-between px-2  pb-4">
@@ -152,7 +155,10 @@ const Page = ({
                     }}
                     className=""
                   >
-                    <CiEdit size={22} className="text-primary_text " />
+                    <CiEdit
+                      size={22}
+                      className="text-primary_text dark:text-sidebar_blue "
+                    />
                   </Link>
                 </div>
               </div>

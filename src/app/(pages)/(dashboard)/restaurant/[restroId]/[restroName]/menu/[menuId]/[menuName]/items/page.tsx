@@ -179,7 +179,7 @@ const Page = ({
               </div>
             ))}
           </div>
-        ) : foodList.length <= 0 ? (
+        ) : foodList?.length <= 0 ? (
           <p>No items found! Add new items.</p>
         ) : (
           <p>Couldn&apos;t load food items!</p>

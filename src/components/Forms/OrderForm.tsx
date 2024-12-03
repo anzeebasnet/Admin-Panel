@@ -144,7 +144,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ onSubmit }) => {
 
         <Button
           type="submit"
-          className="bg-primary_text dark:bg-btn_blue text-white hover:bg-l_orange  dark:hover:bg-blue rounded w-max h-8 md:self-start self-center px-8 mt-2"
+          className="bg-primary_text dark:bg-btn_blue text-white hover:bg-l_orange  dark:hover:bg-blue rounded w-max h-8 place-self-center px-8 mt-2"
         >
           Filter
         </Button>

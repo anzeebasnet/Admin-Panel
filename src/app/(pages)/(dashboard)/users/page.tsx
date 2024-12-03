@@ -150,7 +150,7 @@ const Page = () => {
           <div className="w-full sm:h-96 h-36 p-4 text-center font-normal text-base bg-white dark:bg-primary_dark rounded-sm shadow-md shadow-vll_gray dark:shadow-none">
             Loading...
           </div>
-        ) : userList.length > 0 ? (
+        ) : userList?.length > 0 ? (
           <div>
             <ScrollArea
               className={`${

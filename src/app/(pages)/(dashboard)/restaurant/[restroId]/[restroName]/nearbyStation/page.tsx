@@ -88,7 +88,7 @@ const Page = ({
               </Link>
             ))}
           </div>
-        ) : nearbyStations.length <= 0 ? (
+        ) : nearbyStations?.length <= 0 ? (
           <p>No stations found nearby.</p>
         ) : (
           <p>Couldn&apos;t load nearby station list!</p>
