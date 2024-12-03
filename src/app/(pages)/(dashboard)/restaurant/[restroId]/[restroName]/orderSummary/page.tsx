@@ -74,7 +74,7 @@ const Page = ({
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <div className="pl-1">
+      <div className="">
         {isloading ? (
           <p>Loading...</p>
         ) : orderSummary && orderSummary.order_items.length > 0 ? (

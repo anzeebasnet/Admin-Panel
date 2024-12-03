@@ -1,21 +1,13 @@
 "use client";
 
-import {
-  useCuisineList,
-  useOfferList,
-} from "@/lib/react-query/queriesAndMutations";
+import { useOfferList } from "@/lib/react-query/queriesAndMutations";
 import { useAppDispatch } from "@/lib/store/hooks";
-import { Cuisine, Offer } from "@/types/types";
+import { Offer } from "@/types/types";
 import { Open_Sans } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React from "react";
 import { HiPlusSmall } from "react-icons/hi2";
-import { CiEdit } from "react-icons/ci";
-import {
-  clearCuisineItem,
-  setCuisineItem,
-} from "@/lib/store/features/cuisine/CuisineSlice";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -36,13 +28,8 @@ const Page = ({
 }: {
   params: { restroId: string; restroName: string };
 }) => {
-  const dispatch = useAppDispatch();
   const { data: offers, isLoading: isLoading } = useOfferList(params.restroId);
   const restroName = decodeURIComponent(params.restroName);
-
-  useEffect(() => {
-    dispatch(clearCuisineItem());
-  }, [dispatch]);
 
   return (
     <div
@@ -71,7 +58,8 @@ const Page = ({
         <div className="flex gap-4">
           <Link
             href={`/restaurant/${params.restroId}/${params.restroName}/offer/create`}
-            className="bg-primary_text dark:bg-btn_blue text-white text-sm hover:bg-l_orange dark:hover:bg-blue py-1 px-4 rounded place-self-end"
+            className="bg-primary_text dark:bg-btn_blue text-white text-sm hover:bg-l_orange dark:hover:bg-blue 
+            py-1 px-4 rounded place-self-end"
           >
             <div className="flex gap-1 items-center">
               Add New Offer <HiPlusSmall size={23} />
@@ -87,7 +75,7 @@ const Page = ({
             {offers.map((offer: Offer, index: any) => (
               <div
                 key={index}
-                className="flex flex-col gap-2 dark:bg-primary_dark rounded-md bg-white shadow-md shadow-vll_gray dark:shadow-none"
+                className="flex flex-col dark:bg-primary_dark rounded-md bg-white shadow-md shadow-vll_gray dark:shadow-none"
               >
                 <div className="relative">
                   <Image
@@ -95,9 +83,12 @@ const Page = ({
                     alt="offer banner"
                     width={100}
                     height={100}
-                    className="w-80 h-64 rounded-t-md object-fill"
+                    className="w-80 h-64 rounded-t-md"
                   />
-                  <h2 className="absolute top-0 right-0 bg-beige dark:bg-card_blue text-deep_red dark:text-white w-full p-4 rounded-t-md bg-opacity-5 text-center  font-semibold place-self-center text-sm capitalize">
+                  <h2
+                    className="absolute top-0 right-0 bg-beige dark:bg-card_blue text-deep_red dark:text-white w-full 
+                  p-4 rounded-t-md bg-opacity-5 text-center  font-semibold place-self-center text-sm capitalize"
+                  >
                     {offer.name}
                   </h2>
                 </div>
@@ -129,7 +120,9 @@ const Page = ({
                       </div>
                     ))}
                   </div>
-                  <p className="text-sm font-normal ">Rs. {offer.price} only</p>
+                  <p className="text-sm font-medium mt-1">
+                    Rs. {offer.price} only
+                  </p>
                 </div>
               </div>
             ))}

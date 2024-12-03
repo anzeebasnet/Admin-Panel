@@ -74,7 +74,7 @@ const Page = () => {
           Add Salon
         </Link>
       </div>
-      <div className="pl-1">
+      <div className="">
         {isloading ? (
           <p>Loading Salon List...</p>
         ) : salonList && salonList.length > 0 ? (

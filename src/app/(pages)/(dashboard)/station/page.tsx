@@ -74,7 +74,7 @@ const Page = () => {
           Add Station
         </Link>
       </div>
-      <div className="pl-1">
+      <div className="">
         {isLoading ? (
           <p>Loading Station List...</p>
         ) : stations && stations.length > 0 ? (

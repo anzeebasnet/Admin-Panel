@@ -131,7 +131,7 @@ const Page = ({
                       ""
                     )}
                     {restroDetails.is_delivery && restroDetails.is_dine ? (
-                      <div className="mx-2">
+                      <div className="mx-1">
                         <Separator
                           orientation="vertical"
                           color="black"
@@ -139,7 +139,7 @@ const Page = ({
                         />
                       </div>
                     ) : restroDetails.is_delivery && restroDetails.is_pickup ? (
-                      <div className="mx-2">
+                      <div className="mx-1">
                         <Separator
                           orientation="vertical"
                           color="black"
@@ -157,7 +157,7 @@ const Page = ({
                       ""
                     )}
                     {restroDetails.is_dine && restroDetails.is_pickup ? (
-                      <div className="mx-2">
+                      <div className="mx-1">
                         <Separator
                           orientation="vertical"
                           color="black"

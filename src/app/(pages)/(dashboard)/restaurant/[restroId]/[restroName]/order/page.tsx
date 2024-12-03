@@ -122,7 +122,7 @@ const Page = ({
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <div className="pl-1 flex flex-col gap-4">
+      <div className=" flex flex-col gap-4">
         <div>
           <OrderForm onSubmit={applyFilters} />
         </div>
