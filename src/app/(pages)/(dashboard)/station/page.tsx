@@ -82,7 +82,7 @@ const Page = () => {
             <ScrollArea
               className={`${
                 sidebar
-                  ? "h-[75vh] xl:w-[76vw] lg:w-[70vw] w-[90vw]"
+                  ? "h-[75vh] xl:w-[76vw] lg:w-[70vw] w-[85vw]"
                   : "h-[75vh] w-[88vw]"
               }`}
             >
