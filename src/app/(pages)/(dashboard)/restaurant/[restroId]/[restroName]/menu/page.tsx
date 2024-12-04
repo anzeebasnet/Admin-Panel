@@ -13,7 +13,7 @@ import { MenuItem, RestroMenuList } from "@/types/types";
 import { Open_Sans } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { HiPlusSmall } from "react-icons/hi2";
 import { CiEdit } from "react-icons/ci";
 import { AiOutlineDelete } from "react-icons/ai";
@@ -29,6 +29,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { CgArrowLeft } from "react-icons/cg";
+import DialogLoader from "@/components/ui/DialogLoader";
 
 const open_sans = Open_Sans({
   weight: ["300", "400", "500", "600", "700"],
@@ -43,6 +44,7 @@ const Page = ({
   const dispatch = useAppDispatch();
   const axiosInstance = useAxiosPrivateFood();
   const RestroName = decodeURIComponent(params.restroName);
+  const [deletingMenu, setDeletingMenu] = useState<RestroMenuList | null>(null);
   const { data: restroMenuList, isLoading: isLoading } = useRestroMenuList(
     params.restroId
   );
@@ -51,7 +53,8 @@ const Page = ({
     dispatch(clearMenuItem());
   }, [dispatch]);
 
-  const deleteMenu = async (menuId: string) => {
+  const deleteMenu = async (menu: RestroMenuList, menuId: string) => {
+    setDeletingMenu(menu);
     axiosInstance
       .delete(`/moreclub/user/menus/${menuId}/${params.restroId}/`)
       .then((response) => {
@@ -67,6 +70,9 @@ const Page = ({
           duration: 5000,
           position: "top-right",
         });
+      })
+      .finally(() => {
+        setDeletingMenu(null);
       });
   };
 
@@ -129,12 +135,12 @@ const Page = ({
                     />
                   </Link>
                   <button
-                    className="absolute right-0 top-0 bg-red-500  p-1 rounded-tr-md rounded-bl-md "
+                    className="absolute right-0 top-0 bg-red-500 text-white hover:bg-white hover:text-red-500  p-1 rounded-tr-md rounded-bl-md "
                     onClick={() => {
-                      deleteMenu(menu.id);
+                      deleteMenu(menu, menu.id);
                     }}
                   >
-                    <AiOutlineDelete size="20" className="text-white" />
+                    <AiOutlineDelete size="20" className="" />
                   </button>
                 </div>
                 <div className="flex justify-between px-2 pb-4">
@@ -151,6 +157,26 @@ const Page = ({
                     {menu.no_of_items} items
                   </Link>
                 </div>
+                {deletingMenu ? (
+                  <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-25 flex justify-center items-center z-50">
+                    <div className="bg-white sm:p-8 p-4 rounded shadow-lg lg:w-[30vw] sm:w-[50vw] w-[96vw] flex flex-col gap-2 items-center justify-center">
+                      <DialogLoader />
+                      <p className="text-black font-normal text-base">
+                        Deleting {deletingMenu.name}...
+                      </p>
+                      <button
+                        onClick={() => {
+                          setDeletingMenu(null);
+                        }}
+                        className="bg-red-500 text-white text-sm px-3 py-1 rounded mt-2"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  ""
+                )}
               </div>
             ))}
           </div>

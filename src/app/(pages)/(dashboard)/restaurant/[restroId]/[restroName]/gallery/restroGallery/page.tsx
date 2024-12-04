@@ -37,6 +37,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { CgArrowLeft } from "react-icons/cg";
+import DialogLoader from "@/components/ui/DialogLoader";
 
 const formSchema = z.object({
   id: z.string(),
@@ -60,7 +61,7 @@ const Page = ({
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const { data: session } = useSession();
   const axiosInstance = useAxiosPrivateFood();
-  const RestroName = decodeURIComponent(params.restroName);
+  const [deletingImage, setDeletingImage] = useState<boolean>(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -123,6 +124,7 @@ const Page = ({
   }
 
   const DeleteImage = async (imageId: string) => {
+    setDeletingImage(true);
     axiosInstance
       .delete(
         `/moreclub/user/restaurants/gallery/${params.restroId}/${imageId}/delete/`
@@ -140,6 +142,9 @@ const Page = ({
           duration: 5000,
           position: "top-right",
         });
+      })
+      .finally(() => {
+        setDeletingImage(false);
       });
   };
 
@@ -250,10 +255,30 @@ const Page = ({
                   onClick={() => {
                     DeleteImage(item.id);
                   }}
-                  className="absolute top-2 right-2 rounded-full bg-red-500 p-[6px]"
+                  className="absolute top-2 right-2 rounded-full bg-red-500 text-white hover:bg-white hover:text-red-500 p-[6px]"
                 >
-                  <AiOutlineDelete size={22} color="white" />
+                  <AiOutlineDelete size={22} />
                 </button>
+                {deletingImage ? (
+                  <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-25 flex justify-center items-center z-50">
+                    <div className="bg-white sm:p-8 p-4 rounded shadow-lg lg:w-[30vw] sm:w-[50vw] w-[96vw] flex flex-col gap-2 items-center justify-center">
+                      <DialogLoader />
+                      <p className="text-black font-normal text-base">
+                        Deleting image...
+                      </p>
+                      <button
+                        onClick={() => {
+                          setDeletingImage(false);
+                        }}
+                        className="bg-red-500 text-white text-sm px-3 py-1 rounded mt-2"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  ""
+                )}
               </div>
             ))}
           </div>
