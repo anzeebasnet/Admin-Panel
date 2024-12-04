@@ -8,7 +8,7 @@ import {
 } from "@/lib/store/features/nearbyItem/nearbyItemSlice";
 import { NearbyStationMenuItem } from "@/types/types";
 import axios from "axios";
-import { Plus } from "lucide-react";
+import { PencilLine, Plus } from "lucide-react";
 import { Open_Sans } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
@@ -148,8 +148,8 @@ const Page = ({
                         dispatch(setNearbyItem(food));
                       }}
                     >
-                      <CiEdit
-                        size={23}
+                      <PencilLine
+                        size={20}
                         className="text-primary_text dark:text-sidebar_blue"
                       />
                     </Link>

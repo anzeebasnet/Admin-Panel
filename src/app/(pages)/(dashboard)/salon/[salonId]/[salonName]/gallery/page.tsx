@@ -1,8 +1,8 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useRestroGallery } from "@/lib/react-query/queriesAndMutations";
-import { GalleryList } from "@/types/types";
+import { useSalonGallery } from "@/lib/react-query/queriesAndMutations";
+import { SalonGallery } from "@/types/types";
 import { Open_Sans } from "next/font/google";
 import Image from "next/image";
 import React, { useState } from "react";
@@ -20,13 +20,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { useSession } from "next-auth/react";
-import axios from "axios";
 import { AiOutlineDelete } from "react-icons/ai";
 import toast from "react-hot-toast";
-import { duration } from "@mui/material";
-import useAxiosPrivateFood from "@/hooks/useAxiosPrivateFood";
 import Loader from "@/components/ui/Loader";
 import {
   Breadcrumb,
@@ -37,6 +33,8 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { CgArrowLeft } from "react-icons/cg";
+import useAxiosPrivateSalon from "@/hooks/useAxiosPrivateSalon";
+import DialogLoader from "@/components/ui/DialogLoader";
 
 const formSchema = z.object({
   id: z.string(),
@@ -51,16 +49,17 @@ const open_sans = Open_Sans({
 const Page = ({
   params,
 }: {
-  params: { restroId: string; restroName: string };
+  params: { salonId: string; salonName: string };
 }) => {
   const [isUploading, setIsUploading] = useState<boolean>(false);
-  const { data: restroGallery, isLoading: isLoading } = useRestroGallery(
-    params.restroId
+  const { data: salonGallery, isLoading: isLoading } = useSalonGallery(
+    params.salonId
   );
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const { data: session } = useSession();
-  const axiosInstance = useAxiosPrivateFood();
-  const RestroName = decodeURIComponent(params.restroName);
+  const [deletingGallery, setDeletingGallery] = useState<boolean>(false);
+  const axiosInstance = useAxiosPrivateSalon();
+  const SalonName = decodeURIComponent(params.salonName);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -90,18 +89,12 @@ const Page = ({
       }
     });
 
-    formData.append("id", params.restroId);
-
     axiosInstance
-      .post(
-        `/moreclub/user/restaurants/gallery/${params.restroId}/`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      )
+      .post(`/moreclub/users/saloons/${params.salonId}/gallery/`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
       .then((response) => {
         console.log("Added image successfully", response);
         toast.success("Successfully added image!", {
@@ -123,13 +116,12 @@ const Page = ({
   }
 
   const DeleteImage = async (imageId: string) => {
+    setDeletingGallery(true);
     axiosInstance
-      .delete(
-        `/moreclub/user/restaurants/gallery/${params.restroId}/${imageId}/delete/`
-      )
+      .delete(`/moreclub/users/saloons/${params.salonId}/gallery/${imageId}/`)
       .then((response) => {
         console.log("Image Deleted", response);
-        toast.success("Image Deleted", {
+        toast.success("Image Deleted!", {
           duration: 5000,
           position: "top-right",
         });
@@ -140,6 +132,9 @@ const Page = ({
           duration: 5000,
           position: "top-right",
         });
+      })
+      .finally(() => {
+        setDeletingGallery(false);
       });
   };
 
@@ -151,7 +146,7 @@ const Page = ({
         <BreadcrumbList className="flex sm:gap-1">
           <BreadcrumbItem>
             <BreadcrumbLink
-              href={`/restaurant/${params.restroId}/${params.restroName}/gallery`}
+              href={`/salon/${params.salonId}/${params.salonName}/`}
             >
               <CgArrowLeft
                 className="text-primary_text dark:text-sidebar_blue"
@@ -161,12 +156,12 @@ const Page = ({
           </BreadcrumbItem>
           <BreadcrumbItem>
             <BreadcrumbPage className="sm:text-xl text-lg font-medium text-primary_text dark:text-sidebar_blue">
-              Restaurant Gallery
+              {SalonName} Gallery
             </BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <div className="pl-1 flex flex-col gap-4">
+      <div className="pl-1 flex flex-col sm:gap-8 gap-6">
         {isUploading ? (
           <div className="">
             <h1
@@ -177,7 +172,7 @@ const Page = ({
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="flex flex-col gap-4"
+                className="inline-flex flex-col gap-4"
               >
                 <FormField
                   control={form.control}
@@ -235,12 +230,12 @@ const Page = ({
         )}
         {isLoading ? (
           <p>Loading Gallery...</p>
-        ) : restroGallery && restroGallery.length > 0 ? (
+        ) : salonGallery && salonGallery.length > 0 ? (
           <div className="flex flex-wrap gap-4">
-            {restroGallery.map((item: GalleryList) => (
+            {salonGallery.map((item: SalonGallery) => (
               <div key={item.id} className="relative w-40 h-40">
                 <Image
-                  src={item.image}
+                  src={item.images}
                   alt="image"
                   width={200}
                   height={200}
@@ -250,14 +245,34 @@ const Page = ({
                   onClick={() => {
                     DeleteImage(item.id);
                   }}
-                  className="absolute top-2 right-2 rounded-full bg-red-500 p-[6px]"
+                  className="absolute top-2 right-2 rounded-full bg-red-500 hover:bg-white text-white hover:text-red-500 p-[6px]"
                 >
-                  <AiOutlineDelete size={22} color="white" />
+                  <AiOutlineDelete size={22} className="" />
                 </button>
+                {deletingGallery ? (
+                  <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-25 flex justify-center items-center z-50">
+                    <div className="bg-white sm:p-8 p-4 rounded shadow-lg lg:w-[30vw] sm:w-[50vw] w-[96vw] flex flex-col gap-2 items-center justify-center">
+                      <DialogLoader />
+                      <p className="text-black font-normal text-base">
+                        Deleting ...
+                      </p>
+                      <button
+                        onClick={() => {
+                          setDeletingGallery(false);
+                        }}
+                        className="bg-red-500 text-white text-sm px-3 py-1 rounded mt-2"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  ""
+                )}
               </div>
             ))}
           </div>
-        ) : restroGallery?.length <= 0 ? (
+        ) : salonGallery?.length <= 0 ? (
           <p>No images in the gallery. Upload some images!</p>
         ) : (
           <p>Could not load gallery.</p>

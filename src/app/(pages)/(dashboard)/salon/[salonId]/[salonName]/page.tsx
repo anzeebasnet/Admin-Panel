@@ -191,83 +191,71 @@ const Page = ({
               </div>
             </div>
             <div className="inline-flex flex-wrap gap-4 pl-1">
-              <div className="w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded flex items-center justify-center">
-                <Link
-                  href={`/salon/${params.salonId}/${params.salonName}/services`}
-                  className="flex flex-col gap-2 items-center"
-                >
-                  <Image
-                    src={"/images/services.png"}
-                    alt="menu"
-                    width={200}
-                    height={200}
-                    className="w-16 h-16 rounded"
-                  />
-                  <p className="text-sm font-semibold">Services</p>
-                </Link>
-              </div>
-              <div className="w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded flex items-center justify-center">
-                <Link
-                  href={`/salon/${params.salonId}/${params.salonName}/`}
-                  className="flex flex-col gap-2 items-center"
-                >
-                  <Image
-                    src={"/images/staff.png"}
-                    alt="menu"
-                    width={200}
-                    height={200}
-                    className="w-16 h-16 rounded"
-                  />
-                  <p className="text-sm font-semibold">Staff</p>
-                </Link>
-              </div>
-              <div className="w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded flex items-center justify-center">
-                <Link
-                  href={`/salon/${params.salonId}/${params.salonName}/`}
-                  className="flex flex-col gap-2 items-center"
-                >
-                  <Image
-                    src={"/images/booking.png"}
-                    alt="menu"
-                    width={200}
-                    height={200}
-                    className="w-16 h-16  rounded"
-                  />
-                  <p className="text-sm font-semibold">Bookings</p>
-                </Link>
-              </div>
-
-              <div className="w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded flex items-center justify-center">
-                <Link
-                  href={`/salon/${params.salonId}/${params.salonName}/`}
-                  className="flex flex-col gap-2 items-center"
-                >
-                  <Image
-                    src={"/images/gallery.png"}
-                    alt="menu"
-                    width={200}
-                    height={200}
-                    className="w-16 h-16  rounded"
-                  />
-                  <p className="text-sm font-semibold">Gallery</p>
-                </Link>
-              </div>
-
-              <div className="w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded flex items-center justify-center">
-                <Link
-                  href={`/salon/${params.salonId}/${params.salonName}/`}
-                  className="flex flex-col gap-2 items-center"
-                >
-                  <Image
-                    src={"/images/opening.png"}
-                    alt="menu"
-                    width={200}
-                    height={200}
-                    className="w-16 h-16  rounded"
-                  />
-                  <p className="text-sm font-semibold">Opening Hours</p>
-                </Link>
-              </div>
+              <Link
+                href={`/salon/${params.salonId}/${params.salonName}/services`}
+                className="flex flex-col justify-center gap-2 items-center w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded"
+              >
+                <Image
+                  src={"/images/services.png"}
+                  alt="menu"
+                  width={200}
+                  height={200}
+                  className="w-16 h-16 rounded"
+                />
+                <p className="text-sm font-semibold">Services</p>
+              </Link>
+              <Link
+                href={`/salon/${params.salonId}/${params.salonName}/`}
+                className="flex flex-col justify-center gap-2 items-center w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded"
+              >
+                <Image
+                  src={"/images/staff.png"}
+                  alt="menu"
+                  width={200}
+                  height={200}
+                  className="w-16 h-16 rounded"
+                />
+                <p className="text-sm font-semibold">Staff</p>
+              </Link>
+              <Link
+                href={`/salon/${params.salonId}/${params.salonName}/`}
+                className="flex flex-col justify-center gap-2 items-center w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded"
+              >
+                <Image
+                  src={"/images/booking.png"}
+                  alt="menu"
+                  width={200}
+                  height={200}
+                  className="w-16 h-16  rounded"
+                />
+                <p className="text-sm font-semibold">Bookings</p>
+              </Link>
+              <Link
+                href={`/salon/${params.salonId}/${params.salonName}/gallery`}
+                className="flex flex-col justify-center gap-2 items-center w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded"
+              >
+                <Image
+                  src={"/images/gallery.png"}
+                  alt="menu"
+                  width={200}
+                  height={200}
+                  className="w-16 h-16  rounded"
+                />
+                <p className="text-sm font-semibold">Gallery</p>
+              </Link>
+              <Link
+                href={`/salon/${params.salonId}/${params.salonName}/hours`}
+                className="flex flex-col justify-center gap-2 items-center w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded"
+              >
+                <Image
+                  src={"/images/opening.png"}
+                  alt="menu"
+                  width={200}
+                  height={200}
+                  className="w-16 h-16  rounded"
+                />
+                <p className="text-sm font-semibold">Opening Hours</p>
+              </Link>
             </div>
           </div>
         ) : (

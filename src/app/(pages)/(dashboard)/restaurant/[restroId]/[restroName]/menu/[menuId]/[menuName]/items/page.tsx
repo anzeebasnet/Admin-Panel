@@ -156,8 +156,8 @@ const Page = ({
                         dispatch(setRestroItem(food));
                       }}
                     >
-                      <CiEdit
-                        size={23}
+                      <PencilLine
+                        size={20}
                         className="text-primary_text dark:text-sidebar_blue"
                       />
                     </Link>

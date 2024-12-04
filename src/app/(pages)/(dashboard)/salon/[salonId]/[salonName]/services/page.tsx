@@ -6,7 +6,7 @@ import { SalonServices } from "@/types/types";
 import { Open_Sans } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { HiPlusSmall } from "react-icons/hi2";
 import { CiEdit } from "react-icons/ci";
 import {
@@ -25,6 +25,8 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { CgArrowLeft } from "react-icons/cg";
+import DialogLoader from "@/components/ui/DialogLoader";
+import { PencilLine } from "lucide-react";
 
 const open_sans = Open_Sans({
   weight: ["300", "400", "500", "600", "700"],
@@ -39,28 +41,35 @@ const Page = ({
   const dispatch = useAppDispatch();
   const axiosInstance = useAxiosPrivateSalon();
   const SalonName = decodeURIComponent(params.salonName);
+  const [deletingService, setDeletingService] = useState<SalonServices | null>(
+    null
+  );
   const { data: services, isLoading: isLoading } = useSalonServices(
     params.salonId
   );
 
-  const deleteService = async (serviceId: string) => {
+  const deleteService = async (service: SalonServices, serviceId: string) => {
+    setDeletingService(service);
     axiosInstance
       .delete(
         `/moreclub/users/saloons/${params.salonId}/services/${serviceId}/`
       )
       .then((response) => {
-        console.log("Successfully Deleted Service!", response);
-        toast.success("Successfully Deleted Service!", {
+        console.log(`Deleted ${service.name}!`, response);
+        toast.success(`Deleted ${service.name}!`, {
           duration: 5000,
           position: "top-right",
         });
       })
       .catch((error) => {
-        console.log("Error deleting Service!", error);
-        toast.error("Error deleting Service!", {
+        console.log(`Error Deleting ${service.name}!`, error);
+        toast.error(`Error Deleting ${service.name}!`, {
           duration: 5000,
           position: "top-right",
         });
+      })
+      .finally(() => {
+        setDeletingService(null);
       });
   };
 
@@ -111,44 +120,77 @@ const Page = ({
             {services.map((services: SalonServices, index: any) => (
               <div
                 key={index}
-                className="flex flex-col gap-2 dark:bg-primary_dark rounded-md bg-white shadow-md shadow-vll_gray dark:shadow-none w-40"
+                className="flex flex-col relative dark:bg-primary_dark rounded-md bg-white shadow-md shadow-vll_gray dark:shadow-none w-40"
               >
-                <div className="relative">
-                  <Image
-                    src={services.logo || ""}
-                    alt="services icon"
-                    width={100}
-                    height={100}
-                    className="w-40 h-32 rounded-t-md"
-                  />
-                  <button
-                    className="absolute right-0 top-0 bg-white dark:bg-sidebar_blue  p-1 rounded-tr-md "
-                    onClick={() => {
-                      deleteService(services.id);
-                    }}
-                  >
-                    <AiOutlineDelete
-                      size={22}
-                      className="text-red-600 dark:text-white"
-                    />
-                  </button>
-                </div>
-                <div className="flex gap-1 justify-between px-2 pb-4">
-                  <p className="text-primary_text dark:text-sidebar_blue font-medium place-self-center text-sm capitalize line-clamp-1">
-                    {services.name}
-                  </p>
+                <div className="relative bg-white rounded-t-md">
                   <Link
-                    href={`/salon/${params.salonId}/${params.salonName}/services/create`}
-                    onClick={() => {
-                      dispatch(setSalonService(services));
-                    }}
+                    href={`/salon/${params.salonId}/${params.salonName}/services/${services.id}/${services.name}`}
                   >
-                    <CiEdit
-                      size={23}
-                      className="text-primary_text dark:text-sidebar_blue"
+                    <Image
+                      src={services.logo || ""}
+                      alt="services icon"
+                      width={100}
+                      height={100}
+                      className="w-40 h-32 rounded-t-md"
                     />
                   </Link>
+                  <button
+                    className="absolute right-0 top-0 bg-red-500 hover:bg-white text-white hover:text-red-500  p-1 rounded-tr-md "
+                    onClick={() => {
+                      deleteService(services, services.id);
+                    }}
+                  >
+                    <AiOutlineDelete size={22} className="" />
+                  </button>
                 </div>
+                <div className="flex flex-col gap-1 px-3 py-2">
+                  <div className="flex gap-1 justify-between">
+                    <Link
+                      href={`/salon/${params.salonId}/${params.salonName}/services/${services.id}/${services.name}`}
+                      className="text-primary_text dark:text-sidebar_blue hover:text-deep_red font-medium place-self-center text-base capitalize line-clamp-1"
+                    >
+                      {services.name}
+                    </Link>
+                    <Link
+                      href={`/salon/${params.salonId}/${params.salonName}/services/create`}
+                      onClick={() => {
+                        dispatch(setSalonService(services));
+                      }}
+                    >
+                      <PencilLine
+                        size={20}
+                        className="text-primary_text dark:text-sidebar_blue hover:text-deep_red"
+                      />
+                    </Link>
+                  </div>
+                  <Link
+                    href={`/salon/${params.salonId}/${params.salonName}/services/${services.id}/${services.name}`}
+                    className="text-sm font-medium hover:underline"
+                  >
+                    {services.variations.length} items
+                  </Link>
+                </div>
+
+                {deletingService ? (
+                  <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-25 flex justify-center items-center z-50">
+                    <div className="bg-white sm:p-8 p-4 rounded shadow-lg lg:w-[30vw] sm:w-[50vw] w-[96vw] flex flex-col gap-2 items-center justify-center">
+                      <DialogLoader />
+                      <p className="text-black font-normal text-base">
+                        Deleting {deletingService.name}...
+                      </p>
+                      <button
+                        onClick={() => {
+                          setDeletingService(null);
+                        }}
+                        className="bg-red-500 text-white text-sm px-3 py-1 rounded mt-2"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  ""
+                )}
               </div>
             ))}
           </div>

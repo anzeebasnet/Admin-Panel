@@ -495,3 +495,15 @@ export interface SalonVariation {
   ];
   currency: string;
 }
+
+export interface SalonGallery {
+  id: string;
+  images: string;
+}
+
+export interface SalonOpeningHours {
+  day_of_week: string;
+  start_time: string;
+  end_time: string;
+  is_open: boolean;
+}

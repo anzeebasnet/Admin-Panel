@@ -9,6 +9,7 @@ import restroFoodItemReducer from "./features/restroItem/restroItemSlice"
 import nearbyItemReducer from "./features/nearbyItem/nearbyItemSlice"
 import salonDetailSliceReducer from "./features/salonDetailSlice/salonDetailSlice"
 import salonServiceSliceReducer from "./features/salonService/salonServiceSlice"
+import salonVariationSliceReducer from "./features/salonVariation/salonVariationSlice"
 
 export const makeStore = () => {
     return configureStore({
@@ -22,7 +23,8 @@ export const makeStore = () => {
           restroFoodItem: restroFoodItemReducer,
           nearbyItem: nearbyItemReducer,
           salon: salonDetailSliceReducer,
-          service: salonServiceSliceReducer, 
+          service: salonServiceSliceReducer,
+          variation: salonVariationSliceReducer, 
         },
       })
 }

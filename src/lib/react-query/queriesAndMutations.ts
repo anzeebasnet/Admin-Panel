@@ -203,7 +203,7 @@ export const useWorkingHours = (restroId: string) => {
     queryKey: ["GET_WORKINGHOURS"],
     queryFn: async () => {
       const res = await axiosInstance.get(
-        `https://api.morefood.se/api/moreclub/user/restaurants/${restroId}/working/hours/`, {
+        `/moreclub/user/restaurants/${restroId}/working/hours/`, {
           
         }
       );
@@ -429,6 +429,38 @@ export const useSalonVariation = (salonId: string, serviceId: string) => {
     queryKey: ["GET_SALONVARIATION"],
     queryFn: async () => {
       const res = await axiosInstance.get(`/moreclub/users/saloons/${salonId}/services/${serviceId}/variations/`);
+      console.log(res.data.data);
+      const data = res.data.data;
+      return data;
+    },
+  });
+};
+
+export const useSalonGallery = (salonId: string) => {
+  const axiosInstance = useAxiosPrivateSalon();
+  return useQuery({
+    queryKey: ["GET_SALONGALLERY"],
+    queryFn: async () => {
+      const res = await axiosInstance.get(
+        `/moreclub/users/saloons/${salonId}/gallery/`,
+      );
+      console.log(res.data.data);
+      const data = res.data.data;
+      return data;
+    },
+  });
+};
+
+export const useSalonWorkingHours = (salonId: string) => {
+  const axiosInstance = useAxiosPrivateSalon();
+  return useQuery({
+    queryKey: ["GET_SALONWORKINGHOURS"],
+    queryFn: async () => {
+      const res = await axiosInstance.get(
+        `/moreclub/users/saloons/${salonId}/opening/hours/`, {
+          
+        }
+      );
       console.log(res.data.data);
       const data = res.data.data;
       return data;
