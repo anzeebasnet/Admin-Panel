@@ -163,6 +163,7 @@ const Page = ({
         .finally(() => {
           dispatch(clearFoodItem());
           setIsSubmitting(false);
+          setImagePreview(null);
         });
     } else {
       axiosInstance
@@ -192,6 +193,7 @@ const Page = ({
         })
         .finally(() => {
           setIsSubmitting(false);
+          setImagePreview(null);
         });
     }
   }
@@ -212,8 +214,9 @@ const Page = ({
           </BreadcrumbItem>
           <BreadcrumbItem>
             <BreadcrumbPage className="sm:text-xl text-lg font-medium text-primary_text dark:text-sidebar_blue">
-              {itemData ? `Update ${itemData.name}` : "Add Food Item for "}
-              {menuName}
+              {itemData
+                ? `Update ${itemData.name}`
+                : `Add Food Item for ${menuName}`}
             </BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>

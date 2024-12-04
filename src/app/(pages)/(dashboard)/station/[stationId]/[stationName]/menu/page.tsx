@@ -100,23 +100,31 @@ const Page = ({
                     className="w-40 h-32 rounded-t-md"
                   />
                 </Link>
-                <div className="flex gap-1 justify-between px-2 pb-4">
+                <div className="flex flex-col gap-1 px-2 pb-4">
+                  <div className="flex gap-1 justify-between ">
+                    <Link
+                      href={`/station/${params.stationId}/${params.stationName}/menu/${menu.id}/${menu.name}/items`}
+                      className="text-primary_text dark:text-sidebar_blue font-medium place-self-center text-sm capitalize line-clamp-1"
+                    >
+                      {menu.name}
+                    </Link>
+                    <Link
+                      href={`/station/${params.stationId}/${params.stationName}/menu/create`}
+                      onClick={() => {
+                        dispatch(setMenuItem(menu));
+                      }}
+                    >
+                      <CiEdit
+                        size={23}
+                        className="text-primary_text dark:text-sidebar_blue"
+                      />
+                    </Link>
+                  </div>
                   <Link
                     href={`/station/${params.stationId}/${params.stationName}/menu/${menu.id}/${menu.name}/items`}
-                    className="text-primary_text dark:text-sidebar_blue font-medium place-self-center text-sm capitalize line-clamp-1"
+                    className="text-sm font-medium hover:underline"
                   >
-                    {menu.name}
-                  </Link>
-                  <Link
-                    href={`/station/${params.stationId}/${params.stationName}/menu/create`}
-                    onClick={() => {
-                      dispatch(setMenuItem(menu));
-                    }}
-                  >
-                    <CiEdit
-                      size={23}
-                      className="text-primary_text dark:text-sidebar_blue"
-                    />
+                    {menu.no_of_items} items
                   </Link>
                 </div>
               </div>

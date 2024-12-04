@@ -12,7 +12,7 @@ import axios from "axios";
 import { Open_Sans } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { AiOutlineDelete } from "react-icons/ai";
 import { CiEdit } from "react-icons/ci";
@@ -26,6 +26,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { CgArrowLeft } from "react-icons/cg";
+import DialogLoader from "@/components/ui/DialogLoader";
 
 const open_sans = Open_Sans({
   weight: ["300", "400", "500", "600", "700"],
@@ -45,6 +46,7 @@ const Page = ({
   const dispatch = useAppDispatch();
   const axiosInstance = useAxiosPrivateFood();
   const MenuName = decodeURIComponent(params.menuName);
+  const [deletingItem, setDeletingItem] = useState<FoodItem | null>(null);
   const { data: foodList, isLoading: isLoading } = useFoodItemList(
     params.stationId,
     params.menuId
@@ -54,24 +56,28 @@ const Page = ({
     dispatch(clearFoodItem());
   }, [dispatch]);
 
-  const deleteItem = async (foodId: string) => {
+  const deleteItem = async (food: FoodItem, foodId: string) => {
+    setDeletingItem(food);
     axiosInstance
       .delete(
         `/moreclub/station/${params.stationId}/${params.menuId}/${foodId}/food-items/`
       )
       .then((response) => {
-        console.log("Deleted item", response);
-        toast.success("Deleted Item!", {
+        console.log(`Deleted ${food.name}`, response);
+        toast.success(`Deleted ${food.name}!`, {
           duration: 5000,
           position: "top-right",
         });
       })
       .catch((error) => {
-        console.log("Error deleting item", error);
-        toast.error("Error deleting item!", {
+        console.log(`Error deleting ${food.name}`, error);
+        toast.error(`Error deleting ${food.name}!`, {
           duration: 5000,
           position: "top-right",
         });
+      })
+      .finally(() => {
+        setDeletingItem(null);
       });
   };
 
@@ -133,15 +139,12 @@ const Page = ({
                     />
                   </Link>
                   <button
-                    className="absolute right-0 top-0 bg-red-500 dark:bg-sidebar_blue p-1 rounded-tr-md "
+                    className="absolute right-0 top-0 bg-red-500 text-white hover:bg-white hover:text-red-500 dark:bg-sidebar_blue p-1 rounded-tr-md "
                     onClick={() => {
-                      deleteItem(food.id);
+                      deleteItem(food, food.id);
                     }}
                   >
-                    <AiOutlineDelete
-                      size={22}
-                      className="text-white dark:text-white"
-                    />
+                    <AiOutlineDelete size={22} className="" />
                   </button>
                 </div>
                 <div className="flex justify-between px-2  pb-4">
@@ -161,6 +164,26 @@ const Page = ({
                     />
                   </Link>
                 </div>
+                {deletingItem ? (
+                  <div className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-25 flex justify-center items-center z-50">
+                    <div className="bg-white sm:p-8 p-4 rounded shadow-lg lg:w-[30vw] sm:w-[50vw] w-[96vw] flex flex-col gap-2 items-center justify-center">
+                      <DialogLoader />
+                      <p className="text-black font-normal text-base">
+                        Deleting {deletingItem.name}...
+                      </p>
+                      <button
+                        onClick={() => {
+                          setDeletingItem(null);
+                        }}
+                        className="bg-red-500 text-white text-sm px-3 py-1 rounded mt-2"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  ""
+                )}
               </div>
             ))}
           </div>
