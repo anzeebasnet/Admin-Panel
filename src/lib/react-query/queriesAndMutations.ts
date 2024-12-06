@@ -457,9 +457,22 @@ export const useSalonWorkingHours = (salonId: string) => {
     queryKey: ["GET_SALONWORKINGHOURS"],
     queryFn: async () => {
       const res = await axiosInstance.get(
-        `/moreclub/users/saloons/${salonId}/opening/hours/`, {
-          
-        }
+        `/moreclub/users/saloons/${salonId}/opening/hours/`,
+      );
+      console.log(res.data.data);
+      const data = res.data.data;
+      return data;
+    },
+  });
+};
+
+export const useSalonStaffList = (salonId: string) => {
+  const axiosInstance = useAxiosPrivateSalon();
+  return useQuery({
+    queryKey: ["GET_SALONSTAFFLIST"],
+    queryFn: async () => {
+      const res = await axiosInstance.get(
+        `/moreclub/users/saloons/${salonId}/staff/`, 
       );
       console.log(res.data.data);
       const data = res.data.data;

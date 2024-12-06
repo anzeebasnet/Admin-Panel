@@ -1,23 +1,15 @@
 "use client";
 
-import {
-  useMenuList,
-  useRestroMenuList,
-} from "@/lib/react-query/queriesAndMutations";
-import {
-  clearMenuItem,
-  setMenuItem,
-} from "@/lib/store/features/menu/menuSlice";
+import { useRestroMenuList } from "@/lib/react-query/queriesAndMutations";
+import { clearMenuItem } from "@/lib/store/features/menu/menuSlice";
 import { useAppDispatch } from "@/lib/store/hooks";
-import { MenuItem, RestroMenuList } from "@/types/types";
+import { RestroMenuList } from "@/types/types";
 import { Open_Sans } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import { HiPlusSmall } from "react-icons/hi2";
-import { CiEdit } from "react-icons/ci";
 import { AiOutlineDelete } from "react-icons/ai";
-import axios from "axios";
 import toast from "react-hot-toast";
 import useAxiosPrivateFood from "@/hooks/useAxiosPrivateFood";
 import {

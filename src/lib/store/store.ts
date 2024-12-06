@@ -10,6 +10,7 @@ import nearbyItemReducer from "./features/nearbyItem/nearbyItemSlice"
 import salonDetailSliceReducer from "./features/salonDetailSlice/salonDetailSlice"
 import salonServiceSliceReducer from "./features/salonService/salonServiceSlice"
 import salonVariationSliceReducer from "./features/salonVariation/salonVariationSlice"
+import salonStaffSliceReducer from "./features/salonStaff/salonStaffSlice"
 
 export const makeStore = () => {
     return configureStore({
@@ -25,6 +26,7 @@ export const makeStore = () => {
           salon: salonDetailSliceReducer,
           service: salonServiceSliceReducer,
           variation: salonVariationSliceReducer, 
+          staff: salonStaffSliceReducer,
         },
       })
 }

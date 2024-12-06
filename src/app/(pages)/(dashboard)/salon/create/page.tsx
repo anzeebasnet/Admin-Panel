@@ -45,10 +45,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { CgArrowLeft } from "react-icons/cg";
-
-type PasswordVisibility = {
-  password: boolean;
-};
+import Loader from "@/components/ui/Loader";
 
 const createFormSchema = z.object({
   name: z.string().min(2, {
@@ -80,46 +77,6 @@ const createFormSchema = z.object({
   instagram_link: z.string(),
   amenities: z.array(z.string()),
 });
-
-// const updateFormSchema = z.object({
-//   name: z.string().min(2, {
-//     message: "name can't be empty.",
-//   }),
-//   address: z.string().min(2, {
-//     message: "Address must be at least 2 characters.",
-//   }),
-//   min_order: z.string().min(2, {
-//     message: "Minimum order can't be empty",
-//   }),
-//   delivery_time: z.string().min(1, {
-//     message: "Delivery Time must be entered",
-//   }),
-//   email: z.string().email({ message: "Invalid email address" }),
-//   contact_no: z.string().refine((value: string) => isValidPhoneNumber(value), {
-//     message: "Invalid phone number!",
-//   }),
-//   country: z.string().min(1, {
-//     message: "Country must be selected",
-//   }),
-//   currency: z.string(),
-//   is_delivery: z.boolean(),
-//   is_pickup: z.boolean(),
-//   is_dine: z.boolean(),
-//   lat: z.string(),
-//   lng: z.string(),
-//   banner: z.any(),
-//   logo: z.any(),
-//   short_description: z.string().min(2, {
-//     message: "Short description must be at least 2 characters.",
-//   }),
-//   long_description: z.string().min(2, {
-//     message: "Long description must be at least 2 characters.",
-//   }),
-//   website_link: z.string(),
-//   facebook_link: z.string(),
-//   instagram_link: z.string(),
-//   station_no_of_packed_item: z.number().nullable(),
-// });
 
 function isValidPhoneNumber(phoneNumber: string): boolean {
   return phoneNumber.replace(/\D/g, "").length >= 10;
@@ -701,7 +658,7 @@ const Salon = () => {
               }}
               className="bg-primary_text dark:bg-sidebar_blue hover:bg-l_orange dark:hover:bg-blue text-white h-8 mb-6 place-self-start rounded-lg"
             >
-              {salonData ? "Update" : "Create"}
+              {isSubmitting ? <Loader /> : salonData ? "Update" : "Create"}
             </Button>
           </div>
         </form>

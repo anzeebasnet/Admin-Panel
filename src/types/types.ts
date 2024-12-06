@@ -507,3 +507,19 @@ export interface SalonOpeningHours {
   end_time: string;
   is_open: boolean;
 }
+
+export interface SalonStaff {
+  buffer_time: string;
+  contact_no: string;
+  email: string;
+  id: string;
+  image: string;
+  name: string;
+  saloon: string;
+  services: [
+    {
+      id: string;
+      name: string;
+    }
+  ];
+}
