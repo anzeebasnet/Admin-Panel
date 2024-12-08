@@ -105,6 +105,7 @@ const createFormSchema = z.object({
   moreclub_country_name: z.string().min(2, {
     message: "Country must be selected",
   }),
+  is_new_user: z.boolean(),
 });
 
 const updateFormSchema = z.object({
@@ -196,6 +197,7 @@ const Station = () => {
           phone_number: "",
           gender: "",
           prefix_code: "",
+          is_new_user: true,
         },
   });
 
@@ -292,71 +294,72 @@ const Station = () => {
         formData.append(key, value as string);
       }
     });
+    // formData.append("is_new_user", true);
 
-    if (stationData) {
-      axiosInstance
-        .patch(`/moreclub/station/${stationData.id}/`, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((response) => {
-          console.log("Form submitted successfully:", response.data);
-          form.reset();
-          toast.success("Station Updated Successfully!", {
-            duration: 5000,
-            position: "top-right",
-          });
-        })
-        .catch((error) => {
-          console.error("Error submitting form:", error);
-          toast.error(`Error updating station! ${error}`, {
-            duration: 5000,
-            position: "top-right",
-          });
-          if (error.response) {
-            console.error("Response data:", error.response.data);
-            console.error("Response status:", error.response.status);
-          } else if (error.request) {
-            console.error("Request data:", error.request);
-          } else {
-            console.error("Error message:", error.message);
-          }
-        })
-        .finally(() => {
-          dispatch(clearStationData());
-          setLogoPreview(null);
-          setBannerPreview(null);
-          setIsSubmitting(false);
-        });
-    } else {
-      axiosInstance
-        .post("/moreclub/setup/station/", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
-        .then((response) => {
-          console.log("Form submitted successfully:", response.data);
-          form.reset();
-          toast.success("Station Created Successfully!", {
-            duration: 5000,
-            position: "top-right",
-          });
-        })
-        .catch((error) => {
-          console.error("Error submitting form:", error);
-          toast.error(`Error creating station! ${error}`, {
-            duration: 5000,
-            position: "top-right",
-          });
-        })
-        .finally(() => {
-          setLogoPreview(null);
-          setBannerPreview(null);
-          setIsSubmitting(false);
-        });
-    }
+    // if (stationData) {
+    //   axiosInstance
+    //     .patch(`/moreclub/station/${stationData.id}/`, formData, {
+    //       headers: {
+    //         "Content-Type": "multipart/form-data",
+    //       },
+    //     })
+    //     .then((response) => {
+    //       console.log("Form submitted successfully:", response.data);
+    //       form.reset();
+    //       toast.success("Station Updated Successfully!", {
+    //         duration: 5000,
+    //         position: "top-right",
+    //       });
+    //     })
+    //     .catch((error) => {
+    //       console.error("Error submitting form:", error);
+    //       toast.error(`Error updating station! ${error}`, {
+    //         duration: 5000,
+    //         position: "top-right",
+    //       });
+    //       if (error.response) {
+    //         console.error("Response data:", error.response.data);
+    //         console.error("Response status:", error.response.status);
+    //       } else if (error.request) {
+    //         console.error("Request data:", error.request);
+    //       } else {
+    //         console.error("Error message:", error.message);
+    //       }
+    //     })
+    //     .finally(() => {
+    //       dispatch(clearStationData());
+    //       setLogoPreview(null);
+    //       setBannerPreview(null);
+    //       setIsSubmitting(false);
+    //     });
+    // } else {
+    //   axiosInstance
+    //     .post("/moreclub/setup/station/", formData, {
+    //       headers: {
+    //         "Content-Type": "multipart/form-data",
+    //       },
+    //     })
+    //     .then((response) => {
+    //       console.log("Form submitted successfully:", response.data);
+    //       form.reset();
+    //       toast.success("Station Created Successfully!", {
+    //         duration: 5000,
+    //         position: "top-right",
+    //       });
+    //     })
+    //     .catch((error) => {
+    //       console.error("Error submitting form:", error);
+    //       toast.error(`Error creating station! ${error}`, {
+    //         duration: 5000,
+    //         position: "top-right",
+    //       });
+    //     })
+    //     .finally(() => {
+    //       setLogoPreview(null);
+    //       setBannerPreview(null);
+    //       setIsSubmitting(false);
+    //     });
+    // }
   }
 
   const togglePasswordVisibility = (field: keyof PasswordVisibility) => {
