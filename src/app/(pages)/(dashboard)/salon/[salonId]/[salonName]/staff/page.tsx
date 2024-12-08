@@ -126,14 +126,14 @@ const Page = ({
               >
                 <div className="relative">
                   <Link
-                    href={`/salon/${params.salonId}/${params.salonName}/staff/`}
+                    href={`/salon/${params.salonId}/${params.salonName}/staff/${staff.id}/${staff.name}`}
                   >
                     <Image
                       src={staff.image || ""}
                       alt="menu icon"
                       width={100}
                       height={100}
-                      className="w-48 h-32 rounded-t-md"
+                      className="w-48 h-32 rounded-t-md "
                     />
                   </Link>
                   <button
@@ -148,7 +148,7 @@ const Page = ({
                 <div className="flex flex-col gap-1  px-2">
                   <div className="flex justify-between items-end">
                     <Link
-                      href={`/salon/${params.salonId}/${params.salonName}/staff/`}
+                      href={`/salon/${params.salonId}/${params.salonName}/staff/${staff.id}/${staff.name}`}
                       className="text-black dark:text-sidebar_blue font-medium  text-base capitalize line-clamp-1"
                     >
                       {staff.name}
