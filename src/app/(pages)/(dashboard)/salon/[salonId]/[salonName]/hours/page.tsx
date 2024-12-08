@@ -39,6 +39,7 @@ import {
 } from "@/components/ui/breadcrumb";
 import { CgArrowLeft } from "react-icons/cg";
 import useAxiosPrivateSalon from "@/hooks/useAxiosPrivateSalon";
+import axios from "axios";
 
 const daySchema = z.object({
   start_time: z
@@ -288,56 +289,57 @@ const Page = ({
     const payload = {
       Sunday: {
         day_of_week: "Sunday",
-        start_time: values.Sunday.start_time || "",
-        end_time: values.Sunday.end_time || "",
+        start_time: values.Sunday.start_time || "00:00:00",
+        end_time: values.Sunday.end_time || "00:00:00",
         is_open: values.Sunday.is_open,
       },
       Monday: {
         day_of_week: "Monday",
-        start_time: values.Monday.start_time || "",
-        end_time: values.Monday.end_time || "",
+        start_time: values.Monday.start_time || "00:00:00",
+        end_time: values.Monday.end_time || "00:00:00",
         is_open: values.Monday.is_open,
       },
       Tuesday: {
         day_of_week: "Tuesday",
-        start_time: values.Tuesday.start_time || "",
-        end_time: values.Tuesday.end_time || "",
+        start_time: values.Tuesday.start_time || "00:00:00",
+        end_time: values.Tuesday.end_time || "00:00:00",
         is_open: values.Tuesday.is_open,
       },
       Wednesday: {
         day_of_week: "Wednesday",
-        start_time: values.Wednesday.start_time || "",
-        end_time: values.Wednesday.end_time || "",
+        start_time: values.Wednesday.start_time || "00:00:00",
+        end_time: values.Wednesday.end_time || "00:00:00",
         is_open: values.Wednesday.is_open,
       },
       Thursday: {
         day_of_week: "Thursday",
-        start_time: values.Thursday.start_time || "",
-        end_time: values.Thursday.end_time || "",
+        start_time: values.Thursday.start_time || "00:00:00",
+        end_time: values.Thursday.end_time || "00:00:00",
         is_open: values.Thursday.is_open,
       },
       Friday: {
         day_of_week: "Friday",
-        start_time: values.Friday.start_time || "",
-        end_time: values.Friday.end_time || "",
+        start_time: values.Friday.start_time || "00:00:00",
+        end_time: values.Friday.end_time || "00:00:00",
         is_open: values.Friday.is_open,
       },
       Saturday: {
         day_of_week: "Saturday",
-        start_time: values.Saturday.start_time || "",
-        end_time: values.Saturday.end_time || "",
+        start_time: values.Saturday.start_time || "00:00:00",
+        end_time: values.Saturday.end_time || "00:00:00",
         is_open: values.Saturday.is_open,
       },
     };
 
     if (hours?.length > 0) {
-      axiosInstance
+      axios
         .patch(
-          `/moreclub/users/saloons/${params.salonId}/opening/hours/`,
+          `http://192.168.1.74:8002/api/moreclub/users/saloons/${params.salonId}/opening/hours/`,
           payload,
           {
             headers: {
               "Content-Type": "application/json",
+              Authorization: `Bearer ${"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzMzNzE4NTAxLCJpYXQiOjE3MzM2MzIxMDEsImp0aSI6IjJjZjk3YzFlMWFiMDRlOTc5NDMyOWUzNTU4N2FlNDlmIiwidXNlcl9pZCI6ImM0NTg1NDk4LTMyMmMtNGQ3NC1hYjI4LTQ3ODk4NzcxNmIyNyJ9.EqnOG7NBxTYAgxQyLyNvKavrzYL0qMh63zoHtVqp57g"}`,
             },
           }
         )
