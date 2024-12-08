@@ -99,7 +99,7 @@ const Page = ({
       contact_no: "",
       image: null,
       services: [],
-      buffer_time: "",
+      buffer_time: "00:01:00",
       saloon: "",
     },
   });
@@ -107,12 +107,10 @@ const Page = ({
   useEffect(() => {
     if (salonStaff) {
       console.log(salonStaff);
-      const bufferTime = salonStaff.buffer_time || "00:03:00";
       form.setValue("name", salonStaff.name);
       form.setValue("email", salonStaff.email);
       form.setValue("contact_no", salonStaff.contact_no);
       form.setValue("saloon", salonStaff.saloon);
-      form.setValue("buffer_time", bufferTime);
 
       // Set services as an array of service IDs
       if (salonStaff.services) {
@@ -120,12 +118,16 @@ const Page = ({
         form.setValue("services", serviceIds);
       }
 
+      if (salonStaff.buffer_time) {
+        form.setValue("buffer_time", salonStaff.buffer_time); // Update form state
+      }
+
       if (salonStaff.image) {
         setImagePreview(salonStaff.image);
       }
       console.log("Buffer Time: ", form.getValues("buffer_time"));
     }
-  }, [salonStaff]);
+  }, [salonStaff, form]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     if (!session) {
@@ -297,26 +299,23 @@ const Page = ({
                 <FormItem>
                   <FormLabel>Buffer Time</FormLabel>
                   <FormControl>
-                    <Select
-                      onValueChange={field.onChange}
-                      value={field.value || "00:03:00"} // Use value instead of defaultValue
+                    <select
+                      className="form-select block w-full h-8 border text-sm rounded "
+                      value={field.value || ""}
+                      onChange={(e) => field.onChange(e.target.value)}
                     >
-                      <SelectTrigger className="h-8">
-                        <SelectValue placeholder="Set Buffer Time" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="00:01:00">1 min</SelectItem>
-                        <SelectItem value="00:02:00">2 min</SelectItem>
-                        <SelectItem value="00:03:00">3 min</SelectItem>
-                        <SelectItem value="00:04:00">4 min</SelectItem>
-                        <SelectItem value="00:05:00">5 min</SelectItem>
-                        <SelectItem value="00:10:00">10 min</SelectItem>
-                        <SelectItem value="00:15:00">15 min</SelectItem>
-                        <SelectItem value="00:20:00">20 min</SelectItem>
-                        <SelectItem value="00:25:00">25 min</SelectItem>
-                        <SelectItem value="00:30:00">30 min</SelectItem>
-                      </SelectContent>
-                    </Select>
+                      <option value="">Set Buffer Time</option>
+                      <option value="00:01:00">1 min</option>
+                      <option value="00:02:00">2 min</option>
+                      <option value="00:03:00">3 min</option>
+                      <option value="00:04:00">4 min</option>
+                      <option value="00:05:00">5 min</option>
+                      <option value="00:10:00">10 min</option>
+                      <option value="00:15:00">15 min</option>
+                      <option value="00:20:00">20 min</option>
+                      <option value="00:25:00">25 min</option>
+                      <option value="00:30:00">30 min</option>
+                    </select>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
