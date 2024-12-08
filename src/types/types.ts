@@ -523,3 +523,11 @@ export interface SalonStaff {
     }
   ];
 }
+
+export interface StaffWorkingDays {
+  day_of_week: string;
+  end_time: string;
+  id: number;
+  is_working: boolean;
+  start_time: string;
+}

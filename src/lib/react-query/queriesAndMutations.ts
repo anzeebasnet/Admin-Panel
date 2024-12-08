@@ -480,3 +480,19 @@ export const useSalonStaffList = (salonId: string) => {
     },
   });
 };
+
+export const useStaffWorkingHours = (salonId: string, staffId: string) => {
+  const axiosInstance = useAxiosPrivateSalon();
+  return useQuery({
+    queryKey: ["GET_STAFFWORKINGHOURS"],
+    queryFn: async () => {
+      const res = await axiosInstance.get(
+        // `/moreclub/users/saloons/${salonId}/staff/${staffId}/working-days/detail/`,
+        `/moreclub/users/saloons/${salonId}/staff/${staffId}/working-days/`
+      );
+      console.log(res.data.data);
+      const data = res.data.data;
+      return data;
+    },
+  });
+};
