@@ -170,7 +170,7 @@ const SideBar = () => {
                 className={`flex gap-4 items-center py-2 px-4 rounded-md ${
                   pathname === "/"
                     ? "bg-primary_text dark:bg-sidebar_blue text-white"
-                    : "dark:text-white text-black hover:bg-shadow_gray dark:hover:bg-vl_gray"
+                    : "dark:text-white text-charcoal hover:bg-shadow_gray dark:hover:bg-vl_gray"
                 }`}
               >
                 <LayoutDashboard size={20} />
