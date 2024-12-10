@@ -58,41 +58,6 @@ const dayTimeSchema = z.object({
   end_time: z.string().min(1, "End time is required.").optional(),
 });
 
-// const formSchema = z.object({
-//   name: z.string().min(2, {
-//     message: "name can't be empty.",
-//   }),
-//   banner: z.instanceof(File).optional(),
-//   price: z.string(),
-//   description: z.string().min(6, {
-//     message: "Short Description must be atleast 6 characters",
-//   }),
-//   start_offer: z
-//     .string()
-//     .refine(
-//       (val) => !isNaN(new Date(val).getTime()),
-//       "Start Offer must be a valid date and time."
-//     ),
-//   end_offer: z
-//     .string()
-//     .refine(
-//       (val) => !isNaN(new Date(val).getTime()),
-//       "End Offer must be a valid date and time."
-//     ),
-//   food_item_ids: z
-//     .array(z.string())
-//     .nonempty("Please select at least one food item."),
-//   menu_id: z.string(),
-//   is_everyday: z.boolean(),
-//   monday: dayTimeSchema.optional(),
-//   tuesday: dayTimeSchema.optional(),
-//   wednesday: dayTimeSchema.optional(),
-//   thursday: dayTimeSchema.optional(),
-//   friday: dayTimeSchema.optional(),
-//   saturday: dayTimeSchema.optional(),
-//   sunday: dayTimeSchema.optional(),
-// });
-
 const formSchema = z
   .object({
     name: z.string().min(2, {
@@ -117,9 +82,9 @@ const formSchema = z
         (val) => !val || !isNaN(new Date(val).getTime()),
         "End Offer must be a valid date and time."
       ),
-    food_item_ids: z
-      .array(z.string())
-      .nonempty("Please select at least one food item."),
+    food_item_ids: z.array(z.string()).refine((val) => val.length > 0, {
+      message: "Please select at least one food item.",
+    }),
     menu_id: z.string(),
     is_everyday: z.boolean(),
     monday: dayTimeSchema.optional(),
@@ -198,6 +163,7 @@ const Page = ({
 
   const { data: restroMenuList } = useRestroMenuList(params.restroId);
   const axiosInstance = useAxiosPrivateFood();
+  const OfferData = useAppSelector((state) => state.offer.currentOffer);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -213,6 +179,129 @@ const Page = ({
       is_everyday: isEveryDay,
     },
   });
+
+  useEffect(() => {
+    if (restroMenuList) {
+      setCategories(restroMenuList);
+    }
+  }, [restroMenuList]);
+
+  useEffect(() => {
+    async function fetchFoodItems() {
+      if (!selectedCategoryId) return;
+
+      const res = await axiosInstance.get(
+        `/moreclub/user/food/items/${selectedCategoryId}/${params.restroId}/`
+      );
+      const data = res.data.data;
+      setFoodItems(data);
+    }
+    fetchFoodItems();
+  }, [selectedCategoryId]);
+
+  useEffect(() => {
+    if (OfferData) {
+      form.setValue("name", OfferData.name);
+      form.setValue("price", OfferData.price.toString());
+      form.setValue("description", OfferData.description);
+      form.setValue("is_everyday", OfferData.is_every_day);
+      form.setValue("start_offer", OfferData.start_offer || "");
+      form.setValue("end_offer", OfferData.end_offer || "");
+
+      // Set services as an array of service IDs
+      if (OfferData.food_item) {
+        const foodIds = OfferData.food_item.map((item) => item.id);
+        form.setValue("food_item_ids", foodIds);
+      }
+
+      if (!OfferData.is_every_day) {
+        setIsSpecificDay(true);
+        setIsEveryDay(false);
+      }
+
+      if (OfferData.banner) {
+        setImagePreview(OfferData.banner);
+      }
+
+      if (OfferData.applicable_days) {
+        const applicableDays = OfferData.applicable_days;
+        const convertToUTC = (time: string) => {
+          const localDate = new Date(time); // Parse local time
+          return localDate.toISOString(); // Convert to UTC and return in ISO format
+        };
+        if (applicableDays.Monday) {
+          form.setValue(
+            "monday.start_time",
+            convertToUTC(applicableDays.Monday?.start_time)
+          );
+          form.setValue(
+            "monday.end_time",
+            convertToUTC(applicableDays.Monday?.end_time)
+          );
+        }
+        if (applicableDays.Tuesday) {
+          form.setValue(
+            "tuesday.start_time",
+            convertToUTC(applicableDays.Tuesday?.start_time)
+          );
+          form.setValue(
+            "tuesday.end_time",
+            convertToUTC(applicableDays.Tuesday?.end_time)
+          );
+        }
+        if (applicableDays.Wednesday) {
+          form.setValue(
+            "wednesday.start_time",
+            convertToUTC(applicableDays.Wednesday?.start_time)
+          );
+          form.setValue(
+            "wednesday.end_time",
+            convertToUTC(applicableDays.Wednesday?.end_time)
+          );
+        }
+        if (applicableDays.Thursday) {
+          form.setValue(
+            "thursday.start_time",
+            convertToUTC(applicableDays.Thursday?.start_time)
+          );
+          form.setValue(
+            "thursday.end_time",
+            convertToUTC(applicableDays.Thursday?.end_time)
+          );
+        }
+        if (applicableDays.Friday) {
+          form.setValue(
+            "friday.start_time",
+            convertToUTC(applicableDays.Friday?.start_time)
+          );
+          form.setValue(
+            "friday.end_time",
+            convertToUTC(applicableDays.Friday?.end_time)
+          );
+        }
+        if (applicableDays.Saturday) {
+          form.setValue(
+            "saturday.start_time",
+            convertToUTC(applicableDays.Saturday?.start_time)
+          );
+          form.setValue(
+            "saturday.end_time",
+            convertToUTC(applicableDays.Saturday?.end_time)
+          );
+        }
+        if (applicableDays.Sunday) {
+          form.setValue(
+            "sunday.start_time",
+            convertToUTC(applicableDays.Sunday?.start_time)
+          );
+          form.setValue(
+            "sunday.end_time",
+            convertToUTC(applicableDays.Sunday?.end_time)
+          );
+        }
+      }
+    }
+  }, [OfferData]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     if (!session) {
@@ -343,53 +432,64 @@ const Page = ({
 
     console.log("FormData:", formData);
 
-    axiosInstance
-      .post(`/moreclub/user/offers/${params.restroId}/`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-      .then((response) => {
-        console.log("Added Offer", response);
-        toast.success("Successfully added offer!", {
-          duration: 5000,
-          position: "top-right",
+    if (OfferData) {
+      axiosInstance
+        .patch(
+          `/moreclub/user/offers/${params.restroId}/${OfferData.id}/`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        )
+        .then((response) => {
+          console.log("Updated Offer", response);
+          toast.success("Successfully updated offer!", {
+            duration: 5000,
+            position: "top-right",
+          });
+        })
+        .catch((error) => {
+          console.log("Error updating Offer", error);
+          toast.error("Error updating offer!", {
+            duration: 5000,
+            position: "top-right",
+          });
+        })
+        .finally(() => {
+          setIsSubmitting(false);
+          setImagePreview(null);
+          form.reset();
         });
-      })
-      .catch((error) => {
-        console.log("Error adding Offer", error);
-        toast.error("Error adding offer!", {
-          duration: 5000,
-          position: "top-right",
+    } else {
+      axiosInstance
+        .post(`/moreclub/user/offers/${params.restroId}/`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          console.log("Added Offer", response);
+          toast.success("Successfully added offer!", {
+            duration: 5000,
+            position: "top-right",
+          });
+        })
+        .catch((error) => {
+          console.log("Error adding Offer", error);
+          toast.error("Error adding offer!", {
+            duration: 5000,
+            position: "top-right",
+          });
+        })
+        .finally(() => {
+          setIsSubmitting(false);
+          setImagePreview(null);
+          form.reset();
         });
-      })
-      .finally(() => {
-        setIsSubmitting(false);
-      });
+    }
   }
-
-  const handleFoodItemAdd = (item: RestroFoodItem) => {
-    setSelectedFoodItems((prev) => [...prev, item]);
-  };
-
-  useEffect(() => {
-    if (restroMenuList) {
-      setCategories(restroMenuList);
-    }
-  }, [restroMenuList]);
-
-  useEffect(() => {
-    async function fetchFoodItems() {
-      if (!selectedCategoryId) return;
-
-      const res = await axiosInstance.get(
-        `/moreclub/user/food/items/${selectedCategoryId}/${params.restroId}/`
-      );
-      const data = res.data.data;
-      setFoodItems(data);
-    }
-    fetchFoodItems();
-  }, [selectedCategoryId]);
 
   return (
     <ScrollArea className="bg-white dark:bg-secondary_dark p-6 h-[88vh]">
@@ -465,7 +565,7 @@ const Page = ({
                   </FormItem>
                 )}
               />
-              <FormField
+              {/* <FormField
                 control={form.control}
                 name="food_item_ids"
                 render={({ field }) => (
@@ -536,7 +636,82 @@ const Page = ({
                     </li>
                   ))}
                 </ul>
-              </div>
+              </div> */}
+
+              <FormField
+                control={form.control}
+                name="food_item_ids"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Food Item</FormLabel>
+                    <FormControl>
+                      <div className="flex flex-col gap-2">
+                        {/* Selected services as chips */}
+                        <div className="flex flex-wrap gap-2">
+                          {field.value.map((itemId: string) => {
+                            const selectedFoodItem = foodItems?.find(
+                              (item) => item.id === itemId
+                            );
+                            return (
+                              <div
+                                key={itemId}
+                                className="inline-flex gap-2 items-center bg-primary_text dark:bg-sidebar_blue text-white px-2 py-1 rounded-full"
+                              >
+                                <span className="text-sm text-white">
+                                  {selectedFoodItem?.name}
+                                </span>
+                                <button
+                                  type="button"
+                                  onClick={() => {
+                                    field.onChange(
+                                      field.value.filter(
+                                        (id: string) => id !== itemId
+                                      )
+                                    );
+                                  }}
+                                  className=" bg-white rounded-full p-1"
+                                >
+                                  <RxCross2 color="red" />
+                                </button>
+                              </div>
+                            );
+                          })}
+                        </div>
+
+                        {/* Dropdown to select services */}
+                        <Select
+                          onValueChange={(value) => {
+                            const selectedFoodItem = foodItems?.find(
+                              (item) => item.id === value
+                            );
+                            if (selectedFoodItem) {
+                              // Add the service ID if not already selected
+                              if (!field.value.includes(selectedFoodItem.id)) {
+                                field.onChange([
+                                  ...field.value,
+                                  selectedFoodItem.id,
+                                ]);
+                              }
+                            }
+                          }}
+                        >
+                          <SelectTrigger className="h-8">
+                            <SelectValue placeholder="Select food item" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {foodItems.map((item) => (
+                              <SelectItem key={item.id} value={item.id}>
+                                {item.name}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
             <div className="flex flex-col gap-4">
               <div className="grid sm:grid-cols-2 grid-cols-1 gap-6">
@@ -625,7 +800,7 @@ const Page = ({
               onCheckedChange={() => {
                 setIsSpecificDay(!isSpecificDay);
                 setIsEveryDay(!isEveryDay);
-                form.setValue("is_everyday", !isEveryDay);
+                form.setValue("is_everyday", isEveryDay);
               }}
             />
             <Label>Specific Days/Time</Label>
@@ -1202,7 +1377,13 @@ const Page = ({
             }}
             className="bg-primary_text dark:bg-sidebar_blue hover:bg-l_orange dark:hover:bg-blue text-white h-8 mt-6 mb-3 place-self-start rounded-lg"
           >
-            {isSubmitting ? <Loader /> : "Add Offer"}
+            {isSubmitting ? (
+              <Loader />
+            ) : OfferData ? (
+              "Update Offer"
+            ) : (
+              "Add Offer"
+            )}
           </Button>
         </form>
       </Form>

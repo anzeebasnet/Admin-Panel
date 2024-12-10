@@ -11,6 +11,7 @@ import salonDetailSliceReducer from "./features/salonDetailSlice/salonDetailSlic
 import salonServiceSliceReducer from "./features/salonService/salonServiceSlice"
 import salonVariationSliceReducer from "./features/salonVariation/salonVariationSlice"
 import salonStaffSliceReducer from "./features/salonStaff/salonStaffSlice"
+import restroOfferSliceReducer from "./features/restroOffer/restroOfferSlice"
 
 export const makeStore = () => {
     return configureStore({
@@ -27,6 +28,7 @@ export const makeStore = () => {
           service: salonServiceSliceReducer,
           variation: salonVariationSliceReducer, 
           staff: salonStaffSliceReducer,
+          offer: restroOfferSliceReducer,
         },
       })
 }
