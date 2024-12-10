@@ -260,15 +260,13 @@ const Page = ({
         formData.append(key, value as string);
       }
     });
-
+    // Assuming formData is an instance of FormData
     if (!isEveryDay) {
-      // Handling specific days
       const applicableDays: Record<
         string,
         { start_time: string; end_time: string }
       > = {};
 
-      // Check for each day (Monday, Tuesday, etc.) and append if values are valid
       if (values.monday && values.monday.start_time && values.monday.end_time) {
         applicableDays.Monday = {
           start_time: values.monday.start_time,
@@ -328,9 +326,18 @@ const Page = ({
         };
       }
 
-      // Append applicable days to formData if any are present
+      // Append applicable_days as an object, not a string
       if (Object.keys(applicableDays).length > 0) {
-        formData.append("applicable_days", JSON.stringify(applicableDays));
+        for (const day in applicableDays) {
+          formData.append(
+            `applicable_days[${day}][start_time]`,
+            applicableDays[day].start_time
+          );
+          formData.append(
+            `applicable_days[${day}][end_time]`,
+            applicableDays[day].end_time
+          );
+        }
       }
     }
 
