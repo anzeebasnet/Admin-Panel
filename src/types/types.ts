@@ -1,4 +1,4 @@
-import { boolean } from "zod";
+import { boolean, string } from "zod";
 
 export interface LoginResponse {
   data: {
@@ -420,23 +420,23 @@ export interface OrderSummary {
   ];
 }
 
-export interface Offer {
-  id: string;
-  name: string;
-  food_item: [
-    {
-      id: string;
-      name: string;
-    }
-  ];
-  currency: string;
-  banner: string;
-  restaurant: string;
-  price: number;
-  description: string;
-  start_offer: string;
-  end_offer: string;
-}
+// export interface Offer {
+//   id: string;
+//   name: string;
+//   food_item: [
+//     {
+//       id: string;
+//       name: string;
+//     }
+//   ];
+//   currency: string;
+//   banner: string;
+//   restaurant: string;
+//   price: number;
+//   description: string;
+//   start_offer: string;
+//   end_offer: string;
+// }
 
 export interface GalleryList {
   id: string;
@@ -531,3 +531,31 @@ export interface StaffWorkingDays {
   is_working: boolean;
   start_time: string;
 }
+
+type Day = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday';
+
+interface TimeRange {
+  start_time: string;
+  end_time: string;
+}
+
+export interface Offer {
+  id: string;
+  name: string;
+  food_item: [
+    {
+      id: string;
+      name: string;
+    }
+  ];
+  currency: string;
+  banner: string;
+  restaurant: string;
+  price: number;
+  description: string;
+  start_offer: string | null;
+  end_offer: string | null;
+  is_every_day: boolean;
+  applicable_days: Partial<Record<Day, TimeRange>>;
+}
+
