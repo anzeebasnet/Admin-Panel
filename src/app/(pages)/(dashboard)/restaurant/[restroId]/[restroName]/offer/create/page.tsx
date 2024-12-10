@@ -49,33 +49,127 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { CgArrowLeft } from "react-icons/cg";
+import { RxCross2 } from "react-icons/rx";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
 
-const formSchema = z.object({
-  name: z.string().min(2, {
-    message: "name can't be empty.",
-  }),
-  banner: z.instanceof(File).optional(),
-  price: z.string(),
-  description: z.string().min(6, {
-    message: "Short Description must be atleast 6 characters",
-  }),
-  start_offer: z
-    .string()
-    .refine(
-      (val) => !isNaN(new Date(val).getTime()),
-      "Start Offer must be a valid date and time."
-    ),
-  end_offer: z
-    .string()
-    .refine(
-      (val) => !isNaN(new Date(val).getTime()),
-      "End Offer must be a valid date and time."
-    ),
-  food_item_ids: z
-    .array(z.string())
-    .nonempty("Please select at least one food item."),
-  menu_id: z.string(),
+const dayTimeSchema = z.object({
+  start_time: z.string().min(1, "Start time is required.").optional(),
+  end_time: z.string().min(1, "End time is required.").optional(),
 });
+
+// const formSchema = z.object({
+//   name: z.string().min(2, {
+//     message: "name can't be empty.",
+//   }),
+//   banner: z.instanceof(File).optional(),
+//   price: z.string(),
+//   description: z.string().min(6, {
+//     message: "Short Description must be atleast 6 characters",
+//   }),
+//   start_offer: z
+//     .string()
+//     .refine(
+//       (val) => !isNaN(new Date(val).getTime()),
+//       "Start Offer must be a valid date and time."
+//     ),
+//   end_offer: z
+//     .string()
+//     .refine(
+//       (val) => !isNaN(new Date(val).getTime()),
+//       "End Offer must be a valid date and time."
+//     ),
+//   food_item_ids: z
+//     .array(z.string())
+//     .nonempty("Please select at least one food item."),
+//   menu_id: z.string(),
+//   is_everyday: z.boolean(),
+//   monday: dayTimeSchema.optional(),
+//   tuesday: dayTimeSchema.optional(),
+//   wednesday: dayTimeSchema.optional(),
+//   thursday: dayTimeSchema.optional(),
+//   friday: dayTimeSchema.optional(),
+//   saturday: dayTimeSchema.optional(),
+//   sunday: dayTimeSchema.optional(),
+// });
+
+const formSchema = z
+  .object({
+    name: z.string().min(2, {
+      message: "Name can't be empty.",
+    }),
+    banner: z.instanceof(File).optional(),
+    price: z.string(),
+    description: z.string().min(6, {
+      message: "Short Description must be at least 6 characters.",
+    }),
+    start_offer: z
+      .string()
+      .optional()
+      .refine(
+        (val) => !val || !isNaN(new Date(val).getTime()),
+        "Start Offer must be a valid date and time."
+      ),
+    end_offer: z
+      .string()
+      .optional()
+      .refine(
+        (val) => !val || !isNaN(new Date(val).getTime()),
+        "End Offer must be a valid date and time."
+      ),
+    food_item_ids: z
+      .array(z.string())
+      .nonempty("Please select at least one food item."),
+    menu_id: z.string(),
+    is_everyday: z.boolean(),
+    monday: dayTimeSchema.optional(),
+    tuesday: dayTimeSchema.optional(),
+    wednesday: dayTimeSchema.optional(),
+    thursday: dayTimeSchema.optional(),
+    friday: dayTimeSchema.optional(),
+    saturday: dayTimeSchema.optional(),
+    sunday: dayTimeSchema.optional(),
+  })
+  .superRefine((data, ctx) => {
+    // If `is_everyday` is true, validate `start_offer` and `end_offer`
+    if (data.is_everyday) {
+      if (!data.start_offer) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["start_offer"],
+          message: "Start Offer is required when Is Every Day is true.",
+        });
+      }
+      if (!data.end_offer) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["end_offer"],
+          message: "End Offer is required when Is Every Day is true.",
+        });
+      }
+    }
+
+    // If `is_everyday` is false, ensure `applicable_days` has at least one valid day
+    if (!data.is_everyday) {
+      const hasValidDays =
+        data.monday?.start_time ||
+        data.tuesday?.start_time ||
+        data.wednesday?.start_time ||
+        data.thursday?.start_time ||
+        data.friday?.start_time ||
+        data.saturday?.start_time ||
+        data.sunday?.start_time;
+
+      if (!hasValidDays) {
+        ctx.addIssue({
+          code: "custom",
+          path: ["applicable_days"],
+          message:
+            "At least one day with valid start and end times is required when Is Every Day is false.",
+        });
+      }
+    }
+  });
 
 const open_sans = Open_Sans({
   weight: ["300", "400", "500", "600", "700"],
@@ -98,10 +192,11 @@ const Page = ({
   const [selectedCategoryId, setSelectedCategoryId] = useState(""); // Selected category ID
   const [selectedFoodItems, setSelectedFoodItems] = useState<RestroFoodItem[]>(
     []
-  ); // Array of selected food items (with duplicates)
+  );
+  const [isSpecificDay, setIsSpecificDay] = useState<boolean>(false);
+  const [isEveryDay, setIsEveryDay] = useState<boolean>(true);
 
   const { data: restroMenuList } = useRestroMenuList(params.restroId);
-  const token = session?.accessToken || session?.user.token;
   const axiosInstance = useAxiosPrivateFood();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -111,6 +206,11 @@ const Page = ({
       banner: undefined,
       price: "",
       description: "",
+      start_offer: "",
+      end_offer: "",
+      food_item_ids: [],
+      menu_id: "",
+      is_everyday: isEveryDay,
     },
   });
 
@@ -120,12 +220,29 @@ const Page = ({
       return;
     }
     console.log(values);
+    setIsSubmitting(true);
 
     // Create a new FormData instance
     const formData = new FormData();
-    // setIsSubmitting(true);
 
     Object.entries(values).forEach(([key, value]) => {
+      if (
+        [
+          "monday",
+          "tuesday",
+          "wednesday",
+          "thursday",
+          "friday",
+          "saturday",
+          "sunday",
+        ].includes(key)
+      ) {
+        // Skip appending individual days
+        return;
+      }
+      if (key === "start_offer" || key === "end_offer") {
+        if (!isEveryDay) return;
+      }
       if (key === "banner") {
         if (value instanceof File) {
           // Read file as blob before appending
@@ -136,13 +253,86 @@ const Page = ({
         // Check if food_item_ids is already an array, otherwise convert to array
         const foodItemArray = Array.isArray(value) ? value : [value];
         foodItemArray.forEach((id) => {
-          formData.append("food_item_ids[]", id?.toString()); // Use `cuisine_id[]` for array in FormData
+          formData.append("food_item_ids[]", id?.toString());
         });
       } else {
         // Append other values as strings
         formData.append(key, value as string);
       }
     });
+
+    if (!isEveryDay) {
+      // Handling specific days
+      const applicableDays: Record<
+        string,
+        { start_time: string; end_time: string }
+      > = {};
+
+      // Check for each day (Monday, Tuesday, etc.) and append if values are valid
+      if (values.monday && values.monday.start_time && values.monday.end_time) {
+        applicableDays.Monday = {
+          start_time: values.monday.start_time,
+          end_time: values.monday.end_time,
+        };
+      }
+      if (
+        values.tuesday &&
+        values.tuesday.start_time &&
+        values.tuesday.end_time
+      ) {
+        applicableDays.Tuesday = {
+          start_time: values.tuesday.start_time,
+          end_time: values.tuesday.end_time,
+        };
+      }
+      if (
+        values.wednesday &&
+        values.wednesday.start_time &&
+        values.wednesday.end_time
+      ) {
+        applicableDays.Wednesday = {
+          start_time: values.wednesday.start_time,
+          end_time: values.wednesday.end_time,
+        };
+      }
+      if (
+        values.thursday &&
+        values.thursday.start_time &&
+        values.thursday.end_time
+      ) {
+        applicableDays.Thursday = {
+          start_time: values.thursday.start_time,
+          end_time: values.thursday.end_time,
+        };
+      }
+      if (values.friday && values.friday.start_time && values.friday.end_time) {
+        applicableDays.Friday = {
+          start_time: values.friday.start_time,
+          end_time: values.friday.end_time,
+        };
+      }
+      if (
+        values.saturday &&
+        values.saturday.start_time &&
+        values.saturday.end_time
+      ) {
+        applicableDays.Saturday = {
+          start_time: values.saturday.start_time,
+          end_time: values.saturday.end_time,
+        };
+      }
+      if (values.sunday && values.sunday.start_time && values.sunday.end_time) {
+        applicableDays.Sunday = {
+          start_time: values.sunday.start_time,
+          end_time: values.sunday.end_time,
+        };
+      }
+
+      // Append applicable days to formData if any are present
+      if (Object.keys(applicableDays).length > 0) {
+        formData.append("applicable_days", JSON.stringify(applicableDays));
+      }
+    }
 
     console.log("FormData:", formData);
 
@@ -165,6 +355,9 @@ const Page = ({
           duration: 5000,
           position: "top-right",
         });
+      })
+      .finally(() => {
+        setIsSubmitting(false);
       });
   }
 
@@ -278,12 +471,18 @@ const Page = ({
                             (item) => item.name === value
                           );
                           if (item) {
-                            handleFoodItemAdd(item); // Update local state
-                            const updatedIds = [
-                              ...(field.value || []),
-                              item.id,
-                            ];
-                            field.onChange(updatedIds); // Update form state
+                            // Check if the item is already selected
+                            const isAlreadySelected = selectedFoodItems.some(
+                              (selectedItem) => selectedItem.id === item.id
+                            );
+                            if (!isAlreadySelected) {
+                              handleFoodItemAdd(item); // Update local state
+                              const updatedIds = [
+                                ...(field.value || []),
+                                item.id,
+                              ];
+                              field.onChange(updatedIds); // Update form state
+                            }
                           }
                         }}
                       >
@@ -305,116 +504,35 @@ const Page = ({
               />
               <div className="mt-4 flex flex-col gap-3">
                 <FormLabel>Selected Food Items</FormLabel>
-                <ul className=" rounded-md border border-input bg-background py-[14px] p-4 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none  disabled:cursor-not-allowed disabled:opacity-50">
+                <ul
+                  className="flex gap-4 rounded-md border border-input bg-background py-[14px] p-4 text-sm 
+                ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium 
+                placeholder:text-muted-foreground focus-visible:outline-none  disabled:cursor-not-allowed disabled:opacity-50"
+                >
                   {selectedFoodItems.map((item, index) => (
                     <li
                       key={`${item.id}-${index}`}
-                      className="flex justify-between items-center mb-2"
+                      className="inline-flex gap-2 items-center bg-primary_text dark:bg-sidebar_blue text-white px-2 py-1 rounded-full"
                     >
-                      <span>{item.name}</span>
+                      <span className="text-sm text-white">{item.name}</span>
                       <button
                         type="button"
-                        className="text-red-500"
+                        className=" bg-white rounded-full p-1"
                         onClick={() =>
                           setSelectedFoodItems((prev) =>
                             prev.filter((_, i) => i !== index)
                           )
                         }
                       >
-                        Remove
+                        <RxCross2 color="red" />
                       </button>
                     </li>
                   ))}
                 </ul>
               </div>
-
-              <div className="grid sm:grid-cols-2 grid-cols-1 gap-4">
-                <FormField
-                  control={form.control}
-                  name="start_offer"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col gap-2">
-                      <FormLabel>Start Offer</FormLabel>
-                      <FormControl>
-                        <DatePicker
-                          selected={field.value ? new Date(field.value) : null}
-                          onChange={(date) => {
-                            if (date) {
-                              const formattedDate = `${date.getFullYear()}-${(
-                                date.getMonth() + 1
-                              )
-                                .toString()
-                                .padStart(2, "0")}-${date
-                                .getDate()
-                                .toString()
-                                .padStart(2, "0")}T${date
-                                .getHours()
-                                .toString()
-                                .padStart(2, "0")}:${date
-                                .getMinutes()
-                                .toString()
-                                .padStart(2, "0")}`;
-                              field.onChange(formattedDate);
-                            }
-                          }}
-                          showTimeSelect
-                          timeFormat="HH:mm"
-                          timeIntervals={15} // Controls the time interval (e.g., 15 minutes)
-                          dateFormat="yyyy-MM-dd HH:mm" // Controls the date format
-                          className="border p-2 rounded w-full"
-                          placeholderText="Select start date and time"
-                          timeCaption="Time"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="end_offer"
-                  render={({ field }) => (
-                    <FormItem className="flex flex-col gap-2">
-                      <FormLabel>End Offer</FormLabel>
-                      <FormControl>
-                        <DatePicker
-                          selected={field.value ? new Date(field.value) : null}
-                          onChange={(date) => {
-                            if (date) {
-                              const formattedDate = `${date.getFullYear()}-${(
-                                date.getMonth() + 1
-                              )
-                                .toString()
-                                .padStart(2, "0")}-${date
-                                .getDate()
-                                .toString()
-                                .padStart(2, "0")}T${date
-                                .getHours()
-                                .toString()
-                                .padStart(2, "0")}:${date
-                                .getMinutes()
-                                .toString()
-                                .padStart(2, "0")}`;
-                              field.onChange(formattedDate);
-                            }
-                          }}
-                          showTimeSelect
-                          timeFormat="HH:mm"
-                          timeIntervals={15}
-                          dateFormat="yyyy-MM-dd HH:mm"
-                          className="border p-2 rounded w-full"
-                          placeholderText="Select end date and time"
-                          timeCaption="Time"
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
             </div>
             <div className="flex flex-col gap-4">
-              <div className="grid sm:grid-cols-2 grid-cols-1 gap-4">
+              <div className="grid sm:grid-cols-2 grid-cols-1 gap-6">
                 <FormField
                   control={form.control}
                   name="name"
@@ -493,15 +611,591 @@ const Page = ({
               />
             </div>
           </div>
+
+          <div className="flex gap-2 items-center sm:mt-0 mt-2 mb-1">
+            <Checkbox
+              checked={isSpecificDay}
+              onCheckedChange={() => {
+                setIsSpecificDay(!isSpecificDay);
+                setIsEveryDay(!isEveryDay);
+                form.setValue("is_everyday", !isEveryDay);
+              }}
+            />
+            <Label>Specific Days/Time</Label>
+          </div>
+          {isSpecificDay ? (
+            <div className="grid sm:grid-cols-2 grid-cols-1 gap-x-4 gap-y-6">
+              <div className="flex sm:flex-row flex-col gap-4 sm:gap-12 ">
+                <FormLabel className="text-deep_red dark:text-white">
+                  Monday
+                </FormLabel>
+                <div className="grid sm:grid-cols-2 grid-cols-1 sm:gap-6 gap-3 ">
+                  <FormField
+                    control={form.control}
+                    name="monday.start_time"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-col gap-2">
+                        <FormLabel className="text-black dark:text-sidebar_blue">
+                          Start Offer
+                        </FormLabel>
+                        <FormControl>
+                          <DatePicker
+                            selected={
+                              field.value ? new Date(field.value) : null
+                            }
+                            onChange={(date) => {
+                              if (date) {
+                                const formattedDate = date.toISOString();
+                                field.onChange(formattedDate);
+                              }
+                            }}
+                            showTimeSelect
+                            timeFormat="HH:mm:ss"
+                            timeIntervals={15} // Controls the time interval (e.g., 15 minutes)
+                            dateFormat="yyyy-MM-dd HH:mm:ss" // Display format only (not the submitted format)
+                            className="border p-2 rounded w-full text-sm"
+                            placeholderText="Select date and time"
+                            timeCaption="Time"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="monday.end_time"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-col gap-2">
+                        <FormLabel className="text-black dark:text-sidebar_blue">
+                          End Offer
+                        </FormLabel>
+                        <FormControl>
+                          <DatePicker
+                            selected={
+                              field.value ? new Date(field.value) : null
+                            }
+                            onChange={(date) => {
+                              if (date) {
+                                const formattedDate = date.toISOString();
+                                field.onChange(formattedDate);
+                              }
+                            }}
+                            showTimeSelect
+                            timeFormat="HH:mm:ss"
+                            timeIntervals={15} // Controls the time interval (e.g., 15 minutes)
+                            dateFormat="yyyy-MM-dd HH:mm:ss" // Display format only (not the submitted format)
+                            className="border p-2 rounded w-full text-sm"
+                            placeholderText="Select date and time"
+                            timeCaption="Time"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
+              <div className="flex sm:flex-row flex-col gap-4 sm:gap-11">
+                <FormLabel className="text-deep_red dark:text-white">
+                  Tuesday
+                </FormLabel>
+                <div className="grid sm:grid-cols-2 grid-cols-1 sm:gap-6 gap-3 ">
+                  <FormField
+                    control={form.control}
+                    name="tuesday.start_time"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-col gap-2">
+                        <FormLabel className="text-black dark:text-sidebar_blue">
+                          Start Offer
+                        </FormLabel>
+                        <FormControl>
+                          <DatePicker
+                            selected={
+                              field.value ? new Date(field.value) : null
+                            }
+                            onChange={(date) => {
+                              if (date) {
+                                const formattedDate = date.toISOString();
+                                field.onChange(formattedDate);
+                              }
+                            }}
+                            showTimeSelect
+                            timeFormat="HH:mm:ss"
+                            timeIntervals={15} // Controls the time interval (e.g., 15 minutes)
+                            dateFormat="yyyy-MM-dd HH:mm:ss" // Display format only (not the submitted format)
+                            className="border p-2 rounded w-full text-sm"
+                            placeholderText="Select date and time"
+                            timeCaption="Time"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="tuesday.end_time"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-col gap-2">
+                        <FormLabel className="text-black dark:text-sidebar_blue">
+                          End Offer
+                        </FormLabel>
+                        <FormControl>
+                          <DatePicker
+                            selected={
+                              field.value ? new Date(field.value) : null
+                            }
+                            onChange={(date) => {
+                              if (date) {
+                                const formattedDate = date.toISOString();
+                                field.onChange(formattedDate);
+                              }
+                            }}
+                            showTimeSelect
+                            timeFormat="HH:mm:ss"
+                            timeIntervals={15} // Controls the time interval (e.g., 15 minutes)
+                            dateFormat="yyyy-MM-dd HH:mm:ss" // Display format only (not the submitted format)
+                            className="border p-2 rounded w-full text-sm"
+                            placeholderText="Select date and time"
+                            timeCaption="Time"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
+              <div className="flex sm:flex-row flex-col gap-4 sm:gap-[22px]">
+                <FormLabel className="text-deep_red dark:text-white">
+                  Wednesday
+                </FormLabel>
+                <div className="grid sm:grid-cols-2 grid-cols-1 sm:gap-6 gap-3 ">
+                  <FormField
+                    control={form.control}
+                    name="wednesday.start_time"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-col gap-2">
+                        <FormLabel className="text-black dark:text-sidebar_blue">
+                          Start Offer
+                        </FormLabel>
+                        <FormControl>
+                          <DatePicker
+                            selected={
+                              field.value ? new Date(field.value) : null
+                            }
+                            onChange={(date) => {
+                              if (date) {
+                                const formattedDate = date.toISOString();
+                                field.onChange(formattedDate);
+                              }
+                            }}
+                            showTimeSelect
+                            timeFormat="HH:mm:ss"
+                            timeIntervals={15} // Controls the time interval (e.g., 15 minutes)
+                            dateFormat="yyyy-MM-dd HH:mm:ss" // Display format only (not the submitted format)
+                            className="border p-2 rounded w-full text-sm"
+                            placeholderText="Select date and time"
+                            timeCaption="Time"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="wednesday.end_time"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-col gap-2">
+                        <FormLabel className="text-black dark:text-sidebar_blue">
+                          End Offer
+                        </FormLabel>
+                        <FormControl>
+                          <DatePicker
+                            selected={
+                              field.value ? new Date(field.value) : null
+                            }
+                            onChange={(date) => {
+                              if (date) {
+                                const formattedDate = date.toISOString();
+                                field.onChange(formattedDate);
+                              }
+                            }}
+                            showTimeSelect
+                            timeFormat="HH:mm:ss"
+                            timeIntervals={15} // Controls the time interval (e.g., 15 minutes)
+                            dateFormat="yyyy-MM-dd HH:mm:ss" // Display format only (not the submitted format)
+                            className="border p-2 rounded w-full text-sm"
+                            placeholderText="Select date and time"
+                            timeCaption="Time"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
+              <div className="flex sm:flex-row flex-col gap-4 sm:gap-[37px]">
+                <FormLabel className="text-deep_red dark:text-white">
+                  Thursday
+                </FormLabel>
+                <div className="grid sm:grid-cols-2 grid-cols-1 sm:gap-6 gap-3 ">
+                  <FormField
+                    control={form.control}
+                    name="thursday.start_time"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-col gap-2">
+                        <FormLabel className="text-black dark:text-sidebar_blue">
+                          Start Offer
+                        </FormLabel>
+                        <FormControl>
+                          <DatePicker
+                            selected={
+                              field.value ? new Date(field.value) : null
+                            }
+                            onChange={(date) => {
+                              if (date) {
+                                const formattedDate = date.toISOString();
+                                field.onChange(formattedDate);
+                              }
+                            }}
+                            showTimeSelect
+                            timeFormat="HH:mm:ss"
+                            timeIntervals={15} // Controls the time interval (e.g., 15 minutes)
+                            dateFormat="yyyy-MM-dd HH:mm:ss" // Display format only (not the submitted format)
+                            className="border p-2 rounded w-full text-sm"
+                            placeholderText="Select date and time"
+                            timeCaption="Time"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="thursday.end_time"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-col gap-2">
+                        <FormLabel className="text-black dark:text-sidebar_blue">
+                          End Offer
+                        </FormLabel>
+                        <FormControl>
+                          <DatePicker
+                            selected={
+                              field.value ? new Date(field.value) : null
+                            }
+                            onChange={(date) => {
+                              if (date) {
+                                const formattedDate = date.toISOString();
+                                field.onChange(formattedDate);
+                              }
+                            }}
+                            showTimeSelect
+                            timeFormat="HH:mm:ss"
+                            timeIntervals={15} // Controls the time interval (e.g., 15 minutes)
+                            dateFormat="yyyy-MM-dd HH:mm:ss" // Display format only (not the submitted format)
+                            className="border p-2 rounded w-full text-sm"
+                            placeholderText="Select date and time"
+                            timeCaption="Time"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
+              <div className="flex sm:flex-row flex-col gap-4 sm:gap-[58px]">
+                <FormLabel className="text-deep_red dark:text-white">
+                  Friday
+                </FormLabel>
+                <div className="grid sm:grid-cols-2 grid-cols-1 sm:gap-6 gap-3 ">
+                  <FormField
+                    control={form.control}
+                    name="friday.start_time"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-col gap-2">
+                        <FormLabel className="text-black dark:text-sidebar_blue">
+                          Start Offer
+                        </FormLabel>
+                        <FormControl>
+                          <DatePicker
+                            selected={
+                              field.value ? new Date(field.value) : null
+                            }
+                            onChange={(date) => {
+                              if (date) {
+                                const formattedDate = date.toISOString();
+                                field.onChange(formattedDate);
+                              }
+                            }}
+                            showTimeSelect
+                            timeFormat="HH:mm:ss"
+                            timeIntervals={15} // Controls the time interval (e.g., 15 minutes)
+                            dateFormat="yyyy-MM-dd HH:mm:ss" // Display format only (not the submitted format)
+                            className="border p-2 rounded w-full text-sm"
+                            placeholderText="Select date and time"
+                            timeCaption="Time"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="friday.end_time"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-col gap-2">
+                        <FormLabel className="text-black dark:text-sidebar_blue">
+                          End Offer
+                        </FormLabel>
+                        <FormControl>
+                          <DatePicker
+                            selected={
+                              field.value ? new Date(field.value) : null
+                            }
+                            onChange={(date) => {
+                              if (date) {
+                                const formattedDate = date.toISOString();
+                                field.onChange(formattedDate);
+                              }
+                            }}
+                            showTimeSelect
+                            timeFormat="HH:mm:ss"
+                            timeIntervals={15} // Controls the time interval (e.g., 15 minutes)
+                            dateFormat="yyyy-MM-dd HH:mm:ss" // Display format only (not the submitted format)
+                            className="border p-2 rounded w-full text-sm"
+                            placeholderText="Select date and time"
+                            timeCaption="Time"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
+              <div className="flex sm:flex-row flex-col gap-4 sm:gap-10">
+                <FormLabel className="text-deep_red dark:text-white">
+                  Saturday
+                </FormLabel>
+                <div className="grid sm:grid-cols-2 grid-cols-1 sm:gap-6 gap-3 ">
+                  <FormField
+                    control={form.control}
+                    name="saturday.start_time"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-col gap-2">
+                        <FormLabel className="text-black dark:text-sidebar_blue">
+                          Start Offer
+                        </FormLabel>
+                        <FormControl>
+                          <DatePicker
+                            selected={
+                              field.value ? new Date(field.value) : null
+                            }
+                            onChange={(date) => {
+                              if (date) {
+                                const formattedDate = date.toISOString();
+                                field.onChange(formattedDate);
+                              }
+                            }}
+                            showTimeSelect
+                            timeFormat="HH:mm:ss"
+                            timeIntervals={15} // Controls the time interval (e.g., 15 minutes)
+                            dateFormat="yyyy-MM-dd HH:mm:ss" // Display format only (not the submitted format)
+                            className="border p-2 rounded w-full text-sm"
+                            placeholderText="Select date and time"
+                            timeCaption="Time"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="saturday.end_time"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-col gap-2">
+                        <FormLabel className="text-black dark:text-sidebar_blue">
+                          End Offer
+                        </FormLabel>
+                        <FormControl>
+                          <DatePicker
+                            selected={
+                              field.value ? new Date(field.value) : null
+                            }
+                            onChange={(date) => {
+                              if (date) {
+                                const formattedDate = date.toISOString();
+                                field.onChange(formattedDate);
+                              }
+                            }}
+                            showTimeSelect
+                            timeFormat="HH:mm:ss"
+                            timeIntervals={15} // Controls the time interval (e.g., 15 minutes)
+                            dateFormat="yyyy-MM-dd HH:mm:ss" // Display format only (not the submitted format)
+                            className="border p-2 rounded w-full text-sm"
+                            placeholderText="Select date and time"
+                            timeCaption="Time"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
+              <div className="flex sm:flex-row flex-col gap-4 sm:gap-12">
+                <FormLabel className="text-deep_red dark:text-white">
+                  Sunday
+                </FormLabel>
+                <div className="grid sm:grid-cols-2 grid-cols-1 sm:gap-6 gap-3 ">
+                  <FormField
+                    control={form.control}
+                    name="sunday.start_time"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-col gap-2">
+                        <FormLabel className="text-black dark:text-sidebar_blue">
+                          Start Offer
+                        </FormLabel>
+                        <FormControl>
+                          <DatePicker
+                            selected={
+                              field.value ? new Date(field.value) : null
+                            }
+                            onChange={(date) => {
+                              if (date) {
+                                const formattedDate = date.toISOString();
+                                field.onChange(formattedDate);
+                              }
+                            }}
+                            showTimeSelect
+                            timeFormat="HH:mm:ss"
+                            timeIntervals={15} // Controls the time interval (e.g., 15 minutes)
+                            dateFormat="yyyy-MM-dd HH:mm:ss" // Display format only (not the submitted format)
+                            className="border p-2 rounded w-full text-sm"
+                            placeholderText="Select date and time"
+                            timeCaption="Time"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="sunday.end_time"
+                    render={({ field }) => (
+                      <FormItem className="flex flex-col gap-2">
+                        <FormLabel className="text-black dark:text-sidebar_blue">
+                          End Offer
+                        </FormLabel>
+                        <FormControl>
+                          <DatePicker
+                            selected={
+                              field.value ? new Date(field.value) : null
+                            }
+                            onChange={(date) => {
+                              if (date) {
+                                const formattedDate = date.toISOString();
+                                field.onChange(formattedDate);
+                              }
+                            }}
+                            showTimeSelect
+                            timeFormat="HH:mm:ss"
+                            timeIntervals={15} // Controls the time interval (e.g., 15 minutes)
+                            dateFormat="yyyy-MM-dd HH:mm:ss" // Display format only (not the submitted format)
+                            className="border p-2 rounded w-full text-sm"
+                            placeholderText="Select date and time"
+                            timeCaption="Time"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="grid sm:grid-cols-2 grid-cols-1 gap-6">
+              <FormField
+                control={form.control}
+                name="start_offer"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col gap-2">
+                    <FormLabel className="text-black dark:text-sidebar_blue">
+                      Start Offer
+                    </FormLabel>
+                    <FormControl>
+                      <DatePicker
+                        selected={field.value ? new Date(field.value) : null}
+                        onChange={(date) => {
+                          if (date) {
+                            const formattedDate = date.toISOString();
+                            field.onChange(formattedDate);
+                          }
+                        }}
+                        showTimeSelect
+                        timeFormat="HH:mm:ss"
+                        timeIntervals={15} // Controls the time interval (e.g., 15 minutes)
+                        dateFormat="yyyy-MM-dd HH:mm:ss" // Display format only (not the submitted format)
+                        className="border p-2 rounded w-full text-sm"
+                        placeholderText="Select date and time"
+                        timeCaption="Time"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="end_offer"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col gap-2">
+                    <FormLabel className="text-black dark:text-sidebar_blue">
+                      End Offer
+                    </FormLabel>
+                    <FormControl>
+                      <DatePicker
+                        selected={field.value ? new Date(field.value) : null}
+                        onChange={(date) => {
+                          if (date) {
+                            const formattedDate = date.toISOString();
+                            field.onChange(formattedDate);
+                          }
+                        }}
+                        showTimeSelect
+                        timeFormat="HH:mm:ss"
+                        timeIntervals={15} // Controls the time interval (e.g., 15 minutes)
+                        dateFormat="yyyy-MM-dd HH:mm:ss" // Display format only (not the submitted format)
+                        className="border p-2 rounded w-full text-sm"
+                        placeholderText="Select date and time"
+                        timeCaption="Time"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          )}
           <Button
             type="submit"
             onClick={() => {
               console.log("Button Clicked!");
               console.log("Form Values: ", form.getValues());
             }}
-            className="bg-primary_text dark:bg-sidebar_blue hover:bg-l_orange dark:hover:bg-blue text-white h-8 mb-6 place-self-start rounded-lg"
+            className="bg-primary_text dark:bg-sidebar_blue hover:bg-l_orange dark:hover:bg-blue text-white h-8 mt-6 mb-3 place-self-start rounded-lg"
           >
-            Add Offer
+            {isSubmitting ? <Loader /> : "Add Offer"}
           </Button>
         </form>
       </Form>
