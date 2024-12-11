@@ -84,7 +84,7 @@ const Page = ({
             </BreadcrumbItem>
             <BreadcrumbItem>
               <BreadcrumbPage className="sm:text-xl text-lg font-medium text-primary_text dark:text-sidebar_blue">
-                {restroName} Offers
+                {restroName} Offer
               </BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
