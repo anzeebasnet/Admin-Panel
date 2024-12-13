@@ -50,6 +50,7 @@ const config = {
         charcoal: "hsl(var(--charcoal))",
         olivedrab: "hsl(var(--olivedrab))",
         beige: "hsl(var(--beige))",
+        white_smoke: "hsl(var(--white-smoke))",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

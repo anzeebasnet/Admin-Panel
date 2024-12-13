@@ -404,7 +404,7 @@ const Page = ({
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbItem>
-            <BreadcrumbPage className="sm:text-xl text-lg font-medium text-primary_text dark:text-sidebar_blue">
+            <BreadcrumbPage className="sm:text-xl text-sm font-medium text-primary_text dark:text-sidebar_blue">
               {salonName} Opening Duration
             </BreadcrumbPage>
           </BreadcrumbItem>
@@ -414,9 +414,9 @@ const Page = ({
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col gap-4 "
+          className="flex flex-col gap-4 md:w-[65vw] w-full p-6 rounded-sm bg-white_smoke dark:bg-primary_dark shadow-md shadow-vll_gray dark:shadow-none"
         >
-          <div className="xl:grid xl:grid-cols-2 xl:gap-8 gap-4 flex flex-wrap justify-between mt-4 xl:w-[65vw]">
+          <div className="xl:grid xl:grid-cols-2 xl:gap-8 gap-4 flex flex-wrap justify-between ">
             {/* <TimePicker onTimeChange={handleTimeChange} /> */}
             <FormField
               control={form.control}
@@ -879,7 +879,7 @@ const Page = ({
 
           <Button
             type="submit"
-            className="bg-primary_text dark:bg-sidebar_blue hover:bg-l_orange dark:hover:bg-blue text-white h-8 mb-6 place-self-start rounded-lg"
+            className="bg-primary_text dark:bg-sidebar_blue hover:bg-l_orange dark:hover:bg-blue text-white h-8 place-self-start rounded-lg"
           >
             {isSubmitting ? <Loader /> : hours?.length > 0 ? "Update" : "Add"}
           </Button>

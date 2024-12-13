@@ -177,7 +177,7 @@ const CreateCuisine = ({
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbItem>
-            <BreadcrumbPage className="sm:text-xl text-lg font-medium text-primary_text dark:text-sidebar_blue">
+            <BreadcrumbPage className="sm:text-xl text-sm font-medium text-primary_text dark:text-sidebar_blue">
               {cuisineData ? "Edit" : "Add"} Cuisine for {RestroName}
             </BreadcrumbPage>
           </BreadcrumbItem>

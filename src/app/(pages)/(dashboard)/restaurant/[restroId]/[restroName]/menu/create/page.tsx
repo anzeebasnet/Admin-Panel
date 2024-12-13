@@ -109,7 +109,7 @@ const CreateRestroMenu = ({
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbItem>
-            <BreadcrumbPage className="sm:text-xl text-lg font-medium text-primary_text dark:text-sidebar_blue">
+            <BreadcrumbPage className="sm:text-xl text-sm font-medium text-primary_text dark:text-sidebar_blue">
               Create Menu for {RestroName}
             </BreadcrumbPage>
           </BreadcrumbItem>
