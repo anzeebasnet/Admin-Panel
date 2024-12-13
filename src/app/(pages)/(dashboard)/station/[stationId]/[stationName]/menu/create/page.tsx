@@ -159,7 +159,7 @@ const CreateMenu = ({
 
   return (
     <ScrollArea className="bg-white dark:bg-secondary_dark p-6 h-[88vh]">
-      <Breadcrumb className="mb-4">
+      <Breadcrumb className="mb-4 -ml-1">
         <BreadcrumbList className="flex sm:gap-1">
           <BreadcrumbItem>
             <BreadcrumbLink
@@ -183,7 +183,7 @@ const CreateMenu = ({
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col gap-4 pl-1"
+          className="flex flex-col gap-4"
         >
           <FormField
             control={form.control}

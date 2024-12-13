@@ -55,7 +55,7 @@ const Page = ({
     <div
       className={` bg-white dark:bg-secondary_dark rounded-sm p-6 flex flex-col gap-6 shadow-sm shadow-vll_gray dark:shadow-none ${open_sans.className}`}
     >
-      <Breadcrumb className="mb-4">
+      <Breadcrumb className="mb-4 -ml-1">
         <BreadcrumbList className="flex sm:gap-1">
           <BreadcrumbItem>
             <BreadcrumbLink href={`/salon`}>
@@ -73,7 +73,7 @@ const Page = ({
         </BreadcrumbList>
       </Breadcrumb>
 
-      <div className="flex flex-col gap-5 pl-1">
+      <div className="flex flex-col gap-5 ">
         {isLoading ? (
           <p>Loading Salon Detail... </p>
         ) : !salonDetail ? (
@@ -90,7 +90,7 @@ const Page = ({
                   className="rounded-full w-36 h-36"
                 />
                 <div className="flex flex-col gap-2">
-                  <div className="pl-1 flex items-center gap-1">
+                  <div className=" flex items-center gap-1">
                     <h2
                       className={`text-deep_red dark:text-white sm:text-xl text-lg font-semibold`}
                     >
@@ -115,7 +115,7 @@ const Page = ({
                     <p className="text-sm font-medium">{salonDetail.address}</p>
                   </div>
                   <div className="flex sm:flex-row flex-col gap-2">
-                    <div className="flex gap-1 items-end pl-1">
+                    <div className="flex gap-1 items-end ">
                       <MdLocalPhone
                         size={22}
                         className="text-primary_text dark:text-sidebar_blue"
@@ -129,7 +129,7 @@ const Page = ({
                       color="black"
                       className="bg-gray-400 w-[2px] sm:block hidden"
                     />
-                    <div className="flex gap-1 items-end pl-1">
+                    <div className="flex gap-1 items-end ">
                       <IoIosMail
                         size={22}
                         className="text-primary_text dark:text-sidebar_blue"
@@ -139,7 +139,7 @@ const Page = ({
                       </p>
                     </div>
                   </div>
-                  <div className="flex gap-1 items-end pl-1">
+                  <div className="flex gap-1 items-end ">
                     {salonDetail.amenities.map((item, index) => (
                       <div
                         key={index}
@@ -152,11 +152,11 @@ const Page = ({
                       </div>
                     ))}
                   </div>
-                  <p className="text-sm font-medium pl-1">
+                  <p className="text-sm font-medium ">
                     {salonDetail.short_description}
                   </p>
                 </div>
-                <div className="flex flex-wrap items-center gap-4 pl-1">
+                <div className="flex flex-wrap items-center gap-4 ">
                   <Link
                     href={`${salonDetail.facebook_link}`}
                     className="bg-primary_text dark:bg-btn_blue text-white text-[13px] hover:bg-l_orange dark:hover:bg-blue py-1 px-4 rounded inline-flex gap-2 items-center"
@@ -190,7 +190,7 @@ const Page = ({
                 />
               </div>
             </div>
-            <div className="inline-flex flex-wrap gap-4 pl-1">
+            <div className="inline-flex flex-wrap gap-4 ">
               <Link
                 href={`/salon/${params.salonId}/${params.salonName}/services`}
                 className="flex flex-col justify-center gap-2 items-center w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded"

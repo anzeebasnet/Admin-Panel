@@ -152,7 +152,7 @@ const Page = ({
     <div
       className={` bg-white dark:bg-secondary_dark rounded-sm p-6 flex flex-col gap-6 shadow-sm shadow-vll_gray dark:shadow-none ${open_sans.className}`}
     >
-      <Breadcrumb className="mb-4">
+      <Breadcrumb className="mb-4 -ml-1">
         <BreadcrumbList className="flex sm:gap-1">
           <BreadcrumbItem>
             <BreadcrumbLink
@@ -171,7 +171,7 @@ const Page = ({
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <div className="pl-1 flex flex-col gap-4">
+      <div className=" flex flex-col gap-4">
         {isUploading ? (
           <div className="">
             <h1

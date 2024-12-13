@@ -391,7 +391,7 @@ const Page = ({
 
   return (
     <ScrollArea className="bg-white dark:bg-secondary_dark p-6 h-[88vh]">
-      <Breadcrumb className="mb-4">
+      <Breadcrumb className="mb-4 -ml-1">
         <BreadcrumbList className="flex sm:gap-1">
           <BreadcrumbItem>
             <BreadcrumbLink
@@ -414,7 +414,7 @@ const Page = ({
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col gap-4 pl-1"
+          className="flex flex-col gap-4 "
         >
           <div className="xl:grid xl:grid-cols-2 xl:gap-8 gap-4 flex flex-wrap justify-between mt-4 xl:w-[65vw]">
             {/* <TimePicker onTimeChange={handleTimeChange} /> */}

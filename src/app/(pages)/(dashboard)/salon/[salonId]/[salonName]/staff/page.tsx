@@ -85,7 +85,7 @@ const Page = ({
       className={` bg-white dark:bg-secondary_dark rounded-sm p-6 flex flex-col gap-6 shadow-sm shadow-vll_gray dark:shadow-none ${open_sans.className}`}
     >
       <div className="flex sm:flex-row flex-col gap-y-2 sm:justify-between">
-        <Breadcrumb className="mb-4">
+        <Breadcrumb className="mb-4 -ml-1">
           <BreadcrumbList className="flex sm:gap-1">
             <BreadcrumbItem>
               <BreadcrumbLink
@@ -112,7 +112,7 @@ const Page = ({
         </Link>
       </div>
 
-      <div className="flex flex-col gap-5 pl-1">
+      <div className="flex flex-col gap-5">
         {isLoading ? (
           <p>Loading Salon Staffs... </p>
         ) : !staffs ? (

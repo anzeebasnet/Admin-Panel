@@ -32,7 +32,7 @@ const Page = ({
     <div
       className={` bg-white dark:bg-secondary_dark rounded-sm p-6 flex flex-col gap-6 shadow-sm shadow-vll_gray dark:shadow-none ${open_sans.className}`}
     >
-      <Breadcrumb className="mb-4">
+      <Breadcrumb className="mb-4 -ml-1">
         <BreadcrumbList className="flex sm:gap-1">
           <BreadcrumbItem>
             <BreadcrumbLink
@@ -51,7 +51,7 @@ const Page = ({
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      <div className="flex sm:gap-8 gap-4 pl-1">
+      <div className="flex sm:gap-8 gap-4 ">
         <Link
           href={`/restaurant/${params.restroId}/${params.restroName}/gallery/restroGallery`}
           className="relative "

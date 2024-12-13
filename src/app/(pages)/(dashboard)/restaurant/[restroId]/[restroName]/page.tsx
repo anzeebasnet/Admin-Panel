@@ -53,7 +53,7 @@ const Page = ({
     <div
       className={` bg-white dark:bg-secondary_dark rounded-sm p-6 flex flex-col gap-6 shadow-sm shadow-vll_gray dark:shadow-none ${open_sans.className}`}
     >
-      <Breadcrumb>
+      <Breadcrumb className="-ml-1">
         <BreadcrumbList className="flex sm:gap-1">
           <BreadcrumbItem className="pl-0">
             <BreadcrumbLink href="/restaurant">
@@ -71,7 +71,7 @@ const Page = ({
         </BreadcrumbList>
       </Breadcrumb>
 
-      <div className="flex flex-col gap-5 pl-1">
+      <div className="flex flex-col gap-5 ">
         {isLoading ? (
           <p>Loading Restaurant Detail...</p>
         ) : !restroDetails ? (
@@ -93,7 +93,7 @@ const Page = ({
                 )}
 
                 <div className="flex flex-col gap-2">
-                  <div className="pl-1 flex items-center gap-1">
+                  <div className=" flex items-center gap-1">
                     <h2
                       className={`text-deep_red dark:text-white sm:text-xl text-lg font-semibold`}
                     >
@@ -124,7 +124,7 @@ const Page = ({
                   </div>
                   <div className="flex gap-2">
                     {restroDetails.is_delivery ? (
-                      <div className=" pl-1">
+                      <div className=" ">
                         <p className="text-sm font-medium ">Home Delivery</p>
                       </div>
                     ) : (
@@ -150,7 +150,7 @@ const Page = ({
                       ""
                     )}
                     {restroDetails.is_dine ? (
-                      <div className="pl-1">
+                      <div className="">
                         <p className="text-sm font-medium ">Dine-in</p>
                       </div>
                     ) : (
@@ -168,7 +168,7 @@ const Page = ({
                       ""
                     )}
                     {restroDetails.is_pickup ? (
-                      <div className="pl-1">
+                      <div className="">
                         <p className="text-sm font-medium ">Pick up</p>
                       </div>
                     ) : (
@@ -176,7 +176,7 @@ const Page = ({
                     )}
                   </div>
                   <div className="flex sm:flex-row flex-col gap-2">
-                    <div className="flex gap-1 items-end pl-1">
+                    <div className="flex gap-1 items-end ">
                       <MdLocalPhone
                         size={22}
                         className="text-primary_text dark:text-sidebar_blue"
@@ -190,7 +190,7 @@ const Page = ({
                       color="black"
                       className="bg-gray-400 w-[2px] sm:block hidden"
                     />
-                    <div className="flex gap-1 items-end pl-1">
+                    <div className="flex gap-1 items-end ">
                       <IoIosMail
                         size={22}
                         className="text-primary_text dark:text-sidebar_blue"
@@ -201,12 +201,12 @@ const Page = ({
                     </div>
                   </div>
 
-                  <div className="text-sm font-medium pl-1 flex gap-2">
+                  <div className="text-sm font-medium  flex gap-2">
                     <p>Delivery in {restroDetails.delivery_time}, </p>
                     <p>Minimum Order of Rs.{restroDetails.min_order}</p>
                   </div>
 
-                  <p className="text-sm font-medium pl-1">
+                  <p className="text-sm font-medium ">
                     {restroDetails.short_description}
                   </p>
                 </div>
@@ -221,7 +221,7 @@ const Page = ({
                 />
               </div>
             </div>
-            <div className="inline-flex flex-wrap gap-4 pl-1 mt-4">
+            <div className="inline-flex flex-wrap gap-4  mt-4">
               <Link
                 href={`/restaurant/${params.restroId}/${params.restroName}/menu`}
                 className="flex flex-col items-center justify-center gap-2 w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded"

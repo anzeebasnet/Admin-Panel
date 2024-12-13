@@ -91,7 +91,7 @@ const Page = ({
     >
       <div className="flex sm:flex-row flex-col sm:justify-between sm:gap-0 gap-4">
         <div className="flex flex-col gap-4">
-          <Breadcrumb className="">
+          <Breadcrumb className="-ml-1">
             <BreadcrumbList className="flex sm:gap-1">
               <BreadcrumbItem>
                 <BreadcrumbLink
@@ -125,7 +125,7 @@ const Page = ({
           </Link>
         </div>
       </div>
-      <div className="pl-1">
+      <div className="">
         {isLoading ? (
           <p>Loading Variations...</p>
         ) : variations && variations.length > 0 ? (
