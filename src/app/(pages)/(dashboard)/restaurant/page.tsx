@@ -27,6 +27,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { CgArrowLeft } from "react-icons/cg";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const open_sans = Open_Sans({
   weight: ["300", "400", "500", "600", "700"],
@@ -77,65 +78,86 @@ const Page = () => {
           Add Restaurant
         </Link>
       </div>
-      <div className="">
-        {isloading ? (
-          <p>Loading Restaurant List...</p>
-        ) : restroList && restroList.length > 0 ? (
-          <div className="overflow-x-auto">
-            <ScrollArea
-              className={`${
-                sidebar
-                  ? "h-[75vh] xl:w-[75vw] lg:w-[70vw] w-[85vw]"
-                  : "h-[75vh] w-[85vw]"
-              }`}
-            >
-              <Table className="">
-                <TableCaption></TableCaption>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Id</TableHead>
-                    <TableHead>Address</TableHead>
-                    <TableHead>Opening Hours</TableHead>
+      <div className="overflow-x-auto">
+        <ScrollArea
+          className={`${
+            sidebar
+              ? "sm:h-[75vh] h-[65vh] xl:w-[75vw] lg:w-[70vw] w-[85vw]"
+              : "h-[75vh] w-[85vw]"
+          }`}
+        >
+          <Table className="">
+            <TableCaption></TableCaption>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Name</TableHead>
+                <TableHead>Id</TableHead>
+                <TableHead>Address</TableHead>
+                <TableHead>Opening Hours</TableHead>
+              </TableRow>
+            </TableHeader>
+            {isloading ? (
+              <TableBody>
+                {Array.from({ length: 8 }).map((_, index) => (
+                  <TableRow key={index}>
+                    <TableCell>
+                      <Skeleton className="h-4 w-full bg-gray-200" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-full bg-gray-200" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-full bg-gray-200" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-full bg-gray-200" />
+                    </TableCell>
                   </TableRow>
-                </TableHeader>
-                {restroList && restroList.length > 0 ? (
-                  <TableBody>
-                    {restroList.map((restro: RestroListData) => {
-                      return (
-                        <TableRow key={restro.id} className="">
-                          <TableCell>
-                            <Link
-                              href={`/restaurant/${restro.id}/${restro.name}`}
-                              className="hover:text-primary_text dark:hover:text-sidebar_blue"
-                            >
-                              {restro.name}
-                            </Link>
-                          </TableCell>
-                          <TableCell>{restro.id}</TableCell>
-                          <TableCell>{restro.address}</TableCell>
-                          {restro.open_hrs === "Open" ? (
-                            <TableCell>Open</TableCell>
-                          ) : (
-                            <TableCell>Closed</TableCell>
-                          )}
-                        </TableRow>
-                      );
-                    })}
-                  </TableBody>
-                ) : (
-                  <div className="text-base font-normal text-center pt-12">
-                    Couldn&apos;t fetch restro list
-                  </div>
-                )}
-              </Table>
-            </ScrollArea>
-          </div>
-        ) : restroList?.length <= 0 ? (
-          <p>No restaurant found!</p>
-        ) : (
-          <p>Couldn&apos;t load restaurant list!</p>
-        )}
+                ))}
+              </TableBody>
+            ) : restroList && restroList.length > 0 ? (
+              <TableBody>
+                {restroList.map((restro: RestroListData) => {
+                  return (
+                    <TableRow key={restro.id} className="">
+                      <TableCell>
+                        <Link
+                          href={`/restaurant/${restro.id}/${restro.name}`}
+                          className="hover:text-primary_text dark:hover:text-sidebar_blue"
+                        >
+                          {restro.name}
+                        </Link>
+                      </TableCell>
+                      <TableCell>{restro.id}</TableCell>
+                      <TableCell>{restro.address}</TableCell>
+                      {restro.open_hrs === "Open" ? (
+                        <TableCell>Open</TableCell>
+                      ) : (
+                        <TableCell>Closed</TableCell>
+                      )}
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            ) : restroList?.length <= 0 ? (
+              <TableBody>
+                <TableRow>
+                  <TableCell colSpan={4} className="text-center">
+                    There are no restaurants at the moment.
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            ) : (
+              <TableBody>
+                <TableRow>
+                  <TableCell colSpan={4} className="text-center">
+                    Couldn&apos;t load restaurants!
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            )}
+          </Table>
+        </ScrollArea>
       </div>
     </div>
   );

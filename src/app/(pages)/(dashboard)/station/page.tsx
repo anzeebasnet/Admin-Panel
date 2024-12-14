@@ -27,6 +27,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { CgArrowLeft } from "react-icons/cg";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const open_sans = Open_Sans({
   weight: ["300", "400", "500", "600", "700"],
@@ -74,67 +75,97 @@ const Page = () => {
           Add Station
         </Link>
       </div>
-      <div className="">
-        {isLoading ? (
-          <p>Loading Station List...</p>
-        ) : stations && stations.length > 0 ? (
-          <div className="overflow-x-auto">
-            <ScrollArea
-              className={`${
-                sidebar
-                  ? "h-[75vh] xl:w-[76vw] lg:w-[70vw] w-[85vw]"
-                  : "h-[75vh] w-[88vw]"
-              }`}
-            >
-              <Table className="">
-                <TableCaption></TableCaption>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Id</TableHead>
-                    <TableHead>Address</TableHead>
-                    <TableHead>Email</TableHead>
-                    <TableHead>Contact</TableHead>
-                    <TableHead>User</TableHead>
-                    <TableHead>Restaurant</TableHead>
+      <div className="overflow-x-auto">
+        <ScrollArea
+          className={`${
+            sidebar
+              ? "sm:h-[75vh] h-[68vh] xl:w-[76vw] lg:w-[70vw] w-[85vw]"
+              : "h-[75vh] w-[88vw]"
+          }`}
+        >
+          <Table className="">
+            <TableCaption></TableCaption>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Name</TableHead>
+                <TableHead>Id</TableHead>
+                <TableHead>Address</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Contact</TableHead>
+                <TableHead>User</TableHead>
+                <TableHead>Restaurant</TableHead>
+              </TableRow>
+            </TableHeader>
+            {isLoading ? (
+              <TableBody>
+                {Array.from({ length: 8 }).map((_, index) => (
+                  <TableRow key={index}>
+                    <TableCell>
+                      <Skeleton className="h-4 w-full bg-gray-200" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-full bg-gray-200" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-full bg-gray-200" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-full bg-gray-200" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-full bg-gray-200" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-full bg-gray-200" />
+                    </TableCell>
+                    <TableCell>
+                      <Skeleton className="h-4 w-full bg-gray-200" />
+                    </TableCell>
                   </TableRow>
-                </TableHeader>
-                {stations && stations.length > 0 ? (
-                  <TableBody>
-                    {stations.map((station: StationData) => {
-                      return (
-                        <TableRow key={station.id} className="">
-                          <TableCell>
-                            <Link
-                              href={`/station/${station.id}/${station.name}`}
-                              className="hover:text-primary_text dark:hover:text-sidebar_blue"
-                            >
-                              {station.name}
-                            </Link>
-                          </TableCell>
-                          <TableCell>{station.id}</TableCell>
-                          <TableCell>{station.address}</TableCell>
-                          <TableCell>{station.email}</TableCell>
-                          <TableCell>{station.contact_no}</TableCell>
-                          <TableCell>{station.user || "Null"}</TableCell>
-                          <TableCell>{station.restaurant || "Null"}</TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  </TableBody>
-                ) : (
-                  <div className="text-base font-normal text-center pt-12">
-                    Couldn&apos;t fetch station list
-                  </div>
-                )}
-              </Table>
-            </ScrollArea>
-          </div>
-        ) : stations?.length <= 0 ? (
-          <p>No stations found!</p>
-        ) : (
-          <p>Couldn&apos;t load station list!</p>
-        )}
+                ))}
+              </TableBody>
+            ) : stations && stations.length > 0 ? (
+              <TableBody>
+                {stations.map((station: StationData) => {
+                  return (
+                    <TableRow key={station.id} className="">
+                      <TableCell>
+                        <Link
+                          href={`/station/${station.id}/${station.name}`}
+                          className="hover:text-primary_text dark:hover:text-sidebar_blue"
+                        >
+                          {station.name}
+                        </Link>
+                      </TableCell>
+                      <TableCell>{station.id}</TableCell>
+                      <TableCell>{station.address}</TableCell>
+                      <TableCell>{station.email}</TableCell>
+                      <TableCell>{station.contact_no}</TableCell>
+                      <TableCell>{station.user || "Null"}</TableCell>
+                      <TableCell>{station.restaurant || "Null"}</TableCell>
+                    </TableRow>
+                  );
+                })}
+              </TableBody>
+            ) : stations?.length <= 0 ? (
+              <TableBody>
+                <TableRow>
+                  <TableCell colSpan={7} className="text-center">
+                    There are no stations at the moment.
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            ) : (
+              <TableBody>
+                <TableRow>
+                  <TableCell colSpan={7} className="text-center">
+                    Couldn&apos;t load stations list.
+                  </TableCell>
+                </TableRow>
+              </TableBody>
+            )}
+          </Table>
+        </ScrollArea>
       </div>
     </div>
   );

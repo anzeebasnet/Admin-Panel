@@ -27,6 +27,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { CgArrowLeft } from "react-icons/cg";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const open_sans = Open_Sans({
   weight: ["300", "400", "500", "600", "700"],
@@ -75,60 +76,83 @@ const Page = () => {
         </Link>
       </div>
       <div className="">
-        {isloading ? (
-          <p>Loading Salon List...</p>
-        ) : salonList && salonList.length > 0 ? (
-          <div className="overflow-x-auto">
-            <ScrollArea
-              className={`${
-                sidebar
-                  ? "h-[75vh] xl:w-[75vw] lg:w-[70vw] w-[85vw]"
-                  : "h-[75vh] w-[85vw]"
-              }`}
-            >
-              <Table className="">
-                <TableCaption></TableCaption>
-                <TableHeader>
+        <div className="overflow-x-auto">
+          <ScrollArea
+            className={`${
+              sidebar
+                ? "sm:h-[75vh] h-[68vh] xl:w-[75vw] lg:w-[70vw] w-[85vw]"
+                : "h-[70vh] w-[85vw]"
+            }`}
+          >
+            <Table className="">
+              <TableCaption></TableCaption>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Name</TableHead>
+                  <TableHead>Id</TableHead>
+                  <TableHead>Address</TableHead>
+                  <TableHead>Contact</TableHead>
+                </TableRow>
+              </TableHeader>
+              {isloading ? (
+                <TableBody>
+                  {Array.from({ length: 10 }).map((_, index) => (
+                    <TableRow key={index}>
+                      <TableCell>
+                        <Skeleton className="h-4 w-full bg-gray-200" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-4 w-full bg-gray-200" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-4 w-full bg-gray-200" />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton className="h-4 w-full bg-gray-200" />
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              ) : salonList && salonList.length > 0 ? (
+                <TableBody>
+                  {salonList.map((salon: SalonType) => {
+                    return (
+                      <TableRow key={salon.id} className="">
+                        <TableCell>
+                          <Link
+                            href={`/salon/${salon.id}/${salon.name}`}
+                            className="hover:text-primary_text dark:hover:text-sidebar_blue"
+                          >
+                            {salon.name}
+                          </Link>
+                        </TableCell>
+                        <TableCell>{salon.id}</TableCell>
+                        <TableCell>{salon.address}</TableCell>
+                        <TableCell>{salon.contact_no}</TableCell>
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              ) : salonList?.length <= 0 ? (
+                <TableBody>
                   <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Id</TableHead>
-                    <TableHead>Address</TableHead>
-                    <TableHead>Contact</TableHead>
+                    <TableCell colSpan={4} className="text-center">
+                      There are no salons at the moment. Add some salons!
+                    </TableCell>
                   </TableRow>
-                </TableHeader>
-                {salonList && salonList.length > 0 ? (
-                  <TableBody>
-                    {salonList.map((salon: SalonType) => {
-                      return (
-                        <TableRow key={salon.id} className="">
-                          <TableCell>
-                            <Link
-                              href={`/salon/${salon.id}/${salon.name}`}
-                              className="hover:text-primary_text dark:hover:text-sidebar_blue"
-                            >
-                              {salon.name}
-                            </Link>
-                          </TableCell>
-                          <TableCell>{salon.id}</TableCell>
-                          <TableCell>{salon.address}</TableCell>
-                          <TableCell>{salon.contact_no}</TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  </TableBody>
-                ) : (
-                  <div className="text-base font-normal text-center pt-12">
-                    Couldn&apos;t fetch salon list
-                  </div>
-                )}
-              </Table>
-            </ScrollArea>
-          </div>
-        ) : salonList?.length <= 0 ? (
-          <p>No salon found!</p>
-        ) : (
-          <p>Couldn&apos;t load salon list!</p>
-        )}
+                </TableBody>
+              ) : (
+                <TableBody>
+                  <TableRow>
+                    <TableCell colSpan={4} className="text-center">
+                      Couldn&apos;t fetch salon list
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              )}
+            </Table>
+          </ScrollArea>
+        </div>
       </div>
     </div>
   );
