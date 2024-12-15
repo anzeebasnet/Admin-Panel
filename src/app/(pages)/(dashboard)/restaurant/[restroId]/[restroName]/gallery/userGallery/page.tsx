@@ -132,7 +132,7 @@ const Page = ({
       </Breadcrumb>
       <div className="">
         <Tabs defaultValue="accepted" className=" flex flex-col gap-6">
-          <TabsList className="bg-white dark:bg-secondary_dark gap-2 place-self-start">
+          <TabsList className="bg-white dark:bg-secondary_dark inline-flex h-10 gap-2 place-self-start">
             <TabsTrigger
               value="accepted"
               className="bg-green-600 text-white data-[state=active]:bg-green-600 data-[state=active]:border-2 data-[state=active]:border-green-950  data-[state=active]:text-white "
