@@ -155,12 +155,9 @@ const Page = ({
                 </div>
                 <div className="px-3 py-2 flex flex-col gap-1">
                   <div className="flex gap-1 justify-between">
-                    <Link
-                      href={`/salon/${params.salonId}/${params.salonName}/services/${params.serviceId}/${params.serviceName}/items`}
-                      className="text-primary_text dark:text-sidebar_blue font-medium place-self-center text-base capitalize line-clamp-1"
-                    >
+                    <h2 className="text-primary_text dark:text-sidebar_blue font-medium place-self-center text-base capitalize line-clamp-1">
                       {variations.name}
-                    </Link>
+                    </h2>
 
                     <Link
                       href={`/salon/${params.salonId}/${params.salonName}/services/${params.serviceId}/${params.serviceName}/variation/create`}
