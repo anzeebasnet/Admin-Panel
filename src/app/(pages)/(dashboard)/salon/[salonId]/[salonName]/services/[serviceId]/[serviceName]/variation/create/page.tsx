@@ -130,9 +130,14 @@ const Page = ({
           formData.append("images[]", file, file.name);
         });
       } else if (key === "duration") {
-        // Convert "hh:mm" to "hh:mm:ss"
-        const formattedDuration = `${value}:00`;
-        formData.append(key, formattedDuration);
+        if (typeof value === "string") {
+          // Check if the value already includes seconds
+          const formattedDuration =
+            value.split(":").length === 2 ? `${value}:00` : value;
+          formData.append(key, formattedDuration);
+        } else {
+          console.error("Expected a string for duration but got:", value);
+        }
       } else {
         formData.append(key, value as string);
       }
