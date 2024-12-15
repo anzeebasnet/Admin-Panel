@@ -10,6 +10,7 @@ import NextTopLoader from "nextjs-toploader";
 import StoreProvider from "./StoreProvider";
 import { Toaster } from "react-hot-toast";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -40,11 +41,11 @@ export default function RootLayout({
                   <SideBar />
                   <div className="flex flex-col flex-1 h-screen">
                     <Header />
-                    <div className="flex-1 bg-primary_light dark:bg-primary_dark sm:p-4  p-2 h-0 min-h-0 overflow-y-auto">
+                    <ScrollArea className="flex-1 bg-primary_light dark:bg-primary_dark sm:p-4  p-2 h-0 min-h-0 overflow-y-auto">
                       <NextTopLoader color="#fe9443" showSpinner={false} />
                       <Toaster />
                       {children}
-                    </div>
+                    </ScrollArea>
                   </div>
                 </div>
               </StoreProvider>
