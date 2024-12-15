@@ -75,7 +75,7 @@ const Page = ({
       <div className="flex flex-col gap-5 ">
         {isLoading ? (
           <div className="flex flex-col gap-8 ">
-            <div className="grid lg:grid-cols-2 grid-cols-1 sm:gap-8 gap-4">
+            <div className="grid lg:grid-cols-2 grid-cols-1 sm:gap-6 gap-4">
               <div className="flex flex-col sm:gap-4 gap-2">
                 <Skeleton className="dark:bg-[#575b82]  bg-[#cccccc] h-[15vh] w-[15vh] rounded-full" />
                 <div className="flex flex-col gap-2">
@@ -91,7 +91,7 @@ const Page = ({
                   <Skeleton className="dark:bg-[#575b82]  bg-[#cccccc] h-[3vh] sm:w-[16vh] w-[10vh] rounded-sm" />
                 </div>
               </div>
-              <Skeleton className="dark:bg-[#575b82]  bg-[#cccccc] sm:w-[40vw] w-[80vw] sm:h-[40vh] h-[20vh] rounded-sm" />
+              <Skeleton className="dark:bg-[#575b82]  bg-[#cccccc] sm:w-[35vw] w-[80vw] sm:h-[40vh] h-[20vh] rounded-sm" />
             </div>
             <div className="sm:flex sm:flex-wrap hidden gap-4">
               <Skeleton className="dark:bg-[#575b82]  bg-[#cccccc] h-[20vh] w-[20vh] rounded-sm" />
