@@ -201,7 +201,7 @@ const Page = ({
                     </div>
                   </div>
 
-                  <div className="text-sm font-medium  flex gap-2">
+                  <div className="text-sm font-medium  flex flex-wrap gap-2">
                     <p>Delivery in {restroDetails.delivery_time}, </p>
                     <p>Minimum Order of Rs.{restroDetails.min_order}</p>
                   </div>
