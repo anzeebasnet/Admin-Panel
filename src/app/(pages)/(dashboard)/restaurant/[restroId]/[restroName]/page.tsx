@@ -23,6 +23,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { CgArrowLeft } from "react-icons/cg";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const open_sans = Open_Sans({
   weight: ["300", "400", "500", "600", "700"],
@@ -73,7 +74,33 @@ const Page = ({
 
       <div className="flex flex-col gap-5 ">
         {isLoading ? (
-          <p>Loading Restaurant Detail...</p>
+          <div className="flex flex-col gap-8 ">
+            <div className="grid lg:grid-cols-2 grid-cols-1 sm:gap-8 gap-4">
+              <div className="flex flex-col sm:gap-4 gap-2">
+                <Skeleton className="dark:bg-[#575b82]  bg-[#cccccc] h-[15vh] w-[15vh] rounded-full" />
+                <div className="flex flex-col gap-2">
+                  <Skeleton className="dark:bg-[#575b82]  bg-[#cccccc] h-[3vh] w-[20vh] rounded-md" />
+                  <Skeleton className="dark:bg-[#575b82]  bg-[#cccccc] h-[3vh] sm:w-[35vh] w-[25vh] rounded-md" />
+                  <Skeleton className="dark:bg-[#575b82]  bg-[#cccccc] h-[3vh] sm:w-[40vh] w-[30vh] rounded-md" />
+                  <Skeleton className="dark:bg-[#575b82]  bg-[#cccccc] h-[3vh] sm:w-[45vh] w-[35vh] rounded-md" />
+                  <Skeleton className="dark:bg-[#575b82]  bg-[#cccccc] h-[6vh] sm:w-[60vh] w-[40vh] rounded-sm" />
+                </div>
+                <div className="flex gap-2">
+                  <Skeleton className="dark:bg-[#575b82]  bg-[#cccccc] h-[3vh] sm:w-[16vh] w-[10vh] rounded-sm" />
+                  <Skeleton className="dark:bg-[#575b82]  bg-[#cccccc] h-[3vh] sm:w-[16vh] w-[10vh] rounded-sm" />
+                  <Skeleton className="dark:bg-[#575b82]  bg-[#cccccc] h-[3vh] sm:w-[16vh] w-[10vh] rounded-sm" />
+                </div>
+              </div>
+              <Skeleton className="dark:bg-[#575b82]  bg-[#cccccc] sm:w-[40vw] w-[80vw] sm:h-[40vh] h-[20vh] rounded-sm" />
+            </div>
+            <div className="sm:flex sm:flex-wrap hidden gap-4">
+              <Skeleton className="dark:bg-[#575b82]  bg-[#cccccc] h-[20vh] w-[20vh] rounded-sm" />
+              <Skeleton className="dark:bg-[#575b82]  bg-[#cccccc] h-[20vh] w-[20vh] rounded-sm" />
+              <Skeleton className="dark:bg-[#575b82]  bg-[#cccccc] h-[20vh] w-[20vh] rounded-sm" />
+              <Skeleton className="dark:bg-[#575b82]  bg-[#cccccc] h-[20vh] w-[20vh] rounded-sm" />
+              <Skeleton className="dark:bg-[#575b82]  bg-[#cccccc] h-[20vh] w-[20vh] rounded-sm" />
+            </div>
+          </div>
         ) : !restroDetails ? (
           <p>Restaurant Detail not found!</p>
         ) : restroDetails ? (
