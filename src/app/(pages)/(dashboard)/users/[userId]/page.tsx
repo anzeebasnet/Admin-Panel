@@ -9,6 +9,15 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { FaCircleUser } from "react-icons/fa6";
 import axios from "axios";
 import Image from "next/image";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { CgArrowLeft } from "react-icons/cg";
 
 const inria_sans = Inria_Sans({
   weight: ["300", "400", "700"],
@@ -77,11 +86,23 @@ const Page = ({ params }: { params: { userId: string[] } }) => {
 
   return (
     <div className="flex flex-col gap-4 bg-white dark:bg-secondary_dark rounded-sm p-6 shadow-sm shadow-vll_gray dark:shadow-none">
-      <h1
-        className={`text-primary_text dark:text-sidebar_blue  text-2xl font-medium ${inria_sans.className}`}
-      >
-        User Details
-      </h1>
+      <Breadcrumb className="mb-4 -ml-1">
+        <BreadcrumbList className="flex sm:gap-1">
+          <BreadcrumbItem>
+            <BreadcrumbLink href={`/users`}>
+              <CgArrowLeft
+                className="text-primary_text dark:text-sidebar_blue"
+                size={25}
+              />
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbItem>
+            <BreadcrumbPage className="sm:text-xl text-sm font-medium text-primary_text dark:text-sidebar_blue">
+              Users
+            </BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
 
       {isLoading ? (
         <div>Loading...</div>
@@ -110,63 +131,63 @@ const Page = ({ params }: { params: { userId: string[] } }) => {
                   </p>
                 </div>
               </div>
-              <TabsList className="flex flex-col items-center justify-center gap-2 dark:bg-primary_dark bg-white p-6 shadow-md shadow-vll_gray dark:shadow-none rounded-md">
+              <TabsList className="flex flex-col items-center justify-center gap-2 dark:bg-primary_dark bg-white p-6 shadow-md shadow-vll_gray dark:shadow-none rounded-md data-[state=active]:bg-primary_text">
                 <TabsTrigger
-                  className="w-full  bg-primary_light dark:bg-vl_gray text-card_dark dark:text-white"
+                  className="w-full  bg-primary_light dark:bg-vl_gray text-card_dark dark:text-white data-[state=active]:bg-primary_text data-[state=active]:text-white"
                   value="basic"
                 >
                   Basic
                 </TabsTrigger>
                 <TabsTrigger
-                  className="w-full  bg-primary_light dark:bg-vl_gray text-card_dark dark:text-white"
+                  className="w-full  bg-primary_light dark:bg-vl_gray text-card_dark dark:text-white  data-[state=active]:bg-primary_text data-[state=active]:text-white"
                   value="personal"
                 >
                   Personal
                 </TabsTrigger>
                 <TabsTrigger
-                  className="w-full  bg-primary_light dark:bg-vl_gray text-card_dark dark:text-white"
+                  className="w-full  bg-primary_light dark:bg-vl_gray text-card_dark dark:text-white  data-[state=active]:bg-primary_text data-[state=active]:text-white"
                   value="userKyc"
                 >
                   User KYC
                 </TabsTrigger>
                 <TabsTrigger
-                  className="w-full  bg-primary_light dark:bg-vl_gray text-card_dark dark:text-white"
+                  className="w-full  bg-primary_light dark:bg-vl_gray text-card_dark dark:text-white  data-[state=active]:bg-primary_text data-[state=active]:text-white"
                   value="wallets"
                 >
                   Wallets
                 </TabsTrigger>
                 <TabsTrigger
-                  className="w-full  bg-primary_light dark:bg-vl_gray text-card_dark dark:text-white"
+                  className="w-full  bg-primary_light dark:bg-vl_gray text-card_dark dark:text-white  data-[state=active]:bg-primary_text data-[state=active]:text-white"
                   value="userWithdrawl"
                 >
                   User Withdrawl
                 </TabsTrigger>
                 <TabsTrigger
-                  className="w-full  bg-primary_light dark:bg-vl_gray text-card_dark dark:text-white"
+                  className="w-full  bg-primary_light dark:bg-vl_gray text-card_dark dark:text-white  data-[state=active]:bg-primary_text data-[state=active]:text-white"
                   value="userReferral"
                 >
                   User Referral
                 </TabsTrigger>
                 <TabsTrigger
-                  className="w-full  bg-primary_light dark:bg-vl_gray text-card_dark dark:text-white"
+                  className="w-full  bg-primary_light dark:bg-vl_gray text-card_dark dark:text-white  data-[state=active]:bg-primary_text data-[state=active]:text-white"
                   value="userBusiness"
                 >
                   User Business
                 </TabsTrigger>
                 <TabsTrigger
-                  className="w-full  bg-primary_light dark:bg-vl_gray text-card_dark dark:text-white"
+                  className="w-full  bg-primary_light dark:bg-vl_gray text-card_dark dark:text-white  data-[state=active]:bg-primary_text data-[state=active]:text-white"
                   value="userBilling"
                 >
                   User Billing
                 </TabsTrigger>
                 <TabsTrigger
-                  className="w-full  bg-primary_light dark:bg-vl_gray text-card_dark dark:text-white"
+                  className="w-full  bg-primary_light dark:bg-vl_gray text-card_dark dark:text-white  data-[state=active]:bg-primary_text data-[state=active]:text-white"
                   value="membershipSubscription"
                 >
                   Membership Subscription
                 </TabsTrigger>
                 <TabsTrigger
-                  className="w-full  bg-primary_light dark:bg-vl_gray text-card_dark dark:text-white"
+                  className="w-full  bg-primary_light dark:bg-vl_gray text-card_dark dark:text-white  data-[state=active]:bg-primary_text data-[state=active]:text-white"
                   value="userEventBook"
                 >
                   User Event Book
