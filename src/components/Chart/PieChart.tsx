@@ -62,16 +62,13 @@ export function Piechart() {
   }, []);
 
   return (
-    <Card className="flex flex-col dark:bg-card_dark bg-white  border-none sm:w-[40%] w-full">
-      <CardHeader className="items-center pb-0">
-        <div className="flex justify-evenly w-full">
-          <CardTitle className="text-lg dark:text-white text-black font-medium ">
+    <Card className="flex flex-col dark:bg-card_dark bg-white  border-none md:w-[40%] sm:w-[42%] w-full">
+      <CardHeader className="items-center sm:p-8 p-4 w-full">
+        <div className="flex justify-between w-full items-center">
+          <CardTitle className="sm:text-lg text-base dark:text-white text-black font-medium ">
             Top Assigned Project
           </CardTitle>
-          <BiDotsVerticalRounded
-            size={25}
-            className="place-self-end self-end dark:text-white text-black"
-          />
+          <BiDotsVerticalRounded className="dark:text-white text-black sm:w-6 sm:h-6 w-5 h-5 " />
         </div>
         <CardDescription></CardDescription>
       </CardHeader>
@@ -126,10 +123,10 @@ export function Piechart() {
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
-        <div className="flex items-center gap-2 font-medium leading-none">
+        <div className="flex items-center gap-2 font-medium leading-none line-clamp-1">
           Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
         </div>
-        <div className="leading-none text-muted-foreground">
+        <div className="leading-none text-muted-foreground line-clamp-1">
           Showing total visitors for the last 6 months
         </div>
       </CardFooter>

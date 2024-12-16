@@ -3,9 +3,9 @@ import { MdKeyboardArrowDown } from "react-icons/md";
 
 const TimeSheet = () => {
   return (
-    <div className="dark:bg-card_dark bg-white sm:p-8 p-4 sm:w-[55%] w-full h-full rounded-md border-none flex flex-col gap-8">
-      <div className="flex justify-between">
-        <h2 className="dark:text-white text-black font-medium text-lg">
+    <div className="dark:bg-card_dark bg-white sm:p-8 p-4 md:w-[58%] sm:w-[55%] w-full rounded-md border-none flex flex-col gap-8">
+      <div className="flex justify-between items-center">
+        <h2 className="dark:text-white text-black font-medium sm:text-lg text-base">
           TimeSheet
         </h2>
         <div className="flex gap-2 py-2 sm:px-4 px-2 border-2 border-gray-400 rounded-3xl">

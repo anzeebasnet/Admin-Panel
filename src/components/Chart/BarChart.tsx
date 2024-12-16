@@ -28,15 +28,12 @@ const chartConfig = {
 
 export function Barchart() {
   return (
-    <div className="dark:bg-card_dark bg-white  p-8 md:w-[50%] sm:w-[70%] w-full rounded-md">
-      <div className="flex justify-between">
-        <h2 className="dark:text-white text-black font-medium text-lg">
+    <div className="dark:bg-card_dark bg-white  sm:p-8 p-4 md:w-[50%] sm:w-[70%] w-full rounded-md flex flex-col gap-4">
+      <div className="flex justify-between items-center">
+        <h2 className="dark:text-white text-black font-medium sm:text-lg text-base">
           Weekly Report
         </h2>
-        <BiDotsVerticalRounded
-          size={25}
-          className="dark:text-white text-black"
-        />
+        <BiDotsVerticalRounded className="dark:text-white text-black sm:w-6 sm:h-6 w-5 h-5 " />
       </div>
       <ChartContainer
         config={chartConfig}

@@ -3,6 +3,7 @@ import { Piechart } from "@/components/Chart/PieChart";
 import EmployeeCard from "@/components/Cards/EmployeeCard";
 import React from "react";
 import TimeSheet from "@/components/TimeSheet/TimeSheet";
+import LineChart from "@/components/Chart/LineChart";
 
 const Page = () => {
   return (
@@ -13,12 +14,13 @@ const Page = () => {
         <EmployeeCard colorgradtop="#7265cf" colorgradbottom="#8b64b8" />
         <EmployeeCard colorgradtop="#0f87ba" colorgradbottom="#51b7ce" />
       </div>
-      <div className="flex flex-wrap gap-x-4 gap-y-6">
+      <div className="flex sm:flex-nowrap flex-wrap gap-x-4 gap-y-6">
         <TimeSheet />
         <Piechart />
       </div>
-      <div>
+      <div className="flex md:flex-nowrap flex-wrap gap-x-4 gap-y-6">
         <Barchart />
+        <LineChart />
       </div>
     </div>
   );
