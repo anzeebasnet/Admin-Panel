@@ -133,61 +133,61 @@ const Page = ({ params }: { params: { userId: string[] } }) => {
               </div>
               <TabsList className="flex flex-col items-center justify-center gap-2 dark:bg-primary_dark bg-white p-6 shadow-md shadow-vll_gray dark:shadow-none rounded-md data-[state=active]:bg-primary_text">
                 <TabsTrigger
-                  className="w-full  bg-primary_light dark:bg-vl_gray text-card_dark dark:text-white data-[state=active]:bg-primary_text data-[state=active]:text-white"
+                  className="w-full  bg-primary_light dark:bg-vl_gray text-card_dark dark:text-white data-[state=active]:bg-primary_text data-[state=active]:text-white data-[state=active]:dark:bg-secondary_text"
                   value="basic"
                 >
                   Basic
                 </TabsTrigger>
                 <TabsTrigger
-                  className="w-full  bg-primary_light dark:bg-vl_gray text-card_dark dark:text-white  data-[state=active]:bg-primary_text data-[state=active]:text-white"
+                  className="w-full  bg-primary_light dark:bg-vl_gray text-card_dark dark:text-white  data-[state=active]:bg-primary_text data-[state=active]:text-white data-[state=active]:dark:bg-secondary_text"
                   value="personal"
                 >
                   Personal
                 </TabsTrigger>
                 <TabsTrigger
-                  className="w-full  bg-primary_light dark:bg-vl_gray text-card_dark dark:text-white  data-[state=active]:bg-primary_text data-[state=active]:text-white"
+                  className="w-full  bg-primary_light dark:bg-vl_gray text-card_dark dark:text-white  data-[state=active]:bg-primary_text data-[state=active]:text-white data-[state=active]:dark:bg-secondary_text"
                   value="userKyc"
                 >
                   User KYC
                 </TabsTrigger>
                 <TabsTrigger
-                  className="w-full  bg-primary_light dark:bg-vl_gray text-card_dark dark:text-white  data-[state=active]:bg-primary_text data-[state=active]:text-white"
+                  className="w-full  bg-primary_light dark:bg-vl_gray text-card_dark dark:text-white  data-[state=active]:bg-primary_text data-[state=active]:text-white data-[state=active]:dark:bg-secondary_text"
                   value="wallets"
                 >
                   Wallets
                 </TabsTrigger>
                 <TabsTrigger
-                  className="w-full  bg-primary_light dark:bg-vl_gray text-card_dark dark:text-white  data-[state=active]:bg-primary_text data-[state=active]:text-white"
+                  className="w-full  bg-primary_light dark:bg-vl_gray text-card_dark dark:text-white  data-[state=active]:bg-primary_text data-[state=active]:text-white data-[state=active]:dark:bg-secondary_text"
                   value="userWithdrawl"
                 >
                   User Withdrawl
                 </TabsTrigger>
                 <TabsTrigger
-                  className="w-full  bg-primary_light dark:bg-vl_gray text-card_dark dark:text-white  data-[state=active]:bg-primary_text data-[state=active]:text-white"
+                  className="w-full  bg-primary_light dark:bg-vl_gray text-card_dark dark:text-white  data-[state=active]:bg-primary_text data-[state=active]:text-white data-[state=active]:dark:bg-secondary_text"
                   value="userReferral"
                 >
                   User Referral
                 </TabsTrigger>
                 <TabsTrigger
-                  className="w-full  bg-primary_light dark:bg-vl_gray text-card_dark dark:text-white  data-[state=active]:bg-primary_text data-[state=active]:text-white"
+                  className="w-full  bg-primary_light dark:bg-vl_gray text-card_dark dark:text-white  data-[state=active]:bg-primary_text data-[state=active]:text-white data-[state=active]:dark:bg-secondary_text"
                   value="userBusiness"
                 >
                   User Business
                 </TabsTrigger>
                 <TabsTrigger
-                  className="w-full  bg-primary_light dark:bg-vl_gray text-card_dark dark:text-white  data-[state=active]:bg-primary_text data-[state=active]:text-white"
+                  className="w-full  bg-primary_light dark:bg-vl_gray text-card_dark dark:text-white  data-[state=active]:bg-primary_text data-[state=active]:text-white data-[state=active]:dark:bg-secondary_text"
                   value="userBilling"
                 >
                   User Billing
                 </TabsTrigger>
                 <TabsTrigger
-                  className="w-full  bg-primary_light dark:bg-vl_gray text-card_dark dark:text-white  data-[state=active]:bg-primary_text data-[state=active]:text-white"
+                  className="w-full  bg-primary_light dark:bg-vl_gray text-card_dark dark:text-white  data-[state=active]:bg-primary_text data-[state=active]:text-white data-[state=active]:dark:bg-secondary_text"
                   value="membershipSubscription"
                 >
                   Membership Subscription
                 </TabsTrigger>
                 <TabsTrigger
-                  className="w-full  bg-primary_light dark:bg-vl_gray text-card_dark dark:text-white  data-[state=active]:bg-primary_text data-[state=active]:text-white"
+                  className="w-full  bg-primary_light dark:bg-vl_gray text-card_dark dark:text-white  data-[state=active]:bg-primary_text data-[state=active]:text-white data-[state=active]:dark:bg-secondary_text"
                   value="userEventBook"
                 >
                   User Event Book
