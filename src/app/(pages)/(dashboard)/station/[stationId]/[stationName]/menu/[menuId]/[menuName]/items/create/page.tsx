@@ -267,32 +267,6 @@ const Page = ({
                   </FormItem>
                 )}
               />
-              {/* <FormField
-                control={form.control}
-                name="is_active"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Is Active</FormLabel>
-                    <FormControl>
-                      <Select
-                        onValueChange={(value) =>
-                          field.onChange(value === "true")
-                        }
-                        defaultValue={field.value ? "true" : "false"} // Set initial value
-                      >
-                        <SelectTrigger className="w-[180px]">
-                          <SelectValue placeholder="Select Status" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="true">True</SelectItem>
-                          <SelectItem value="false">False</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              /> */}
               <FormField
                 control={form.control}
                 name="is_active"
