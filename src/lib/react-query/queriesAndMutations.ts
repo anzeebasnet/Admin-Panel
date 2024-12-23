@@ -57,18 +57,17 @@ export const useUsersList = (
   });
 };
 
-export const useStationList = () =>
-  {
-    const axiosInstance = useAxiosPrivateFood();
-    return useQuery({
-      queryKey: ["GET_STATIONLIST"],
-      queryFn: async () => {
-        const res = await axiosInstance.get("/moreclub/stations/list/");
-        const data = res.data.data;
-        return data;
-      },
-    });
-  };
+export const useStationList = () => {
+  const axiosInstance = useAxiosPrivateFood();
+  return useQuery({
+    queryKey: ["GET_STATIONLIST"],
+    queryFn: async () => {
+      const res = await axiosInstance.get("/moreclub/stations/list/");
+      const data = res.data.data;
+      return data;
+    },
+  });
+};
 
 export const useStationDetail = (stationId: string) => {
   const axiosInstance = useAxiosPrivateFood();
@@ -115,11 +114,10 @@ export const useRestroList = () => {
   const axiosInstance = useAxiosPrivateFood();
   return useQuery({
     queryKey: ["GET_RESTROLIST"],
-    queryFn: async () => { 
-      const res = await axios.get("http://192.168.1.72:8000/api/moreclub/user/restaurants/list/", {
+    queryFn: async () => {
+      const res = await axiosInstance.get("/moreclub/user/restaurants/list/", {
         headers: {
           "x-country-code": "NP",
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`
         },
       });
       const data = res.data.data;
@@ -129,19 +127,11 @@ export const useRestroList = () => {
 };
 
 export const useRestroDetail = (restroId: string) => {
-  const { data: session } = useSession();
-  const token = session?.accessToken || session?.user.token;
+  const axiosInstance = useAxiosPrivateFood();
   return useQuery({
     queryKey: ["GET_RESTRODETAIL"],
     queryFn: async () => {
-      const res = await axios.get(
-        `http://192.168.1.72:8000/api/moreclub/user/restaurants/${restroId}/`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`
-          },
-        }
-      );
+      const res = await axiosInstance.get(`/moreclub/user/restaurants/${restroId}/`);
       const data: RestroDetail = res.data.data;
       return data;
     },
@@ -149,18 +139,12 @@ export const useRestroDetail = (restroId: string) => {
 };
 
 export const useRestroMenuList = (restroId: string) => {
-  const { data: session } = useSession();
-  const token = session?.accessToken || session?.user.token;
+  const axiosInstance = useAxiosPrivateFood();
   return useQuery({
     queryKey: ["GET_RESTROMENULIST"],
     queryFn: async () => {
-      const res = await axios.get(
-        `http://192.168.1.72:8000/api/moreclub/user/menus/${restroId}/`,
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
-          },
-        }
+      const res = await axiosInstance.get(
+        `/moreclub/user/menus/${restroId}/`,
       );
       const data = res.data.data;
       return data;
@@ -174,7 +158,7 @@ export const useRestroItemList = (restroId: string, menuId: string) => {
     queryKey: ["GET_RESTROITEMLIST"],
     queryFn: async () => {
       const res = await axiosInstance.get(
-        `/moreclub/user/food/items/${menuId}/${restroId}/`,
+        `/moreclub/user/food/items/${menuId}/${restroId}/`
       );
       console.log(res.data.data);
       const data = res.data.data;
@@ -189,7 +173,7 @@ export const useCuisineList = (restroId: string) => {
     queryKey: ["GET_CUISINELIST"],
     queryFn: async () => {
       const res = await axiosInstance.get(
-        `/moreclub/user/cuisines/${restroId}/`,
+        `/moreclub/user/cuisines/${restroId}/`
       );
       console.log(res.data.data);
       const data = res.data.data;
@@ -204,9 +188,8 @@ export const useWorkingHours = (restroId: string) => {
     queryKey: ["GET_WORKINGHOURS"],
     queryFn: async () => {
       const res = await axiosInstance.get(
-        `/moreclub/user/restaurants/${restroId}/working/hours/`, {
-          
-        }
+        `/moreclub/user/restaurants/${restroId}/working/hours/`,
+        {}
       );
       console.log(res.data.data);
       const data = res.data.data;
@@ -215,19 +198,12 @@ export const useWorkingHours = (restroId: string) => {
   });
 };
 
-
 export const useOfferList = (restroId: string) => {
   const axiosInstance = useAxiosPrivateFood();
   return useQuery({
     queryKey: ["GET_OFFERLIST"],
     queryFn: async () => {
-      const res = await axios.get(
-        `http://192.168.1.72:8000/api/moreclub/user/offers/${restroId}/`,{
-          headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`
-          }
-        }
-      );
+      const res = await axiosInstance.get(`/moreclub/user/offers/${restroId}/`);
       console.log(res.data.data);
       const data = res.data.data;
       return data;
@@ -240,9 +216,7 @@ export const useOrderList = (restroId: string) => {
   return useQuery({
     queryKey: ["GET_ORDERLIST"],
     queryFn: async () => {
-      const res = await axiosInstance.get(
-        `/moreclub/user/orders/${restroId}/`,
-      );
+      const res = await axiosInstance.get(`/moreclub/user/orders/${restroId}/`);
       console.log(res.data.data);
       const data = res.data.data;
       return data;
@@ -276,7 +250,7 @@ export const useStationMenu = (restroId: string, stationId: string) => {
     queryKey: ["GET_STATIONMENU"],
     queryFn: async () => {
       const res = await axiosInstance.get(
-        `/moreclub/station/${stationId}/restaurant/${restroId}/food-items/restro/`,
+        `/moreclub/station/${stationId}/restaurant/${restroId}/food-items/restro/`
       );
       console.log(res.data.data);
       const data = res.data.data;
@@ -291,7 +265,7 @@ export const useNearbyStationDetail = (stationId: string) => {
     queryKey: ["GET_NEARBYSTATIONDETAIL"],
     queryFn: async () => {
       const res = await axiosInstance.get(
-        `/moreclub/station/restro/${stationId}/by/restaurant/`,
+        `/moreclub/station/restro/${stationId}/by/restaurant/`
       );
       console.log(res.data.data);
       const data: NearByStationDetail = res.data.data;
@@ -306,7 +280,7 @@ export const useMenuListByRestro = (restroId: string) => {
     queryKey: ["GET_MENULISTBYRESTRO"],
     queryFn: async () => {
       const res = await axiosInstance.get(
-        `/moreclub/station/restro/${restroId}/by/restaurant/menu/`,
+        `/moreclub/station/restro/${restroId}/by/restaurant/menu/`
       );
       console.log(res.data.data);
       const data = res.data.data;
@@ -321,7 +295,7 @@ export const useStationOrderList = (restroId: string) => {
     queryKey: ["GET_STATIONORDERLIST"],
     queryFn: async () => {
       const res = await axiosInstance.get(
-        `/moreclub/station/restro/${restroId}/all/orders/`,
+        `/moreclub/station/restro/${restroId}/all/orders/`
       );
       console.log(res.data.data);
       const data = res.data.data;
@@ -336,7 +310,7 @@ export const useOrderSummary = (restroId: string) => {
     queryKey: ["GET_ORDERSUMMARY"],
     queryFn: async () => {
       const res = await axiosInstance.get(
-        `/moreclub/station/restro/${restroId}/all/orders/summary/`,
+        `/moreclub/station/restro/${restroId}/all/orders/summary/`
       );
       console.log(res.data.data);
       const data: OrderSummary = res.data.data;
@@ -351,7 +325,7 @@ export const useRestroGallery = (restroId: string) => {
     queryKey: ["GET_RESTROGALLERY"],
     queryFn: async () => {
       const res = await axiosInstance.get(
-        `/moreclub/user/restaurants/gallery/${restroId}/`,
+        `/moreclub/user/restaurants/gallery/${restroId}/`
       );
       console.log(res.data.data);
       const data = res.data.data;
@@ -366,7 +340,7 @@ export const usePendingGallery = (restroId: string) => {
     queryKey: ["GET_PENDINGGALLERY"],
     queryFn: async () => {
       const res = await axiosInstance.get(
-        `/moreclub/user/restaurants/gallery/user/upload/${restroId}/?status=unverified`,
+        `/moreclub/user/restaurants/gallery/user/upload/${restroId}/?status=unverified`
       );
       console.log(res.data.data);
       const data = res.data.data;
@@ -381,7 +355,7 @@ export const useAcceptedGallery = (restroId: string) => {
     queryKey: ["GET_ACCEPTEDGALLERY"],
     queryFn: async () => {
       const res = await axiosInstance.get(
-        `/moreclub/user/restaurants/gallery/user/upload/${restroId}/?status=verified`,
+        `/moreclub/user/restaurants/gallery/user/upload/${restroId}/?status=verified`
       );
       console.log(res.data.data);
       const data = res.data.data;
@@ -420,7 +394,9 @@ export const useSalonServices = (salonId: string) => {
   return useQuery({
     queryKey: ["GET_SALONSERVICES"],
     queryFn: async () => {
-      const res = await axiosInstance.get(`/moreclub/users/saloons/${salonId}/services/`);
+      const res = await axiosInstance.get(
+        `/moreclub/users/saloons/${salonId}/services/`
+      );
       console.log(res.data.data);
       const data = res.data.data;
       return data;
@@ -433,7 +409,9 @@ export const useSalonVariation = (salonId: string, serviceId: string) => {
   return useQuery({
     queryKey: ["GET_SALONVARIATION"],
     queryFn: async () => {
-      const res = await axiosInstance.get(`/moreclub/users/saloons/${salonId}/services/${serviceId}/variations/`);
+      const res = await axiosInstance.get(
+        `/moreclub/users/saloons/${salonId}/services/${serviceId}/variations/`
+      );
       console.log(res.data.data);
       const data = res.data.data;
       return data;
@@ -447,7 +425,7 @@ export const useSalonGallery = (salonId: string) => {
     queryKey: ["GET_SALONGALLERY"],
     queryFn: async () => {
       const res = await axiosInstance.get(
-        `/moreclub/users/saloons/${salonId}/gallery/`,
+        `/moreclub/users/saloons/${salonId}/gallery/`
       );
       console.log(res.data.data);
       const data = res.data.data;
@@ -462,7 +440,7 @@ export const useSalonWorkingHours = (salonId: string) => {
     queryKey: ["GET_SALONWORKINGHOURS"],
     queryFn: async () => {
       const res = await axiosInstance.get(
-        `/moreclub/users/saloons/${salonId}/opening/hours/`,
+        `/moreclub/users/saloons/${salonId}/opening/hours/`
       );
       console.log(res.data.data);
       const data = res.data.data;
@@ -477,7 +455,7 @@ export const useSalonStaffList = (salonId: string) => {
     queryKey: ["GET_SALONSTAFFLIST"],
     queryFn: async () => {
       const res = await axiosInstance.get(
-        `/moreclub/users/saloons/${salonId}/staff/`, 
+        `/moreclub/users/saloons/${salonId}/staff/`
       );
       console.log(res.data.data);
       const data = res.data.data;
