@@ -139,7 +139,7 @@ const Page = () => {
 
   return (
     <div
-      className={` bg-white dark:bg-secondary_dark rounded-sm p-6 flex flex-col gap-6 shadow-sm shadow-vll_gray dark:shadow-none ${open_sans.className}`}
+      className={` bg-white dark:bg-secondary_dark rounded-sm p-6 pt-4 flex flex-col gap-2 shadow-sm shadow-vll_gray dark:shadow-none ${open_sans.className}`}
     >
       <div className="flex sm:flex-row flex-col justify-between">
         <Breadcrumb className="mb-4 -ml-1">
@@ -163,8 +163,8 @@ const Page = () => {
           Add Users
         </Button>
       </div>
-      <div className="flex md:flex-row flex-col gap-6">
-        <div className="md:h-[50vh]">
+      <div className="flex flex-col gap-6">
+        <div className="">
           <SearchForm onSubmit={applyFilters} resetTrigger={resetTrigger} />
         </div>
         {loading ? (
@@ -176,71 +176,61 @@ const Page = () => {
             <ScrollArea
               className={`${
                 sidebar
-                  ? "xl:w-[60vw] lg:w-[50vw] w-[60vw] h-[70vh]"
+                  ? "xl:w-[75vw] lg:w-[70vw] sm:w-[89vw] w-[80vw] h-[60vh]"
                   : "w-[75vw] h-[70vh]"
-              }`}
+              } relative overflow-auto`}
             >
-              <Table className=" ">
-                <TableCaption></TableCaption>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Full Name</TableHead>
-                    <TableHead>Username</TableHead>
-                    <TableHead>Email</TableHead>
-                    <TableHead>Contact</TableHead>
-                    <TableHead>User Type</TableHead>
-                    <TableHead>Date Joined</TableHead>
-                    {/* <TableHead>OTP Verified</TableHead>
-                    <TableHead>Deleted</TableHead>
-                    <TableHead className="text-right">Status</TableHead> */}
-                  </TableRow>
-                </TableHeader>
-                {filteredData && filteredData.length > 0 ? (
-                  <TableBody>
-                    {filteredData.map((user) => {
-                      return (
-                        <TableRow key={user.id} className="w-[70%]">
-                          <TableCell className="font-medium">
-                            <Link
-                              href={`/users/${user.id}`}
-                              prefetch={true}
-                              className="hover:text-primary_text dark:hover:text-sidebar_blue"
-                            >
-                              {user.first_name} {user.last_name}
-                            </Link>
-                          </TableCell>
-                          <TableCell>
-                            <Link
-                              href={`/users/${user.id}`}
-                              prefetch={true}
-                              className="hover:text-primary_text dark:hover:text-sidebar_blue"
-                            >
-                              {user.username}
-                            </Link>
-                          </TableCell>
-                          <TableCell>{user.email}</TableCell>
-                          <TableCell>{user.phone_number}</TableCell>
-                          <TableCell>{user.user_type}</TableCell>
-                          <TableCell>{user.date_joined}</TableCell>
-                          {/* <TableCell>
-                            {user.is_otp_verified ? "Yes" : "No"}
-                          </TableCell>
-                          <TableCell>
-                            {user.is_deleted ? "Yes" : "No"}
-                          </TableCell>
-                          <TableCell className="text-right">
-                            {user.status}
-                          </TableCell> */}
-                        </TableRow>
-                      );
-                    })}
-                  </TableBody>
-                ) : (
-                  <div className="text-base font-normal text-center pt-12">
-                    No matching items!
-                  </div>
-                )}
-              </Table>
+              <div className="relative overflow-auto">
+                <Table className="table-auto border-collapse w-full">
+                  <TableCaption></TableCaption>
+                  <TableHeader className="sticky top-0 bg-white dark:bg-gray-800 z-10">
+                    <TableRow>
+                      <TableHead>Full Name</TableHead>
+                      <TableHead>Username</TableHead>
+                      <TableHead>Email</TableHead>
+                      <TableHead>Contact</TableHead>
+                      <TableHead>User Type</TableHead>
+                      <TableHead>Date Joined</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  {filteredData && filteredData.length > 0 ? (
+                    <TableBody>
+                      {filteredData.map((user) => {
+                        return (
+                          <TableRow key={user.id} className="w-[70%]">
+                            <TableCell className="font-medium">
+                              <Link
+                                href={`/users/${user.id}`}
+                                prefetch={true}
+                                className="hover:text-primary_text dark:hover:text-sidebar_blue"
+                              >
+                                {user.first_name} {user.last_name}
+                              </Link>
+                            </TableCell>
+                            <TableCell>
+                              <Link
+                                href={`/users/${user.id}`}
+                                prefetch={true}
+                                className="hover:text-primary_text dark:hover:text-sidebar_blue"
+                              >
+                                {user.username}
+                              </Link>
+                            </TableCell>
+                            <TableCell>{user.email}</TableCell>
+                            <TableCell>{user.phone_number}</TableCell>
+                            <TableCell>{user.user_type}</TableCell>
+                            <TableCell>{user.date_joined}</TableCell>
+                          </TableRow>
+                        );
+                      })}
+                    </TableBody>
+                  ) : (
+                    <div className="text-base font-normal text-center pt-12">
+                      No matching items!
+                    </div>
+                  )}
+                </Table>
+              </div>
             </ScrollArea>
             <div>
               <Pagination>

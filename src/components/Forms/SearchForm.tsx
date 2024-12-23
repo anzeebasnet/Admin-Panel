@@ -82,7 +82,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSubmit, resetTrigger }) => {
   return (
     <Form {...form}>
       <form
-        className={`flex flex-col gap-4 justify-center rounded-sm bg-white dark:bg-primary_dark shadow-md shadow-vll_gray dark:shadow-none p-6 ${open_sans.className}`}
+        className={`grid sm:grid-cols-5 grid-cols-1 gap-4 justify-center rounded-sm bg-white dark:bg-primary_dark shadow-sm shadow-vll_gray dark:shadow-none p-3 ${open_sans.className}`}
         onSubmit={form.handleSubmit(onSubmit)}
       >
         <FormField
@@ -95,7 +95,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSubmit, resetTrigger }) => {
               </FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
-                  <SelectTrigger>
+                  <SelectTrigger className="h-8">
                     <SelectValue placeholder="" />
                   </SelectTrigger>
                 </FormControl>
@@ -118,7 +118,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSubmit, resetTrigger }) => {
               </FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
-                  <SelectTrigger>
+                  <SelectTrigger className="h-8">
                     <SelectValue placeholder="" />
                   </SelectTrigger>
                 </FormControl>
@@ -141,7 +141,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSubmit, resetTrigger }) => {
               </FormLabel>
               <Select onValueChange={field.onChange} defaultValue={field.value}>
                 <FormControl>
-                  <SelectTrigger>
+                  <SelectTrigger className="h-8">
                     <SelectValue placeholder="" />
                   </SelectTrigger>
                 </FormControl>
@@ -181,7 +181,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSubmit, resetTrigger }) => {
 
         <Button
           type="submit"
-          className="bg-primary_text dark:bg-btn_blue text-white hover:bg-l_orange  dark:hover:bg-blue rounded w-max h-8 md:self-start self-center px-8 mt-2"
+          className="bg-primary_text dark:bg-btn_blue text-white hover:bg-l_orange  dark:hover:bg-blue rounded w-max h-8 place-self-center px-8 mt-2"
         >
           Filter
         </Button>
