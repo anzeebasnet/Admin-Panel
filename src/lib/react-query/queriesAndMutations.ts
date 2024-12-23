@@ -116,9 +116,10 @@ export const useRestroList = () => {
   return useQuery({
     queryKey: ["GET_RESTROLIST"],
     queryFn: async () => { 
-      const res = await axiosInstance.get("/moreclub/user/restaurants/list/", {
+      const res = await axios.get("http://192.168.1.72:8000/api/moreclub/user/restaurants/list/", {
         headers: {
           "x-country-code": "NP",
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`
         },
       });
       const data = res.data.data;
@@ -134,10 +135,10 @@ export const useRestroDetail = (restroId: string) => {
     queryKey: ["GET_RESTRODETAIL"],
     queryFn: async () => {
       const res = await axios.get(
-        `https://api.morefood.se/api/moreclub/user/restaurants/${restroId}/`,
+        `http://192.168.1.72:8000/api/moreclub/user/restaurants/${restroId}/`,
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`
           },
         }
       );
@@ -154,10 +155,10 @@ export const useRestroMenuList = (restroId: string) => {
     queryKey: ["GET_RESTROMENULIST"],
     queryFn: async () => {
       const res = await axios.get(
-        `https://api.morefood.se/api/moreclub/user/menus/${restroId}/`,
+        `http://192.168.1.72:8000/api/moreclub/user/menus/${restroId}/`,
         {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`,
           },
         }
       );
@@ -220,8 +221,12 @@ export const useOfferList = (restroId: string) => {
   return useQuery({
     queryKey: ["GET_OFFERLIST"],
     queryFn: async () => {
-      const res = await axiosInstance.get(
-        `/moreclub/user/offers/${restroId}/`,
+      const res = await axios.get(
+        `http://192.168.1.72:8000/api/moreclub/user/offers/${restroId}/`,{
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_TOKEN}`
+          }
+        }
       );
       console.log(res.data.data);
       const data = res.data.data;
@@ -489,6 +494,36 @@ export const useStaffWorkingHours = (salonId: string, staffId: string) => {
       const res = await axiosInstance.get(
         // `/moreclub/users/saloons/${salonId}/staff/${staffId}/working-days/detail/`,
         `/moreclub/users/saloons/${salonId}/staff/${staffId}/working-days/`
+      );
+      console.log(res.data.data);
+      const data = res.data.data;
+      return data;
+    },
+  });
+};
+
+export const useSalonAppointment = (salonId: string) => {
+  const axiosInstance = useAxiosPrivateSalon();
+  return useQuery({
+    queryKey: ["GET_SALONAPPOINTMENT"],
+    queryFn: async () => {
+      const res = await axiosInstance.get(
+        `/moreclub/users/saloons/${salonId}/appointments/`
+      );
+      console.log(res.data.data);
+      const data = res.data.data;
+      return data;
+    },
+  });
+};
+
+export const useSalonStaffAppointment = (salonId: string, staffId: string) => {
+  const axiosInstance = useAxiosPrivateSalon();
+  return useQuery({
+    queryKey: ["GET_SALONSTAFFAPPOINTMENT"],
+    queryFn: async () => {
+      const res = await axiosInstance.get(
+        `/moreclub/users/saloons/${salonId}/staff/${staffId}/appointments/`
       );
       console.log(res.data.data);
       const data = res.data.data;

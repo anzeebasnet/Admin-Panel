@@ -22,7 +22,10 @@ import Loader from "@/components/ui/Loader";
 import { Switch } from "@/components/ui/switch";
 import BasicTimePicker from "@/components/DataSelector/DateSelector";
 import dayjs, { Dayjs } from "dayjs";
-import { useStaffWorkingHours } from "@/lib/react-query/queriesAndMutations";
+import {
+  useSalonStaffAppointment,
+  useStaffWorkingHours,
+} from "@/lib/react-query/queriesAndMutations";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import {
   Breadcrumb,
@@ -35,6 +38,7 @@ import { CgArrowLeft } from "react-icons/cg";
 import useAxiosPrivateSalon from "@/hooks/useAxiosPrivateSalon";
 import { StaffWorkingDays } from "@/types/types";
 import { CiEdit } from "react-icons/ci";
+import ResponsiveCalendar from "@/components/BookingCalendar/BookingCalendar";
 
 const daySchema = z.object({
   start_time: z
@@ -117,6 +121,10 @@ const Page = ({
   const [satendTimeValue, setSatEndTimeValue] = useState<Dayjs | null>(null);
   const salonName = decodeURIComponent(params.salonName);
   const { data: hours, isLoading: isLoading } = useStaffWorkingHours(
+    params.salonId,
+    params.staffId
+  );
+  const { data: appointment, isLoading: isloading } = useSalonStaffAppointment(
     params.salonId,
     params.staffId
   );
@@ -428,6 +436,8 @@ const Page = ({
         <h2 className="text-lg font-medium text-primary_text dark:text-sidebar_blue">
           {staffName}
         </h2>
+
+        <ResponsiveCalendar events={appointment} />
 
         {isLoading ? (
           <p>Loading Working Hours...</p>
