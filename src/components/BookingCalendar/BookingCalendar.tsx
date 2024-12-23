@@ -29,7 +29,7 @@ export default function ResponsiveCalendar({
   }, []);
 
   return (
-    <div className="w-full h-[400px] bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4">
+    <div className="sm:w-full w-[90vw] h-[400px] bg-white dark:bg-gray-800 rounded-lg shadow-lg p-4">
       <style jsx global>{`
         .rbc-calendar {
           font-family: "Arial", sans-serif;
@@ -64,6 +64,15 @@ export default function ResponsiveCalendar({
         }
         .rbc-off-range-bg {
           background-color: #e0f2fe;
+        }
+        .rbc-toolbar .rbc-btn-group button {
+          font-size: 8px !important; /* Default for smaller screens */
+        }
+
+        @media (min-width: 640px) {
+          .rbc-toolbar .rbc-btn-group button {
+            font-size: 10px !important; /* Larger font size for screens 640px and above */
+          }
         }
       `}</style>
 

@@ -30,7 +30,7 @@ const Page = ({
 
   return (
     <div
-      className={` bg-white dark:bg-secondary_dark rounded-sm p-6 flex flex-col gap-6 shadow-sm shadow-vll_gray dark:shadow-none ${open_sans.className}`}
+      className={` bg-white dark:bg-secondary_dark rounded-sm sm:p-6 p-4 flex flex-col gap-6 shadow-sm shadow-vll_gray dark:shadow-none ${open_sans.className}`}
     >
       <Breadcrumb className="-ml-1">
         <BreadcrumbList className="flex sm:gap-1">
@@ -53,7 +53,7 @@ const Page = ({
       </Breadcrumb>
       <div className="">
         {isLoading ? (
-          <p>Loading Appointment List...</p>
+          <p className="sm:text-sm text-xs">Loading Appointment List...</p>
         ) : (
           <div className="">
             <ResponsiveCalendar events={appointments} />
