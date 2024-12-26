@@ -337,13 +337,13 @@ const Page = ({
                     <Input
                       type="file"
                       accept="image/*"
+                      multiple // Enable multiple file selection
                       onChange={(e) => {
-                        const file = e.target.files?.[0];
-                        if (file) {
-                          field.onChange(file); // Set the new file in the form state
-                          const fileURL = URL.createObjectURL(file); // Update preview URL
-                          setLogoPreview(fileURL); // Update preview
-                        }
+                        const files = Array.from(e.target.files || []); // Get all selected files
+                        field.onChange(files); // Pass an array of files to the form state
+                        setLogoPreview(
+                          files[0] ? URL.createObjectURL(files[0]) : null
+                        );
                       }}
                     />
                   </div>
@@ -355,6 +355,9 @@ const Page = ({
 
           <Button
             type="submit"
+            onClick={() => {
+              console.log("Values: ", form.getValues());
+            }}
             className="bg-primary_text dark:bg-sidebar_blue hover:bg-l_orange dark:hover:bg-blue text-white h-8 mb-6 place-self-start rounded-lg"
           >
             {isSubmitting ? (
