@@ -199,7 +199,7 @@ const Page = ({
                     Instagram
                   </Link>
                   <Link
-                    href={`${salonDetail.facebook_link}`}
+                    href={`${salonDetail.website_link}`}
                     className="bg-primary_text dark:bg-btn_blue text-white text-[13px] hover:bg-l_orange dark:hover:bg-blue py-1 px-4 rounded inline-flex gap-2"
                   >
                     <GoLink size={18} />
