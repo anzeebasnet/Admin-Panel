@@ -1,18 +1,8 @@
-// https://moresaloon-backend.vercel.app/api/moreclub/users/saloons/8747f3e3-3349-493d-8f6a-f257341369fe/services/43e799c3-56fd-4cf2-90a7-78d8c5aa3a8a/variations/
-
-// name: Fall Color
-// price: 2500
-// discount_price: 2200
-// description: This is the fall color variation
-// images[]: (binary)
-// images[]: (binary)
-// duration: 02:30:00
-
 "use client";
 
 import { Button } from "@/components/ui/button";
 import { useRestroGallery } from "@/lib/react-query/queriesAndMutations";
-import { GalleryList } from "@/types/types";
+import { GalleryList, SalonImage } from "@/types/types";
 import { Open_Sans } from "next/font/google";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
@@ -49,6 +39,7 @@ import useAxiosPrivateSalon from "@/hooks/useAxiosPrivateSalon";
 import { Textarea } from "@/components/ui/textarea";
 import { useAppSelector } from "@/lib/store/hooks";
 import Loader from "@/components/ui/Loader";
+import { X } from "lucide-react";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -63,6 +54,7 @@ const formSchema = z.object({
   }),
   duration: z.string(),
   images: z.array(z.any()).optional(),
+  removed_images: z.array(z.any()).optional(),
 });
 
 const open_sans = Open_Sans({
@@ -83,8 +75,9 @@ const Page = ({
   const { data: session } = useSession();
   const axiosInstance = useAxiosPrivateSalon();
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const [logoPreview, setLogoPreview] = useState<string | null>(null);
-  const salonName = decodeURIComponent(params.salonName);
+  const [currentImages, setCurrentImages] = useState<SalonImage[]>([]);
+  const [uploadedImages, setUploadedImages] = useState<File[]>([]);
+  const [removedImageIds, setRemovedImageIds] = useState<string[]>([]);
   const salonVariationData = useAppSelector(
     (state) => state.variation.currentVariation
   );
@@ -98,6 +91,7 @@ const Page = ({
       description: "",
       duration: "",
       images: undefined,
+      removed_images: undefined,
     },
   });
 
@@ -109,9 +103,18 @@ const Page = ({
       form.setValue("description", salonVariationData.description || "");
       form.setValue("duration", salonVariationData.duration || "");
 
-      setLogoPreview(salonVariationData.images[0].image);
+      setCurrentImages(salonVariationData.images || []); // Set existing images
     }
   }, [salonVariationData]);
+
+  const handleRemoveImage = (imageId: string) => {
+    setRemovedImageIds((prev) => [...prev, imageId]); // Add image ID to removed list
+    setCurrentImages((prev) => prev.filter((img) => img.id !== imageId)); // Remove from display
+  };
+
+  useEffect(() => {
+    form.setValue("removed_images", removedImageIds);
+  }, [removedImageIds, form]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     if (!session) {
@@ -129,6 +132,11 @@ const Page = ({
         value.forEach((file) => {
           formData.append("images[]", file, file.name);
         });
+      } else if (key === "removed_images" && Array.isArray(value)) {
+        // Add removed image IDs to FormData
+        removedImageIds.forEach((id) =>
+          formData.append("removed_images[]", id)
+        );
       } else if (key === "duration") {
         if (typeof value === "string") {
           // Check if the value already includes seconds
@@ -220,7 +228,7 @@ const Page = ({
           </BreadcrumbItem>
           <BreadcrumbItem>
             <BreadcrumbPage className="sm:text-xl text-sm font-medium text-primary_text dark:text-sidebar_blue">
-              Create Variation
+              {salonVariationData ? "Edit" : "Create"} Variation
             </BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
@@ -324,28 +332,57 @@ const Page = ({
               <FormItem>
                 <FormLabel>Image</FormLabel>
                 <FormControl>
-                  <div className="flex items-center gap-4">
-                    {logoPreview && (
-                      <Image
-                        src={logoPreview}
-                        alt="Logo Preview"
-                        className="w-16 h-16 object-cover"
-                        width={200}
-                        height={200}
+                  <div className="flex flex-col gap-4">
+                    <div className="flex gap-4 flex-wrap">
+                      {/* Render existing images */}
+                      {currentImages.map((image, index) => (
+                        <div key={image.id} className="relative">
+                          <Image
+                            src={image.image}
+                            alt="image"
+                            width={200}
+                            height={200}
+                            className="w-40 h-40"
+                          />
+                          <X
+                            className="absolute top-2 right-2 bg-white p-1 rounded-full text-red-500 text-xl cursor-pointer"
+                            onClick={() => handleRemoveImage(image.id)}
+                          />
+                        </div>
+                      ))}
+                      {/* Render newly uploaded images */}
+                      {uploadedImages.map((file, index) => (
+                        <div key={index} className="relative">
+                          <Image
+                            src={URL.createObjectURL(file)}
+                            alt="uploaded image"
+                            width={200}
+                            height={200}
+                            className="w-40 h-40"
+                          />
+                          <X
+                            className="absolute top-2 right-2 bg-white p-1 rounded-full text-red-500 text-xl cursor-pointer"
+                            onClick={() =>
+                              setUploadedImages((prev) =>
+                                prev.filter((_, i) => i !== index)
+                              )
+                            }
+                          />
+                        </div>
+                      ))}
+                    </div>
+                    <div className="flex items-center gap-4">
+                      <Input
+                        type="file"
+                        accept="image/*"
+                        multiple // Enable multiple file selection
+                        onChange={(e) => {
+                          const files = Array.from(e.target.files || []); // Get all selected files
+                          setUploadedImages((prev) => [...prev, ...files]); // Add new files to uploaded images
+                          field.onChange(files); // Pass an array of files to the form state
+                        }}
                       />
-                    )}
-                    <Input
-                      type="file"
-                      accept="image/*"
-                      multiple // Enable multiple file selection
-                      onChange={(e) => {
-                        const files = Array.from(e.target.files || []); // Get all selected files
-                        field.onChange(files); // Pass an array of files to the form state
-                        setLogoPreview(
-                          files[0] ? URL.createObjectURL(files[0]) : null
-                        );
-                      }}
-                    />
+                    </div>
                   </div>
                 </FormControl>
                 <FormMessage />
