@@ -276,6 +276,16 @@ export interface RestroFoodItem {
   ingredient: string;
 }
 
+export interface FoodItemType {
+  id: string;
+  name: string;
+  currency_symbol: string;
+  variation_type: string;
+  value: string;
+  price: string;
+  discount_price: string;
+}
+
 export interface Cuisine {
   id: number;
   name: string;
@@ -496,6 +506,11 @@ export interface SalonVariation {
   currency: string;
 }
 
+export interface SalonImage {
+      id: string;
+      image: string;
+}
+
 export interface SalonGallery {
   id: string;
   images: string;
@@ -532,7 +547,14 @@ export interface StaffWorkingDays {
   start_time: string;
 }
 
-type Day = 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday';
+type Day =
+  | "Monday"
+  | "Tuesday"
+  | "Wednesday"
+  | "Thursday"
+  | "Friday"
+  | "Saturday"
+  | "Sunday";
 
 interface TimeRange {
   start_time: string;
@@ -558,4 +580,3 @@ export interface Offer {
   is_every_day: boolean;
   applicable_days: Partial<Record<Day, TimeRange>>;
 }
-
