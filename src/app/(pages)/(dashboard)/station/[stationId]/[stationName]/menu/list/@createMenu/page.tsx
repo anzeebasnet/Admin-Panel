@@ -36,6 +36,8 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { CgArrowLeft } from "react-icons/cg";
+import Link from "next/link";
+import { X } from "lucide-react";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -49,7 +51,7 @@ const open_sans = Open_Sans({
   subsets: ["latin"],
 });
 
-const CreateMenu = ({
+const Page = ({
   params,
 }: {
   params: { stationId: string; stationName: string };
@@ -127,6 +129,7 @@ const CreateMenu = ({
           dispatch(clearMenuItem());
           setLogoPreview(null);
           setIsSubmitting(false);
+          window.location.href = `/station/${params.stationId}/${params.stationName}/menu/list`;
         });
     } else {
       axiosInstance
@@ -153,33 +156,48 @@ const CreateMenu = ({
         .finally(() => {
           setLogoPreview(null);
           setIsSubmitting(false);
+          window.location.href = `/station/${params.stationId}/${params.stationName}/menu/list`;
         });
     }
   }
 
   return (
-    <ScrollArea className="bg-white dark:bg-secondary_dark p-6 h-[88vh]">
-      <Breadcrumb className="mb-4 -ml-1">
-        <BreadcrumbList className="flex sm:gap-1">
-          <BreadcrumbItem>
-            <BreadcrumbLink
-              href={`/station/${params.stationId}/${params.stationName}/menu`}
-            >
-              <CgArrowLeft
-                className="text-primary_text dark:text-sidebar_blue"
-                size={25}
-              />
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbItem>
-            <BreadcrumbPage className="sm:text-xl text-sm font-medium text-primary_text dark:text-sidebar_blue">
-              {menuData
-                ? `Update ${StationName} Menu`
-                : `Create ${StationName} Menu`}
-            </BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+    <ScrollArea className="bg-white dark:bg-secondary_dark sm:h-full h-[40vh] relative sm:pt-12 pt-10">
+      <div className="absolute top-0 left-0 flex w-full">
+        {/* <Breadcrumb className="mb-4 -ml-1">
+          <BreadcrumbList className="flex sm:gap-1">
+            <BreadcrumbItem>
+              <BreadcrumbLink
+                href={`/station/${params.stationId}/${params.stationName}/menu/list`}
+              >
+                <CgArrowLeft
+                  className="text-primary_text dark:text-sidebar_blue"
+                  size={25}
+                />
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbItem>
+              <BreadcrumbPage className="sm:text-xl text-sm font-medium text-primary_text dark:text-sidebar_blue">
+                {menuData
+                  ? `Update ${StationName} Menu`
+                  : `Create ${StationName} Menu`}
+              </BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb> */}
+        <h2 className="sm:text-xl text-sm font-medium text-primary_text dark:text-sidebar_blue">
+          {menuData
+            ? `Update ${StationName} Menu`
+            : `Create ${StationName} Menu`}
+        </h2>
+        <Link
+          href={`/station/${params.stationId}/${params.stationName}/menu/list`}
+          className="absolute top-0 right-0"
+        >
+          {" "}
+          <X />
+        </Link>
+      </div>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -237,7 +255,7 @@ const CreateMenu = ({
 
           <Button
             type="submit"
-            className="bg-primary_text dark:bg-sidebar_blue hover:bg-l_orange dark:hover:bg-blue text-white h-8 mb-6 place-self-start rounded-lg"
+            className="bg-primary_text dark:bg-sidebar_blue hover:bg-l_orange dark:hover:bg-blue text-white h-8 mb-6 place-self-end rounded-lg"
           >
             {isSubmitting ? <Loader /> : menuData ? "Edit" : "Create"}
           </Button>
@@ -247,4 +265,4 @@ const CreateMenu = ({
   );
 };
 
-export default CreateMenu;
+export default Page;

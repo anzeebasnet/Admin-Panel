@@ -1,6 +1,5 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import { useMenuList } from "@/lib/react-query/queriesAndMutations";
 import {
   clearMenuItem,
@@ -11,7 +10,7 @@ import { MenuItem } from "@/types/types";
 import { Open_Sans } from "next/font/google";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React from "react";
 import { HiPlusSmall } from "react-icons/hi2";
 import { CiEdit } from "react-icons/ci";
 import {
@@ -40,10 +39,6 @@ const Page = ({
     params.stationId
   );
 
-  useEffect(() => {
-    dispatch(clearMenuItem());
-  }, [dispatch]);
-
   return (
     <div
       className={` bg-white dark:bg-secondary_dark rounded-sm p-6 flex flex-col gap-6 shadow-sm shadow-vll_gray dark:shadow-none ${open_sans.className}`}
@@ -69,14 +64,17 @@ const Page = ({
           </BreadcrumbList>
         </Breadcrumb>
         <div className="flex gap-4">
-          <Link
-            href={`/station/${params.stationId}/${params.stationName}/menu/create`}
+          <button
+            onClick={() => {
+              window.location.href = `/station/${params.stationId}/${params.stationName}/menu/list?createMenu=true`;
+              dispatch(clearMenuItem());
+            }}
             className="bg-primary_text dark:bg-btn_blue text-white text-sm hover:bg-l_orange dark:hover:bg-blue py-1 px-4 rounded place-self-end"
           >
             <div className="flex gap-1 items-center">
-              Create New Menu <HiPlusSmall size={23} />
+              Add New Menu <HiPlusSmall size={23} />
             </div>
-          </Link>
+          </button>
         </div>
       </div>
       <div className="">
@@ -109,7 +107,7 @@ const Page = ({
                       {menu.name}
                     </Link>
                     <Link
-                      href={`/station/${params.stationId}/${params.stationName}/menu/create`}
+                      href={`/station/${params.stationId}/${params.stationName}/menu/list?createMenu=true`}
                       onClick={() => {
                         dispatch(setMenuItem(menu));
                       }}

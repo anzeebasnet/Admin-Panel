@@ -188,7 +188,7 @@ const Page = ({
             </div>
             <div className="inline-flex gap-4  mt-4">
               <Link
-                href={`/station/${params.stationId}/${params.stationName}/menu`}
+                href={`/station/${params.stationId}/${params.stationName}/menu/list`}
                 className="flex flex-col gap-2 justify-center items-center w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded"
               >
                 <Image

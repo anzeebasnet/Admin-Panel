@@ -41,6 +41,8 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { CgArrowLeft } from "react-icons/cg";
+import { X } from "lucide-react";
+import Link from "next/link";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -55,11 +57,6 @@ const formSchema = z.object({
   }),
   is_active: z.boolean(),
   ingredient: z.string(),
-});
-
-const open_sans = Open_Sans({
-  weight: ["300", "400", "500", "600", "700"],
-  subsets: ["latin"],
 });
 
 const Page = ({
@@ -164,6 +161,7 @@ const Page = ({
           dispatch(clearFoodItem());
           setIsSubmitting(false);
           setImagePreview(null);
+          window.location.href = `/station/${params.stationId}/${params.stationName}/menu/${params.menuId}/${params.menuName}/items`;
         });
     } else {
       axiosInstance
@@ -194,37 +192,54 @@ const Page = ({
         .finally(() => {
           setIsSubmitting(false);
           setImagePreview(null);
+          window.location.href = `/station/${params.stationId}/${params.stationName}/menu/${params.menuId}/${params.menuName}/items`;
         });
     }
   }
 
   return (
-    <ScrollArea className="bg-white dark:bg-secondary_dark p-6 h-[88vh]">
-      <Breadcrumb className="mb-4 -ml-1">
-        <BreadcrumbList className="flex sm:gap-1">
-          <BreadcrumbItem>
-            <BreadcrumbLink
-              href={`/station/${params.stationId}/${params.stationName}/menu/${params.menuId}/${params.menuName}/items`}
-            >
-              <CgArrowLeft
-                className="text-primary_text dark:text-sidebar_blue"
-                size={25}
-              />
-            </BreadcrumbLink>
-          </BreadcrumbItem>
-          <BreadcrumbItem>
-            <BreadcrumbPage className="sm:text-xl text-sm font-medium text-primary_text dark:text-sidebar_blue">
-              {itemData
-                ? `Update ${itemData.name}`
-                : `Add Food Item for ${menuName}`}
-            </BreadcrumbPage>
-          </BreadcrumbItem>
-        </BreadcrumbList>
-      </Breadcrumb>
+    <ScrollArea className="bg-white dark:bg-secondary_dark sm:h-full h-[70vh] relative sm:pt-14 pt-10">
+      <div className="absolute top-0 left-0 flex w-full">
+        {/* <Breadcrumb className="mb-4 -ml-1">
+          <BreadcrumbList className="flex sm:gap-1">
+            <BreadcrumbItem>
+              <BreadcrumbLink
+                href={`/station/${params.stationId}/${params.stationName}/menu/${params.menuId}/${params.menuName}/items`}
+              >
+                <CgArrowLeft
+                  className="text-primary_text dark:text-sidebar_blue"
+                  size={25}
+                />
+              </BreadcrumbLink>
+            </BreadcrumbItem>
+            <BreadcrumbItem>
+              <BreadcrumbPage className="sm:text-xl text-sm font-medium text-primary_text dark:text-sidebar_blue">
+                {itemData
+                  ? `Update ${itemData.name}`
+                  : `Add Food Item for ${menuName}`}
+              </BreadcrumbPage>
+            </BreadcrumbItem>
+          </BreadcrumbList>
+        </Breadcrumb> */}
+
+        <h2 className="sm:text-xl text-sm font-medium text-primary_text dark:text-sidebar_blue">
+          {itemData
+            ? `Update ${itemData.name}`
+            : `Add Food Item for ${menuName}`}
+        </h2>
+        <Link
+          href={`/station/${params.stationId}/${params.stationName}/menu/${params.menuId}/${params.menuName}/items`}
+          className="absolute top-0 right-0"
+        >
+          {" "}
+          <X />
+        </Link>
+      </div>
+
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col gap-4"
+          className="flex flex-col gap-4 "
         >
           <div className="grid sm:grid-cols-2 grid-cols-1 sm:gap-8 gap-4">
             <div className="flex flex-col gap-4">
@@ -280,7 +295,7 @@ const Page = ({
                         }
                         defaultValue={field.value ? "true" : "false"} // Set initial value
                       >
-                        <SelectTrigger className="w-[180px]">
+                        <SelectTrigger className="h-8">
                           <SelectValue placeholder="Select Status" />
                         </SelectTrigger>
                         <SelectContent>
@@ -373,7 +388,7 @@ const Page = ({
           </div>
           <Button
             type="submit"
-            className="bg-primary_text dark:bg-sidebar_blue hover:bg-l_orange dark:hover:bg-blue text-white h-8 mb-6 place-self-start rounded-lg"
+            className="bg-primary_text dark:bg-sidebar_blue hover:bg-l_orange dark:hover:bg-blue text-white h-8 mb-6 mt-4 place-self-end rounded-lg"
           >
             {isSubmitting ? <Loader /> : itemData ? "Edit" : "Add"}
           </Button>
