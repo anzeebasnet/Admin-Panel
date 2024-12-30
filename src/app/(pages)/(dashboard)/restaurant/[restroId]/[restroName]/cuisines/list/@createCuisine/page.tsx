@@ -33,6 +33,8 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { CgArrowLeft } from "react-icons/cg";
+import Link from "next/link";
+import { X } from "lucide-react";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -132,6 +134,7 @@ const CreateCuisine = ({
           dispatch(clearCuisineItem());
           setLogoPreview(null);
           setIsSubmitting(false);
+          window.location.href = `/restaurant/${params.restroId}/${params.restroName}/cuisines/list`;
         });
     } else {
       axiosInstance
@@ -158,13 +161,26 @@ const CreateCuisine = ({
         .finally(() => {
           setLogoPreview(null);
           setIsSubmitting(false);
+          window.location.href = `/restaurant/${params.restroId}/${params.restroName}/cuisines/list`;
         });
     }
   }
 
   return (
-    <ScrollArea className="bg-white dark:bg-secondary_dark p-6 h-[88vh]">
-      <Breadcrumb className="mb-4 -ml-1">
+    <ScrollArea className="bg-white dark:bg-secondary_dark sm:h-full h-[40vh] relative sm:pt-12 pt-10">
+      <div className="absolute top-0 left-0 flex w-full">
+        <h2 className="sm:text-xl text-sm font-medium text-primary_text dark:text-sidebar_blue">
+          {cuisineData ? "Edit" : "Add"} Cuisine for {RestroName}
+        </h2>
+        <Link
+          href={`/restaurant/${params.restroId}/${params.restroName}/cuisines/list`}
+          className="absolute top-0 right-0"
+        >
+          {" "}
+          <X />
+        </Link>
+      </div>{" "}
+      {/* <Breadcrumb className="mb-4 -ml-1">
         <BreadcrumbList className="flex sm:gap-1">
           <BreadcrumbItem>
             <BreadcrumbLink
@@ -182,7 +198,7 @@ const CreateCuisine = ({
             </BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
-      </Breadcrumb>
+      </Breadcrumb> */}
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -240,7 +256,7 @@ const CreateCuisine = ({
 
           <Button
             type="submit"
-            className="bg-primary_text dark:bg-sidebar_blue hover:bg-l_orange dark:hover:bg-blue text-white h-8 mb-6 place-self-start rounded-lg"
+            className="bg-primary_text dark:bg-sidebar_blue hover:bg-l_orange dark:hover:bg-blue text-white h-8 mb-6 place-self-end rounded-lg"
           >
             {isSubmitting ? <Loader /> : cuisineData ? "Edit" : "Create"}
           </Button>

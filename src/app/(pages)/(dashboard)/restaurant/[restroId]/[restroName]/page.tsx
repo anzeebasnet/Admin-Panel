@@ -264,7 +264,7 @@ const Page = ({
               </Link>
 
               <Link
-                href={`/restaurant/${params.restroId}/${params.restroName}/cuisines`}
+                href={`/restaurant/${params.restroId}/${params.restroName}/cuisines/list`}
                 className="flex flex-col items-center justify-center gap-2 w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded"
               >
                 <Image

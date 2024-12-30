@@ -38,10 +38,6 @@ const Page = ({
     params.restroId
   );
 
-  useEffect(() => {
-    dispatch(clearCuisineItem());
-  }, [dispatch]);
-
   return (
     <div
       className={` bg-white dark:bg-secondary_dark rounded-sm p-6 flex flex-col gap-6 shadow-sm shadow-vll_gray dark:shadow-none ${open_sans.className}`}
@@ -68,7 +64,10 @@ const Page = ({
         </Breadcrumb>
         <div className="flex gap-4">
           <Link
-            href={`/restaurant/${params.restroId}/${params.restroName}/cuisines/create`}
+            href={`/restaurant/${params.restroId}/${params.restroName}/cuisines/list?createCuisine=true`}
+            onClick={() => {
+              dispatch(clearCuisineItem());
+            }}
             className="bg-primary_text dark:bg-btn_blue text-white text-sm hover:bg-l_orange dark:hover:bg-blue py-1 px-4 rounded place-self-end"
           >
             <div className="flex gap-1 items-center">
@@ -99,7 +98,7 @@ const Page = ({
                     {cuisine.name}
                   </h2>
                   <Link
-                    href={`/restaurant/${params.restroId}/${params.restroName}/cuisines/create`}
+                    href={`/restaurant/${params.restroId}/${params.restroName}/cuisines/list?createCuisine=true`}
                     onClick={() => {
                       dispatch(setCuisineItem(cuisine));
                     }}
