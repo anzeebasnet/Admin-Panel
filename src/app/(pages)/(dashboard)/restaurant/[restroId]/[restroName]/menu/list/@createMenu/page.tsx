@@ -31,6 +31,10 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { CgArrowLeft } from "react-icons/cg";
+import Link from "next/link";
+import { X } from "lucide-react";
+import toast from "react-hot-toast";
+import Loader from "@/components/ui/Loader";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -87,20 +91,40 @@ const CreateRestroMenu = ({
       }
     });
 
-    axiosInstance.post(`/moreclub/user/menus/${params.restroId}/`, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-    });
+    axiosInstance
+      .post(`/moreclub/user/menus/${params.restroId}/`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      })
+      .then((response) => {
+        console.log("Successfully created menu", response);
+        toast.success("Successfully created menu", {
+          duration: 5000,
+          position: "top-right",
+        });
+      })
+      .catch((error) => {
+        console.log("Error creating menu", error);
+        toast.error("Error creating menu", {
+          duration: 5000,
+          position: "top-right",
+        });
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+        form.reset();
+        window.location.href = `/restaurant/${params.restroId}/${params.restroName}/menu/list`;
+      });
   }
 
   return (
-    <ScrollArea className="bg-white dark:bg-secondary_dark p-6 h-[88vh]">
-      <Breadcrumb className="mb-4 -ml-1">
+    <ScrollArea className="bg-white dark:bg-secondary_dark sm:h-full h-[40vh] relative sm:pt-12 pt-10">
+      {/* <Breadcrumb className="mb-4 -ml-1">
         <BreadcrumbList className="flex sm:gap-1">
           <BreadcrumbItem>
             <BreadcrumbLink
-              href={`/restaurant/${params.restroId}/${params.restroName}/menu`}
+              href={`/restaurant/${params.restroId}/${params.restroName}/menu/list`}
             >
               <CgArrowLeft
                 className="text-primary_text dark:text-sidebar_blue"
@@ -114,7 +138,20 @@ const CreateRestroMenu = ({
             </BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
-      </Breadcrumb>
+      </Breadcrumb> */}
+
+      <div className="absolute top-0 left-0 flex w-full">
+        <h2 className="sm:text-xl text-sm font-medium text-primary_text dark:text-sidebar_blue">
+          Create Menu for {RestroName}
+        </h2>
+        <Link
+          href={`/restaurant/${params.restroId}/${params.restroName}/menu/list`}
+          className="absolute top-0 right-0"
+        >
+          {" "}
+          <X />
+        </Link>
+      </div>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -172,9 +209,9 @@ const CreateRestroMenu = ({
 
           <Button
             type="submit"
-            className="bg-primary_text dark:bg-sidebar_blue hover:bg-l_orange dark:hover:bg-blue text-white h-8 mb-6 place-self-start rounded-lg"
+            className="bg-primary_text dark:bg-sidebar_blue hover:bg-l_orange dark:hover:bg-blue text-white h-8 mb-6 place-self-end rounded-lg"
           >
-            Create Menu
+            {isSubmitting ? <Loader /> : "Create Menu"}
           </Button>
         </form>
       </Form>

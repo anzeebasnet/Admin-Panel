@@ -95,7 +95,7 @@ const Page = ({
 
         <div className="flex gap-4">
           <Link
-            href={`/restaurant/${params.restroId}/${params.restroName}/menu/create`}
+            href={`/restaurant/${params.restroId}/${params.restroName}/menu/list?createMenu=true`}
             className="bg-primary_text dark:bg-btn_blue text-white text-sm hover:bg-l_orange dark:hover:bg-blue py-1 px-4 rounded place-self-end"
           >
             <div className="flex gap-1 items-center">

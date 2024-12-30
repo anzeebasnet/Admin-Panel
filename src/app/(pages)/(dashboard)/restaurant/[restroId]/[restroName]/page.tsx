@@ -250,7 +250,7 @@ const Page = ({
             </div>
             <div className="inline-flex flex-wrap gap-4  mt-4">
               <Link
-                href={`/restaurant/${params.restroId}/${params.restroName}/menu`}
+                href={`/restaurant/${params.restroId}/${params.restroName}/menu/list`}
                 className="flex flex-col items-center justify-center gap-2 w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded"
               >
                 <Image

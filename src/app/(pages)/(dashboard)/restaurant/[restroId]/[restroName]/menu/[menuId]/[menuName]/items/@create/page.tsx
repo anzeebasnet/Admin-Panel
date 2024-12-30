@@ -45,6 +45,8 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { CgArrowLeft } from "react-icons/cg";
+import Link from "next/link";
+import { X } from "lucide-react";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -206,6 +208,7 @@ const Page = ({
           dispatch(clearRestroItem());
           setIsSubmitting(false);
           setImagePreview(null);
+          window.location.href = `/restaurant/${params.restroId}/${params.restroName}/menu/${params.menuId}/${params.menuName}/items`;
         });
     } else {
       axiosInstance
@@ -236,13 +239,14 @@ const Page = ({
         .finally(() => {
           setIsSubmitting(false);
           setImagePreview(null);
+          window.location.href = `/restaurant/${params.restroId}/${params.restroName}/menu/${params.menuId}/${params.menuName}/items`;
         });
     }
   }
 
   return (
-    <ScrollArea className="bg-white dark:bg-secondary_dark p-6 h-[88vh]">
-      <Breadcrumb className="mb-4 -ml-1">
+    <ScrollArea className="bg-white dark:bg-secondary_dark sm:h-full h-[70vh] relative sm:pt-14 pt-10">
+      {/* <Breadcrumb className="mb-4 -ml-1">
         <BreadcrumbList className="flex sm:gap-1">
           <BreadcrumbItem>
             <BreadcrumbLink
@@ -261,7 +265,19 @@ const Page = ({
             </BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
-      </Breadcrumb>
+      </Breadcrumb> */}
+      <div className="absolute top-0 left-0 flex w-full">
+        <h2 className="sm:text-xl text-sm font-medium text-primary_text dark:text-sidebar_blue">
+          {itemData ? "Update Food Item for" : "Add Food Item for"} {MenuName}
+        </h2>
+        <Link
+          href={`/restaurant/${params.restroId}/${params.restroName}/menu/${params.menuId}/${params.menuName}/items`}
+          className="absolute top-0 right-0"
+        >
+          {" "}
+          <X />
+        </Link>
+      </div>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -422,7 +438,7 @@ const Page = ({
               const formValues = form.getValues();
               console.log(formValues);
             }}
-            className="bg-primary_text dark:bg-sidebar_blue hover:bg-l_orange dark:hover:bg-blue text-white h-8 mb-6 place-self-start rounded-lg"
+            className="bg-primary_text dark:bg-sidebar_blue hover:bg-l_orange dark:hover:bg-blue text-white h-8 mb-6 place-self-end rounded-lg"
           >
             {isSubmitting ? <Loader /> : itemData ? "Edit" : "Add"}
           </Button>

@@ -91,7 +91,7 @@ const Page = ({
           <BreadcrumbList className="flex sm:gap-1">
             <BreadcrumbItem>
               <BreadcrumbLink
-                href={`/restaurant/${params.restroId}/${params.restroName}/menu`}
+                href={`/restaurant/${params.restroId}/${params.restroName}/menu/list`}
               >
                 <CgArrowLeft
                   className="text-primary_text dark:text-sidebar_blue"
@@ -109,7 +109,7 @@ const Page = ({
 
         <div className="flex gap-4">
           <Link
-            href={`/restaurant/${params.restroId}/${params.restroName}/menu/${params.menuId}/${params.menuName}/items/create`}
+            href={`/restaurant/${params.restroId}/${params.restroName}/menu/${params.menuId}/${params.menuName}/items?create=true`}
             className="bg-primary_text dark:bg-btn_blue text-white text-sm hover:bg-l_orange dark:hover:bg-blue py-1 px-4 rounded place-self-end"
           >
             <div className="flex gap-1 items-center">
