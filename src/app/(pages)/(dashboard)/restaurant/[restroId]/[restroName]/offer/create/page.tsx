@@ -31,7 +31,12 @@ import Image from "next/image";
 import useAxiosPrivateFood from "@/hooks/useAxiosPrivateFood";
 import Loader from "@/components/ui/Loader";
 import { Textarea } from "@/components/ui/textarea";
-import { Cuisine, RestroFoodItem, RestroMenuList } from "@/types/types";
+import {
+  Cuisine,
+  FoodItemType,
+  RestroFoodItem,
+  RestroMenuList,
+} from "@/types/types";
 import {
   useRestroItemList,
   useRestroMenuList,
@@ -52,6 +57,13 @@ import { CgArrowLeft } from "react-icons/cg";
 import { RxCross2 } from "react-icons/rx";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import {
+  addDays,
+  startOfWeek,
+  setHours,
+  setMinutes,
+  setSeconds,
+} from "date-fns";
 
 const dayTimeSchema = z.object({
   start_time: z.string().min(1, "Start time is required.").optional(),
@@ -153,7 +165,7 @@ const Page = ({
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [categories, setCategories] = useState<RestroMenuList[]>([]); // Categories data
-  const [foodItems, setFoodItems] = useState<RestroFoodItem[]>([]); // Food items based on the selected category
+  const [foodItems, setFoodItems] = useState<FoodItemType[]>([]); // Food items based on the selected category
   const [selectedCategoryId, setSelectedCategoryId] = useState(""); // Selected category ID
   const [selectedFoodItems, setSelectedFoodItems] = useState<RestroFoodItem[]>(
     []
@@ -180,6 +192,23 @@ const Page = ({
     },
   });
 
+  const getNextDayWithTime = (desiredDay: any, time: any) => {
+    const now = new Date();
+    const currentDay = now.getDay();
+    const daysUntilNextDay = (desiredDay - currentDay + 7) % 7 || 7; // Days until the next desired day
+
+    // Calculate the next desired day
+    const upcomingDay = addDays(now, daysUntilNextDay);
+
+    // Combine the desired time with the calculated day
+    const nextDayWithTime = setHours(
+      setMinutes(setSeconds(upcomingDay, time.getSeconds()), time.getMinutes()),
+      time.getHours()
+    );
+
+    return nextDayWithTime;
+  };
+
   useEffect(() => {
     if (restroMenuList) {
       setCategories(restroMenuList);
@@ -200,6 +229,36 @@ const Page = ({
   }, [selectedCategoryId]);
 
   useEffect(() => {
+    async function fetchAllFoodItems() {
+      const promises = categories.map(async (category) => {
+        const res = await axiosInstance.get(
+          `/moreclub/user/food/items/${category.id}/${params.restroId}/`
+        );
+        return res.data.data;
+      });
+
+      // Await all promises and flatten the resulting arrays
+      const allFoodItems = (await Promise.all(promises)).flat();
+      setFoodItems(allFoodItems);
+
+      // Pre-select the food items based on OfferData
+      if (OfferData?.food_item) {
+        const foodIds = OfferData.food_item.map((item) => item.id);
+        const selectedItems = allFoodItems.filter((item) =>
+          foodIds.includes(item.id)
+        );
+        setSelectedFoodItems(selectedItems);
+        form.setValue(
+          "food_item_ids",
+          selectedItems.map((item) => item.id)
+        );
+      }
+    }
+
+    if (OfferData && categories.length > 0) {
+      fetchAllFoodItems();
+    }
+
     if (OfferData) {
       form.setValue("name", OfferData.name);
       form.setValue("price", OfferData.price.toString());
@@ -208,11 +267,11 @@ const Page = ({
       form.setValue("start_offer", OfferData.start_offer || "");
       form.setValue("end_offer", OfferData.end_offer || "");
 
-      // Set services as an array of service IDs
-      if (OfferData.food_item) {
-        const foodIds = OfferData.food_item.map((item) => item.id);
-        form.setValue("food_item_ids", foodIds);
-      }
+      // // Set services as an array of service IDs
+      // if (OfferData.food_item) {
+      //   const foodIds = OfferData.food_item.map((item) => item.id);
+      //   form.setValue("food_item_ids", foodIds);
+      // }
 
       if (!OfferData.is_every_day) {
         setIsSpecificDay(true);
@@ -301,7 +360,7 @@ const Page = ({
         }
       }
     }
-  }, [OfferData]);
+  }, [OfferData, categories]);
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     if (!session) {
@@ -493,7 +552,7 @@ const Page = ({
 
   return (
     <ScrollArea className="bg-white dark:bg-secondary_dark p-6 h-[88vh]">
-      <Breadcrumb className="mb-4">
+      <Breadcrumb className="mb-4 -ml-1">
         <BreadcrumbList className="flex sm:gap-1">
           <BreadcrumbItem>
             <BreadcrumbLink
@@ -506,7 +565,7 @@ const Page = ({
             </BreadcrumbLink>
           </BreadcrumbItem>
           <BreadcrumbItem>
-            <BreadcrumbPage className="sm:text-xl text-lg font-medium text-primary_text dark:text-sidebar_blue">
+            <BreadcrumbPage className="sm:text-xl text-sm font-medium text-primary_text dark:text-sidebar_blue">
               Add New Offer
             </BreadcrumbPage>
           </BreadcrumbItem>
@@ -515,7 +574,7 @@ const Page = ({
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex flex-col gap-4 pl-1"
+          className="flex flex-col gap-4"
         >
           <div className="grid sm:grid-cols-2 grid-cols-1 sm:gap-8 gap-4">
             <div className="flex flex-col gap-4">
@@ -648,8 +707,8 @@ const Page = ({
                       <div className="flex flex-col gap-2">
                         {/* Selected services as chips */}
                         <div className="flex flex-wrap gap-2">
-                          {field.value.map((itemId: string) => {
-                            const selectedFoodItem = foodItems?.find(
+                          {form.getValues("food_item_ids").map((itemId) => {
+                            const selectedFoodItem = foodItems.find(
                               (item) => item.id === itemId
                             );
                             return (
@@ -663,10 +722,11 @@ const Page = ({
                                 <button
                                   type="button"
                                   onClick={() => {
-                                    field.onChange(
-                                      field.value.filter(
-                                        (id: string) => id !== itemId
-                                      )
+                                    form.setValue(
+                                      "food_item_ids",
+                                      form
+                                        .getValues("food_item_ids")
+                                        .filter((id) => id !== itemId)
                                     );
                                   }}
                                   className=" bg-white rounded-full p-1"
@@ -677,18 +737,21 @@ const Page = ({
                             );
                           })}
                         </div>
-
                         {/* Dropdown to select services */}
                         <Select
                           onValueChange={(value) => {
-                            const selectedFoodItem = foodItems?.find(
+                            const selectedFoodItem = foodItems.find(
                               (item) => item.id === value
                             );
                             if (selectedFoodItem) {
-                              // Add the service ID if not already selected
-                              if (!field.value.includes(selectedFoodItem.id)) {
-                                field.onChange([
-                                  ...field.value,
+                              // Add the food item if not already selected
+                              if (
+                                !form
+                                  .getValues("food_item_ids")
+                                  .includes(selectedFoodItem.id)
+                              ) {
+                                form.setValue("food_item_ids", [
+                                  ...form.getValues("food_item_ids"),
                                   selectedFoodItem.id,
                                 ]);
                               }
@@ -701,7 +764,9 @@ const Page = ({
                           <SelectContent>
                             {foodItems.map((item) => (
                               <SelectItem key={item.id} value={item.id}>
-                                {item.name}
+                                {item.name}({item.value}) Rs.{" "}
+                                {Number(item.price) -
+                                  Number(item.discount_price)}
                               </SelectItem>
                             ))}
                           </SelectContent>
@@ -798,9 +863,10 @@ const Page = ({
             <Checkbox
               checked={isSpecificDay}
               onCheckedChange={() => {
+                const newIsEveryDay = !isEveryDay; // Calculate the new value
                 setIsSpecificDay(!isSpecificDay);
-                setIsEveryDay(!isEveryDay);
-                form.setValue("is_everyday", isEveryDay);
+                setIsEveryDay(newIsEveryDay);
+                form.setValue("is_everyday", newIsEveryDay); // Use the updated value
               }}
             />
             <Label>Specific Days/Time</Label>
@@ -825,18 +891,25 @@ const Page = ({
                             selected={
                               field.value ? new Date(field.value) : null
                             }
-                            onChange={(date) => {
-                              if (date) {
-                                const formattedDate = date.toISOString();
+                            onChange={(time) => {
+                              if (time) {
+                                const nextMondayWithTime = getNextDayWithTime(
+                                  1,
+                                  time
+                                ); // 1 = Monday
+                                const formattedDate = new Date(
+                                  nextMondayWithTime
+                                ).toISOString();
                                 field.onChange(formattedDate);
                               }
                             }}
                             showTimeSelect
-                            timeFormat="HH:mm:ss"
-                            timeIntervals={15} // Controls the time interval (e.g., 15 minutes)
-                            dateFormat="yyyy-MM-dd HH:mm:ss" // Display format only (not the submitted format)
+                            showTimeSelectOnly
+                            timeFormat="HH:mm"
+                            timeIntervals={15}
+                            dateFormat="HH:mm"
                             className="border p-2 rounded w-full text-sm"
-                            placeholderText="Select date and time"
+                            placeholderText="Select time"
                             timeCaption="Time"
                           />
                         </FormControl>
@@ -857,18 +930,25 @@ const Page = ({
                             selected={
                               field.value ? new Date(field.value) : null
                             }
-                            onChange={(date) => {
-                              if (date) {
-                                const formattedDate = date.toISOString();
+                            onChange={(time) => {
+                              if (time) {
+                                const nextMondayWithTime = getNextDayWithTime(
+                                  1,
+                                  time
+                                ); // 1 = Monday
+                                const formattedDate = new Date(
+                                  nextMondayWithTime
+                                ).toISOString();
                                 field.onChange(formattedDate);
                               }
                             }}
                             showTimeSelect
-                            timeFormat="HH:mm:ss"
-                            timeIntervals={15} // Controls the time interval (e.g., 15 minutes)
-                            dateFormat="yyyy-MM-dd HH:mm:ss" // Display format only (not the submitted format)
+                            showTimeSelectOnly
+                            timeFormat="HH:mm"
+                            timeIntervals={15}
+                            dateFormat="HH:mm"
                             className="border p-2 rounded w-full text-sm"
-                            placeholderText="Select date and time"
+                            placeholderText="Select time"
                             timeCaption="Time"
                           />
                         </FormControl>
@@ -896,18 +976,25 @@ const Page = ({
                             selected={
                               field.value ? new Date(field.value) : null
                             }
-                            onChange={(date) => {
-                              if (date) {
-                                const formattedDate = date.toISOString();
+                            onChange={(time) => {
+                              if (time) {
+                                const nextTuesdayWithTime = getNextDayWithTime(
+                                  2,
+                                  time
+                                ); // 2 = Tuesday
+                                const formattedDate = new Date(
+                                  nextTuesdayWithTime
+                                ).toISOString();
                                 field.onChange(formattedDate);
                               }
                             }}
                             showTimeSelect
-                            timeFormat="HH:mm:ss"
-                            timeIntervals={15} // Controls the time interval (e.g., 15 minutes)
-                            dateFormat="yyyy-MM-dd HH:mm:ss" // Display format only (not the submitted format)
+                            showTimeSelectOnly
+                            timeFormat="HH:mm"
+                            timeIntervals={15}
+                            dateFormat="HH:mm"
                             className="border p-2 rounded w-full text-sm"
-                            placeholderText="Select date and time"
+                            placeholderText="Select time"
                             timeCaption="Time"
                           />
                         </FormControl>
@@ -928,18 +1015,25 @@ const Page = ({
                             selected={
                               field.value ? new Date(field.value) : null
                             }
-                            onChange={(date) => {
-                              if (date) {
-                                const formattedDate = date.toISOString();
+                            onChange={(time) => {
+                              if (time) {
+                                const nextTuesdayWithTime = getNextDayWithTime(
+                                  2,
+                                  time
+                                ); // 2 = Tuesday
+                                const formattedDate = new Date(
+                                  nextTuesdayWithTime
+                                ).toISOString();
                                 field.onChange(formattedDate);
                               }
                             }}
                             showTimeSelect
-                            timeFormat="HH:mm:ss"
-                            timeIntervals={15} // Controls the time interval (e.g., 15 minutes)
-                            dateFormat="yyyy-MM-dd HH:mm:ss" // Display format only (not the submitted format)
+                            showTimeSelectOnly
+                            timeFormat="HH:mm"
+                            timeIntervals={15}
+                            dateFormat="HH:mm"
                             className="border p-2 rounded w-full text-sm"
-                            placeholderText="Select date and time"
+                            placeholderText="Select time"
                             timeCaption="Time"
                           />
                         </FormControl>
@@ -967,18 +1061,23 @@ const Page = ({
                             selected={
                               field.value ? new Date(field.value) : null
                             }
-                            onChange={(date) => {
-                              if (date) {
-                                const formattedDate = date.toISOString();
+                            onChange={(time) => {
+                              if (time) {
+                                const nextWednesdayWithTime =
+                                  getNextDayWithTime(3, time); // 3 = Wednesday
+                                const formattedDate = new Date(
+                                  nextWednesdayWithTime
+                                ).toISOString();
                                 field.onChange(formattedDate);
                               }
                             }}
                             showTimeSelect
-                            timeFormat="HH:mm:ss"
-                            timeIntervals={15} // Controls the time interval (e.g., 15 minutes)
-                            dateFormat="yyyy-MM-dd HH:mm:ss" // Display format only (not the submitted format)
+                            showTimeSelectOnly
+                            timeFormat="HH:mm"
+                            timeIntervals={15}
+                            dateFormat="HH:mm"
                             className="border p-2 rounded w-full text-sm"
-                            placeholderText="Select date and time"
+                            placeholderText="Select time"
                             timeCaption="Time"
                           />
                         </FormControl>
@@ -999,18 +1098,23 @@ const Page = ({
                             selected={
                               field.value ? new Date(field.value) : null
                             }
-                            onChange={(date) => {
-                              if (date) {
-                                const formattedDate = date.toISOString();
+                            onChange={(time) => {
+                              if (time) {
+                                const nextWednesdayWithTime =
+                                  getNextDayWithTime(3, time); // 3 = Wednesday
+                                const formattedDate = new Date(
+                                  nextWednesdayWithTime
+                                ).toISOString();
                                 field.onChange(formattedDate);
                               }
                             }}
                             showTimeSelect
-                            timeFormat="HH:mm:ss"
-                            timeIntervals={15} // Controls the time interval (e.g., 15 minutes)
-                            dateFormat="yyyy-MM-dd HH:mm:ss" // Display format only (not the submitted format)
+                            showTimeSelectOnly
+                            timeFormat="HH:mm"
+                            timeIntervals={15}
+                            dateFormat="HH:mm"
                             className="border p-2 rounded w-full text-sm"
-                            placeholderText="Select date and time"
+                            placeholderText="Select time"
                             timeCaption="Time"
                           />
                         </FormControl>
@@ -1038,18 +1142,25 @@ const Page = ({
                             selected={
                               field.value ? new Date(field.value) : null
                             }
-                            onChange={(date) => {
-                              if (date) {
-                                const formattedDate = date.toISOString();
+                            onChange={(time) => {
+                              if (time) {
+                                const nextThursdayWithTime = getNextDayWithTime(
+                                  4,
+                                  time
+                                ); // 4 = Thursday
+                                const formattedDate = new Date(
+                                  nextThursdayWithTime
+                                ).toISOString();
                                 field.onChange(formattedDate);
                               }
                             }}
                             showTimeSelect
-                            timeFormat="HH:mm:ss"
-                            timeIntervals={15} // Controls the time interval (e.g., 15 minutes)
-                            dateFormat="yyyy-MM-dd HH:mm:ss" // Display format only (not the submitted format)
+                            showTimeSelectOnly
+                            timeFormat="HH:mm"
+                            timeIntervals={15}
+                            dateFormat="HH:mm"
                             className="border p-2 rounded w-full text-sm"
-                            placeholderText="Select date and time"
+                            placeholderText="Select time"
                             timeCaption="Time"
                           />
                         </FormControl>
@@ -1070,18 +1181,25 @@ const Page = ({
                             selected={
                               field.value ? new Date(field.value) : null
                             }
-                            onChange={(date) => {
-                              if (date) {
-                                const formattedDate = date.toISOString();
+                            onChange={(time) => {
+                              if (time) {
+                                const nextThursdayWithTime = getNextDayWithTime(
+                                  4,
+                                  time
+                                ); // 4 = Thursday
+                                const formattedDate = new Date(
+                                  nextThursdayWithTime
+                                ).toISOString();
                                 field.onChange(formattedDate);
                               }
                             }}
                             showTimeSelect
-                            timeFormat="HH:mm:ss"
-                            timeIntervals={15} // Controls the time interval (e.g., 15 minutes)
-                            dateFormat="yyyy-MM-dd HH:mm:ss" // Display format only (not the submitted format)
+                            showTimeSelectOnly
+                            timeFormat="HH:mm"
+                            timeIntervals={15}
+                            dateFormat="HH:mm"
                             className="border p-2 rounded w-full text-sm"
-                            placeholderText="Select date and time"
+                            placeholderText="Select time"
                             timeCaption="Time"
                           />
                         </FormControl>
@@ -1109,18 +1227,25 @@ const Page = ({
                             selected={
                               field.value ? new Date(field.value) : null
                             }
-                            onChange={(date) => {
-                              if (date) {
-                                const formattedDate = date.toISOString();
+                            onChange={(time) => {
+                              if (time) {
+                                const nextFridayWithTime = getNextDayWithTime(
+                                  5,
+                                  time
+                                ); // 5 = Friday
+                                const formattedDate = new Date(
+                                  nextFridayWithTime
+                                ).toISOString();
                                 field.onChange(formattedDate);
                               }
                             }}
                             showTimeSelect
-                            timeFormat="HH:mm:ss"
-                            timeIntervals={15} // Controls the time interval (e.g., 15 minutes)
-                            dateFormat="yyyy-MM-dd HH:mm:ss" // Display format only (not the submitted format)
+                            showTimeSelectOnly
+                            timeFormat="HH:mm"
+                            timeIntervals={15}
+                            dateFormat="HH:mm"
                             className="border p-2 rounded w-full text-sm"
-                            placeholderText="Select date and time"
+                            placeholderText="Select time"
                             timeCaption="Time"
                           />
                         </FormControl>
@@ -1141,18 +1266,25 @@ const Page = ({
                             selected={
                               field.value ? new Date(field.value) : null
                             }
-                            onChange={(date) => {
-                              if (date) {
-                                const formattedDate = date.toISOString();
+                            onChange={(time) => {
+                              if (time) {
+                                const nextFridayWithTime = getNextDayWithTime(
+                                  5,
+                                  time
+                                ); // 5 = Friday
+                                const formattedDate = new Date(
+                                  nextFridayWithTime
+                                ).toISOString();
                                 field.onChange(formattedDate);
                               }
                             }}
                             showTimeSelect
-                            timeFormat="HH:mm:ss"
-                            timeIntervals={15} // Controls the time interval (e.g., 15 minutes)
-                            dateFormat="yyyy-MM-dd HH:mm:ss" // Display format only (not the submitted format)
+                            showTimeSelectOnly
+                            timeFormat="HH:mm"
+                            timeIntervals={15}
+                            dateFormat="HH:mm"
                             className="border p-2 rounded w-full text-sm"
-                            placeholderText="Select date and time"
+                            placeholderText="Select time"
                             timeCaption="Time"
                           />
                         </FormControl>
@@ -1180,18 +1312,25 @@ const Page = ({
                             selected={
                               field.value ? new Date(field.value) : null
                             }
-                            onChange={(date) => {
-                              if (date) {
-                                const formattedDate = date.toISOString();
+                            onChange={(time) => {
+                              if (time) {
+                                const nextSaturdayWithTime = getNextDayWithTime(
+                                  6,
+                                  time
+                                ); // 6 = Saturday
+                                const formattedDate = new Date(
+                                  nextSaturdayWithTime
+                                ).toISOString();
                                 field.onChange(formattedDate);
                               }
                             }}
                             showTimeSelect
-                            timeFormat="HH:mm:ss"
-                            timeIntervals={15} // Controls the time interval (e.g., 15 minutes)
-                            dateFormat="yyyy-MM-dd HH:mm:ss" // Display format only (not the submitted format)
+                            showTimeSelectOnly
+                            timeFormat="HH:mm"
+                            timeIntervals={15}
+                            dateFormat="HH:mm"
                             className="border p-2 rounded w-full text-sm"
-                            placeholderText="Select date and time"
+                            placeholderText="Select time"
                             timeCaption="Time"
                           />
                         </FormControl>
@@ -1212,18 +1351,25 @@ const Page = ({
                             selected={
                               field.value ? new Date(field.value) : null
                             }
-                            onChange={(date) => {
-                              if (date) {
-                                const formattedDate = date.toISOString();
+                            onChange={(time) => {
+                              if (time) {
+                                const nextSaturdayWithTime = getNextDayWithTime(
+                                  6,
+                                  time
+                                ); // 6 = Saturday
+                                const formattedDate = new Date(
+                                  nextSaturdayWithTime
+                                ).toISOString();
                                 field.onChange(formattedDate);
                               }
                             }}
                             showTimeSelect
-                            timeFormat="HH:mm:ss"
-                            timeIntervals={15} // Controls the time interval (e.g., 15 minutes)
-                            dateFormat="yyyy-MM-dd HH:mm:ss" // Display format only (not the submitted format)
+                            showTimeSelectOnly
+                            timeFormat="HH:mm"
+                            timeIntervals={15}
+                            dateFormat="HH:mm"
                             className="border p-2 rounded w-full text-sm"
-                            placeholderText="Select date and time"
+                            placeholderText="Select time"
                             timeCaption="Time"
                           />
                         </FormControl>
@@ -1251,18 +1397,25 @@ const Page = ({
                             selected={
                               field.value ? new Date(field.value) : null
                             }
-                            onChange={(date) => {
-                              if (date) {
-                                const formattedDate = date.toISOString();
+                            onChange={(time) => {
+                              if (time) {
+                                const nextSundayWithTime = getNextDayWithTime(
+                                  7,
+                                  time
+                                ); // 7 = Sunday
+                                const formattedDate = new Date(
+                                  nextSundayWithTime
+                                ).toISOString();
                                 field.onChange(formattedDate);
                               }
                             }}
                             showTimeSelect
-                            timeFormat="HH:mm:ss"
-                            timeIntervals={15} // Controls the time interval (e.g., 15 minutes)
-                            dateFormat="yyyy-MM-dd HH:mm:ss" // Display format only (not the submitted format)
+                            showTimeSelectOnly
+                            timeFormat="HH:mm"
+                            timeIntervals={15}
+                            dateFormat="HH:mm"
                             className="border p-2 rounded w-full text-sm"
-                            placeholderText="Select date and time"
+                            placeholderText="Select time"
                             timeCaption="Time"
                           />
                         </FormControl>
@@ -1283,18 +1436,25 @@ const Page = ({
                             selected={
                               field.value ? new Date(field.value) : null
                             }
-                            onChange={(date) => {
-                              if (date) {
-                                const formattedDate = date.toISOString();
+                            onChange={(time) => {
+                              if (time) {
+                                const nextSundayWithTime = getNextDayWithTime(
+                                  7,
+                                  time
+                                ); // 7 = Sunday
+                                const formattedDate = new Date(
+                                  nextSundayWithTime
+                                ).toISOString();
                                 field.onChange(formattedDate);
                               }
                             }}
                             showTimeSelect
-                            timeFormat="HH:mm:ss"
-                            timeIntervals={15} // Controls the time interval (e.g., 15 minutes)
-                            dateFormat="yyyy-MM-dd HH:mm:ss" // Display format only (not the submitted format)
+                            showTimeSelectOnly
+                            timeFormat="HH:mm"
+                            timeIntervals={15}
+                            dateFormat="HH:mm"
                             className="border p-2 rounded w-full text-sm"
-                            placeholderText="Select date and time"
+                            placeholderText="Select time"
                             timeCaption="Time"
                           />
                         </FormControl>
