@@ -46,8 +46,9 @@ import {
 } from "@/components/ui/breadcrumb";
 import { CgArrowLeft } from "react-icons/cg";
 import { useSalonServices } from "@/lib/react-query/queriesAndMutations";
-import { XIcon } from "lucide-react";
+import { X, XIcon } from "lucide-react";
 import Loader from "@/components/ui/Loader";
+import Link from "next/link";
 
 const createFormSchema = z.object({
   name: z.string().min(2, {
@@ -194,6 +195,7 @@ const Page = ({
           dispatch(clearSalonData());
           setImagePreview(null);
           setIsSubmitting(false);
+          window.location.href = `/salon/${params.salonId}/${params.salonName}/staff/list`;
         });
     } else {
       axiosInstance
@@ -220,13 +222,14 @@ const Page = ({
         .finally(() => {
           setImagePreview(null);
           setIsSubmitting(false);
+          window.location.href = `/salon/${params.salonId}/${params.salonName}/staff/list`;
         });
     }
   }
 
   return (
-    <ScrollArea className="bg-white dark:bg-secondary_dark p-6 sm:pr-10 h-[88vh]">
-      <Breadcrumb className="mb-4 -ml-1">
+    <ScrollArea className="bg-white dark:bg-secondary_dark sm:h-full h-[70vh] relative sm:pt-14 pt-10">
+      {/* <Breadcrumb className="mb-4 -ml-1">
         <BreadcrumbList className="flex sm:gap-1">
           <BreadcrumbItem>
             <BreadcrumbLink
@@ -244,8 +247,19 @@ const Page = ({
             </BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
-      </Breadcrumb>
-
+      </Breadcrumb> */}
+      <div className="absolute top-0 left-0 flex w-full">
+        <h2 className="sm:text-xl text-sm font-medium text-primary_text dark:text-sidebar_blue">
+          {salonStaff ? `Update ${salonStaff.name}` : "Add Staff"}
+        </h2>
+        <Link
+          href={`/salon/${params.salonId}/${params.salonName}/staff/list`}
+          className="absolute top-0 right-0"
+        >
+          {" "}
+          <X />
+        </Link>
+      </div>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -443,7 +457,7 @@ const Page = ({
               const formValues = form.getValues();
               console.log(formValues);
             }}
-            className="bg-primary_text dark:bg-sidebar_blue hover:bg-l_orange dark:hover:bg-blue text-white h-8 mb-6 mt-4 place-self-start rounded-lg"
+            className="bg-primary_text dark:bg-sidebar_blue hover:bg-l_orange dark:hover:bg-blue text-white h-8 mb-6 mt-4 place-self-end rounded-lg"
           >
             {isSubmitting ? <Loader /> : salonStaff ? "Update" : "Create"}
           </Button>

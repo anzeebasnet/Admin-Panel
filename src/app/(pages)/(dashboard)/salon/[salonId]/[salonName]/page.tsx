@@ -232,7 +232,7 @@ const Page = ({
                 <p className="text-sm font-semibold">Services</p>
               </Link>
               <Link
-                href={`/salon/${params.salonId}/${params.salonName}/staff`}
+                href={`/salon/${params.salonId}/${params.salonName}/staff/list`}
                 className="flex flex-col justify-center gap-2 items-center w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded"
               >
                 <Image

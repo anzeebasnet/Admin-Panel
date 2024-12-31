@@ -417,7 +417,7 @@ const Page = ({
         <BreadcrumbList className="flex sm:gap-1">
           <BreadcrumbItem>
             <BreadcrumbLink
-              href={`/salon/${params.salonId}/${params.salonName}/staff`}
+              href={`/salon/${params.salonId}/${params.salonName}/staff/list`}
             >
               <CgArrowLeft
                 className="text-primary_text dark:text-sidebar_blue"

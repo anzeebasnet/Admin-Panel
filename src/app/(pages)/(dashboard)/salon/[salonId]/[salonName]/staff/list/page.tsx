@@ -76,10 +76,6 @@ const Page = ({
       });
   };
 
-  useEffect(() => {
-    dispatch(clearSalonStaff());
-  }, [dispatch]);
-
   return (
     <div
       className={` bg-white dark:bg-secondary_dark rounded-sm p-6 flex flex-col gap-6 shadow-sm shadow-vll_gray dark:shadow-none ${open_sans.className}`}
@@ -105,7 +101,10 @@ const Page = ({
           </BreadcrumbList>
         </Breadcrumb>
         <Link
-          href={`/salon/${params.salonId}/${params.salonName}/staff/create`}
+          href={`/salon/${params.salonId}/${params.salonName}/staff/list?create=true`}
+          onClick={() => {
+            dispatch(clearSalonStaff());
+          }}
           className="bg-primary_text dark:bg-btn_blue text-white text-sm hover:bg-l_orange dark:hover:bg-blue py-1 px-4 rounded place-self-end"
         >
           Add Staff
@@ -154,7 +153,7 @@ const Page = ({
                       {staff.name}
                     </Link>
                     <Link
-                      href={`/salon/${params.salonId}/${params.salonName}/staff/create`}
+                      href={`/salon/${params.salonId}/${params.salonName}/staff/list?create=true`}
                       onClick={() => {
                         dispatch(setSalonStaff(staff));
                       }}
