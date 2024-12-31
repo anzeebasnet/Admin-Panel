@@ -219,7 +219,7 @@ const Page = ({
             </div>
             <div className="inline-flex flex-wrap gap-4 ">
               <Link
-                href={`/salon/${params.salonId}/${params.salonName}/services`}
+                href={`/salon/${params.salonId}/${params.salonName}/services/service`}
                 className="flex flex-col justify-center gap-2 items-center w-40 h-40 bg-beige hover:bg-l_orange dark:bg-blue dark:hover:bg-sidebar_blue text-deep_red hover:text-white  dark:text-white rounded"
               >
                 <Image

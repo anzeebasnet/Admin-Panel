@@ -73,10 +73,6 @@ const Page = ({
       });
   };
 
-  useEffect(() => {
-    dispatch(clearSalonService());
-  }, [dispatch]);
-
   return (
     <div
       className={` bg-white dark:bg-secondary_dark rounded-sm p-6 flex flex-col gap-6 shadow-sm shadow-vll_gray dark:shadow-none ${open_sans.className}`}
@@ -103,7 +99,10 @@ const Page = ({
         </Breadcrumb>
         <div className="flex gap-4">
           <Link
-            href={`/salon/${params.salonId}/${params.salonName}/services/create`}
+            href={`/salon/${params.salonId}/${params.salonName}/services/service?create=true`}
+            onClick={() => {
+              dispatch(clearSalonService());
+            }}
             className="bg-primary_text dark:bg-btn_blue text-white text-sm hover:bg-l_orange dark:hover:bg-blue py-1 px-4 rounded place-self-end"
           >
             <div className="flex gap-1 items-center">
@@ -124,7 +123,7 @@ const Page = ({
               >
                 <div className="relative bg-white rounded-t-md">
                   <Link
-                    href={`/salon/${params.salonId}/${params.salonName}/services/${services.id}/${services.name}`}
+                    href={`/salon/${params.salonId}/${params.salonName}/services/${services.id}/${services.name}/variation`}
                   >
                     <Image
                       src={services.logo || ""}
@@ -146,7 +145,7 @@ const Page = ({
                 <div className="flex flex-col gap-1 px-3 py-2">
                   <div className="flex gap-1 justify-between">
                     <Link
-                      href={`/salon/${params.salonId}/${params.salonName}/services/${services.id}/${services.name}`}
+                      href={`/salon/${params.salonId}/${params.salonName}/services/${services.id}/${services.name}/variation`}
                       className="text-primary_text dark:text-sidebar_blue hover:text-deep_red font-medium place-self-center text-base capitalize line-clamp-1"
                     >
                       {services.name}
@@ -164,7 +163,7 @@ const Page = ({
                     </Link>
                   </div>
                   <Link
-                    href={`/salon/${params.salonId}/${params.salonName}/services/${services.id}/${services.name}`}
+                    href={`/salon/${params.salonId}/${params.salonName}/services/${services.id}/${services.name}/variation`}
                     className="text-sm font-medium hover:underline"
                   >
                     {services.variations.length} items

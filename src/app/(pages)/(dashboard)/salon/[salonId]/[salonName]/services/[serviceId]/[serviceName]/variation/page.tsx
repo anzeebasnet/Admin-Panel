@@ -81,10 +81,6 @@ const Page = ({
       });
   };
 
-  useEffect(() => {
-    dispatch(clearSalonVariation());
-  }, [dispatch]);
-
   return (
     <div
       className={` bg-white dark:bg-secondary_dark rounded-sm p-6 flex flex-col sm:gap-10 gap-6 shadow-sm shadow-vll_gray dark:shadow-none ${open_sans.className}`}
@@ -95,7 +91,7 @@ const Page = ({
             <BreadcrumbList className="flex sm:gap-1">
               <BreadcrumbItem>
                 <BreadcrumbLink
-                  href={`/salon/${params.salonId}/${params.salonName}/services`}
+                  href={`/salon/${params.salonId}/${params.salonName}/services/service`}
                 >
                   <CgArrowLeft
                     className="text-primary_text dark:text-sidebar_blue"
@@ -116,7 +112,10 @@ const Page = ({
         </div>
         <div className="flex gap-4">
           <Link
-            href={`/salon/${params.salonId}/${params.salonName}/services/${params.serviceId}/${params.serviceName}/variation/create`}
+            href={`/salon/${params.salonId}/${params.salonName}/services/${params.serviceId}/${params.serviceName}/variation?create=true`}
+            onClick={() => {
+              dispatch(clearSalonVariation());
+            }}
             className="bg-primary_text dark:bg-btn_blue text-white text-sm hover:bg-l_orange dark:hover:bg-blue py-1 px-4 rounded place-self-end"
           >
             <div className="flex gap-1 items-center">
@@ -160,7 +159,7 @@ const Page = ({
                     </h2>
 
                     <Link
-                      href={`/salon/${params.salonId}/${params.salonName}/services/${params.serviceId}/${params.serviceName}/variation/create`}
+                      href={`/salon/${params.salonId}/${params.salonName}/services/${params.serviceId}/${params.serviceName}/variation?create=true`}
                       onClick={() => {
                         dispatch(setSalonVariation(variations));
                       }}

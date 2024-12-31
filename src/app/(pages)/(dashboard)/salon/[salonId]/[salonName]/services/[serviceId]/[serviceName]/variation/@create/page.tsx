@@ -40,6 +40,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useAppSelector } from "@/lib/store/hooks";
 import Loader from "@/components/ui/Loader";
 import { X } from "lucide-react";
+import Link from "next/link";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -178,6 +179,7 @@ const Page = ({
         })
         .finally(() => {
           setIsSubmitting(false);
+          window.location.href = `/salon/${params.salonId}/${params.salonName}/services/${params.serviceId}/${params.serviceName}/variation`;
         });
     } else {
       axiosInstance
@@ -206,15 +208,14 @@ const Page = ({
         })
         .finally(() => {
           setIsSubmitting(false);
+          window.location.href = `/salon/${params.salonId}/${params.salonName}/services/${params.serviceId}/${params.serviceName}/variation`;
         });
     }
   }
 
   return (
-    <div
-      className={` bg-white dark:bg-secondary_dark rounded-sm p-6 flex flex-col gap-6 shadow-sm shadow-vll_gray dark:shadow-none ${open_sans.className}`}
-    >
-      <Breadcrumb className="mb-4">
+    <ScrollArea className="bg-white dark:bg-secondary_dark sm:h-full h-[70vh] relative sm:pt-14 pt-10">
+      {/* <Breadcrumb className="mb-4">
         <BreadcrumbList className="flex sm:gap-1">
           <BreadcrumbItem>
             <BreadcrumbLink
@@ -232,8 +233,19 @@ const Page = ({
             </BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
-      </Breadcrumb>
-
+      </Breadcrumb> */}
+      <div className="absolute top-0 left-0 flex w-full">
+        <h2 className="sm:text-xl text-sm font-medium text-primary_text dark:text-sidebar_blue">
+          {salonVariationData ? "Edit" : "Create"} Variation
+        </h2>
+        <Link
+          href={`/salon/${params.salonId}/${params.salonName}/services/${params.serviceId}/${params.serviceName}/variation`}
+          className="absolute top-0 right-0"
+        >
+          {" "}
+          <X />
+        </Link>
+      </div>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -395,7 +407,7 @@ const Page = ({
             onClick={() => {
               console.log("Values: ", form.getValues());
             }}
-            className="bg-primary_text dark:bg-sidebar_blue hover:bg-l_orange dark:hover:bg-blue text-white h-8 mb-6 place-self-start rounded-lg"
+            className="bg-primary_text dark:bg-sidebar_blue hover:bg-l_orange dark:hover:bg-blue text-white h-8 mb-6 place-self-end rounded-lg"
           >
             {isSubmitting ? (
               <Loader />
@@ -407,7 +419,7 @@ const Page = ({
           </Button>
         </form>
       </Form>
-    </div>
+    </ScrollArea>
   );
 };
 
