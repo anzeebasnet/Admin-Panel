@@ -151,7 +151,7 @@ const Page = ({
                       {services.name}
                     </Link>
                     <Link
-                      href={`/salon/${params.salonId}/${params.salonName}/services/create`}
+                      href={`/salon/${params.salonId}/${params.salonName}/services/service?create=true`}
                       onClick={() => {
                         dispatch(setSalonService(services));
                       }}

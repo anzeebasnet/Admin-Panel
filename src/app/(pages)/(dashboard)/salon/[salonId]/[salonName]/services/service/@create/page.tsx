@@ -117,6 +117,7 @@ const CreateService = ({
         .finally(() => {
           dispatch(clearSalonService());
           setIsSubmitting(false);
+          window.location.href = `/salon/${params.salonId}/${params.salonName}/services/service`;
         });
     } else {
       axiosInstance
@@ -142,6 +143,7 @@ const CreateService = ({
         })
         .finally(() => {
           setIsSubmitting(false);
+          window.location.href = `/salon/${params.salonId}/${params.salonName}/services/service`;
         });
     }
   }
